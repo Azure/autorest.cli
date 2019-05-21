@@ -1,0 +1,26 @@
+{
+  "name": "devops",
+  "version": "0.1.0",
+  "description": "Simple AutoRest extension",
+  "main": "dist/index.js",
+  "scripts": {
+    "start": "node dist/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/olydis/autorest-extension-helloworld.git"
+  },
+  "keywords": [
+    "autorest",
+    "extension"
+  ],
+  "author": "Microsoft Corporation",
+  "license": "MIT",
+  "devDependencies": {
+    "@types/node": "^7.0.18"
+  },
+  "dependencies": {
+    "autorest-extension-base": "https://github.com/olydis/autorest-extension-base",
+    "node-yaml": "^3.2.0"
+  }
+}
