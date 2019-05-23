@@ -17,6 +17,8 @@ RUN apt-get install -y dotnet-runtime-2.0.5
 RUN apt-get install -y dotnet-sdk-2.1.4 
 
 RUN apt-get install -y software-properties-common build-essential
+RUN curl -#LO https://rvm.io/mpapis.asc
+RUN gpg --import mpapis.asc
 RUN curl -L https://get.rvm.io | bash -s stable --ruby
 RUN rvm install 2.6.0
 RUN rvm use 2.6.0
