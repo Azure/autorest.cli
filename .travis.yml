@@ -38,13 +38,13 @@ script:
   - 'echo ---------------------------------------------------------------------------------;
      echo Running Magic Modules;
      echo ---------------------------------------------------------------------------------;
-     docker run -t -i -l
+     docker run -t -i
      -v $CURRENT_PATH:/autorest.devops
      -v ~/azure-rest-api-specs:/azure-rest-api-specs
      -v ~/devops-hatchery/generated:/generated
      -v ~/magic-modules:/magic-modules
      autorest.devops
-     /bin/bash -c "
+     /bin/bash -c -l "
      ruby -v
      cd /magic-modules;
      bundle install;
