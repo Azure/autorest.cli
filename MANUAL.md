@@ -1,6 +1,3 @@
-
-# [WORK IN PROGRESS !]
-
 # Defining Input
 
 In order to generate any new resource, add **[resource name].md** file to **autorest.devops/input** folder.
