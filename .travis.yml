@@ -46,7 +46,7 @@ script:
      autorest.devops
      /bin/bash -c "
      cd /magic-modules;
-     bundle init;
+     bundle install;
      git checkout azure_backend;
      bundle exec compiler -p products/azbatchaccount -e ansible -o /generated
      "'
