@@ -19,7 +19,7 @@ RUN apt-get install -y dotnet-sdk-2.1.4
 RUN apt-get install -y software-properties-common build-essential
 RUN gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
 RUN curl -L https://get.rvm.io | bash -s stable --ruby
-#RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm; rvm install 2.6.0; rvm use 2.6.0; rvm rubygems latest;"
+RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm; rvm install 2.6.0; rvm use 2.6.0; rvm rubygems latest;"
 #RUN rvm install 2.6.0
 #RUN rvm use 2.6.0
 #RUN rvm rubygems latest
