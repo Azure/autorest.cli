@@ -45,7 +45,7 @@ script:
      -v ~/magic-modules:/magic-modules
      autorest.devops
      /bin/bash -c -l "
-     ruby -v
+     ruby -v;
      cd /magic-modules;
      bundle install;
      git checkout azure_backend;
