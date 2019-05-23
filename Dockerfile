@@ -19,7 +19,6 @@ RUN apt-get install -y dotnet-sdk-2.1.4
 RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
-RUN apt-get install -y ruby-dev
-RUN apt-get install -y ruby2.6
+RUN apt-get install -y ruby2.6 ruby-dev
 RUN gem install bundler
 
