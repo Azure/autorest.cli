@@ -22,7 +22,7 @@ azureresourceschema:
 Add **adjustments** section under **azureresourceschema** section in your **input/xxxxx.md** file.
 
 ``` yaml $(azureresourceschema)
-azureresourceschema
+azureresourceschema:
   ...
   adjustments:
     "/properties/networkrulecollections/id": "hide"
