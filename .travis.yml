@@ -38,7 +38,7 @@ script:
   - 'echo ---------------------------------------------------------------------------------;
      echo Running Magic Modules;
      echo ---------------------------------------------------------------------------------;
-     docker run -t -i
+     docker run -t -i -l
      -v $CURRENT_PATH:/autorest.devops
      -v ~/azure-rest-api-specs:/azure-rest-api-specs
      -v ~/devops-hatchery/generated:/generated
