@@ -19,6 +19,6 @@ RUN apt-get install -y dotnet-sdk-2.1.4
 RUN apt-get install -y software-properties-common
 RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
-RUN apt-get install -y ruby-full
+RUN apt-get install -y ruby-full gcc
 RUN gem install bundler
 
