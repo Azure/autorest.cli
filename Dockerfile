@@ -24,4 +24,4 @@ RUN /bin/bash -c "source /usr/local/rvm/scripts/rvm; rvm install 2.6.0; rvm use 
 #RUN rvm use 2.6.0
 #RUN rvm rubygems latest
 RUN apt-get update
-RUN gem install bundler
+RUN /bin/bash -l -c "gem install bundler"
