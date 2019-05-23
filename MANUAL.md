@@ -6,6 +6,8 @@
 In order to generate any new resource, add **[resource name].md** file to **autorest.devops/input** folder.
 File should follow the format used by **readme.md** files from Azure REST API specification.
 
+Note: **readme.md** files will be moved to **azure-rest-api-specs** repo.
+
 ## Additional Parameters
 
 ### Debugging
