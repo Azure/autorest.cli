@@ -1,6 +1,7 @@
 FROM ubuntu:xenial
 MAINTAINER zikalino
 
+RUN apt-add-repository ppa:brightbox/ruby-ng
 RUN apt-get update
 RUN apt-get install -y git curl gnupg
 
@@ -15,3 +16,5 @@ RUN apt-get update
 RUN apt-get install -y apt-transport-https libcurl3 libicu55
 RUN apt-get install -y dotnet-runtime-2.0.5
 RUN apt-get install -y dotnet-sdk-2.1.4 
+
+RUN apt-get install -y ruby2.6
