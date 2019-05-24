@@ -455,11 +455,11 @@ export class MapGenerator
 
         if (isInfo)
         {
-            return this.GetModelOptions(ref, 0, null, "", true, true, true, isInfo);
+            return this.GetModelOptions(ref, 0, null, "", "", true, true, true, isInfo);
         }
         else
         {
-            return this.GetModelOptions(ref, 0, null, "", true, false, true, isInfo);
+            return this.GetModelOptions(ref, 0, null, "", "", true, false, true, isInfo);
         }
 
     }
@@ -509,7 +509,7 @@ export class MapGenerator
                         
                         suboption.IsList = this.Type_IsList(p.modelType);
 
-                        let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", false, true, false, false);
+                        let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;
 
@@ -538,7 +538,15 @@ export class MapGenerator
         return arr;
     }
 
-    private GetModelOptions(modelRef: string, level: number, sampleValue: any , path: string, includeReadOnly: boolean, includeReadWrite: boolean, isResponse: boolean, isInfo: boolean): ModuleOption[]
+    private GetModelOptions(modelRef: string,
+                            level: number,
+                            sampleValue: any,
+                            pathSwagger: string,
+                            pathPython: string,
+                            includeReadOnly: boolean,
+                            includeReadWrite: boolean,
+                            isResponse: boolean,
+                            isInfo: boolean): ModuleOption[]
     {
         let model: any /*CompositeTypePy*/ = this.GetModelTypeByRef(modelRef);
         var options: ModuleOption[] = [];
@@ -554,12 +562,12 @@ export class MapGenerator
                 {
                     if (model['baseModelType']['$ref'] != undefined)
                     {
-                        options = this.GetModelOptions(model['baseModelType']['$ref'], level, sampleValue, path, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        options = this.GetModelOptions(model['baseModelType']['$ref'], level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                     else if (model['baseModelType']['$id'])
                     {
                         // XXX - fix this
-                        options = this.GetModelOptions(model['baseModelType']['$id'], level, sampleValue, path, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        options = this.GetModelOptions(model['baseModelType']['$id'], level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                 }
 
@@ -575,11 +583,11 @@ export class MapGenerator
 
                     if (this._debug)
                     {
-                        this._log("MAP PROCESSING ATTR: " + path + "/" + attr.name.raw)
+                        this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw)
             
-                        if (this._adjustments.IsPathIncludedInResponse(path + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
                             this._log("INCLUDED IN RESPONSE");
-                        if (this._adjustments.IsPathExcludedFromResponse(path + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
                             this._log("EXCLUDED FROM RESPONSE");
                     }
             
@@ -591,12 +599,12 @@ export class MapGenerator
                     {
                         if (isInfo)
                         {
-                            if (this._adjustments.IsPathExcludedFromInfoResponse(path + "/" + attr.name.raw))
+                            if (this._adjustments.IsPathExcludedFromInfoResponse(pathSwagger + "/" + attr.name.raw))
                             {
                                 excludeOverride = true;
                                 this._log("INFO EXCLUDE OVERRIDE")
                             }
-                            if (this._adjustments.IsPathIncludedInInfoResponse(path + "/" + attr.name.raw))
+                            if (this._adjustments.IsPathIncludedInInfoResponse(pathSwagger + "/" + attr.name.raw))
                             {
                                 includeOverride = true;
                                 this._log("INFO INCLUDE OVERRIDE")
@@ -604,12 +612,12 @@ export class MapGenerator
                         }
                         else
                         {
-                            if (this._adjustments.IsPathExcludedFromResponse(path + "/" + attr.name.raw))
+                            if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
                             {
                                 excludeOverride = true;
                                 this._log("RESPONSE EXCLUDE OVERRIDE")
                             }
-                            if (this._adjustments.IsPathIncludedInResponse(path + "/" + attr.name.raw))
+                            if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
                             {
                                 includeOverride = true;
                                 this._log("RESPONSE INCLUDE OVERRIDE")
@@ -618,12 +626,12 @@ export class MapGenerator
                     }
                     else
                     {
-                        if (this._adjustments.IsPathExcludedFromRequest(path + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathExcludedFromRequest(pathSwagger + "/" + attr.name.raw))
                         {
                             excludeOverride = true;
                             this._log("REQUEST EXCLUDE OVERRIDE")
                         }
-                        if (this._adjustments.IsPathIncludedInRequest(path + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathIncludedInRequest(pathSwagger + "/" + attr.name.raw))
                         {
                             includeOverride = true;
                             this._log("REQUEST INCLUDE OVERRIDE")
@@ -688,11 +696,13 @@ export class MapGenerator
                         //    option.Documentation = option.Documentation.split(" Possible values include:")[0];
                         //}
 
-                        option.Path = path + "/" + attrName
+                        option.PathSwagger = pathSwagger + "/" + attrName
+                        option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
+                        option.PathGo = option.PathSwagger;
 
                         let ref = option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
                         // XXX - get next level of sample value
-                        option.SubOptions = this.GetModelOptions(ref, level + 1, subSampleValue, option.Path, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        option.SubOptions = this.GetModelOptions(ref, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
                     }
                 }

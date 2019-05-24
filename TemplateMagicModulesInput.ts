@@ -105,7 +105,8 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
                 output.push("            python_variable_name: batch_account");
                 if (option.SubOptions != null)
                 {
-                    appendMethodSubOptions(output, option.SubOptions);
+                    appendMethodSubOptions(output, option.SubOptions, false);
+                    appendMethodSubOptions(output, option.SubOptions, true);
                 }
             }
         }
@@ -157,7 +158,8 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
                     output.push("            python_parameter_name: " + option.NamePythonSdk);
                     if (option.SubOptions != null)
                     {
-                        appendMethodSubOptions(output, option.SubOptions);
+                        appendMethodSubOptions(output, option.SubOptions, false);
+                        appendMethodSubOptions(output, option.SubOptions, true);
                     }
                 }
             }
@@ -293,9 +295,9 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
             output.push(prefix + "  sample_value: " + option.ExampleValue);
         }
 
-        if (option.Path != '')
+        if (option.PathSwagger != '')
         {
-            output.push(prefix + "  azure_sdk_references: ['" + option.Path + "']");
+            output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
         }
         else
         {
@@ -309,7 +311,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
     }
 }
 
-function appendMethodSubOptions(output: string[], options: ModuleOption[]) {
+function appendMethodSubOptions(output: string[], options: ModuleOption[], isGo: boolean) {
 
     for (var i = 0; i < options.length; i++)
     {
@@ -326,12 +328,21 @@ function appendMethodSubOptions(output: string[], options: ModuleOption[]) {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                 break;
         }
-        output.push("          " + options[i].Path + ": " + dataType);
+        if (isGo)
+        {
+            output.push("          " + options[i].PathGo + ": " + dataType);
+            output.push("            applicable_to: [python]");
+        }
+        else
+        {
+            output.push("          " + options[i].PathPython + ": " + dataType);
+            output.push("            applicable_to: [go]");
+        }
         output.push("            go_field_name: " + options[i].NameGoSdk);
 
         if (options[i].Type == "dict")
         {
-            appendMethodSubOptions(output, options[i].SubOptions);
+            appendMethodSubOptions(output, options[i].SubOptions, isGo);
         }
     }
 }

@@ -28,7 +28,9 @@ class ModuleOption {
         this.NoLog = false;
         this.SubOptions = null;
         this.EnumValues = [];
-        this.Path = null;
+        this.PathSwagger = null;
+        this.PathPython = null;
+        this.PathGo = null;
         // Disposition, what should happen with specific option
         // For top level options:
         //  * - means that option is a part of URL/function call
@@ -55,7 +57,7 @@ class ModuleOption {
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
         this.DocumentationMarkKeywords = true;
-        this.Path = "";
+        this.PathSwagger = "";
         this.Flatten = false;
         if (name == "location")
             this.Updatable = false;

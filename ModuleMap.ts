@@ -28,7 +28,7 @@ export class ModuleOption
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
         this.DocumentationMarkKeywords = true;
-        this.Path = "";
+        this.PathSwagger = "";
         this.Flatten = false;
 
         if (name == "location")
@@ -61,7 +61,9 @@ export class ModuleOption
     public NoLog: boolean = false;
     public SubOptions: ModuleOption[] = null;
     public EnumValues: EnumValue[] = [];
-    public Path: string = null;
+    public PathSwagger: string = null;
+    public PathPython: string = null;
+    public PathGo: string = null;
 
     // Disposition, what should happen with specific option
     // For top level options:
