@@ -13,6 +13,10 @@ const yaml = require("node-yaml");
 const MapGenerator_1 = require("./MapGenerator");
 const MapFlattener_1 = require("./MapFlattener");
 const CodeModel_1 = require("./CodeModel");
+const AnsibleModuleSdk_1 = require("./obsolete/AnsibleModuleSdk");
+const AnsibleModuleSdkInfo_1 = require("./obsolete/AnsibleModuleSdkInfo");
+const AnsibleModuleRest_1 = require("./obsolete/AnsibleModuleRest");
+const AnsibleModuleRestInfo_1 = require("./obsolete/AnsibleModuleRestInfo");
 const TemplateMagicModulesInput_1 = require("./TemplateMagicModulesInput");
 const AnsibleExampleRest_1 = require("./AnsibleExampleRest");
 const AnsibleExample_1 = require("./AnsibleExample");
@@ -96,10 +100,13 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
                     });
                     if (!model.ModuleName.endsWith('_info')) {
+                        autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdk_1.GenerateModuleSdk(model).join('\r\n'));
+                        autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model).join('\r\n'));
                         autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
                     }
                     else {
-                        // info modules to be implemented
+                        autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
+                        autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model).join('\r\n'));
                     }
                     // generate magic modules input example files
                     let moduleExamples = model.ModuleExamples;

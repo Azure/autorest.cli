@@ -3,7 +3,12 @@ import * as yaml from "node-yaml";
 import { MapGenerator } from "./MapGenerator"
 import { MapFlattener } from "./MapFlattener"
 import { CodeModel } from "./CodeModel"
+import { GenerateModuleSdk } from "./obsolete/AnsibleModuleSdk"
+import { GenerateModuleSdkInfo } from "./obsolete/AnsibleModuleSdkInfo"
+import { GenerateModuleRest } from "./obsolete/AnsibleModuleRest"
+import { GenerateModuleRestInfo } from "./obsolete/AnsibleModuleRestInfo"
 import { GenerateMagicModulesInput } from "./TemplateMagicModulesInput"
+
 import { GenerateExampleAnsibleRest } from "./AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./AnsibleExample"
 import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest"
@@ -107,9 +112,12 @@ extension.Add("azureresourceschema", async autoRestApi => {
             });
 
             if (!model.ModuleName.endsWith('_info')) {
+              autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
+              autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRest(model).join('\r\n'));
               autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
             } else {
-              // info modules to be implemented
+              autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
+              autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model).join('\r\n'));
             }
 
             // generate magic modules input example files
