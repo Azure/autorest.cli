@@ -331,12 +331,12 @@ function appendMethodSubOptions(output: string[], options: ModuleOption[], isGo:
         if (isGo)
         {
             output.push("          " + options[i].PathGo + ": " + dataType);
-            output.push("            applicable_to: [python]");
+            output.push("            applicable_to: [go]");
         }
         else
         {
             output.push("          " + options[i].PathPython + ": " + dataType);
-            output.push("            applicable_to: [go]");
+            output.push("            applicable_to: [python]");
         }
         output.push("            go_field_name: " + options[i].NameGoSdk);
 
