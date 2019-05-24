@@ -91,18 +91,18 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
             {
                 output.push("          '" + option.NameSwagger + "': " + dataType);
                 output.push("            id_portion: " + option.IdPortion);
+                output.push("            go_variable_name: " + option.NameTerraform);
                 output.push("            python_variable_name: " + option.NameAnsible);
                 output.push("            python_parameter_name: " + option.NamePythonSdk);
-                output.push("            go_variable_name: " + option.NameTerraform);
             }
             else
             {
                 output.push("          '/': " + dataType);
                 // XXX - this is hack
                 output.push("            go_type_name: " + "AccountCreateParameters");
+                output.push("            go_variable_name: " + option.NameGoSdk);
                 output.push("            python_variable_name: batch_account");
                 output.push("            python_parameter_name: " + option.NamePythonSdk);
-                output.push("            go_variable_name: " + option.NameGoSdk);
                 if (option.SubOptions != null)
                 {
                     appendMethodSubOptions(output, option.SubOptions);
@@ -143,18 +143,18 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
                 {
                     output.push("          '" + option.NameSwagger + "': " + dataType);
                     output.push("            id_portion: " + option.IdPortion);
+                    output.push("            go_variable_name: " + option.NameTerraform);
                     output.push("            python_variable_name: " + option.NameAnsible);
                     output.push("            python_parameter_name: " + option.NamePythonSdk);
-                    output.push("            go_variable_name: " + option.NameTerraform);
                 }
                 else
                 {
                     output.push("          '/': " + dataType);
                     // XXX - this is hack
                     output.push("            go_type_name: " + "AccountCreateParameters");
+                    output.push("            go_variable_name: " + option.NameGoSdk);
                     output.push("            python_variable_name: batch_account");
                     output.push("            python_parameter_name: " + option.NamePythonSdk);
-                    output.push("            go_variable_name: " + option.NameGoSdk);
                     if (option.SubOptions != null)
                     {
                         appendMethodSubOptions(output, option.SubOptions);
