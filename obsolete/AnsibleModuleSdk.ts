@@ -1,5 +1,5 @@
-﻿import { CodeModel } from "./CodeModel";
-import { ModuleOption } from "./ModuleMap";
+﻿import { CodeModel } from "../CodeModel";
+import { ModuleOption } from "../ModuleMap";
 import {
     ModuleTopLevelOptionsVariables,
     AppendModuleHeader,
@@ -10,7 +10,7 @@ import {
     AppendModuleReturnDoc,
     ModuleGenerateApiCall
 } from "./AnsibleModuleCommon"
-import { Indent } from "./Helpers";
+import { Indent } from "../Helpers";
 
 export function GenerateModuleSdk(model: CodeModel) : string[] {
     

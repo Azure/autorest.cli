@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ExamplePostProcessor_1 = require("./ExamplePostProcessor");
-const Helpers_1 = require("./Helpers");
+const ExamplePostProcessor_1 = require("../ExamplePostProcessor");
+const Helpers_1 = require("../Helpers");
 const yaml = require("node-yaml");
 function AppendModuleHeader(output) {
     output.push("#!/usr/bin/python");

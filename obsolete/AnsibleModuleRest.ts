@@ -1,5 +1,5 @@
-﻿import { CodeModel } from "./CodeModel"
-import { Indent } from "./Helpers";
+﻿import { CodeModel } from "../CodeModel"
+import { Indent } from "../Helpers";
 import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,

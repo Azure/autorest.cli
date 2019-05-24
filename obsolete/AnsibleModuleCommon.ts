@@ -1,7 +1,7 @@
-﻿import { CodeModel } from "./CodeModel"
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
-import { ExamplePostProcessor, ExampleType } from "./ExamplePostProcessor";
-import { Indent, ToSnakeCase } from "./Helpers";
+﻿import { CodeModel } from "../CodeModel"
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
+import { ExamplePostProcessor, ExampleType } from "../ExamplePostProcessor";
+import { Indent, ToSnakeCase } from "../Helpers";
 import * as yaml from "node-yaml";
 
 

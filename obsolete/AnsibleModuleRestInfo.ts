@@ -1,4 +1,4 @@
-import { CodeModel } from "./CodeModel"
+import { CodeModel } from "../CodeModel"
 import {
     ModuleTopLevelOptionsVariables,
     GetFixUrlStatements,

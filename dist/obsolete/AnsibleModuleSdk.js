@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const AnsibleModuleCommon_1 = require("./AnsibleModuleCommon");
-const Helpers_1 = require("./Helpers");
+const Helpers_1 = require("../Helpers");
 function GenerateModuleSdk(model) {
     var output = [];
     AnsibleModuleCommon_1.AppendModuleHeader(output);
