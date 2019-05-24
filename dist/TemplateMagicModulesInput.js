@@ -12,8 +12,8 @@ function GenerateMagicModulesInput(model) {
     output.push("    base_url: NotUsedInAzure");
     output.push("scopes:");
     output.push("  - NotUsedInAzure");
-    output.push("azure_namespace: '" + model.ModuleProvider + "'");
-    output.push("azure_version: '" + model.ModuleApiVersion + "'");
+    // output.push("azure_namespace: '" + model.ModuleProvider + "'");
+    // output.push("azure_version: '" + model.ModuleApiVersion + "'");
     output.push("objects:");
     output.push("  - !ruby/object:Api::Resource");
     output.push("    name: " + model.ObjectName);
@@ -21,7 +21,7 @@ function GenerateMagicModulesInput(model) {
     output.push("    base_url: NotUsedInAzure");
     output.push("");
     output.push("    azure_sdk_definition: !ruby/object:Api::Azure::SDKDefinition");
-    output.push("      provider_name: " + model.ModuleProvider.split('.')[1].toLowerCase());
+    output.push("      provider_name: " + model.ModuleProvider /*model.ModuleProvider.split('.')[1].toLowerCase()*/);
     output.push("      go_client_namespace: " + model.GoNamespace);
     output.push("      go_client: " + model.GoMgmtClient);
     output.push("      python_client_namespace: " + model.PythonNamespace);
@@ -79,16 +79,16 @@ function GenerateMagicModulesInput(model) {
                 output.push("          '" + option.NameSwagger + "': " + dataType);
                 output.push("            id_portion: " + option.IdPortion);
                 output.push("            go_variable_name: " + option.NameTerraform);
-                output.push("            python_variable_name: " + option.NameAnsible);
                 output.push("            python_parameter_name: " + option.NamePythonSdk);
+                output.push("            python_variable_name: " + option.NameAnsible);
             }
             else {
                 output.push("          '/': " + dataType);
                 // XXX - this is hack
                 output.push("            go_type_name: " + "AccountCreateParameters");
                 output.push("            go_variable_name: " + option.NameGoSdk);
-                output.push("            python_variable_name: batch_account");
                 output.push("            python_parameter_name: " + option.NamePythonSdk);
+                output.push("            python_variable_name: batch_account");
                 if (option.SubOptions != null) {
                     appendMethodSubOptions(output, option.SubOptions);
                 }
