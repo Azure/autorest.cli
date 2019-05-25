@@ -75,25 +75,7 @@ function GenerateMagicModulesInput(model) {
                     dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                     break;
             }
-            if (option.Type != "dict") {
-                output.push("          '" + option.NameSwagger + "': " + dataType);
-                output.push("            id_portion: " + option.IdPortion);
-                output.push("            go_variable_name: " + option.NameTerraform);
-                output.push("            python_parameter_name: " + option.NamePythonSdk);
-                output.push("            python_variable_name: " + option.NameAnsible);
-            }
-            else {
-                output.push("          '/': " + dataType);
-                // XXX - this is hack
-                output.push("            go_type_name: " + "AccountCreateParameters");
-                output.push("            go_variable_name: " + option.NameGoSdk);
-                output.push("            python_parameter_name: " + option.NamePythonSdk);
-                output.push("            python_variable_name: batch_account");
-                if (option.SubOptions != null) {
-                    appendMethodSubOptions(output, option.SubOptions, false);
-                    appendMethodSubOptions(output, option.SubOptions, true);
-                }
-            }
+            appendOption(output, option, true, true);
         }
         // all operations have delete except of "delete"
         if (operationName != "delete") {
@@ -118,25 +100,7 @@ function GenerateMagicModulesInput(model) {
                         dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                         break;
                 }
-                if (option.Type != "dict") {
-                    output.push("          '" + option.NameSwagger + "': " + dataType);
-                    output.push("            id_portion: " + option.IdPortion);
-                    output.push("            go_variable_name: " + option.NameTerraform);
-                    output.push("            python_variable_name: " + option.NameAnsible);
-                    output.push("            python_parameter_name: " + option.NamePythonSdk);
-                }
-                else {
-                    output.push("          '/': " + dataType);
-                    // XXX - this is hack
-                    output.push("            go_type_name: " + "AccountCreateParameters");
-                    output.push("            go_variable_name: " + option.NameGoSdk);
-                    output.push("            python_variable_name: batch_account");
-                    output.push("            python_parameter_name: " + option.NamePythonSdk);
-                    if (option.SubOptions != null) {
-                        appendMethodSubOptions(output, option.SubOptions, false);
-                        appendMethodSubOptions(output, option.SubOptions, true);
-                    }
-                }
+                appendOption(output, option, true, true);
             }
         }
     }
@@ -257,31 +221,103 @@ function appendOptions(output, options, prefix) {
         }
     }
 }
-function appendMethodSubOptions(output, options, isGo) {
-    for (var i = 0; i < options.length; i++) {
-        let dataType = "";
-        switch (options[i].Type) {
-            case "str":
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                break;
-            case "dict":
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
-                break;
-            case "boolean":
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
-                break;
-        }
-        if (isGo) {
-            output.push("          " + options[i].PathGo + ": " + dataType);
-            output.push("            applicable_to: [python]");
-        }
-        else {
-            output.push("          " + options[i].PathPython + ": " + dataType);
-            output.push("            applicable_to: [go]");
-        }
-        output.push("            go_field_name: " + options[i].NameGoSdk);
-        if (options[i].Type == "dict") {
-            appendMethodSubOptions(output, options[i].SubOptions, isGo);
+function appendOption(output, option, isGo, isPython) {
+    let dataType = "";
+    switch (option.Type) {
+        case "str":
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+            break;
+        case "dict":
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
+            break;
+        case "boolean":
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
+            break;
+    }
+    if (isGo) {
+        output.push("          " + option.PathGo + ": " + dataType);
+    }
+    else {
+        output.push("          " + option.PathPython + ": " + dataType);
+    }
+    if (isGo && !isPython) {
+        output.push("            applicable_to: [go]");
+    }
+    if (!isGo && isPython) {
+        output.push("            applicable_to: [python]");
+    }
+    if (isGo) {
+    }
+    if (isPython) {
+    }
+    if (option.Type == "dict") {
+        for (var si in option.SubOptions) {
+            var so = option.SubOptions[si];
+            if (isGo && isPython && so.PathGo != so.PathPython) {
+                appendOption(output, so, true, false);
+                appendOption(output, so, false, true);
+            }
+            else {
+                appendOption(output, so, isGo, isPython);
+            }
         }
     }
 }
+//if (option.Type != "dict")
+//{
+//    output.push("          '" + option.NameSwagger + "': " + dataType);
+//    output.push("            id_portion: " + option.IdPortion);
+//    output.push("            go_variable_name: " + option.NameTerraform);
+//    output.push("            python_parameter_name: " + option.NamePythonSdk);
+//    output.push("            python_variable_name: " + option.NameAnsible);
+//}
+//else
+//{
+//    output.push("          '/': " + dataType);
+//    // XXX - this is hack
+//    output.push("            go_type_name: " + "AccountCreateParameters");
+//    output.push("            go_variable_name: " + option.NameGoSdk);
+//    output.push("            python_parameter_name: " + option.NamePythonSdk);
+//    output.push("            python_variable_name: batch_account");
+//    if (option.SubOptions != null)
+//    {
+//        appendMethodSubOptions(output, option.SubOptions, true, true);
+//    }
+//}
+//function appendMethodSubOptions(output: string[], options: ModuleOption[], isGo: boolean, isPython: boolean) {
+//
+//    for (var i = 0; i < options.length; i++)
+//    {
+//        if (isGo && isPython)
+//        {
+//            if (options[i].PathGo == options[i].PathPython)
+//            {
+//                output.push("          " + options[i].PathGo + ": " + dataType);
+//                output.push("            go_field_name: " + options[i].NameGoSdk);
+//            }
+//        }
+//        else if (isGo)
+//        {
+//            output.push("          " + options[i].PathGo + ": " + dataType);
+//            output.push("            applicable_to: [go]");
+//            output.push("            go_field_name: " + options[i].NameGoSdk);
+//        }
+//        else
+//        {
+//            output.push("          " + options[i].PathPython + ": " + dataType);
+//            output.push("            applicable_to: [python]");
+//        }
+//        if (options[i].Type == "dict")
+//        {
+//            if (isGo && isPython && options[i].PathGo != options[i].PathPython)
+//            {
+//                appendMethodSubOptions(output, options[i].SubOptions, true, false);
+//                appendMethodSubOptions(output, options[i].SubOptions, false, true);
+//            }
+//            else
+//            {
+//                appendMethodSubOptions(output, options[i].SubOptions, isGo, isPython);
+//            }
+//        }
+//    }
+//}
