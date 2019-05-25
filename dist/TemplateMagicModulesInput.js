@@ -225,13 +225,24 @@ function appendOption(output, option, isGo, isPython) {
     let dataType = "";
     switch (option.Type) {
         case "str":
-            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+            if (option.EnumValues != null && option.EnumValues.length > 0) {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::EnumObject";
+            }
+            else {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+            }
             break;
         case "dict":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
             break;
         case "boolean":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
+            break;
+        default:
+            // XXX - this is a hack, should be solved earlier
+            if (option.NameAnsible == "tags") {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringMapObject";
+            }
             break;
     }
     let pathGo = option.PathGo;
