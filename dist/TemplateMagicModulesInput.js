@@ -247,10 +247,10 @@ function appendOption(output, option, isGo, isPython) {
         }
     }
     if (isGo) {
-        output.push("          " + pathGo + ": " + dataType);
+        output.push("          '" + pathGo + "': " + dataType);
     }
     else {
-        output.push("          " + pathPython + ": " + dataType);
+        output.push("          '" + pathPython + "': " + dataType);
     }
     if (isGo && !isPython) {
         output.push("            applicable_to: [go]");

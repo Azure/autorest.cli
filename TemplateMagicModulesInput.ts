@@ -304,11 +304,11 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
     if (isGo)
     {
-        output.push("          " + pathGo + ": " + dataType);
+        output.push("          '" + pathGo + "': " + dataType);
     }
     else
     {
-        output.push("          " + pathPython + ": " + dataType);
+        output.push("          '" + pathPython + "': " + dataType);
     }
 
     if (isGo && !isPython)
