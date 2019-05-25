@@ -509,6 +509,11 @@ export class MapGenerator
                     options[p.name.raw].TypeName = this.Type_Name(p.modelType);
                     options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
     
+                    if (options[p.name.raw].TypeName == null)
+                    {
+                        options[p.name.raw].TypeName = "NOT FOUND -- " + type;
+                    }
+
                     if (p.location == "path")
                     {
                         options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
