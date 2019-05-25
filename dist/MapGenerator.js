@@ -276,6 +276,18 @@ class MapGenerator {
         }
         return type['$type'] == "SequenceType";
     }
+    Type_Name(type) {
+        if (type['$ref'] != undefined) {
+            let newType = this.GetModelTypeByRef(type['$ref']);
+            if (newType) {
+                type = newType;
+            }
+            else {
+                this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);
+            }
+        }
+        return type['serializedName'];
+    }
     Type_MappedType(type) {
         while (type['$ref'] != undefined) {
             let newType = this.GetModelTypeByRef(type['$ref']);
@@ -354,6 +366,7 @@ class MapGenerator {
                         let ref = p.modelType['$ref'];
                         let submodel = this.GetModelTypeByRef(ref);
                         suboption.IsList = this.Type_IsList(p.modelType);
+                        suboption.TypeName = this.Type_Name(p.modelType);
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;

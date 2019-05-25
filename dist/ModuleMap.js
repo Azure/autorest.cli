@@ -18,6 +18,7 @@ class ModuleOption {
         this.NameTerraform = null;
         this.IdPortion = null;
         this.Type = null;
+        this.TypeName = null;
         this.IsList = false;
         this.Required = false;
         this.Documentation = null;
