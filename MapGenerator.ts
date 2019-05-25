@@ -506,6 +506,7 @@ export class MapGenerator
                     options[p.name.raw].Documentation = p.documentation.raw;
 
                     options[p.name.raw].IsList = this.Type_IsList(p.modelType);
+                    options[p.name.raw].TypeName = this.Type_Name(p.modelType);
                     options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
     
                     if (p.location == "path")
@@ -706,6 +707,7 @@ export class MapGenerator
                         option.Documentation = attr.documentation.raw;
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList =  this.Type_IsList(attr.modelType);
+                        option.TypeName = this.Type_Name(attr.modelType);
                         option.Flatten = flatten;
 
                         option.EnumValues = this.Type_EnumValues(attr.modelType);

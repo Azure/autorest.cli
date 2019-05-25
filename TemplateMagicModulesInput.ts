@@ -353,6 +353,11 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         {
             output.push("            go_field_name: " + option.NameTerraform);
         }
+
+        if (option.Type == "dict")
+        {
+            output.push("            go_type_name: " + option.TypeName);
+        }
     }
 
     if (isPython)

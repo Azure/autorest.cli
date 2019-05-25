@@ -282,6 +282,9 @@ function appendOption(output, option, isGo, isPython) {
         else {
             output.push("            go_field_name: " + option.NameTerraform);
         }
+        if (option.Type == "dict") {
+            output.push("            go_type_name: " + option.TypeName);
+        }
     }
     if (isPython) {
         if (!isField) {
