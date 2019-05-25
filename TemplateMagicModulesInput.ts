@@ -287,9 +287,11 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
     let pathGo = option.PathGo;
     let pathPython = option.PathPython;
+    let isField = true;
 
     if (pathGo == null || pathPython == null)
     {
+        isField = false;
         if (option.SubOptions)
         {
             pathGo = "/";
@@ -329,13 +331,27 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
     if (isGo)
     {
-        output.push("            go_variable_name: " + option.NameTerraform);
+        if (!isField)
+        {
+            output.push("            go_variable_name: " + option.NameTerraform);
+        }
+        else
+        {
+            output.push("            go_field_name: " + option.NameTerraform);
+        }
     }
 
     if (isPython)
     {
-        output.push("            python_parameter_name: " + option.NamePythonSdk);
-        output.push("            python_variable_name: " + option.NameAnsible);
+        if (!isField)
+        {
+            output.push("            python_parameter_name: " + option.NamePythonSdk);
+            output.push("            python_variable_name: " + option.NameAnsible);
+        }
+        else
+        {
+            output.push("            python_field_name: " + option.NamePythonSdk);
+        }
     }
 
     if (option.Type == "dict")
