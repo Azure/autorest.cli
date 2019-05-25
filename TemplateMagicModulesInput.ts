@@ -361,8 +361,8 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             var so = option.SubOptions[si];
             if (isGo && isPython && so.PathGo != so.PathPython)
             {
-                appendOption(output, so, true, false);
                 appendOption(output, so, false, true);
+                appendOption(output, so, true, false);
             }
             else
             {
