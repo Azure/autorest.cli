@@ -285,6 +285,22 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             break;
     }
 
+    let pathGo = option.PathGo;
+    let pathPython = option.PathPython;
+
+    if (pathGo == null || pathPython == null)
+    {
+        if (option.SubOptions)
+        {
+            pathGo = "/";
+            pathPython = "/"
+        }
+        else
+        {
+            pathGo = option.NameSwagger;
+        }
+    }
+
     if (isGo)
     {
         output.push("          " + option.PathGo + ": " + dataType);
@@ -304,14 +320,21 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         output.push("            applicable_to: [python]");
     }
 
+    // add id_portion if it's part of URL
+    if (pathGo.charAt(0) != '/')
+    {
+        output.push("            id_portion: " + option.IdPortion);
+    }
+
     if (isGo)
     {
-
+        output.push("            go_variable_name: " + option.NameTerraform);
     }
 
     if (isPython)
     {
-
+        output.push("            python_parameter_name: " + option.NamePythonSdk);
+        output.push("            python_variable_name: " + option.NameAnsible);
     }
 
     if (option.Type == "dict")
