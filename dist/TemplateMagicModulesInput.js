@@ -243,13 +243,14 @@ function appendOption(output, option, isGo, isPython) {
         }
         else {
             pathGo = option.NameSwagger;
+            pathPython = option.NameSwagger;
         }
     }
     if (isGo) {
-        output.push("          " + option.PathGo + ": " + dataType);
+        output.push("          " + pathGo + ": " + dataType);
     }
     else {
-        output.push("          " + option.PathPython + ": " + dataType);
+        output.push("          " + pathPython + ": " + dataType);
     }
     if (isGo && !isPython) {
         output.push("            applicable_to: [go]");

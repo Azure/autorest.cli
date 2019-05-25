@@ -298,16 +298,17 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         else
         {
             pathGo = option.NameSwagger;
+            pathPython = option.NameSwagger;
         }
     }
 
     if (isGo)
     {
-        output.push("          " + option.PathGo + ": " + dataType);
+        output.push("          " + pathGo + ": " + dataType);
     }
     else
     {
-        output.push("          " + option.PathPython + ": " + dataType);
+        output.push("          " + pathPython + ": " + dataType);
     }
 
     if (isGo && !isPython)
