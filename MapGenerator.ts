@@ -529,11 +529,6 @@ export class MapGenerator
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
 
-                        if (suboption.TypeName == null)
-                        {
-                            suboption.TypeName = "NOT FOUND -- " + type + " -- XXX" ;
-                        }
-
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;

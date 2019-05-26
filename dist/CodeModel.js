@@ -79,6 +79,18 @@ class CodeModel {
         //return options;
         return options;
     }
+    get ModuleParametersOption() {
+        let m = this.Map.Modules[this._selectedModule];
+        let options = [];
+        for (var oi in m.Options) {
+            if (m.Options[oi].DispositionSdk.endsWith("dictionary")) {
+                return m.Options[oi];
+            }
+        }
+        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
+        //return options;
+        return null;
+    }
     get ModuleResponseFields() {
         var m = this.Map.Modules[this._selectedModule];
         return m.ResponseFields;
@@ -210,8 +222,10 @@ class CodeModel {
             }
             if (option == null) {
                 if (optionName == "parameters") {
+                    let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
+                    option.TypeName = hiddenParamatersOption.TypeName;
                     // XXX - and because this stupid option has no suboptions
                     for (let optionIdx in this.ModuleOptions) {
                         if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/")) {
