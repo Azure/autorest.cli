@@ -182,6 +182,10 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
     {
         let option = options[oi];
         let option_doc = {};
+
+        if (option.Hidden)
+            continue;
+
         // check if option should be included in documentation
         if (!option.IncludeInDocumentation)
             continue;
@@ -294,6 +298,10 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
     for (var i = 0; i < options.length; i++)
     {
         var option: ModuleOption = options[i];
+
+        if (option.Hidden)
+            continue;
+
         if (!option.IncludeInArgSpec)
             continue;
 

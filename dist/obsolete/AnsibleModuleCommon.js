@@ -145,6 +145,8 @@ function GetHelpFromOptions(model, options, padding) {
     for (var oi in options) {
         let option = options[oi];
         let option_doc = {};
+        if (option.Hidden)
+            continue;
         // check if option should be included in documentation
         if (!option.IncludeInDocumentation)
             continue;
@@ -228,6 +230,8 @@ function GetArgSpecFromOptions(model, options, prefix, mainModule, useSdk) {
     var argSpec = [];
     for (var i = 0; i < options.length; i++) {
         var option = options[i];
+        if (option.Hidden)
+            continue;
         if (!option.IncludeInArgSpec)
             continue;
         // tags shouldn't be added directly
