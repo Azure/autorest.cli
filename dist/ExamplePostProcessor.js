@@ -45,6 +45,8 @@ class ExamplePostProcessor {
             // XXX - this should not be passed
             if (option.NameSwagger == "parameters")
                 continue;
+            if (option.Hidden)
+                continue;
             let value = undefined;
             if (option.DispositionRest == "*") {
                 value = example[option.NameSwagger];

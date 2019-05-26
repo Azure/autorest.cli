@@ -71,6 +71,9 @@ export class ExamplePostProcessor
             if (option.NameSwagger == "parameters")
                 continue;
 
+            if (option.Hidden)
+                continue;
+
             let value = undefined;
             
             if (option.DispositionRest == "*")
