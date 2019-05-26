@@ -285,6 +285,9 @@ function appendOption(output, option, isGo, isPython) {
         if (option.Type == "dict") {
             output.push("            go_type_name: " + option.TypeName);
         }
+        if (option.EnumValues != null && option.EnumValues.length > 0) {
+            output.push("            go_enum_type_name: " + option.TypeName);
+        }
     }
     if (isPython) {
         if (!isField) {
