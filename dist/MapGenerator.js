@@ -287,10 +287,15 @@ class MapGenerator {
                 return "UnknownTypeName";
             }
         }
-        if (type['serializedName'] != undefined)
+        if (type['serializedName'] != undefined) {
             return type['serializedName'];
-        else
+        }
+        else if (type['name'] != undefined && type['name']['raw'] != undefined) {
+            return type['name']['raw'];
+        }
+        else {
             return JSON.stringify(type);
+        }
     }
     Type_MappedType(type) {
         while (type['$ref'] != undefined) {
