@@ -407,7 +407,10 @@ export class MapGenerator
             }
         }
 
-        return type['serializedName'];
+        if (type['serializedName'] != undefined)
+            return type['serializedName'];
+        else
+            return JSON.stringify(type);
     }
 
     private Type_MappedType(type: any): string
