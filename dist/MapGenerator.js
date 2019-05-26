@@ -353,11 +353,7 @@ class MapGenerator {
                     options[p.name.raw] = new ModuleMap_1.ModuleOption(p.name.raw, type, p.isRequired);
                     options[p.name.raw].Documentation = p.documentation.raw;
                     options[p.name.raw].IsList = this.Type_IsList(p.modelType);
-                    options[p.name.raw].TypeName = this.Type_Name(p.modelType);
                     options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
-                    if (options[p.name.raw].TypeName == null) {
-                        options[p.name.raw].TypeName = "NOT FOUND -- " + type;
-                    }
                     if (p.location == "path") {
                         options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
                     }
@@ -370,7 +366,10 @@ class MapGenerator {
                         let ref = p.modelType['$ref'];
                         let submodel = this.GetModelTypeByRef(ref);
                         suboption.IsList = this.Type_IsList(p.modelType);
-                        suboption.TypeName = this.Type_Name(p.modelType);
+                        suboption.TypeName = this.Type_Name(submodel);
+                        if (suboption.TypeName == null) {
+                            suboption.TypeName = "NOT FOUND -- " + type;
+                        }
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;
