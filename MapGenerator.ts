@@ -396,17 +396,14 @@ export class MapGenerator
 
     private Type_Name(type: any): string
     {
-        if (type['$ref'] != undefined)
-        {
+        while (type['$ref'] != undefined) {
             let newType = this.GetModelTypeByRef(type['$ref']);
-
-            if (newType)
-            {
+            if (newType) {
                 type = newType;
             }
-            else
-            {
+            else {
                 this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);         
+                return "UnknownTypeName";
             }
         }
 

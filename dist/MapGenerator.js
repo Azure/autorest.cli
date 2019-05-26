@@ -277,13 +277,14 @@ class MapGenerator {
         return type['$type'] == "SequenceType";
     }
     Type_Name(type) {
-        if (type['$ref'] != undefined) {
+        while (type['$ref'] != undefined) {
             let newType = this.GetModelTypeByRef(type['$ref']);
             if (newType) {
                 type = newType;
             }
             else {
                 this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);
+                return "UnknownTypeName";
             }
         }
         return type['serializedName'];
