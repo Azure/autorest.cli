@@ -317,7 +317,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
         let choices: boolean = (option.EnumValues != null) && option.EnumValues.length > 0;
 
         // add coma before previous option
-        if (i > 0) argSpec.push(argSpec.pop() + ",");
+        if (argSpec.length > 0) argSpec.push(argSpec.pop() + ",");
 
         argSpec.push(prefix + option.NameAnsible + "=dict(");
 

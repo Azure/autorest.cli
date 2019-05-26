@@ -243,7 +243,7 @@ function GetArgSpecFromOptions(model, options, prefix, mainModule, useSdk) {
         let defaultOrRequired = (option.DefaultValue != null) || option.Required;
         let choices = (option.EnumValues != null) && option.EnumValues.length > 0;
         // add coma before previous option
-        if (i > 0)
+        if (argSpec.length > 0)
             argSpec.push(argSpec.pop() + ",");
         argSpec.push(prefix + option.NameAnsible + "=dict(");
         let type = (option.IsList ? "list" : option.Type);
