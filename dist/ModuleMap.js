@@ -42,6 +42,7 @@ class ModuleOption {
         this.Comparison = "";
         this.Updatable = true;
         this.ExampleValue = null;
+        this.Hidden = false;
         this.NameSwagger = name;
         this.NameAnsible = Helpers_1.ToSnakeCase(name);
         this.NamePythonSdk = this.NameAnsible;

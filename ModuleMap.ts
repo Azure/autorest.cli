@@ -77,6 +77,7 @@ export class ModuleOption
     public Updatable: boolean = true;
     public ExampleValue: any = null;
     public Flatten: boolean;
+    public Hidden: boolean = false;
 }
 
 export class ModuleMethod
