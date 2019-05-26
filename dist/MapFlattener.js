@@ -82,7 +82,7 @@ class MapFlattener {
                         }
                     }
                     options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
-                    option.SubOptions = null;
+                    option.SubOptions = [];
                     option.Hidden = true;
                     //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
                 }
@@ -104,7 +104,7 @@ class MapFlattener {
                         suboptions[si].DispositionSdk = dispositionSdk;
                     }
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
-                    option.SubOptions = null;
+                    option.SubOptions = [];
                     option.Hidden = true;
                 }
                 else {
