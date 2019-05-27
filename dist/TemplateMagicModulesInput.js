@@ -164,7 +164,7 @@ function appendOptions(output, options, prefix) {
             switch (option.Type) {
                 case "str":
                     if (option.NameSwagger == "resourceGroupName") {
-                        dataType = "!ruby/object:Api::Azure::Type::ResourceGroup";
+                        dataType = "!ruby/object:Api::Azure::Type::ResourceGroupName";
                     }
                     else if ((typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
                         dataType = "!ruby/object:Api::Type::ResourceReference";

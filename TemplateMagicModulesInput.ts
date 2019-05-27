@@ -196,7 +196,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
                 case "str":
                     if (option.NameSwagger == "resourceGroupName")
                     {
-                        dataType = "!ruby/object:Api::Azure::Type::ResourceGroup";
+                        dataType = "!ruby/object:Api::Azure::Type::ResourceGroupName";
                     }
                     else if ((typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/'))
                     {
