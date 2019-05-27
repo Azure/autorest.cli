@@ -180,6 +180,8 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
         var option = options[i];
         if (!option.IncludeInArgSpec)
             continue;
+        if (option.Hidden)
+            continue;
 
         let dataType = "";
 

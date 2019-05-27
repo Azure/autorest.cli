@@ -154,6 +154,8 @@ function appendOptions(output, options, prefix) {
         var option = options[i];
         if (!option.IncludeInArgSpec)
             continue;
+        if (option.Hidden)
+            continue;
         let dataType = "";
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             dataType = "!ruby/object:Api::Type::EnumType";
