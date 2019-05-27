@@ -198,7 +198,7 @@ function GetHelpFromOptions(model, options, padding) {
             //help.push(line);
         }
         */
-        if (option.SubOptions != null && option.SubOptions.length > 0) {
+        if (haveSuboptions(option)) {
             option_doc['suboptions'] = GetHelpFromOptions(model, option.SubOptions, padding + "        ");
         }
     }
@@ -331,7 +331,7 @@ function GetArgSpecFromOptions(model, options, prefix, mainModule, useSdk) {
             }
             argSpec.push(line + "')");
         }
-        if (option.SubOptions && option.SubOptions.length > 0) {
+        if (haveSuboptions(option)) {
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    options=dict(");
             argSpec = argSpec.concat(GetArgSpecFromOptions(model, option.SubOptions, prefix + "        ", mainModule, useSdk));
@@ -340,6 +340,19 @@ function GetArgSpecFromOptions(model, options, prefix, mainModule, useSdk) {
         argSpec.push(prefix + ")");
     }
     return argSpec;
+}
+function haveSuboptions(option) {
+    if (option.SubOptions == null)
+        return false;
+    if (option.SubOptions == [])
+        return false;
+    let cnt = 0;
+    for (var so in option.SubOptions) {
+        if (option.SubOptions[so].Hidden)
+            continue;
+        cnt++;
+    }
+    return (cnt > 0);
 }
 function ModuleTopLevelOptionsVariables(options) {
     var variables = [];
@@ -459,7 +472,7 @@ function GetHelpFromResponseFields(model, fields, padding) {
             //help.push(padding + "    type: " + field.Type);
             //help.concat(this.WrapString(padding + "    sample: ", field.SampleValue));
             field_doc['sample'] = field.ExampleValue;
-            if (field.SubOptions != null && field.SubOptions.length > 0) {
+            if (haveSuboptions(field)) {
                 field_doc['contains'] = GetHelpFromResponseFields(model, field.SubOptions, padding + "        ");
                 //help.push(padding + "    contains:");
                 //help.concat(this.GetHelpFromResponseFields(field.SubOptions, padding + "        "));

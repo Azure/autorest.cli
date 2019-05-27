@@ -255,7 +255,7 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
         }
         */
 
-        if (option.SubOptions != null && option.SubOptions.length > 0)
+        if (haveSuboptions(option))
         {
             option_doc['suboptions'] = GetHelpFromOptions(model, option.SubOptions, padding + "        ");
         }
@@ -441,7 +441,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
 
         }
 
-        if (option.SubOptions && option.SubOptions.length > 0)
+        if (haveSuboptions(option))
         {
             argSpec.push(argSpec.pop() + ",");
             argSpec.push(prefix + "    options=dict(");
@@ -455,6 +455,27 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
     }
 
     return argSpec;
+}
+
+function haveSuboptions(option: ModuleOption): boolean
+{
+    if (option.SubOptions == null)
+        return false;
+
+    if (option.SubOptions == [])
+        return false;
+
+    let cnt = 0;
+
+    for (var so in option.SubOptions)
+    {
+        if (option.SubOptions[so].Hidden)
+            continue;
+
+        cnt++;
+    }
+
+    return (cnt > 0);
 }
 
 export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[]
@@ -618,7 +639,7 @@ function GetHelpFromResponseFields(model: CodeModel, fields: ModuleOption[], pad
             //help.concat(this.WrapString(padding + "    sample: ", field.SampleValue));
             field_doc['sample'] = field.ExampleValue;
 
-            if (field.SubOptions != null && field.SubOptions.length > 0)
+            if (haveSuboptions(field))
             {
                 field_doc['contains'] = GetHelpFromResponseFields(model, field.SubOptions, padding + "        ");
                 //help.push(padding + "    contains:");
