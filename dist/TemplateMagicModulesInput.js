@@ -210,7 +210,12 @@ function appendOptions(output, options, prefix) {
             output.push(prefix + "  sample_value: " + option.ExampleValue);
         }
         if (option.PathSwagger != '') {
-            output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
+            if (option.PathPython == option.PathGo) {
+                output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
+            }
+            else {
+                output.push(prefix + "  azure_sdk_references: ['" + option.PathPython + "', '" + option.PathGo + "']");
+            }
         }
         else {
             output.push(prefix + "  azure_sdk_references: ['" + option.NameSwagger + "']");

@@ -255,7 +255,14 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
 
         if (option.PathSwagger != '')
         {
-            output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
+            if (option.PathPython == option.PathGo)
+            {
+                output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
+            }
+            else
+            {
+                output.push(prefix + "  azure_sdk_references: ['" + option.PathPython + "', '" + option.PathGo + "']");
+            }
         }
         else
         {
