@@ -245,6 +245,8 @@ function appendOption(output, option, isGo, isPython) {
             }
             break;
     }
+    if (option.Hidden && isPython && !isGo)
+        return;
     let pathGo = option.PathGo;
     let pathPython = option.PathPython;
     let isField = true;
