@@ -48,7 +48,7 @@ azureresourceschema:
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
   payload-flattening-threshold: 2
-  namespace: azure.mgmt.servicebus
+  namespace: azure.mgmt.automation
   package-name: azure-mgmt-automation
   clear-output-folder: false
 ```

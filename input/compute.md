@@ -48,7 +48,7 @@ azureresourceschema:
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
   payload-flattening-threshold: 2
-  namespace: azure.mgmt.eventgrid
-  package-name: azure-mgmt-eventgrid
+  namespace: azure.mgmt.compute
+  package-name: azure-mgmt-compute
   clear-output-folder: false
 ```
