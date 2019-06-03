@@ -47,7 +47,7 @@ class ModuleOption {
         this.NameAnsible = Helpers_1.ToSnakeCase(name);
         this.NamePythonSdk = this.NameAnsible;
         this.NameGoSdk = Helpers_1.ToGoCase(this.NameAnsible);
-        this.NameTerraform = name;
+        this.NameTerraform = this.NameGoSdk;
         this.Type = type;
         this.Required = required;
         this.SubOptions = null;
