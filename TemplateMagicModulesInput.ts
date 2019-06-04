@@ -212,7 +212,15 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
                     }
                     break;
                 case "dict":
-                    dataType = "!ruby/object:Api::Type::NestedObject";
+                    if (option.IsList)
+                    {
+                        // for now it's the same
+                        dataType = "!ruby/object:Api::Type::NestedObject";
+                    }
+                    else
+                    {
+                        dataType = "!ruby/object:Api::Type::NestedObject";
+                    }
                     break;
                 case "boolean":
                     dataType = "!ruby/object:Api::Type::Boolean";
@@ -294,7 +302,14 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             }
             break;
         case "dict":
-            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
+            if (option.IsList)
+            {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexArrayObject";
+            }
+            else
+            {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
+            }
             break;
         case "boolean":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
