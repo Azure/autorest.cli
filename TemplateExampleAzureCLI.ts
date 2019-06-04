@@ -127,7 +127,7 @@ function ConvertUrl(sourceUrl: string): string
             //}
 
             // close and reopen quotes, add add variable name in between
-            url += "$" + varName;
+            url += "$" + varName + (last ? "" : "/");
         }
         else
         {

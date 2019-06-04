@@ -91,7 +91,7 @@ function ConvertUrl(sourceUrl) {
             //    varName = varName.ToLower();
             //}
             // close and reopen quotes, add add variable name in between
-            url += "$" + varName;
+            url += "$" + varName + (last ? "" : "/");
         }
         else {
             url += part + (last ? "" : "/");
