@@ -536,6 +536,7 @@ export class MapGenerator
                         
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
+                        suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
 
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
@@ -715,7 +716,6 @@ export class MapGenerator
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList =  this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
-
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
 
                         option.Flatten = flatten;
