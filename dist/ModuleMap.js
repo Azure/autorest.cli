@@ -19,6 +19,7 @@ class ModuleOption {
         this.IdPortion = null;
         this.Type = null;
         this.TypeName = null;
+        this.TypeNameGo = null;
         this.IsList = false;
         this.Required = false;
         this.Documentation = null;

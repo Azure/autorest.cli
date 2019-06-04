@@ -303,10 +303,10 @@ function appendOption(output, option, isGo, isPython) {
             output.push("            go_field_name: " + option.NameTerraform);
         }
         if (option.Type == "dict") {
-            output.push("            go_type_name: " + option.TypeName);
+            output.push("            go_type_name: " + option.TypeNameGo);
         }
         if (option.EnumValues != null && option.EnumValues.length > 0) {
-            output.push("            go_enum_type_name: " + option.TypeName);
+            output.push("            go_enum_type_name: " + option.TypeNameGo);
         }
     }
     if (isPython) {

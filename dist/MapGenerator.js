@@ -498,6 +498,7 @@ class MapGenerator {
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList = this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
+                        option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
                         // this should not be here
@@ -630,6 +631,20 @@ class MapGenerator {
             idx++;
         }
         return "";
+    }
+    TrimPackageName(value, packageName) {
+        // check if the package name straddles a casing boundary, if it
+        // does then don't trim the name.  e.g. if value == "SubscriptionState"
+        // and packageName == "subscriptions" it would be incorrect to remove
+        // the package name from the value.
+        let straddle = value.length > packageName.length && (value[packageName.length].toLowerCase() === value[packageName.length]);
+        var originalLen = value.length;
+        if (!straddle) {
+            if (value.toLowerCase().startsWith(packageName.toLowerCase())) {
+                value = value.substr(packageName.length);
+            }
+        }
+        return value;
     }
 }
 exports.MapGenerator = MapGenerator;
