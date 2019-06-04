@@ -116,7 +116,9 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         var example = moduleExamples[exampleIdx];
                         var filename = example.Filename;
                         autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", AnsibleExample_1.GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
-                        autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                        if (!model.ModuleName.endsWith('_info')) {
+                            autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                        }
                     }
                 }
                 catch (e) {

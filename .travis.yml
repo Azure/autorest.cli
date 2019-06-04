@@ -18,6 +18,7 @@ script:
 
   - "cd $CURRENT_PATH/input;
      for d in *; do
+      if [d != 'batch.md']; then
         echo ---------------------------------------------------------------------------------;
         echo Processing: $d;
         echo ---------------------------------------------------------------------------------;
@@ -32,6 +33,7 @@ script:
         --python-sdks-folder=/generated
         --output-folder=/generated
         /autorest.devops/input/$d;
+      fi
      done"
 
   # just try to set up and run magic modules
