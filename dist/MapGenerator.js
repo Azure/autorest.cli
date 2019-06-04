@@ -377,6 +377,7 @@ class MapGenerator {
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
+                        this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;
@@ -500,6 +501,7 @@ class MapGenerator {
                         option.IsList = this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                        this._log("TRIMMING: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
                         // this should not be here
