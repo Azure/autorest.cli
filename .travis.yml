@@ -21,18 +21,32 @@ script:
         echo ---------------------------------------------------------------------------------;
         echo Processing: $d;
         echo ---------------------------------------------------------------------------------;
-        docker run -t -i
-        -v $CURRENT_PATH:/autorest.devops
-        -v ~/azure-rest-api-specs:/azure-rest-api-specs
-        -v ~/devops-hatchery/generated:/generated
-        autorest.devops
-        autorest
-        --azureresourceschema
-        --use=/autorest.devops
-        --python-sdks-folder=/generated
-        --output-folder=/generated
-        --title=xxx
-        /autorest.devops/input/$d;
+        if [d != 'api-management.md']; then
+          docker run -t -i
+          -v $CURRENT_PATH:/autorest.devops
+          -v ~/azure-rest-api-specs:/azure-rest-api-specs
+          -v ~/devops-hatchery/generated:/generated
+          autorest.devops
+          autorest
+          --azureresourceschema
+          --use=/autorest.devops
+          --python-sdks-folder=/generated
+          --output-folder=/generated
+          /autorest.devops/input/$d;
+        else
+          docker run -t -i
+          -v $CURRENT_PATH:/autorest.devops
+          -v ~/azure-rest-api-specs:/azure-rest-api-specs
+          -v ~/devops-hatchery/generated:/generated
+          autorest.devops
+          autorest
+          --azureresourceschema
+          --use=/autorest.devops
+          --python-sdks-folder=/generated
+          --output-folder=/generated
+          --title=ApiManagementClient
+          /autorest.devops/input/$d;
+        fi
      done"
 
   # just try to set up and run magic modules
