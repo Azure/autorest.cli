@@ -25,6 +25,7 @@ To see additional help and options, run:
 These are the global settings for the Batch API.
 
 ``` yaml
+title: ApiManagementClient
 openapi-type: arm
 ```
 
