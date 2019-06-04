@@ -51,7 +51,7 @@ export class ModuleOption
     public NameTerraform: string = null;
     public IdPortion: string = null;
     public Type: string = null;
-    public TypeName: string = null;
+    public TypeName: string = "xxx";
     public TypeNameGo: string = null;
     public IsList: boolean = false;
     public Required: boolean = false;
