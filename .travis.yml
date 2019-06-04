@@ -31,6 +31,7 @@ script:
         --use=/autorest.devops
         --python-sdks-folder=/generated
         --output-folder=/generated
+        --title=xxx
         /autorest.devops/input/$d;
      done"
 
