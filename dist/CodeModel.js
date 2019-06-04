@@ -226,6 +226,7 @@ class CodeModel {
                     option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
                     option.TypeName = hiddenParamatersOption.TypeName;
+                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
                     // XXX - and because this stupid option has no suboptions
                     for (let optionIdx in this.ModuleOptions) {
                         if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/")) {
