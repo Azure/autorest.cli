@@ -5,13 +5,13 @@ function GenerateExampleAzureCLI(model) {
     output.push("# " + model.Name);
     var vars = model.Variables;
     for (var v in vars) {
-        output.push(vars[v].name.toUpperCase() + " = \"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");
+        output.push(vars[v].name.toUpperCase() + "=\"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");
     }
     output.push("");
     var json = GetExampleBodyJson(model.GetExampleBody());
     switch (model.Method.toLowerCase()) {
         case 'put':
-            output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '");
+            output.push("az resource create --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion() + " --properties '");
             for (var lidx in json) {
                 var line = json[lidx];
                 output.push(line);

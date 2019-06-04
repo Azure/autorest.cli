@@ -8,7 +8,7 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
     var vars =  model.Variables;
     for (var v in vars)
     {
-        output.push(vars[v].name.toUpperCase() + " = \"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");   
+        output.push(vars[v].name.toUpperCase() + "=\"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");   
     }
     output.push("");
 
@@ -17,7 +17,7 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
     switch (model.Method.toLowerCase())
     {
         case 'put':
-            output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '")
+            output.push("az resource create --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion() + " --properties '")
             for (var lidx in json)
             {
                 var line: string = json[lidx]; 
