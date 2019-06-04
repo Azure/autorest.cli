@@ -17,7 +17,7 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
     switch (model.Method.toLowerCase())
     {
         case 'put':
-            output.push("az resource create --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion() + " --properties '")
+            output.push("az resource create --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion() + " --is-full-object --properties '")
             for (var lidx in json)
             {
                 var line: string = json[lidx]; 
@@ -26,7 +26,7 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
             output.push("'")
             break;
         case 'get':
-            output.push("az resource show--id '" + ConvertUrl(model.Url) + "'")
+            output.push("az resource show --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion())
             break;
         default:
     }
