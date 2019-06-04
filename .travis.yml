@@ -16,9 +16,9 @@ script:
   - rm -rf ~/devops-hatchery/generated/*
   - docker run -t -i -v $CURRENT_PATH:/autorest.devops -w /autorest.devops autorest.devops npm install
 
-  - "cd $CURRENT_PATH/input;
+  - 'cd $CURRENT_PATH/input;
      for d in *; do
-      if ['$d' != 'batch.md']; then
+      if [ "$d" != "batch.md" ]; then
         echo ---------------------------------------------------------------------------------;
         echo Processing: $d;
         echo ---------------------------------------------------------------------------------;
@@ -34,7 +34,7 @@ script:
         --output-folder=/generated
         /autorest.devops/input/$d;
       fi
-     done"
+     done'
 
   # just try to set up and run magic modules
   #- 'echo ---------------------------------------------------------------------------------;
