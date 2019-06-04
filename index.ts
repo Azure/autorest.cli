@@ -12,6 +12,7 @@ import { GenerateMagicModulesInput } from "./TemplateMagicModulesInput"
 import { GenerateExampleAnsibleRest } from "./AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./AnsibleExample"
 import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest"
+import { GenerateExampleAzureCLI } from "./TemplateExampleAzureCLI"
 import { GenerateMagicModulesAnsibleExample } from "./TemplateMagicModulesAnsibleExample"
 
 import { ExampleProcessor } from "./ExampleProcessor";
@@ -98,6 +99,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
           var filename = example.Filename;
           autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", GenerateExampleAnsibleRest(example));
           autoRestApi.WriteFile("intermediate/examples_python/" + filename + ".yml", GenerateExamplePythonRest(example).join('\r\n'));
+          autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", GenerateExampleAzureCLI(example).join('\r\n'));
         }
 
         // generate modules & mm input files
