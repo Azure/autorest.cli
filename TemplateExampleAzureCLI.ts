@@ -101,7 +101,7 @@ function GetExampleBodyJson(body: any): string[]
 function ConvertUrl(sourceUrl: string): string
 {
     var parts: string[] = sourceUrl.split("/");
-    var url = "\"";
+    var url = "";
 
     for (var i: number = 0; i < parts.length; i++)
     {
@@ -110,7 +110,7 @@ function ConvertUrl(sourceUrl: string): string
 
         if (part.startsWith("{{"))
         {
-            var varName: string = part.substring(3, part.length - 6).toUpperCase();
+            var varName: string = part.substring(2, part.length - 4).trim().toUpperCase();
 
             //if (varName == "SUBSCRIPTION_ID")
             //{
@@ -120,10 +120,7 @@ function ConvertUrl(sourceUrl: string): string
             // close and reopen quotes, add add variable name in between
             url += "$" + varName;
         }
-        else
-        {
-            url += part + (last ? "\"" : "/");
-        }
+        url += part + (last ? "" : "/");
     }
     return url;
 }

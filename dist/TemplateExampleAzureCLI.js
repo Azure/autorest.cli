@@ -72,12 +72,12 @@ function GetExampleBodyJson(body) {
 }
 function ConvertUrl(sourceUrl) {
     var parts = sourceUrl.split("/");
-    var url = "\"";
+    var url = "";
     for (var i = 0; i < parts.length; i++) {
         var part = parts[i];
         var last = (i == parts.length - 1);
         if (part.startsWith("{{")) {
-            var varName = part.substring(3, part.length - 6).toUpperCase();
+            var varName = part.substring(2, part.length - 4).trim().toUpperCase();
             //if (varName == "SUBSCRIPTION_ID")
             //{
             //    varName = varName.ToLower();
@@ -85,9 +85,7 @@ function ConvertUrl(sourceUrl) {
             // close and reopen quotes, add add variable name in between
             url += "$" + varName;
         }
-        else {
-            url += part + (last ? "\"" : "/");
-        }
+        url += part + (last ? "" : "/");
     }
     return url;
 }
