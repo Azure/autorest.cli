@@ -9,12 +9,20 @@ function GenerateExampleAzureCLI(model) {
     }
     output.push("");
     var json = GetExampleBodyJson(model.GetExampleBody());
-    output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '");
-    for (var lidx in json) {
-        var line = json[lidx];
-        output.push(line);
+    switch (model.Method.toLowerCase()) {
+        case 'put':
+            output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '");
+            for (var lidx in json) {
+                var line = json[lidx];
+                output.push(line);
+            }
+            output.push("'");
+            break;
+        case 'get':
+            output.push("az resource show--id '" + ConvertUrl(model.Url) + "'");
+            break;
+        default:
     }
-    output.push("'");
     return output;
 }
 exports.GenerateExampleAzureCLI = GenerateExampleAzureCLI;
@@ -77,7 +85,7 @@ function ConvertUrl(sourceUrl) {
         var part = parts[i];
         var last = (i == parts.length - 1);
         if (part.startsWith("{{")) {
-            var varName = part.substring(2, part.length - 4).trim().toUpperCase();
+            var varName = part.substring(2, part.length - 2).trim().toUpperCase();
             //if (varName == "SUBSCRIPTION_ID")
             //{
             //    varName = varName.ToLower();
@@ -85,7 +93,9 @@ function ConvertUrl(sourceUrl) {
             // close and reopen quotes, add add variable name in between
             url += "$" + varName;
         }
-        url += part + (last ? "" : "/");
+        else {
+            url += part + (last ? "" : "/");
+        }
     }
     return url;
 }

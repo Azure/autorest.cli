@@ -14,13 +14,22 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
 
     var json: string[] = GetExampleBodyJson(model.GetExampleBody());
 
-    output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '")
-    for (var lidx in json)
+    switch (model.Method.toLowerCase())
     {
-        var line: string = json[lidx]; 
-        output.push(line);
+        case 'put':
+            output.push("az resource create --id '" + ConvertUrl(model.Url) + "' --parameters '")
+            for (var lidx in json)
+            {
+                var line: string = json[lidx]; 
+                output.push(line);
+            }
+            output.push("'")
+            break;
+        case 'get':
+            output.push("az resource show--id '" + ConvertUrl(model.Url) + "'")
+            break;
+        default:
     }
-    output.push("'")
 
     return output;
 }
@@ -110,7 +119,7 @@ function ConvertUrl(sourceUrl: string): string
 
         if (part.startsWith("{{"))
         {
-            var varName: string = part.substring(2, part.length - 4).trim().toUpperCase();
+            var varName: string = part.substring(2, part.length - 2).trim().toUpperCase();
 
             //if (varName == "SUBSCRIPTION_ID")
             //{
@@ -120,7 +129,10 @@ function ConvertUrl(sourceUrl: string): string
             // close and reopen quotes, add add variable name in between
             url += "$" + varName;
         }
-        url += part + (last ? "" : "/");
+        else
+        {
+            url += part + (last ? "" : "/");
+        }
     }
     return url;
 }
