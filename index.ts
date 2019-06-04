@@ -114,7 +114,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
             if (!model.ModuleName.endsWith('_info')) {
               autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
               autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRest(model).join('\r\n'));
-              autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+              autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
             } else {
               autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
               autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model).join('\r\n'));
@@ -127,7 +127,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
               var example = moduleExamples[exampleIdx];
               var filename = example.Filename;
               autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
-              autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+              autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
             }
           }
           catch (e)

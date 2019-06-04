@@ -102,7 +102,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                     if (!model.ModuleName.endsWith('_info')) {
                         autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdk_1.GenerateModuleSdk(model).join('\r\n'));
                         autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model).join('\r\n'));
-                        autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                        autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
                     }
                     else {
                         autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
@@ -114,7 +114,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         var example = moduleExamples[exampleIdx];
                         var filename = example.Filename;
                         autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", AnsibleExample_1.GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
-                        autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                        autoRestApi.WriteFile("magic-modules-input/" + model.ModuleName.split("azure_rm_")[1] + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
                     }
                 }
                 catch (e) {

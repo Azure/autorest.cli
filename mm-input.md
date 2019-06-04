@@ -8,12 +8,6 @@
 |objects/api_name|Batch|XX what is it exactly?|
 |objects/description|Manages a Batch Account on Azure|Module Description, used in Documentation|
 
-## SDK API Definition
-
-|Parameter|Sample Value|Description|
-|---------|------------|-----------|
-|objects/[]/azure_sdk_definition/provider_name|||
-|objects/[]/azure_sdk_definition/go_client_namespace|||
 
 ## Module UX Definition
 
@@ -22,11 +16,20 @@
 |objects/[]/parameters||What is the difference between parameters and properties?|
 |objects/[]/properties|||
 |objects/[]/properties/[]/name|autoStorage|Parameter name, camel case. ??? How is it pythonized for Ansible???|
-|objects/[]/properties/[]/description||Parameter name, camel case. ??? How is it pythonized for Ansible???|
+|objects/[]/properties/[]/description||Parameter description|
 |objects/[]/properties/[]/input|true|If set to **true** property is not updatable.|
+|objects/[]/properties/[]/output|true|If set to **true** property is not updatable.|
 |objects/[]/properties/[]/required|true|Is property required?|
 |objects/[]/properties/[]/azure_sdk_references|true|??? this needs more description ???|
 |objects/[]/properties/[]/sample_value|xxxx|Sample value|
+
+## SDK API Definition
+
+|Parameter|Sample Value|Description|
+|---------|------------|-----------|
+|objects/[]/azure_sdk_definition/provider_name|||
+|objects/[]/azure_sdk_definition/go_client_namespace|||
+
 
 ## Property Types
 
