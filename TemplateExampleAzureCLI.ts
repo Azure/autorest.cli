@@ -29,6 +29,7 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
             output.push("az resource show --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion())
             break;
         default:
+        return null;
     }
 
     return output;

@@ -90,7 +90,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 var filename = example.Filename;
                 autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", AnsibleExampleRest_1.GenerateExampleAnsibleRest(example));
                 autoRestApi.WriteFile("intermediate/examples_python/" + filename + ".yml", TemplateExamplePythonRest_1.GenerateExamplePythonRest(example).join('\r\n'));
-                autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", TemplateExampleAzureCLI_1.GenerateExampleAzureCLI(example).join('\r\n'));
+                let code = TemplateExampleAzureCLI_1.GenerateExampleAzureCLI(example);
+                if (code != null) {
+                    autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", code.join('\r\n'));
+                }
             }
             // generate modules & mm input files
             let index = 0;
