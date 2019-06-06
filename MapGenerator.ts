@@ -145,18 +145,8 @@ export class MapGenerator
             this.AddMethod(module.Methods, rawMethods[mi]);
         }
 
-        // XXX - also response fields we will create from the first method, shoudl check if this is correct
-        module.ResponseFields = null;
-        if (isInfo)
-        {
-            // for info modules try to use get method
-            module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
-        }
-        
-        if (module.ResponseFields == null)
-        {
-            module.ResponseFields = this.GetResponseFieldsForMethod(rawMethods[0], true, false);
-        }
+        // for response use GET response fields
+        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
 
         module.ModuleOperationName = this.ModuleOperationName;
         module.ModuleOperationNameUpper = this.ModuleOperationNameUpper;
