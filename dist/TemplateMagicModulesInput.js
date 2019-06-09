@@ -329,7 +329,7 @@ function appendOption(output, option, isGo, isPython, isRead) {
             var so = option.SubOptions[si];
             // read only options should be only included in "read"
             if (!isRead) {
-                if (!so.IncludeInArgSpec)
+                if (so.IncludeInResponse && !so.IncludeInArgSpec)
                     continue;
             }
             if (isGo && isPython && so.PathGo != so.PathPython) {

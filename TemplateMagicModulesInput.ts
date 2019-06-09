@@ -437,7 +437,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             // read only options should be only included in "read"
             if (!isRead)
             {
-                if (!so.IncludeInArgSpec)
+                if (so.IncludeInResponse && !so.IncludeInArgSpec)
                     continue;
             }
 
