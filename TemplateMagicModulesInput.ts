@@ -12,8 +12,6 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     output.push("    base_url: NotUsedInAzure");
     output.push("scopes:");
     output.push("  - NotUsedInAzure");
-    // output.push("azure_namespace: '" + model.ModuleProvider + "'");
-    // output.push("azure_version: '" + model.ModuleApiVersion + "'");
     output.push("objects:");
     output.push("  - !ruby/object:Api::Resource");
     output.push("    name: " + model.ObjectName);
@@ -150,7 +148,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
         else
         {
-            if (!option.IncludeInResponse)
+            if (!option.IncludeInResponse || option.IncludeInArgSpec)
                 continue;
         }
 
