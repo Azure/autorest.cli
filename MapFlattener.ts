@@ -74,9 +74,7 @@ export class MapFlattener
                     if (flatten == "hide")
                     {
                         // just completely remove this option....
-                        suboptions = [];
-                        options = [].concat(options.slice(0, i), suboptions, options.slice(i + 1));
-                        options[i].SubOptions = [];
+                        options = [].concat(options.slice(0, i), options.slice(i + 1));
                     }
                     else
                     {
