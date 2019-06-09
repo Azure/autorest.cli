@@ -170,8 +170,9 @@ function appendOptions(output, options, prefix) {
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             output.push(prefix + "  values:");
             option.EnumValues.forEach(element => {
-                output.push(prefix + "     - :" + element.Key);
+                output.push(prefix + "    - :" + element.Key);
             });
+            output.push(prefix + "  default_value: " + option.EnumValues[0].Key);
         }
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
             // last should be "{{ name }}"
