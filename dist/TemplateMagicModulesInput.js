@@ -45,6 +45,9 @@ function GenerateMagicModulesInput(model) {
             case "Delete":
                 operationName = "delete";
                 break;
+            case "ListByResourceGroup":
+                operationName = "list_by_resource_group";
+                break;
         }
         if (operationName == "")
             continue;
