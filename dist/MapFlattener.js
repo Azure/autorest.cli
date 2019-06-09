@@ -41,7 +41,7 @@ class MapFlattener {
             let option = options[i];
             let suboptions = option.SubOptions;
             if (suboptions != null) {
-                let optionPath = (path + "/" + option.NameSwagger).toLowerCase();
+                let optionPath = (((path != "/") ? path : "") + "/" + option.NameSwagger).toLowerCase();
                 if (this._debug)
                     this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
