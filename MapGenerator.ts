@@ -960,7 +960,7 @@ export class MapGenerator
             this._log("ADDING READONLY OPTION: " + oo.NameSwagger);
             // if we are merging read options, new option should be included in response
             if (readOnly) oo.IncludeInResponse = true;
-            other.push(oo);
+            main.push(oo);
         }
     }
 

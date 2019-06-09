@@ -670,7 +670,7 @@ class MapGenerator {
             // if we are merging read options, new option should be included in response
             if (readOnly)
                 oo.IncludeInResponse = true;
-            other.push(oo);
+            main.push(oo);
         }
     }
 }
