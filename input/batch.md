@@ -53,7 +53,7 @@ azureresourceschema:
   clear-output-folder: false
   adjustments:
     "/properties/autostorage": "autoStorageAccountId/"
-    "/properties/autoStorage/lastkeysync": "hide",
+    "/properties/autoStorage/lastkeysync": "hide"
     "/properties/provisioningstate": "hide"
     "/properties/dedicatedcorequota": "hide"
     "/properties/lowprioritycorequota": "hide"
