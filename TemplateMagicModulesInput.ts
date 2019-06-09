@@ -1,6 +1,6 @@
 ﻿import { CodeModel } from "./CodeModel"
 import { ModuleOption } from "./ModuleMap";
-import { ToSnakeCase, ToCamelCase } from "./Helpers"
+import { ToSnakeCase, ToCamelCase, Uncapitalize } from "./Helpers"
 export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     var output: string[] = [];
     output.push("--- !ruby/object:Api::Product");
@@ -359,7 +359,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
     {
         if (!isField)
         {
-            output.push("            go_variable_name: " + option.NameTerraform);
+            output.push("            go_variable_name: " + Uncapitalize(option.NameTerraform));
         }
         else
         {
