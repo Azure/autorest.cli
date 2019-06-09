@@ -954,6 +954,11 @@ export class MapGenerator
                 {
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly)
                 }
+
+                if (readOnly)
+                {
+                    mo.IncludeInResponse = true;
+                }
                 continue;
             }
 

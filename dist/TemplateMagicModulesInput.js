@@ -242,6 +242,15 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
     }
 }
 function appendOption(output, option, isGo, isPython, isRead) {
+    // read only options should be only included in "read"
+    if (!isRead) {
+        if (option.IncludeInResponse && !option.IncludeInArgSpec)
+            return;
+    }
+    else {
+        if (!option.IncludeInResponse)
+            return;
+    }
     let dataType = "";
     switch (option.Type) {
         case "str":
@@ -333,11 +342,6 @@ function appendOption(output, option, isGo, isPython, isRead) {
     if (option.Type == "dict") {
         for (var si in option.SubOptions) {
             var so = option.SubOptions[si];
-            // read only options should be only included in "read"
-            if (!isRead) {
-                if (so.IncludeInResponse && !so.IncludeInArgSpec)
-                    continue;
-            }
             if (isGo && isPython && so.PathGo != so.PathPython) {
                 appendOption(output, so, false, true, isRead);
                 appendOption(output, so, true, false, isRead);

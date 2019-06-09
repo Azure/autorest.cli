@@ -316,6 +316,18 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
 
 function appendOption(output: string[], option: ModuleOption, isGo: boolean, isPython: boolean, isRead: boolean)
 {
+    // read only options should be only included in "read"
+    if (!isRead)
+    {
+        if (option.IncludeInResponse && !option.IncludeInArgSpec)
+            return;
+    }
+    else
+    {
+        if (!option.IncludeInResponse)
+            return;
+    }
+
     let dataType = "";
     switch (option.Type)
     {
@@ -445,13 +457,6 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         for (var si in option.SubOptions)
         {
             var so = option.SubOptions[si];
-
-            // read only options should be only included in "read"
-            if (!isRead)
-            {
-                if (so.IncludeInResponse && !so.IncludeInArgSpec)
-                    continue;
-            }
 
             if (isGo && isPython && so.PathGo != so.PathPython)
             {

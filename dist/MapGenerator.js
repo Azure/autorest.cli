@@ -664,6 +664,9 @@ class MapGenerator {
                 if (mo.SubOptions != null) {
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly);
                 }
+                if (readOnly) {
+                    mo.IncludeInResponse = true;
+                }
                 continue;
             }
             this._log("ADDING READONLY OPTION: " + oo.NameSwagger);
