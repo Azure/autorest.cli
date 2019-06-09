@@ -1,6 +1,7 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
 import { LogCallback } from "./index"
 import { Adjustments } from "./Adjustments";
+import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "./Helpers";
 
 export class MapFlattener
 {
@@ -86,6 +87,30 @@ export class MapFlattener
                             {
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+                            }
+                            else if (flatten.startsWith("/"))
+                            {
+                                let dispositionParts = dispositionRest.split('/');
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NameSwagger;
+                                dispositionRest = dispositionParts.join('/');
+
+                                dispositionParts = dispositionSdk.split('/');
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
+                                dispositionSdk = dispositionParts.join('/');
+
+                                let newName = flatten.split("/")[1];
+
+                                dispositionRest = newName + "/" + dispositionRest;
+                                dispositionSdk = ToSnakeCase(newName) + "/" + dispositionSdk;
+
+                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
+                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+
+                                suboptions[si].NameAnsible = ToSnakeCase(newName);
+                                suboptions[si].NameSwagger = newName;
+                                //suboptions[si].NameGoSdk = newName;
+                                //suboptions[si].NamePythonSdk = option.NamePythonSdk;
+                                suboptions[si].NameTerraform = newName;
                             }
                             else if (flatten == "*/")
                             {

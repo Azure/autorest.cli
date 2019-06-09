@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Helpers_1 = require("./Helpers");
 class MapFlattener {
     constructor(map, flatten, debug, log) {
         this._map = null;
@@ -59,6 +60,26 @@ class MapFlattener {
                             if (flatten == "/*") {
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+                            }
+                            else if (flatten.startsWith("/")) {
+                                let dispositionParts = dispositionRest.split('/');
+                                if (dispositionParts[0] == '*')
+                                    dispositionParts[0] = suboptions[si].NameSwagger;
+                                dispositionRest = dispositionParts.join('/');
+                                dispositionParts = dispositionSdk.split('/');
+                                if (dispositionParts[0] == '*')
+                                    dispositionParts[0] = suboptions[si].NamePythonSdk;
+                                dispositionSdk = dispositionParts.join('/');
+                                let newName = flatten.split("/")[1];
+                                dispositionRest = newName + "/" + dispositionRest;
+                                dispositionSdk = Helpers_1.ToSnakeCase(newName) + "/" + dispositionSdk;
+                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
+                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+                                suboptions[si].NameAnsible = Helpers_1.ToSnakeCase(newName);
+                                suboptions[si].NameSwagger = newName;
+                                //suboptions[si].NameGoSdk = newName;
+                                //suboptions[si].NamePythonSdk = option.NamePythonSdk;
+                                suboptions[si].NameTerraform = newName;
                             }
                             else if (flatten == "*/") {
                                 let dispositionParts = dispositionRest.split('/');
