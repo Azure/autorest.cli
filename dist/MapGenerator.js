@@ -110,6 +110,12 @@ class MapGenerator {
         }
         // for response use GET response fields
         module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
+        // do some preprocessing
+        for (let rf in module.ResponseFields) {
+            if (module.ResponseFields[rf].NameSwagger == "id") {
+                module.ResponseFields[rf].IncludeInResponse = true;
+            }
+        }
         module.ModuleOperationName = this.ModuleOperationName;
         module.ModuleOperationNameUpper = this.ModuleOperationNameUpper;
         module.ObjectName = this.ObjectName;

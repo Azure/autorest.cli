@@ -79,6 +79,7 @@ export class ModuleOption
     public ExampleValue: any = null;
     public Flatten: boolean;
     public Hidden: boolean = false;
+    public IncludeInResponse: boolean = false;
 }
 
 export class ModuleMethod

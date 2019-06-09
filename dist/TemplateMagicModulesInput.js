@@ -63,7 +63,7 @@ function GenerateMagicModulesInput(model) {
     output.push("    description: |");
     output.push("      Manage Azure " + model.ObjectName + " instance.");
     output.push("    properties:");
-    appendOptions(output, model.ModuleOptions, "      ");
+    appendUxOptions(output, model.ModuleOptions, "      ");
     return output;
 }
 exports.GenerateMagicModulesInput = GenerateMagicModulesInput;
@@ -124,14 +124,21 @@ function appendMethod(output, model, method, operationName) {
         }
     }
 }
-function appendOptions(output, options, prefix) {
+function appendUxOptions(output, options, prefix, appendReadOnly = false) {
     // ??? what's the diffenece between parameters and properties
     for (var i = 0; i < options.length; i++) {
         var option = options[i];
-        if (!option.IncludeInArgSpec)
-            continue;
+        // if option was marked as hidden, don't include it
         if (option.Hidden)
             continue;
+        if (!appendReadOnly) {
+            if (!option.IncludeInArgSpec)
+                continue;
+        }
+        else {
+            if (!option.IncludeInResponse)
+                continue;
+        }
         let dataType = "";
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             dataType = "!ruby/object:Api::Type::Enum";
@@ -222,7 +229,7 @@ function appendOptions(output, options, prefix) {
         output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
         if (option.SubOptions != null && option.SubOptions.length > 0) {
             output.push(prefix + "  properties:");
-            appendOptions(output, option.SubOptions, prefix + "    ");
+            appendUxOptions(output, option.SubOptions, prefix + "    ");
         }
     }
 }

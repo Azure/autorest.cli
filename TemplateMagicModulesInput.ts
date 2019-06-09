@@ -73,7 +73,7 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     output.push("      Manage Azure " + model.ObjectName + " instance.");
     output.push("    properties:");
 
-    appendOptions(output, model.ModuleOptions, "      ");
+    appendUxOptions(output, model.ModuleOptions, "      ");
 
     return output;
 }
@@ -151,16 +151,27 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
     }
 }
 
-function appendOptions(output: string[], options: ModuleOption[], prefix: string) {
+function appendUxOptions(output: string[], options: ModuleOption[], prefix: string, appendReadOnly: boolean = false) {
 
     // ??? what's the diffenece between parameters and properties
     for (var i = 0; i < options.length; i++)
     {
         var option = options[i];
-        if (!option.IncludeInArgSpec)
-            continue;
+
+        // if option was marked as hidden, don't include it
         if (option.Hidden)
             continue;
+
+        if (!appendReadOnly)
+        {
+            if (!option.IncludeInArgSpec)
+                continue;
+        }
+        else
+        {
+            if (!option.IncludeInResponse)
+                continue;
+        }
 
         let dataType = "";
 
@@ -283,7 +294,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
 
         if (option.SubOptions != null && option.SubOptions.length > 0) {
             output.push(prefix + "  properties:");
-            appendOptions(output, option.SubOptions, prefix + "    ");
+            appendUxOptions(output, option.SubOptions, prefix + "    ");
         }
     }
 }
