@@ -132,43 +132,6 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
 
     appendOptions(output, model.ModuleOptions, "      ");
 
-
-//    output.push("      - !ruby/object:Api::Azure::Type::ResourceGroupName");
-//    output.push("        name: 'resourceGroupName'");
-//    output.push("        description: 'The name of the resource group in which to create the Automation Variable.'");
-//    output.push("        required: true");
-//    output.push("        input: true");
-//    output.push("        order: 991");
-//    output.push("        azure_sdk_references: ['resourceGroupName']");
-//    output.push("      - !ruby/object:Api::Type::String");
-//    output.push("        name: 'automationAccountName'");
-//    output.push("        description: 'The name of the automation account in which the Variable is created.'");
-//    output.push("        required: true");
-//    output.push("        input: true");
-//    output.push("        order: 992");
-//    output.push("        azure_sdk_references: ['automationAccountName']");
-//    output.push("    properties:");
-//    output.push("      - !ruby/object:Api::Type::String");
-//    output.push("        name: 'name'");
-//    output.push("        description: 'The name of the Automation Variable.'");
-//    output.push("        required: true");
-//    output.push("        input: true");
-//    output.push("        order: 990");
-//    output.push("        azure_sdk_references: ['variableName', '/name']");
-//    output.push("      - !ruby/object:Api::Type::String");
-//    output.push("        name: 'description'");
-//    output.push("        description: 'The description of the Automation Variable.'");
-//    output.push("        azure_sdk_references: ['/properties/description']");
-//    output.push("      - !ruby/object:Api::Type::String");
-//    output.push("        name: 'value'");
-//    output.push("        description: 'The value of the Automation Variable.'");
-//    output.push("        azure_sdk_references: ['/properties/value']");
-//    output.push("      - !ruby/object:Api::Type::Boolean");
-//    output.push("        name: 'encrypted'");
-//    output.push("        description: 'The encrypted flag of the Automation Variable.'");
-//    output.push("        default_value: false");
-//    output.push("        azure_sdk_references: ['/properties/isEncrypted']");
-
     return output;
 }
 
@@ -225,6 +188,12 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
                 case "boolean":
                     dataType = "!ruby/object:Api::Type::Boolean";
                     break;
+                default:
+                    // [TODO] this should be handled earlier
+                    if (option.NameSwagger == "tags")
+                    {
+                        dataType = "!ruby/object:Api::Azure::Type::Tags";
+                    }
             }
         }
 
@@ -263,21 +232,37 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
             output.push(prefix + "  sample_value: " + option.ExampleValue);
         }
 
+        let sdkReferences: string = '';
+
         if (option.PathSwagger != '')
         {
             if (option.PathPython == option.PathGo)
             {
-                output.push(prefix + "  azure_sdk_references: ['" + option.PathSwagger + "']");
+                sdkReferences = "'" + option.PathSwagger + "'";
             }
             else
             {
-                output.push(prefix + "  azure_sdk_references: ['" + option.PathPython + "', '" + option.PathGo + "']");
+                sdkReferences = "'" + option.PathPython + "', '" + option.PathGo + "'";
             }
         }
         else
         {
-            output.push(prefix + "  azure_sdk_references: ['" + option.NameSwagger + "']");
+            sdkReferences = "'" + option.NameSwagger + "'";
         }
+
+        // [TODO] special handling for tags, should be handled in different way
+        if (sdkReferences == "'/tags'")
+        {
+            sdkReferences = "'tags', " + sdkReferences;
+        }
+
+        // [TODO] this is another hack which has to be resolved earlier
+        if (sdkReferences.endsWith("Name'") && sdkReferences.indexOf("/") < 0)
+        {
+            sdkReferences += ", '/name'";
+        }
+
+        output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
 
         if (option.SubOptions != null && option.SubOptions.length > 0) {
             output.push(prefix + "  properties:");
@@ -378,7 +363,8 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         }
         else
         {
-            output.push("            go_field_name: " + option.NameTerraform);
+            // field name should be the same as type name
+            output.push("            go_field_name: " + option.TypeNameGo);
         }
 
         if (option.Type == "dict")
