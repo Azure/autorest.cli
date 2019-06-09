@@ -71,6 +71,7 @@ class MapGenerator {
         for (var idx = 0; idx < this.Operations.length; idx++) {
             this._index = idx;
             let methods = [];
+            let fact_methods = this.GetModuleFactsMethods();
             if ((this.ModuleCreateOrUpdateMethod != null) || (this.ModuleCreateMethod != null)) {
                 if (this.ModuleCreateOrUpdateMethod != null)
                     methods.push(this.ModuleCreateOrUpdateMethod);
@@ -80,15 +81,14 @@ class MapGenerator {
                     methods.push(this.ModuleUpdateMethod);
                 if (this.ModuleDeleteMethod != null)
                     methods.push(this.ModuleDeleteMethod);
-                if (this.ModuleGetMethod != null)
-                    methods.push(this.ModuleGetMethod);
+                //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
+                methods = methods.concat(fact_methods);
             }
             if (methods.length > 0) {
                 this.AddModule(methods, false);
             }
-            methods = this.GetModuleFactsMethods();
-            if (methods.length > 0) {
-                this.AddModule(methods, true);
+            if (fact_methods.length > 0) {
+                this.AddModule(fact_methods, true);
             }
         }
         return this._map;
