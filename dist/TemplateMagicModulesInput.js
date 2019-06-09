@@ -45,20 +45,62 @@ function GenerateMagicModulesInput(model) {
             case "Delete":
                 operationName = "delete";
                 break;
-            case "ListByResourceGroup":
-                operationName = "list_by_resource_group";
+            default:
+                continue;
+        }
+        appendMethod(output, model, method, operationName);
+    }
+    // append all list methods at the end
+    for (let method_index in model.ModuleMethods) {
+        let method = model.ModuleMethods[method_index];
+        let operationName = "";
+        if (method.Name.startsWith("List")) {
+            appendMethod(output, model, method, Helpers_1.ToSnakeCase(method.Name));
+        }
+    }
+    // actual module interface description
+    output.push("");
+    output.push("    description: |");
+    output.push("      Manage Azure " + model.ObjectName + " instance.");
+    output.push("    properties:");
+    appendOptions(output, model.ModuleOptions, "      ");
+    return output;
+}
+exports.GenerateMagicModulesInput = GenerateMagicModulesInput;
+function appendMethod(output, model, method, operationName) {
+    output.push("      " + operationName + ": !ruby/object:Api::Azure::SDKOperationDefinition");
+    if (method.IsAsync) {
+        output.push("        async: true");
+    }
+    output.push("        go_func_name: " + method.Name);
+    output.push("        python_func_name: " + method.Name.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('_').toLowerCase());
+    output.push("        request:");
+    let methodOptions = model.GetMethodOptions(method.Name, false);
+    for (let optionIndex in methodOptions) {
+        let option = methodOptions[optionIndex];
+        let dataType = "";
+        switch (option.Type) {
+            case "str":
+                if (option.NameSwagger != "resourceGroupName") {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+                }
+                else {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+                }
+                break;
+            case "dict":
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
+                break;
+            case "boolean":
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                 break;
         }
-        if (operationName == "")
-            continue;
-        output.push("      " + operationName + ": !ruby/object:Api::Azure::SDKOperationDefinition");
-        if (method.IsAsync) {
-            output.push("        async: true");
-        }
-        output.push("        go_func_name: " + method.Name);
-        output.push("        python_func_name: " + method.Name.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('_').toLowerCase());
-        output.push("        request:");
-        let methodOptions = model.GetMethodOptions(method.Name, false);
+        appendOption(output, option, true, true);
+    }
+    // we need to define response only for read, as it will be reused by other methods
+    if (operationName == "read") {
+        output.push("        response:");
+        let methodOptions = model.ModuleResponseFields;
         for (let optionIndex in methodOptions) {
             let option = methodOptions[optionIndex];
             let dataType = "";
@@ -80,42 +122,8 @@ function GenerateMagicModulesInput(model) {
             }
             appendOption(output, option, true, true);
         }
-        // we need to define response only for read, as it will be reused by other methods
-        if (operationName == "read") {
-            output.push("        response:");
-            let methodOptions = model.ModuleResponseFields;
-            for (let optionIndex in methodOptions) {
-                let option = methodOptions[optionIndex];
-                let dataType = "";
-                switch (option.Type) {
-                    case "str":
-                        if (option.NameSwagger != "resourceGroupName") {
-                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                        }
-                        else {
-                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                        }
-                        break;
-                    case "dict":
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
-                        break;
-                    case "boolean":
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
-                        break;
-                }
-                appendOption(output, option, true, true);
-            }
-        }
     }
-    // actual module interface description
-    output.push("");
-    output.push("    description: |");
-    output.push("      Manage Azure " + model.ObjectName + " instance.");
-    output.push("    properties:");
-    appendOptions(output, model.ModuleOptions, "      ");
-    return output;
 }
-exports.GenerateMagicModulesInput = GenerateMagicModulesInput;
 function appendOptions(output, options, prefix) {
     // ??? what's the diffenece between parameters and properties
     for (var i = 0; i < options.length; i++) {

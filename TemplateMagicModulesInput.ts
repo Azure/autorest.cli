@@ -1,5 +1,5 @@
 ﻿import { CodeModel } from "./CodeModel"
-import { ModuleOption } from "./ModuleMap";
+import { ModuleOption, ModuleMethod } from "./ModuleMap";
 import { ToSnakeCase, ToCamelCase, Uncapitalize } from "./Helpers"
 export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     var output: string[] = [];
@@ -49,25 +49,79 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
             case "Delete":
                 operationName = "delete";
                 break;
-            case "ListByResourceGroup":
-                operationName = "list_by_resource_group";
-                break;
-
-            // [TODO] other list* methods
+            default:
+                continue;
         }
-        if (operationName == "")
-            continue;
+        appendMethod(output, model, method, operationName);
+    }
 
-        output.push("      " + operationName + ": !ruby/object:Api::Azure::SDKOperationDefinition");
-        if (method.IsAsync)
+    // append all list methods at the end
+    for (let method_index in model.ModuleMethods)
+    {
+        let method = model.ModuleMethods[method_index];
+        let operationName = "";
+
+        if (method.Name.startsWith("List"))
         {
-            output.push("        async: true");
+            appendMethod(output, model, method, ToSnakeCase(method.Name));
         }
-        output.push("        go_func_name: " + method.Name);
-        output.push("        python_func_name: " + method.Name.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('_').toLowerCase());
-        output.push("        request:");
+    }
 
-        let methodOptions = model.GetMethodOptions(method.Name, false);
+    // actual module interface description
+    output.push("");
+    output.push("    description: |");
+    output.push("      Manage Azure " + model.ObjectName + " instance.");
+    output.push("    properties:");
+
+    appendOptions(output, model.ModuleOptions, "      ");
+
+    return output;
+}
+
+function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, operationName: string)
+{
+    output.push("      " + operationName + ": !ruby/object:Api::Azure::SDKOperationDefinition");
+    if (method.IsAsync)
+    {
+        output.push("        async: true");
+    }
+    output.push("        go_func_name: " + method.Name);
+    output.push("        python_func_name: " + method.Name.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('_').toLowerCase());
+    output.push("        request:");
+
+    let methodOptions = model.GetMethodOptions(method.Name, false);
+    for (let optionIndex in methodOptions)
+    {
+        let option = methodOptions[optionIndex];
+        let dataType = "";
+        switch (option.Type)
+        {
+            case "str":
+                if (option.NameSwagger != "resourceGroupName")
+                {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+                }
+                else
+                {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+                }
+                break;
+            case "dict":
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
+                break;
+            case "boolean":
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
+                break;
+        }
+
+        appendOption(output, option, true, true);
+    }
+
+    // we need to define response only for read, as it will be reused by other methods
+    if (operationName == "read")
+    {
+        output.push("        response:");
+        let methodOptions = model.ModuleResponseFields;
         for (let optionIndex in methodOptions)
         {
             let option = methodOptions[optionIndex];
@@ -94,50 +148,7 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
 
             appendOption(output, option, true, true);
         }
-
-        // we need to define response only for read, as it will be reused by other methods
-        if (operationName == "read")
-        {
-            output.push("        response:");
-            let methodOptions = model.ModuleResponseFields;
-            for (let optionIndex in methodOptions)
-            {
-                let option = methodOptions[optionIndex];
-                let dataType = "";
-                switch (option.Type)
-                {
-                    case "str":
-                        if (option.NameSwagger != "resourceGroupName")
-                        {
-                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                        }
-                        else
-                        {
-                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                        }
-                        break;
-                    case "dict":
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
-                        break;
-                    case "boolean":
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
-                        break;
-                }
-
-                appendOption(output, option, true, true);
-            }
-        }
     }
-
-    // actual module interface description
-    output.push("");
-    output.push("    description: |");
-    output.push("      Manage Azure " + model.ObjectName + " instance.");
-    output.push("    properties:");
-
-    appendOptions(output, model.ModuleOptions, "      ");
-
-    return output;
 }
 
 function appendOptions(output: string[], options: ModuleOption[], prefix: string) {
