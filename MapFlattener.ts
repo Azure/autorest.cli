@@ -100,9 +100,6 @@ export class MapFlattener
 
                                 let newName = flatten.split("/")[0];
 
-                                dispositionRest = newName + "/" + dispositionRest;
-                                dispositionSdk = ToSnakeCase(newName) + "/" + dispositionSdk;
-
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
 

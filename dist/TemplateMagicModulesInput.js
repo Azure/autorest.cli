@@ -123,7 +123,7 @@ function appendOptions(output, options, prefix) {
             continue;
         let dataType = "";
         if (option.EnumValues != null && option.EnumValues.length > 0) {
-            dataType = "!ruby/object:Api::Type::EnumType";
+            dataType = "!ruby/object:Api::Type::Enum";
         }
         else {
             switch (option.Type) {

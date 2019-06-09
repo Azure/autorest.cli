@@ -150,7 +150,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
 
         if (option.EnumValues != null && option.EnumValues.length > 0)
         {
-            dataType = "!ruby/object:Api::Type::EnumType";
+            dataType = "!ruby/object:Api::Type::Enum";
         }
         else
         {
