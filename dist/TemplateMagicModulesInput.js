@@ -80,24 +80,13 @@ function appendMethod(output, model, method, operationName) {
     let methodOptions = model.GetMethodOptions(method.Name, false);
     for (let optionIndex in methodOptions) {
         let option = methodOptions[optionIndex];
-        let dataType = "";
-        switch (option.Type) {
-            case "str":
-                if (option.NameSwagger != "resourceGroupName") {
-                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                }
-                else {
-                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                }
-                break;
-            case "dict":
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
-                break;
-            case "boolean":
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
-                break;
+        if (option.PathGo == option.PathPython) {
+            appendOption(output, option, true, true, true);
         }
-        appendOption(output, option, true, true, false);
+        else {
+            appendOption(output, option, true, false, true);
+            appendOption(output, option, false, true, true);
+        }
     }
     // we need to define response only for read, as it will be reused by other methods
     if (operationName == "read") {
@@ -105,24 +94,13 @@ function appendMethod(output, model, method, operationName) {
         let methodOptions = model.ModuleOptions; // model.ModuleResponseFields;
         for (let optionIndex in methodOptions) {
             let option = methodOptions[optionIndex];
-            let dataType = "";
-            switch (option.Type) {
-                case "str":
-                    if (option.NameSwagger != "resourceGroupName") {
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                    }
-                    else {
-                        dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
-                    }
-                    break;
-                case "dict":
-                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ComplexObject";
-                    break;
-                case "boolean":
-                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
-                    break;
+            if (option.PathGo == option.PathPython) {
+                appendOption(output, option, true, true, true);
             }
-            appendOption(output, option, true, true, true);
+            else {
+                appendOption(output, option, true, false, true);
+                appendOption(output, option, false, true, true);
+            }
         }
     }
 }
