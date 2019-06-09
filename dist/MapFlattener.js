@@ -50,8 +50,10 @@ class MapFlattener {
                     if (this._debug)
                         this._log("flattener: found path - " + optionPath);
                     if (flatten == "hide") {
-                        // remove option with suboptions
+                        // just completely remove this option....
                         suboptions = [];
+                        options = [].concat(options.slice(0, i), suboptions, options.slice(i + 1));
+                        options[i].SubOptions = [];
                     }
                     else {
                         for (let si in suboptions) {
@@ -99,11 +101,11 @@ class MapFlattener {
                             suboptions[si].DispositionRest = dispositionRest;
                             suboptions[si].DispositionSdk = dispositionSdk;
                         }
+                        options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
+                        options[i].SubOptions = [];
+                        options[i].Hidden = true;
+                        //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
                     }
-                    options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
-                    options[i].SubOptions = [];
-                    options[i].Hidden = true;
-                    //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
                 }
                 else if (option.NameSwagger == "properties") {
                     if (this._debug)
