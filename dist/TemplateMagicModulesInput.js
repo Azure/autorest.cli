@@ -64,6 +64,7 @@ function GenerateMagicModulesInput(model) {
     output.push("      Manage Azure " + model.ObjectName + " instance.");
     output.push("    properties:");
     appendUxOptions(output, model.ModuleOptions, "      ", false);
+    output.push("      # read only values included only in response");
     appendUxOptions(output, model.ModuleOptions, "      ", true);
     return output;
 }

@@ -75,6 +75,7 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
 
     appendUxOptions(output, model.ModuleOptions, "      ", false);
 
+    output.push("      # read only values included only in response");
     appendUxOptions(output, model.ModuleOptions, "      ", true);
 
     return output;
