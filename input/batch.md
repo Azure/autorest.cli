@@ -52,5 +52,6 @@ azureresourceschema:
   package-name: azure-mgmt-batch
   clear-output-folder: false
   adjustments:
-    "/properties/autoStorage": "autoStorageAccountId/"
+    "/properties/autostorage": "autoStorageAccountId/"
+  debug: true
 ```

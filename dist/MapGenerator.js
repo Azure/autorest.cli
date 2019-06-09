@@ -494,7 +494,7 @@ class MapGenerator {
                         option.IsList = this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
-                        this._log("TRIMMING: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
+                        //this._log("TRIMMING: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
                         // this should not be here
