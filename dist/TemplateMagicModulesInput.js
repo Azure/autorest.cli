@@ -97,7 +97,7 @@ function appendMethod(output, model, method, operationName) {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                 break;
         }
-        appendOption(output, option, true, true);
+        appendOption(output, option, true, true, false);
     }
     // we need to define response only for read, as it will be reused by other methods
     if (operationName == "read") {
@@ -122,7 +122,7 @@ function appendMethod(output, model, method, operationName) {
                     dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
                     break;
             }
-            appendOption(output, option, true, true);
+            appendOption(output, option, true, true, true);
         }
     }
 }
@@ -235,7 +235,7 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
         }
     }
 }
-function appendOption(output, option, isGo, isPython) {
+function appendOption(output, option, isGo, isPython, isRead) {
     let dataType = "";
     switch (option.Type) {
         case "str":
@@ -327,12 +327,17 @@ function appendOption(output, option, isGo, isPython) {
     if (option.Type == "dict") {
         for (var si in option.SubOptions) {
             var so = option.SubOptions[si];
+            // read only options should be only included in "read"
+            if (!isRead) {
+                if (!so.IncludeInArgSpec)
+                    continue;
+            }
             if (isGo && isPython && so.PathGo != so.PathPython) {
-                appendOption(output, so, false, true);
-                appendOption(output, so, true, false);
+                appendOption(output, so, false, true, isRead);
+                appendOption(output, so, true, false, isRead);
             }
             else {
-                appendOption(output, so, isGo, isPython);
+                appendOption(output, so, isGo, isPython, isRead);
             }
         }
     }

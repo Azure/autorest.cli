@@ -117,7 +117,7 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
                 break;
         }
 
-        appendOption(output, option, true, true);
+        appendOption(output, option, true, true, false);
     }
 
     // we need to define response only for read, as it will be reused by other methods
@@ -149,7 +149,7 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
                     break;
             }
 
-            appendOption(output, option, true, true);
+            appendOption(output, option, true, true, true);
         }
     }
 }
@@ -302,7 +302,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
     }
 }
 
-function appendOption(output: string[], option: ModuleOption, isGo: boolean, isPython: boolean)
+function appendOption(output: string[], option: ModuleOption, isGo: boolean, isPython: boolean, isRead: boolean)
 {
     let dataType = "";
     switch (option.Type)
@@ -433,14 +433,22 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         for (var si in option.SubOptions)
         {
             var so = option.SubOptions[si];
+
+            // read only options should be only included in "read"
+            if (!isRead)
+            {
+                if (!so.IncludeInArgSpec)
+                    continue;
+            }
+
             if (isGo && isPython && so.PathGo != so.PathPython)
             {
-                appendOption(output, so, false, true);
-                appendOption(output, so, true, false);
+                appendOption(output, so, false, true, isRead);
+                appendOption(output, so, true, false, isRead);
             }
             else
             {
-                appendOption(output, so, isGo, isPython);
+                appendOption(output, so, isGo, isPython, isRead);
             }
         }
     }
