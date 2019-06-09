@@ -61,7 +61,7 @@ class MapFlattener {
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
                             }
-                            else if (flatten.startsWith("/")) {
+                            else if (flatten.endsWith("/")) {
                                 let dispositionParts = dispositionRest.split('/');
                                 if (dispositionParts[0] == '*')
                                     dispositionParts[0] = suboptions[si].NameSwagger;
@@ -70,7 +70,7 @@ class MapFlattener {
                                 if (dispositionParts[0] == '*')
                                     dispositionParts[0] = suboptions[si].NamePythonSdk;
                                 dispositionSdk = dispositionParts.join('/');
-                                let newName = flatten.split("/")[1];
+                                let newName = flatten.split("/")[0];
                                 dispositionRest = newName + "/" + dispositionRest;
                                 dispositionSdk = Helpers_1.ToSnakeCase(newName) + "/" + dispositionSdk;
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
