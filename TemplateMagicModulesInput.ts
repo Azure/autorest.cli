@@ -99,13 +99,15 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
 
         if (option.PathGo == option.PathPython)
         {
-            appendOption(output, option, true, true, true);
+            appendOption(output, option, true, true, false);
         }
         else
         {
-            appendOption(output, option, true, false, true);
-            appendOption(output, option, false, true, true);
+            appendOption(output, option, true, false, false);
+            appendOption(output, option, false, true, false);
         }
+
+
     }
 
     // we need to define response only for read, as it will be reused by other methods
