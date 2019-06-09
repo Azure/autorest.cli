@@ -73,7 +73,9 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     output.push("      Manage Azure " + model.ObjectName + " instance.");
     output.push("    properties:");
 
-    appendUxOptions(output, model.ModuleOptions, "      ");
+    appendUxOptions(output, model.ModuleOptions, "      ", false);
+
+    appendUxOptions(output, model.ModuleOptions, "      ", true);
 
     return output;
 }
@@ -121,7 +123,7 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
     if (operationName == "read")
     {
         output.push("        response:");
-        let methodOptions = model.ModuleResponseFields;
+        let methodOptions = model.ModuleOptions; // model.ModuleResponseFields;
         for (let optionIndex in methodOptions)
         {
             let option = methodOptions[optionIndex];

@@ -110,6 +110,7 @@ class MapGenerator {
         }
         // for response use GET response fields
         module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
+        this.MergeOptions(module.Options, module.ResponseFields, true);
         // do some preprocessing
         for (let rf in module.ResponseFields) {
             if (module.ResponseFields[rf].NameSwagger == "id") {
@@ -647,6 +648,30 @@ class MapGenerator {
             }
         }
         return value;
+    }
+    MergeOptions(main, other, readOnly) {
+        for (let oi = 0; oi < other.length; oi++) {
+            let mo = null;
+            let oo = other[oi];
+            for (let mi = 0; mi < main.length; mi++) {
+                if (oo.NameSwagger == main[mi].NameSwagger) {
+                    mo = main[mi];
+                    break;
+                }
+            }
+            if (mo != null) {
+                this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
+                if (mo.SubOptions != null) {
+                    this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly);
+                }
+                continue;
+            }
+            this._log("ADDING READONLY OPTION: " + oo.NameSwagger);
+            // if we are merging read options, new option should be included in response
+            if (readOnly)
+                oo.IncludeInResponse = true;
+            other.push(oo);
+        }
     }
 }
 exports.MapGenerator = MapGenerator;
