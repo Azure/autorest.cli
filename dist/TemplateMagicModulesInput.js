@@ -277,7 +277,7 @@ function appendOption(output, option, isGo, isPython) {
     }
     if (isGo) {
         if (!isField) {
-            output.push("            go_variable_name: " + option.NameTerraform);
+            output.push("            go_variable_name: " + Helpers_1.Uncapitalize(option.NameTerraform));
         }
         else {
             output.push("            go_field_name: " + option.NameTerraform);
