@@ -257,7 +257,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
         }
 
         // [TODO] this is another hack which has to be resolved earlier
-        if (sdkReferences.endsWith("Name'") && sdkReferences.indexOf("/") < 0)
+        if (option.NameAnsible == "name")
         {
             sdkReferences += ", '/name'";
         }

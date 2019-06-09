@@ -204,7 +204,7 @@ function appendOptions(output, options, prefix) {
             sdkReferences = "'tags', " + sdkReferences;
         }
         // [TODO] this is another hack which has to be resolved earlier
-        if (sdkReferences.endsWith("Name'") && sdkReferences.indexOf("/") < 0) {
+        if (option.NameAnsible == "name") {
             sdkReferences += ", '/name'";
         }
         output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
