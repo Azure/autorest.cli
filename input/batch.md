@@ -52,14 +52,14 @@ azureresourceschema:
   package-name: azure-mgmt-batch
   clear-output-folder: false
   adjustments:
-    "/properties/autostorage": "autoStorageAccountId/"
     "/properties/autoStorage/lastkeysync": "hide"
+    "/properties/autostorage": "autoStorageAccountId/"
     "/properties/provisioningstate": "hide"
     "/properties/dedicatedcorequota": "hide"
     "/properties/lowprioritycorequota": "hide"
     "/properties/poolquota": "hide"
     "/properties/activejobandjobschedulequota": "hide"
-    "/properties/name": "hide"
-    "/properties/type": "hide"
+    "/name": "hide"
+    "/type": "hide"
   debug: true
 ```

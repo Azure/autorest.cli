@@ -189,9 +189,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
         if (!option.Updatable) {
             output.push(prefix + "  input: true");
         }
-        else if (appendReadOnly) {
+        if (appendReadOnly) {
             if (option.IncludeInResponse && !option.IncludeInArgSpec)
-                output.push(prefix + "  input: true");
+                output.push(prefix + "  output: true");
         }
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             output.push(prefix + "  values:");

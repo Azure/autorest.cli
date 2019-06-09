@@ -240,10 +240,11 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         {
             output.push(prefix + "  input: true");
         }
-        else if (appendReadOnly)
+        
+        if (appendReadOnly)
         {
             if (option.IncludeInResponse && !option.IncludeInArgSpec)
-                output.push(prefix + "  input: true");
+                output.push(prefix + "  output: true");
         }
 
         if (option.EnumValues != null && option.EnumValues.length > 0)
