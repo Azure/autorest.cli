@@ -172,7 +172,7 @@ function appendOptions(output, options, prefix) {
             option.EnumValues.forEach(element => {
                 output.push(prefix + "    - :" + element.Key);
             });
-            output.push(prefix + "  default_value: " + option.EnumValues[0].Key);
+            output.push(prefix + "  default_value: :" + option.EnumValues[0].Key);
         }
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
             // last should be "{{ name }}"
@@ -281,7 +281,12 @@ function appendOption(output, option, isGo, isPython) {
             output.push("            go_variable_name: " + Helpers_1.Uncapitalize(option.NameTerraform));
         }
         else {
-            output.push("            go_field_name: " + option.NameTerraform);
+            if (option.NameTerraform.endsWith("CreateProperties")) {
+                output.push("            go_field_name: Properties");
+            }
+            else {
+                output.push("            go_field_name: " + option.NameTerraform);
+            }
         }
         if (option.Type == "dict") {
             output.push("            go_type_name: " + option.TypeNameGo);

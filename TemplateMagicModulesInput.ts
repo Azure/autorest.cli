@@ -211,7 +211,7 @@ function appendOptions(output: string[], options: ModuleOption[], prefix: string
             option.EnumValues.forEach(element => {
                 output.push(prefix + "    - :" + element.Key);
             });
-            output.push(prefix + "  default_value: " + option.EnumValues[0].Key);
+            output.push(prefix + "  default_value: :" + option.EnumValues[0].Key);
         }
 
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/'))
@@ -364,7 +364,14 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         }
         else
         {
-            output.push("            go_field_name: " + option.NameTerraform);
+            if (option.NameTerraform.endsWith("CreateProperties"))
+            {
+                output.push("            go_field_name: Properties");
+            }
+            else
+            {
+                output.push("            go_field_name: " + option.NameTerraform);
+            }
         }
 
         if (option.Type == "dict")
