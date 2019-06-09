@@ -183,9 +183,15 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
         output.push(prefix + "- " + dataType);
         output.push(prefix + "  name: '" + Helpers_1.ToCamelCase(option.NameAnsible) + "'");
         output.push(prefix + "  description: '" + option.Documentation + "'");
-        output.push(prefix + "  required: " + (option.Required ? "true" : "false"));
+        if (!appendReadOnly) {
+            output.push(prefix + "  required: " + (option.Required ? "true" : "false"));
+        }
         if (!option.Updatable) {
             output.push(prefix + "  input: true");
+        }
+        else if (appendReadOnly) {
+            if (option.IncludeInResponse && !option.IncludeInArgSpec)
+                output.push(prefix + "  input: true");
         }
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             output.push(prefix + "  values:");
