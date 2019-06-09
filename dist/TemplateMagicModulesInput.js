@@ -280,8 +280,7 @@ function appendOption(output, option, isGo, isPython) {
             output.push("            go_variable_name: " + option.NameTerraform);
         }
         else {
-            // field name should be the same as type name
-            output.push("            go_field_name: " + option.TypeNameGo);
+            output.push("            go_field_name: " + option.NameTerraform);
         }
         if (option.Type == "dict") {
             output.push("            go_type_name: " + option.TypeNameGo);
