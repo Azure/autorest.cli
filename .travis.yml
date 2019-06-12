@@ -35,22 +35,22 @@ script:
      done'
 
   # just try to set up and run magic modules
-  - 'echo ---------------------------------------------------------------------------------;
-     echo Running Magic Modules;
-     echo ---------------------------------------------------------------------------------;
-     docker run -t -i
-     -v $CURRENT_PATH:/autorest.devops
-     -v ~/azure-rest-api-specs:/azure-rest-api-specs
-     -v ~/devops-hatchery/generated:/generated
-     -v ~/magic-modules:/magic-modules
-     autorest.devops
-     /bin/bash -c -l "
-     ruby -v;
-     cd /magic-modules;
-     bundle install;
-     git checkout azure_backend;
-     bundle exec compiler -p products/azbatchaccount -e ansible -o /generated
-     "'
+  #- 'echo ---------------------------------------------------------------------------------;
+  #   echo Running Magic Modules;
+  #   echo ---------------------------------------------------------------------------------;
+  #   docker run -t -i
+  #   -v $CURRENT_PATH:/autorest.devops
+  #   -v ~/azure-rest-api-specs:/azure-rest-api-specs
+  #   -v ~/devops-hatchery/generated:/generated
+  #   -v ~/magic-modules:/magic-modules
+  #   autorest.devops
+  #   /bin/bash -c -l "
+  #   ruby -v;
+  #   cd /magic-modules;
+  #   bundle install;
+  #   git checkout azure_backend;
+  #   bundle exec compiler -p products/azbatchaccount -e ansible -o /generated
+  #   "'
 
 after_success:
   - ls -al ~/devops-hatchery/generated
