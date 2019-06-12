@@ -33,7 +33,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-- /specification/managementgroups/resource-manager/Microsoft.Management/preview/2018-03-01-preview/management.json
+- /azure-rest-api-specs/specification/managementgroups/resource-manager/Microsoft.Management/preview/2018-03-01-preview/management.json
 ```
 
 ---

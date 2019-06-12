@@ -33,7 +33,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-- /specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-04-01/frontdoor.json
+- /azure-rest-api-specs/specification/frontdoor/resource-manager/Microsoft.Network/stable/2019-04-01/frontdoor.json
 ```
 
 ---
