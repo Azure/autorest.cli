@@ -479,6 +479,11 @@ export class MapGenerator
 
     private GetResponseFieldsForMethod(rawMethod: any, alwaysInclude: boolean, isInfo: boolean):  ModuleOption[]
     {
+        if (rawMethod['returnType']['body'] == undefined)
+        {
+            this._log("NO RETURN TYPE: " + JSON.stringify(rawMethod['returnType']['body']));
+            return [];
+        }
         let ref: string = rawMethod['returnType']['body']['$ref'];
 
         if (isInfo)

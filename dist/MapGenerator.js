@@ -339,6 +339,10 @@ class MapGenerator {
         }
     }
     GetResponseFieldsForMethod(rawMethod, alwaysInclude, isInfo) {
+        if (rawMethod['returnType']['body'] == undefined) {
+            this._log("NO RETURN TYPE: " + JSON.stringify(rawMethod['returnType']['body']));
+            return [];
+        }
         let ref = rawMethod['returnType']['body']['$ref'];
         if (isInfo) {
             return this.GetModelOptions(ref, 0, null, "", "", true, true, true, isInfo);
