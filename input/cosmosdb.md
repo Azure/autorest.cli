@@ -48,7 +48,7 @@ azureresourceschema:
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
   payload-flattening-threshold: 2
-  namespace: azure.mgmt.compute
-  package-name: azure-mgmt-compute
+  namespace: azure.mgmt.cosmosdb
+  package-name: azure-mgmt-cosmosdb
   clear-output-folder: false
 ```
