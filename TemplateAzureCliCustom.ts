@@ -19,11 +19,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         for (let mi in methods)
         {
             // create, delete, list, show, update
-            let method = model.ModuleMethods[mi];
+            let method = methods[mi];
 
             output.push("");
             output.push("");
-            output.push("def " + method + "_" + model.GetCliCommand().replace(" ", "_") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
+            output.push("def " + method + "_" + model.GetCliCommand().split(" ").join(" ") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
             output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
         }
     } while (model.NextModule());

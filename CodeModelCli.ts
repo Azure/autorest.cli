@@ -29,7 +29,8 @@ export class CodeModelCli
 
         for (let i = 0; i < options.length; i++)
         {
-            if (options[i].IdPortion != null){
+            if (options[i].IdPortion != null && options[i].IdPortion.toLowerCase() != "resourcegroups")
+            {
                 if (command != "") command += " ";
                 command += options[i].IdPortion.toLowerCase();
             }
