@@ -1,6 +1,6 @@
-﻿import { CodeModel } from "./CodeModel"
+﻿import { CodeModelCli } from "./CodeModelCli"
 
-export function GenerateAzureCliCustom(model: CodeModel) : string[] {
+export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
     output.push("# ");
@@ -15,15 +15,16 @@ export function GenerateAzureCliCustom(model: CodeModel) : string[] {
 
     do
     {
-        for (let mi in model.ModuleMethods)
+        let methods: string[] = model.GetCliCommandMethods();
+        for (let mi in methods)
         {
             // create, delete, list, show, update
             let method = model.ModuleMethods[mi];
 
             output.push("");
             output.push("");
-            output.push("def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
-            output.push("    raise CLIError('TODO: Implement `apimanagement create`')");
+            output.push("def " + method + "_" + model.GetCliCommand().replace(" ", "_") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
+            output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
         }
     } while (model.NextModule());
 

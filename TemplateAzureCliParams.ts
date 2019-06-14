@@ -1,6 +1,6 @@
-﻿import { CodeModel } from "./CodeModel"
+﻿import { CodeModelCli } from "./CodeModelCli"
 
-export function GenerateAzureCliParams(model: CodeModel) : string[] {
+export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");

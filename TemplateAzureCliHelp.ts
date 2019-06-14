@@ -1,7 +1,7 @@
-﻿import { CodeModel } from "./CodeModel"
+﻿import { CodeModelCli } from "./CodeModelCli"
 import { ModuleMethod } from "./ModuleMap";
 
-export function GenerateAzureCliHelp(model: CodeModel) : string[] {
+export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
     output.push("# coding=utf-8");

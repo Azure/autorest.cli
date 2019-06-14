@@ -3,6 +3,7 @@ import * as yaml from "node-yaml";
 import { MapGenerator } from "./MapGenerator"
 import { MapFlattener } from "./MapFlattener"
 import { CodeModel } from "./CodeModel"
+import { CodeModelCli } from "./CodeModelCli"
 import { GenerateModuleSdk } from "./obsolete/AnsibleModuleSdk"
 import { GenerateModuleSdkInfo } from "./obsolete/AnsibleModuleSdkInfo"
 import { GenerateModuleRest } from "./obsolete/AnsibleModuleRest"
@@ -158,10 +159,10 @@ extension.Add("azureresourceschema", async autoRestApi => {
           index++;
         }
 
-        autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", GenerateAzureCliHelp(new CodeModel(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", GenerateAzureCliParams(new CodeModel(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", GenerateAzureCliCommands(new CodeModel(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModel(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", GenerateAzureCliHelp(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", GenerateAzureCliParams(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", GenerateAzureCliCommands(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
 
         // write map after everything is done
         autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map.yml", yaml.dump(map));

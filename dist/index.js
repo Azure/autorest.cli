@@ -13,6 +13,7 @@ const yaml = require("node-yaml");
 const MapGenerator_1 = require("./MapGenerator");
 const MapFlattener_1 = require("./MapFlattener");
 const CodeModel_1 = require("./CodeModel");
+const CodeModelCli_1 = require("./CodeModelCli");
 const AnsibleModuleSdk_1 = require("./obsolete/AnsibleModuleSdk");
 const AnsibleModuleSdkInfo_1 = require("./obsolete/AnsibleModuleSdkInfo");
 const AnsibleModuleRest_1 = require("./obsolete/AnsibleModuleRest");
@@ -142,10 +143,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 }
                 index++;
             }
-            autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", TemplateAzureCliHelp_1.GenerateAzureCliHelp(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
-            autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
-            autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
-            autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", TemplateAzureCliHelp_1.GenerateAzureCliHelp(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             // write map after everything is done
             autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map.yml", yaml.dump(map));
         }
