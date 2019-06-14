@@ -20,7 +20,7 @@ import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"
 import { GenerateAzureCliParams} from "./TemplateAzureCliParams"
 
-import { ExampleProcessor } from "./ExampleProcessor";
+import { ExampleProcessor } from "./ExampleProcessor"; 
 import { Example } from "./Example";
 import { Adjustments } from "./Adjustments";
 
