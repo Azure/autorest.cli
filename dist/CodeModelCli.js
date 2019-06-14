@@ -20,6 +20,9 @@ class CodeModelCli {
         }
         return false;
     }
+    GetCliCommandModuleName() {
+        return this.PythonNamespace.split(".").pop();
+    }
     GetCliCommand() {
         let options = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -31,6 +34,10 @@ class CodeModelCli {
             }
         }
         return command;
+    }
+    GetCliCommandUnderscored() {
+        let command = this.GetCliCommand();
+        return command.split(" ").join("_");
     }
     GetCliCommandMethods() {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;

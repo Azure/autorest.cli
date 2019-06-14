@@ -22,6 +22,11 @@ export class CodeModelCli
         return false;
     }
 
+    public GetCliCommandModuleName()
+    {
+        return this.PythonNamespace.split(".").pop();
+    }
+
     public GetCliCommand(): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -37,6 +42,13 @@ export class CodeModelCli
         }
 
         return command;
+    }
+
+    public GetCliCommandUnderscored()
+    {
+        let command: string = this.GetCliCommand();
+
+        return command.split(" ").join("_");
     }
 
     public GetCliCommandMethods(): string[]

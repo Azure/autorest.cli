@@ -10,24 +10,25 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("");
     output.push("# pylint: disable=line-too-long");
     output.push("from azure.cli.core.commands import CliCommandType");
-    output.push("from azure.cli.command_modules.apimanagement._client_factory import cf_apimanagement");
+    output.push("from azure.cli.command_modules." + model.GetCliCommandModuleName() + "._client_factory import cf_" + model.GetCliCommandModuleName());
     
     
     output.push("def load_command_table(self, _):");
     output.push("");
-    output.push("    apimanagement_sdk = CliCommandType(");
-    output.push("        operations_tmpl='azure.mgmt.apimanagement.operations#ApiManagementOperations.{}',");
-    output.push("        client_factory=cf_apimanagement)");
+    output.push("    " + model.GetCliCommandModuleName() + "_sdk = CliCommandType(");
+    output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + ".operations#ApiManagementOperations.{}',");
+    output.push("        client_factory=cf_" + model.GetCliCommandModuleName() +")");
     output.push("");
     output.push("");
-    output.push("    with self.command_group('apimanagement', apimanagement_sdk, client_factory=cf_apimanagement) as g:");
     do
     {
-        for (let mi in model.ModuleMethods)
+        output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
+        let methods: string[] = model.GetCliCommandMethods();
+        for (let mi in methods)
         {
             // create, delete, list, show, update
-            let method = model.ModuleMethods[mi];
-            output.push("        g.custom_command('create', 'create_apimanagement')");
+            let method = methods[mi];
+            output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
         }
     } while (model.NextModule());
 
@@ -39,8 +40,9 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     //        g.show_command('show', 'get')
     //        g.generic_update_command('update', setter_name='update', custom_func_name='update_apimanagement')
     
-    output.push("    with self.command_group('apimanagement', is_preview=True):");
-    output.push("        pass");
+    // XXX - why this is needed?
+    //output.push("    with self.command_group('apimanagement', is_preview=True):");
+    //output.push("        pass");
 
     return output;
 }

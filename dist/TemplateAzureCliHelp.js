@@ -13,17 +13,18 @@ function GenerateAzureCliHelp(model) {
     output.push("");
     do {
         output.push("");
-        output.push("helps['apimanagement'] = \"\"\"");
+        output.push("helps['" + model.GetCliCommand() + "'] = \"\"\"");
         output.push("    type: group");
         output.push("    short-summary: Commands to manage Apimanagements.");
         output.push("\"\"\"");
-        for (let mi in model.ModuleMethods) {
+        let methods = model.GetCliCommandMethods();
+        for (let mi = 0; mi < methods.length; mi++) {
             // create, delete, list, show, update
-            let method = model.ModuleMethods[mi];
+            let method = methods[mi];
             output.push("");
-            output.push("helps['apimanagement create'] = \"\"\"");
+            output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
-            output.push("    short-summary: Create a Apimanagement.");
+            output.push("    short-summary: " + method + " a " + model.GetCliCommand() + ".");
             output.push("\"\"\"");
         }
     } while (model.NextModule());
