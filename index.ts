@@ -15,6 +15,11 @@ import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest"
 import { GenerateExampleAzureCLI } from "./TemplateExampleAzureCLI"
 import { GenerateMagicModulesAnsibleExample } from "./TemplateMagicModulesAnsibleExample"
 
+import { GenerateAzureCliCommands } from "./TemplateAzureCliCommands"
+import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
+import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"
+import { GenerateAzureCliParams} from "./TemplateAzureCliParams"
+
 import { ExampleProcessor } from "./ExampleProcessor";
 import { Example } from "./Example";
 import { Adjustments } from "./Adjustments";
@@ -141,6 +146,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
                 autoRestApi.WriteFile("magic-modules-input/" + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
               }
             }
+
           }
           catch (e)
           {
@@ -151,6 +157,11 @@ extension.Add("azureresourceschema", async autoRestApi => {
           }
           index++;
         }
+
+        autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", GenerateAzureCliHelp(new CodeModel(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", GenerateAzureCliParams(new CodeModel(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", GenerateAzureCliCommands(new CodeModel(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModel(map, 0)).join('\r\n'));
 
         // write map after everything is done
         autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map.yml", yaml.dump(map));

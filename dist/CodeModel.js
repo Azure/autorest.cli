@@ -13,6 +13,13 @@ class CodeModel {
         this.Map = map;
         this._selectedModule = moduleIdx;
     }
+    NextModule() {
+        if (this._selectedModule < this.Map.Modules.length - 1) {
+            this._selectedModule++;
+            return true;
+        }
+        return false;
+    }
     get ModuleName() {
         return this.Map.Modules[this._selectedModule].ModuleName;
     }

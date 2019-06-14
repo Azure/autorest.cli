@@ -1,6 +1,7 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
 import { Example } from "./Example";
 import { Uncapitalize, Indent } from "./Helpers"
+import { throws } from "assert";
 
 export class CodeModel
 {
@@ -8,6 +9,17 @@ export class CodeModel
     {
         this.Map = map;
         this._selectedModule = moduleIdx;
+    }
+
+    public NextModule(): boolean
+    {
+        if (this._selectedModule < this.Map.Modules.length - 1)
+        {
+            this._selectedModule++;
+            return true;
+        }
+
+        return false;
     }
 
     public get ModuleName(): string

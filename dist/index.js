@@ -23,6 +23,10 @@ const AnsibleExample_1 = require("./AnsibleExample");
 const TemplateExamplePythonRest_1 = require("./TemplateExamplePythonRest");
 const TemplateExampleAzureCLI_1 = require("./TemplateExampleAzureCLI");
 const TemplateMagicModulesAnsibleExample_1 = require("./TemplateMagicModulesAnsibleExample");
+const TemplateAzureCliCommands_1 = require("./TemplateAzureCliCommands");
+const TemplateAzureCliCustom_1 = require("./TemplateAzureCliCustom");
+const TemplateAzureCliHelp_1 = require("./TemplateAzureCliHelp");
+const TemplateAzureCliParams_1 = require("./TemplateAzureCliParams");
 const ExampleProcessor_1 = require("./ExampleProcessor");
 const Adjustments_1 = require("./Adjustments");
 //
@@ -138,6 +142,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 }
                 index++;
             }
+            autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", TemplateAzureCliHelp_1.GenerateAzureCliHelp(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(new CodeModel_1.CodeModel(map, 0)).join('\r\n'));
             // write map after everything is done
             autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map.yml", yaml.dump(map));
         }
