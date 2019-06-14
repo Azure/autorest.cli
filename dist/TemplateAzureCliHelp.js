@@ -28,6 +28,7 @@ function GenerateAzureCliHelp(model) {
             output.push("\"\"\"");
         }
     } while (model.NextModule());
+    ;
     return output;
 }
 exports.GenerateAzureCliHelp = GenerateAzureCliHelp;
