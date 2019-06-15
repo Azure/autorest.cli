@@ -349,26 +349,26 @@ export class CodeModel
                 }
             }
 
-            //if (option == null)
-            //{
-            //    if (optionName == "parameters")
-            //    {
-            //        let hiddenParamatersOption = this.ModuleParametersOption;
-            //        option = new ModuleOption(optionName, "dict", false);
-            //        option.SubOptions = [];
-            //        option.TypeName =  hiddenParamatersOption.TypeName;
-            //        option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+            if (option == null)
+            {
+                if (optionName == "parameters")
+                {
+                    let hiddenParamatersOption = this.ModuleParametersOption;
+                    option = new ModuleOption(optionName, "dict", false);
+                    option.SubOptions = [];
+                    option.TypeName =  hiddenParamatersOption.TypeName;
+                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
 
-            //        // XXX - and because this stupid option has no suboptions
-            //        for (let optionIdx in this.ModuleOptions)
-            //        {
-            //            if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/"))
-            //            {
-            //                option.SubOptions.push(this.ModuleOptions[optionIdx]);
-            //            }
-            //        }
-            //    }
-            //}
+                    // XXX - and because this stupid option has no suboptions
+                    for (let optionIdx in this.ModuleOptions)
+                    {
+                        if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/"))
+                        {
+                            option.SubOptions.push(this.ModuleOptions[optionIdx]);
+                        }
+                    }
+                }
+            }
 
             if(option != null)
             {
