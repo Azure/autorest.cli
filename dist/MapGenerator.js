@@ -277,8 +277,8 @@ class MapGenerator {
         return type['$type'] == "SequenceType";
     }
     Type_Name(type) {
-        while (type['$ref'] != undefined) {
-            let newType = this.GetModelTypeByRef(type['$ref']);
+        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined)) {
+            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
             if (newType) {
                 type = newType;
             }
@@ -298,8 +298,8 @@ class MapGenerator {
         }
     }
     Type_MappedType(type) {
-        while (type['$ref'] != undefined) {
-            let newType = this.GetModelTypeByRef(type['$ref']);
+        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined)) {
+            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
             if (newType) {
                 type = newType;
             }

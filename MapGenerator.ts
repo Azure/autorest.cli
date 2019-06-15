@@ -397,8 +397,8 @@ export class MapGenerator
 
     private Type_Name(type: any): string
     {
-        while (type['$ref'] != undefined) {
-            let newType = this.GetModelTypeByRef(type['$ref']);
+        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined )) {
+            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
             if (newType) {
                 type = newType;
             }
@@ -424,9 +424,9 @@ export class MapGenerator
 
     private Type_MappedType(type: any): string
     {
-        while (type['$ref'] != undefined)
+        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined ))
         {
-            let newType = this.GetModelTypeByRef(type['$ref']);
+            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
 
             if (newType)
             {
