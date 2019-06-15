@@ -597,6 +597,12 @@ class MapGenerator {
             if (found != undefined)
                 return found;
         }
+        // does it contain baseModelType?
+        if (m['elementType'] != undefined) {
+            let found = this.ScanModelTypeByRef(id, m['elementType']);
+            if (found != undefined)
+                return found;
+        }
         // does it have properties?
         if (m['properties'] != undefined) {
             for (let propertyIdx in m['properties']) {
