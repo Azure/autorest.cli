@@ -133,11 +133,11 @@ export class MapGenerator
 
         if (!isInfo)
         {
-            module.Options = this.GetModuleOptions([ rawMethods[0] ]);
+            module.Options = this.CreateTopLevelOptions([ rawMethods[0] ]);
         }
         else
         {
-            module.Options = this.GetModuleOptions(rawMethods);
+            module.Options = this.CreateTopLevelOptions(rawMethods);
         }
 
         for (let mi in rawMethods)
@@ -372,7 +372,7 @@ export class MapGenerator
         {
             if (type['$ref'] != undefined)
             {
-                newType = this.GetModelTypeByRef(type['$ref']);
+                newType = this.FindModelTypeByRef(type['$ref']);
             }
             else if (type['$type'] == "SequenceType")
             {
@@ -401,7 +401,7 @@ export class MapGenerator
         {
             if (type['$ref'] != undefined)
             {
-                newType = this.GetModelTypeByRef(type['$ref']);
+                newType = this.FindModelTypeByRef(type['$ref']);
             }
             else if (type['$type'] == "SequenceType")
             {
@@ -487,7 +487,7 @@ export class MapGenerator
             return [];
         }
         let ref: string = rawMethod['returnType']['body']['$ref'];
-        let model = this.GetModelTypeByRef(ref);
+        let model = this.FindModelTypeByRef(ref);
 
         if (isInfo)
         {
@@ -500,9 +500,9 @@ export class MapGenerator
 
     }
 
-    private GetModuleOptions(methods: any[]): ModuleOption[]
+    private CreateTopLevelOptions(methods: any[]): ModuleOption[]
     {
-        var options: any = {}; //new Dictionary<string, ModuleOption>();
+        var options: any = {};
 
         for (var mi in methods)
         {
@@ -532,9 +532,6 @@ export class MapGenerator
                             options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
                         }
                         
-                        // XXXX - fix this
-                        //newParam.EnumValues = ModelTypeEnumValues(p.ModelType);
-
                         if (p.IsRequired) options[p.Name].RequiredCount++;
                     }
                     else    
@@ -545,7 +542,7 @@ export class MapGenerator
                         
                         
                         let ref = p.modelType['$ref'];
-                        let submodel = this.GetModelTypeByRef(ref);
+                        let submodel = this.FindModelTypeByRef(ref);
                         
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
@@ -571,7 +568,6 @@ export class MapGenerator
         }
 
         var arr: ModuleOption[] = [];
-
 
         for (var key in options) {
             var value = options[key];
@@ -603,13 +599,13 @@ export class MapGenerator
                 {
                     if (model['baseModelType']['$ref'] != undefined)
                     {
-                        let submodel = this.GetModelTypeByRef(model['baseModelType']['$ref']);
+                        let submodel = this.FindModelTypeByRef(model['baseModelType']['$ref']);
                         options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                     else if (model['baseModelType']['$id'])
                     {
                         // XXX - fix this
-                        let submodel = this.GetModelTypeByRef(model['baseModelType']['$id']);
+                        let submodel = this.FindModelTypeByRef(model['baseModelType']['$id']);
                         options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                 }
@@ -708,8 +704,8 @@ export class MapGenerator
                     {
                         let attrName: string = attr.name.raw;
 
-                        let subSampleValue: any /*Newtonsoft.Json.Linq.JToken*/ = null;
-                        let sampleValueObject: any /*Newtonsoft.Json.Linq.JObject*/ = sampleValue; // as Newtonsoft.Json.Linq.JObject;
+                        let subSampleValue: any = null;
+                        let sampleValueObject: any = sampleValue;
 
                         if (sampleValueObject != null)
                         {
@@ -724,34 +720,23 @@ export class MapGenerator
                             }
                         }
 
-                        let type: string = this.Type_MappedType(attr.modelType);
-                        var option = new ModuleOption(attrName, type, attr.isRequired);
+                        let type = this.Type_Get(attr.modelType);
+                        let typeName: string = this.Type_MappedType(attr.modelType);
+
+                        var option = new ModuleOption(attrName, typeName, attr.isRequired);
                         option.Documentation = attr.documentation.raw;
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList =  this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
-                        //this._log("TRIMMING: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
-
                         option.Flatten = flatten;
-
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
-
-                        // this should not be here
-                        //if (option.EnumValues.length > 0)
-                        //{
-                        //    option.Documentation = option.Documentation.split(" Possible values include:")[0];
-                        //}
 
                         option.PathSwagger = pathSwagger + "/" + attrName
                         option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
                         option.PathGo = option.PathSwagger;
 
-                        let ref = option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
-                        // XXX - get next level of sample value
-                        //let submodel = (ref != undefined) ? this.GetModelTypeByRef(ref) : ;
-                        let submodel = this.Type_Get(attr.modelType);
-                        option.SubOptions = this.GetModelOptions(submodel, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        option.SubOptions = this.GetModelOptions(type, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
                     }
                 }
@@ -781,7 +766,7 @@ export class MapGenerator
         return options;
     }
 
-    private ModuleFindMethod(name: string): any /**  Method */
+    private ModuleFindMethod(name: string): any
     {
         for (var mi in this.ModuleOperation.methods)
         {
@@ -819,11 +804,9 @@ export class MapGenerator
         return l.sort((m1,m2) => (m1.url.length > m2.url.length) ? 1 : -1);
     }
 
-    private _models: any = {};
-
-    private GetModelTypeByRef(id: string): any
+    private FindModelTypeByRef(id: string): any
     {
-        let model = this._models[id];
+        let model = this._modelCache[id];
 
         if (model != undefined)
             return model;
@@ -851,7 +834,7 @@ export class MapGenerator
     private ScanModelTypeByRef(id: string, m: any): any
     {
         // add to the dictionary, so no need to scan later
-        this._models[m['$id']] = m;
+        this._modelCache[m['$id']] = m;
 
         // is it current model?
         if (m['$id'] == id)
@@ -971,7 +954,6 @@ export class MapGenerator
 
             if (mo != null)
             {
-                this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
                 if (mo.SubOptions != null)
                 {
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly)
@@ -984,7 +966,7 @@ export class MapGenerator
                 continue;
             }
 
-            this._log("ADDING READONLY OPTION: " + oo.NameSwagger);
+            this._log("ADDING READONLY OPTION - ONLY IN RESPONSE: " + oo.NameSwagger);
             // if we are merging read options, new option should be included in response
             if (readOnly)
             {
@@ -1003,4 +985,5 @@ export class MapGenerator
     private _examples: Example[];
     private _log: LogCallback;
     private _debug: boolean;
+    private _modelCache: any = {};
 }
