@@ -374,19 +374,19 @@ class MapGenerator {
                     }
                     else {
                         // just call this option 'body' no matter what original name
-                        var suboption = new ModuleMap_1.ModuleOption("parameters" /*p.name.raw*/, type, p.IsRequired);
-                        suboption.DispositionSdk = "dictionary";
+                        var option = new ModuleMap_1.ModuleOption("parameters" /*p.name.raw*/, type, p.IsRequired);
+                        option.DispositionSdk = "dictionary";
                         // get model from option
                         //let ref = p.modelType['$ref'];
                         //let submodel = this.GetModelTypeByRef(ref);
-                        suboption.IsList = this.Type_IsList(p.modelType);
-                        suboption.TypeName = this.Type_Name(p.modelType);
-                        suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
-                        this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
+                        option.IsList = this.Type_IsList(p.modelType);
+                        option.TypeName = this.Type_Name(p.modelType);
+                        option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                        this._log("TRIMMING A: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
+                        option.Documentation = p.documentation.raw;
+                        options['parameters'] = option;
+                        // flatten all the suboptions of "parameters here"
                         let suboptions = this.GetModelOptions(p.modelType['$ref'], 0, null, "", "", false, true, false, false);
-                        suboption.Documentation = p.documentation.raw;
-                        options['parameters'] = suboption;
-                        // these suboptions should all go to the body
                         suboptions.forEach(element => {
                             // XXX - just fixing it
                             element.DispositionSdk = "/"; //suboption.NameAlt;
@@ -671,7 +671,7 @@ class MapGenerator {
             }
             if (mo != null) {
                 this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
-                if (mo.SubOptions != null) {
+                if (mo.SubOptions != null && mo.SubOptions.length > 0) {
                     this._log("--- MERGE SUBOPTIONS >>>");
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly);
                     this._log("--- MERGE SUBOPTIONS <<<");
