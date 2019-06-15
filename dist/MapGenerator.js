@@ -407,17 +407,10 @@ class MapGenerator {
         var options = [];
         if (level < 5) {
             if (model != null) {
-                let properties = model.properties;
+                // include options from base model if one exists
                 if (model['baseModelType'] != undefined) {
-                    if (model['baseModelType']['$ref'] != undefined) {
-                        let submodel = this.FindModelTypeByRef(model['baseModelType']['$ref']);
-                        options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
-                    }
-                    else if (model['baseModelType']['$id']) {
-                        // XXX - fix this
-                        let submodel = this.FindModelTypeByRef(model['baseModelType']['$id']);
-                        options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
-                    }
+                    let baseModel = this.Type_Get(model['baseModelType']);
+                    options = this.GetModelOptions(baseModel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                 }
                 for (var attri in model.properties) {
                     let attr = model.properties[attri];
