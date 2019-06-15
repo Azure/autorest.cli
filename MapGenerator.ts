@@ -746,7 +746,7 @@ export class MapGenerator
                         option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
                         option.PathGo = option.PathSwagger;
 
-                        let ref = option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
+                        let ref = type['$id']; // option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
                         // XXX - get next level of sample value
                         option.SubOptions = this.GetModelOptions(ref, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
