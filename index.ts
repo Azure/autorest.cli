@@ -92,11 +92,11 @@ extension.Add("azureresourceschema", async autoRestApi => {
       });
       mapFlattener.Flatten();
 
-      autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-input.yml", yaml.dump(swagger));
+      autoRestApi.WriteFile("intermediate/" + iif + "-input.yml", yaml.dump(swagger));
   
       if (map != null)
       {
-        autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map-pre.yml", yaml.dump(map));
+        autoRestApi.WriteFile("intermediate/" + iif + "-map-pre.yml", yaml.dump(map));
 
         // Generate raw REST examples
         for (var i = 0; i < examples.length; i++)
@@ -165,7 +165,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
         autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
 
         // write map after everything is done
-        autoRestApi.WriteFile("intermediate/" + mapGenerator.GetGlobalFilename() + "-map.yml", yaml.dump(map));
+        autoRestApi.WriteFile("intermediate/" + iif + "-map.yml", yaml.dump(map));
       }
   }
 });
