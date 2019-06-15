@@ -62,6 +62,11 @@ extension.Add("azureresourceschema", async autoRestApi => {
 
   for (var iif in inputFiles)
   {
+    autoRestApi.Message({
+      Channel: "warning",
+      Text: "URI: " + inputFileUris[iif]
+    });
+
     let swagger = JSON.parse(inputFiles[iif]);
     let exampleProcessor = new ExampleProcessor(swagger);
     let examples: Example[] = exampleProcessor.GetExamples();
@@ -92,7 +97,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
       });
       mapFlattener.Flatten();
 
-      autoRestApi.WriteFile("intermediate/" + iif + "-input.yml", yaml.dump(swagger));
+      autoRestApi.WriteFile("intermediate/" + inputFileUris[iif] + "-input.yml", yaml.dump(swagger));
   
       if (map != null)
       {
@@ -165,7 +170,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
         autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
 
         // write map after everything is done
-        autoRestApi.WriteFile("intermediate/" + iif + "-map.yml", yaml.dump(map));
+        autoRestApi.WriteFile("intermediate/" + inputFileUris[iif] + "-map.yml", yaml.dump(map));
       }
   }
 });

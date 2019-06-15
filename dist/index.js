@@ -59,6 +59,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
     //  Text: "AutoRest offers the following input files: "  + inputFileUris.join("\n"),
     //});
     for (var iif in inputFiles) {
+        autoRestApi.Message({
+            Channel: "warning",
+            Text: "URI: " + inputFileUris[iif]
+        });
         let swagger = JSON.parse(inputFiles[iif]);
         let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger);
         let examples = exampleProcessor.GetExamples();
@@ -86,7 +90,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
             });
         });
         mapFlattener.Flatten();
-        autoRestApi.WriteFile("intermediate/" + iif + "-input.yml", yaml.dump(swagger));
+        autoRestApi.WriteFile("intermediate/" + inputFileUris[iif] + "-input.yml", yaml.dump(swagger));
         if (map != null) {
             autoRestApi.WriteFile("intermediate/" + iif + "-map-pre.yml", yaml.dump(map));
             // Generate raw REST examples
@@ -148,7 +152,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
             autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             // write map after everything is done
-            autoRestApi.WriteFile("intermediate/" + iif + "-map.yml", yaml.dump(map));
+            autoRestApi.WriteFile("intermediate/" + inputFileUris[iif] + "-map.yml", yaml.dump(map));
         }
     }
 }));
