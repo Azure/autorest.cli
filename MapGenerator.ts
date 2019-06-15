@@ -588,9 +588,11 @@ export class MapGenerator
                             isResponse: boolean,
                             isInfo: boolean): ModuleOption[]
     {
-        let model: any /*CompositeTypePy*/ = this.GetModelTypeByRef(modelRef);
+        let model: any = this.GetModelTypeByRef(modelRef);
+
+        model = this.Type_Get(model);
+
         var options: ModuleOption[] = [];
-        let p: any /*AutoRest.Core.Model.Parameter*/;
 
         if (level < 5)
         {

@@ -405,8 +405,8 @@ class MapGenerator {
     }
     GetModelOptions(modelRef, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo) {
         let model = this.GetModelTypeByRef(modelRef);
+        model = this.Type_Get(model);
         var options = [];
-        let p /*AutoRest.Core.Model.Parameter*/;
         if (level < 5) {
             if (model != null) {
                 let properties = model.properties;
