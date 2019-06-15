@@ -242,16 +242,8 @@ class MapGenerator {
     get ModuleUpdateMethod() {
         return this.ModuleFindMethod("Update");
     }
-    Type_EnumValues(type /* IModelType */) {
-        while (type['$ref'] != undefined) {
-            let newType = this.GetModelTypeByRef(type['$ref']);
-            if (newType) {
-                type = newType;
-            }
-            else {
-                return [];
-            }
-        }
+    Type_EnumValues(type) {
+        type = this.Type_Get(type);
         if (type['$type'] != "EnumType")
             return [];
         let list = [];
