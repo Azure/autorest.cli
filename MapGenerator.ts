@@ -971,7 +971,7 @@ export class MapGenerator
                 this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
                 if (mo.SubOptions != null && mo.SubOptions.length > 0)
                 {
-                    this._log("--- MERGE SUBOPTIONS >>>")
+                    this._log("--- MERGE SUBOPTIONS >>> " + mo.NameSwagger)
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly)
                     this._log("--- MERGE SUBOPTIONS <<<")
                 }
