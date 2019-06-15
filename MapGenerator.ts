@@ -518,21 +518,25 @@ export class MapGenerator
 
                     let type: string = this.Type_MappedType(p.modelType);
 
-                    options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
-                    options[p.name.raw].Documentation = p.documentation.raw;
-
-                    options[p.name.raw].IsList = this.Type_IsList(p.modelType);
-                    options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
-    
-                    if (p.location == "path")
+                    if (type != "dict")
                     {
-                        options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
+                        options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
+                        options[p.name.raw].Documentation = p.documentation.raw;
+
+                        options[p.name.raw].IsList = this.Type_IsList(p.modelType);
+                        options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+        
+                        if (p.location == "path")
+                        {
+                            options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
+                        }
+                        
+                        // XXXX - fix this
+                        //newParam.EnumValues = ModelTypeEnumValues(p.ModelType);
+
+                        if (p.IsRequired) options[p.Name].RequiredCount++;
                     }
-                    
-                    // XXXX - fix this
-                    //newParam.EnumValues = ModelTypeEnumValues(p.ModelType);
-    
-                    if (type == "dict")
+                    else    
                     {
                         // just call this option 'body' no matter what original name
                         var suboption = new ModuleOption("parameters"/*p.name.raw*/, type, p.IsRequired);
@@ -559,8 +563,6 @@ export class MapGenerator
                             options[element.NameAnsible] = element;
                         });
                     }
-
-                    if (p.IsRequired) options[p.Name].RequiredCount++;
                 }
             }
         }
