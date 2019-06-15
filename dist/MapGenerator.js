@@ -518,7 +518,8 @@ class MapGenerator {
                         option.PathGo = option.PathSwagger;
                         let ref = option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
                         // XXX - get next level of sample value
-                        let submodel = this.GetModelTypeByRef(ref);
+                        //let submodel = (ref != undefined) ? this.GetModelTypeByRef(ref) : ;
+                        let submodel = this.Type_Get(attr.modelType);
                         option.SubOptions = this.GetModelOptions(submodel, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
                     }
