@@ -3,6 +3,7 @@ import { Example } from "./Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "./Helpers";
 import { LogCallback } from "./index";
 import { Adjustments } from "./Adjustments";
+import { throws } from "assert";
 
 export class MapGenerator
 {
@@ -147,7 +148,10 @@ export class MapGenerator
 
         // for response use GET response fields
         module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
+
+        this._log("---- MERGING OPTIONS >>>")
         this.MergeOptions(module.Options, module.ResponseFields, true);
+        this._log("---- MERGING OPTIONS <<<")
 
         // do some preprocessing
         for (let rf in module.ResponseFields)
@@ -539,15 +543,15 @@ export class MapGenerator
                         suboption.DispositionSdk = "dictionary";
                         
                         // get model from option
-                        let ref = p.modelType['$ref'];
-                        let submodel = this.GetModelTypeByRef(ref);
+                        //let ref = p.modelType['$ref'];
+                        //let submodel = this.GetModelTypeByRef(ref);
                         
                         suboption.IsList = this.Type_IsList(p.modelType);
-                        suboption.TypeName = this.Type_Name(submodel);
+                        suboption.TypeName = this.Type_Name(p.modelType);
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
 
-                        let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
+                        let suboptions = this.GetModelOptions(p.modelType['$ref'], 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options['parameters'] = suboption;
 
@@ -967,7 +971,9 @@ export class MapGenerator
                 this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
                 if (mo.SubOptions != null)
                 {
+                    this._log("--- MERGE SUBOPTIONS >>>")
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly)
+                    this._log("--- MERGE SUBOPTIONS <<<")
                 }
 
                 if (readOnly)
