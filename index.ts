@@ -23,7 +23,7 @@ import { GenerateAzureCliParams} from "./TemplateAzureCliParams"
 
 import { ExampleProcessor } from "./ExampleProcessor"; 
 import { Example } from "./Example";
-import { Adjustments } from "./Adjustments";
+import { Adjustments } from "./Adjustments"; 
 
 export type LogCallback = (message: string) => void;
 
