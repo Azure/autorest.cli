@@ -357,7 +357,7 @@ export class MapGenerator
         type.values.forEach(element => {
             let e: EnumValue = new EnumValue();
             e.Key = element['name'];
-            e.Value = element['value'];
+            e.Value = (element['value'] != undefined) ? element['value'] : element['name'];
             e.Description = element['description'];
             list.push(e);
         });
