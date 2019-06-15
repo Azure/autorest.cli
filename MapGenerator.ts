@@ -376,38 +376,62 @@ export class MapGenerator
         return list;
     }
 
-    private Type_IsList(type: any): boolean
+    private Type_Get(type: any): any
     {
-        if (type['$ref'] != undefined)
+        let newType = null;
+        
+        do
         {
-            let newType = this.GetModelTypeByRef(type['$ref']);
-
-            if (newType)
+            if (type['$ref'] != undefined)
             {
-                type = newType;
+                newType = this.GetModelTypeByRef(type['$ref']);
+            }
+            else if (type['$type'] == "SequenceType")
+            {
+                newType = type['elementType'];
             }
             else
             {
-                this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);         
+                newType = null; 
             }
-        }
 
-        return type['$type'] == "SequenceType";
-    }
-
-    private Type_Get(type: any): any
-    {
-        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined )) {
-            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
-            if (newType) {
+            if (newType != null)
+            {
                 type = newType;
             }
-            else {
-                break;
-            }
         }
+        while (newType != null);
 
         return type;
+    }
+
+    private Type_IsList(type: any): boolean
+    {
+        let newType = null;
+        
+        do
+        {
+            if (type['$ref'] != undefined)
+            {
+                newType = this.GetModelTypeByRef(type['$ref']);
+            }
+            else if (type['$type'] == "SequenceType")
+            {
+                return true;
+            }
+            else
+            {
+                newType = null; 
+            }
+
+            if (newType != null)
+            {
+                type = newType;
+            }
+        }
+        while (newType != null);
+
+        return false;
     }
 
     private Type_Name(type: any): string
@@ -451,10 +475,6 @@ export class MapGenerator
                 default:
                     return 'unknown-primary[' + type['knownPrimaryType'] + ']';
             }
-        }
-        else if (type['$type'] == "SequenceType")
-        {
-            return this.Type_MappedType(type['elementType']);
         }
         else if (type['$type'] == "EnumType")
         {

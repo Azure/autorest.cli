@@ -264,29 +264,41 @@ class MapGenerator {
         });
         return list;
     }
-    Type_IsList(type) {
-        if (type['$ref'] != undefined) {
-            let newType = this.GetModelTypeByRef(type['$ref']);
-            if (newType) {
-                type = newType;
-            }
-            else {
-                this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);
-            }
-        }
-        return type['$type'] == "SequenceType";
-    }
     Type_Get(type) {
-        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined)) {
-            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
-            if (newType) {
-                type = newType;
+        let newType = null;
+        do {
+            if (type['$ref'] != undefined) {
+                newType = this.GetModelTypeByRef(type['$ref']);
+            }
+            else if (type['$type'] == "SequenceType") {
+                newType = type['elementType'];
             }
             else {
-                break;
+                newType = null;
             }
-        }
+            if (newType != null) {
+                type = newType;
+            }
+        } while (newType != null);
         return type;
+    }
+    Type_IsList(type) {
+        let newType = null;
+        do {
+            if (type['$ref'] != undefined) {
+                newType = this.GetModelTypeByRef(type['$ref']);
+            }
+            else if (type['$type'] == "SequenceType") {
+                return true;
+            }
+            else {
+                newType = null;
+            }
+            if (newType != null) {
+                type = newType;
+            }
+        } while (newType != null);
+        return false;
     }
     Type_Name(type) {
         type = this.Type_Get(type);
@@ -319,9 +331,6 @@ class MapGenerator {
                 default:
                     return 'unknown-primary[' + type['knownPrimaryType'] + ']';
             }
-        }
-        else if (type['$type'] == "SequenceType") {
-            return this.Type_MappedType(type['elementType']);
         }
         else if (type['$type'] == "EnumType") {
             return this.Type_MappedType(type['underlyingType']);
