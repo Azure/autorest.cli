@@ -374,7 +374,7 @@ class MapGenerator {
                     }
                     else {
                         // just call this option 'body' no matter what original name
-                        var suboption = new ModuleMap_1.ModuleOption("parameters" /*p.name.raw*/, type, p.IsRequired);
+                        var suboption = new ModuleMap_1.ModuleOption(p.name.raw, type, p.IsRequired);
                         suboption.DispositionSdk = "dictionary";
                         let ref = p.modelType['$ref'];
                         let submodel = this.GetModelTypeByRef(ref);
@@ -384,7 +384,7 @@ class MapGenerator {
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
                         let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
-                        options['parameters'] = suboption;
+                        options[p.name.raw] = suboption;
                         // these suboptions should all go to the body
                         suboptions.forEach(element => {
                             // XXX - just fixing it
