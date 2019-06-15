@@ -276,17 +276,20 @@ class MapGenerator {
         }
         return type['$type'] == "SequenceType";
     }
-    Type_Name(type) {
+    Type_Get(type) {
         while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined)) {
             let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
             if (newType) {
                 type = newType;
             }
             else {
-                this._map.Info.push("  ** COULDN'T FIND " + type['$ref']);
-                return "UnknownTypeName";
+                break;
             }
         }
+        return type;
+    }
+    Type_Name(type) {
+        type = this.Type_Get(type);
         if (type['serializedName'] != undefined) {
             return type['serializedName'];
         }
@@ -298,15 +301,7 @@ class MapGenerator {
         }
     }
     Type_MappedType(type) {
-        while (type['$ref'] != undefined || (type['elementType'] != undefined && type['elementType']['$ref'] != undefined)) {
-            let newType = this.GetModelTypeByRef(type['$ref'] || type['elementType']['$ref']);
-            if (newType) {
-                type = newType;
-            }
-            else {
-                return "unknown[reference: " + type['$ref'] + "]";
-            }
-        }
+        type = this.Type_Get(type);
         if (type['$type'] == "PrimaryType") {
             switch (type['knownPrimaryType']) {
                 case 'string':
