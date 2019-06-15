@@ -3,7 +3,6 @@ import { Example } from "./Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "./Helpers";
 import { LogCallback } from "./index";
 import { Adjustments } from "./Adjustments";
-import { throws } from "assert";
 
 export class MapGenerator
 {
@@ -148,10 +147,7 @@ export class MapGenerator
 
         // for response use GET response fields
         module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
-
-        this._log("---- MERGING OPTIONS >>>")
         this.MergeOptions(module.Options, module.ResponseFields, true);
-        this._log("---- MERGING OPTIONS <<<")
 
         // do some preprocessing
         for (let rf in module.ResponseFields)
@@ -509,7 +505,6 @@ export class MapGenerator
 
         for (var mi in methods)
         {
-            this._log("---------------- PROCESSING METHOD: " + methods[mi].Name)
             let m = methods[mi];
             for (var pi in m.parameters)
             {
@@ -519,43 +514,44 @@ export class MapGenerator
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1))
                 {
-                    this._log(" ... option -> " + p.name.raw);
+                    this._map.Info.push("  ** FOUND OPTION " + p.name.raw);
+
                     let type: string = this.Type_MappedType(p.modelType);
 
-                    if (type != "dict")
-                    {
-                        options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
-                        options[p.name.raw].Documentation = p.documentation.raw;
+                    options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
+                    options[p.name.raw].Documentation = p.documentation.raw;
 
-                        options[p.name.raw].IsList = this.Type_IsList(p.modelType);
-                        options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
-        
-                        if (p.location == "path")
-                        {
-                            options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
-                        }
-//                        if (p.IsRequired) options[p.Name].RequiredCount++;
+                    options[p.name.raw].IsList = this.Type_IsList(p.modelType);
+                    options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+    
+                    if (p.location == "path")
+                    {
+                        options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
                     }
-                    else
+                    
+                    // XXXX - fix this
+                    //newParam.EnumValues = ModelTypeEnumValues(p.ModelType);
+    
+                    if (type == "dict")
                     {
                         // just call this option 'body' no matter what original name
-                        var option = new ModuleOption("parameters"/*p.name.raw*/, type, p.IsRequired);
-                        option.DispositionSdk = "dictionary";
+                        var suboption = new ModuleOption("parameters"/*p.name.raw*/, type, p.IsRequired);
+                        suboption.DispositionSdk = "dictionary";
                         
-                        // get model from option
-                        //let ref = p.modelType['$ref'];
-                        //let submodel = this.GetModelTypeByRef(ref);
                         
-                        option.IsList = this.Type_IsList(p.modelType);
-                        option.TypeName = this.Type_Name(p.modelType);
-                        option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
-                        this._log("TRIMMING A: " + option.TypeName + " >> " + option.TypeNameGo + " -- " + this.Namespace);
+                        let ref = p.modelType['$ref'];
+                        let submodel = this.GetModelTypeByRef(ref);
+                        
+                        suboption.IsList = this.Type_IsList(p.modelType);
+                        suboption.TypeName = this.Type_Name(submodel);
+                        suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
+                        this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
 
-                        option.Documentation = p.documentation.raw;
-                        options['parameters'] = option;
+                        let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
+                        suboption.Documentation = p.documentation.raw;
+                        options['parameters'] = suboption;
 
-                        // flatten all the suboptions of "parameters here"
-                        let suboptions = this.GetModelOptions(p.modelType['$ref'], 0, null, "", "", false, true, false, false);
+                        // these suboptions should all go to the body
                         suboptions.forEach(element => {
                             // XXX - just fixing it
                             element.DispositionSdk = "/"; //suboption.NameAlt;
@@ -563,6 +559,8 @@ export class MapGenerator
                             options[element.NameAnsible] = element;
                         });
                     }
+
+                    if (p.IsRequired) options[p.Name].RequiredCount++;
                 }
             }
         }
@@ -588,9 +586,7 @@ export class MapGenerator
                             isResponse: boolean,
                             isInfo: boolean): ModuleOption[]
     {
-        let model: any = this.GetModelTypeByRef(modelRef);
-        model = this.Type_Get(model);
-
+        let model: any /*CompositeTypePy*/ = this.GetModelTypeByRef(modelRef);
         var options: ModuleOption[] = [];
         let p: any /*AutoRest.Core.Model.Parameter*/;
 
@@ -969,11 +965,9 @@ export class MapGenerator
             if (mo != null)
             {
                 this._log("MERGE - OPTION EXISTS IN BOTH: " + mo.NameSwagger);
-                if (mo.SubOptions != null && mo.SubOptions.length > 0)
+                if (mo.SubOptions != null)
                 {
-                    this._log("--- MERGE SUBOPTIONS >>> " + mo.NameSwagger)
                     this.MergeOptions(mo.SubOptions, oo.SubOptions, readOnly)
-                    this._log("--- MERGE SUBOPTIONS <<<")
                 }
 
                 if (readOnly)
