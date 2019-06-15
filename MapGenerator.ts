@@ -551,7 +551,9 @@ export class MapGenerator
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
 
-                        let suboptions = this.GetModelOptions(suboption.IsList ? (p.modelType.elementType['$ref']) : ref, 0, null, "", "", false, true, false, false);
+                        this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel))
+
+                        let suboptions = this.GetModelOptions(ref, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options[p.name.raw] = suboption;
 
@@ -589,8 +591,6 @@ export class MapGenerator
                             isInfo: boolean): ModuleOption[]
     {
         let model: any = this.GetModelTypeByRef(modelRef);
-
-        model = this.Type_Get(model);
 
         var options: ModuleOption[] = [];
 
