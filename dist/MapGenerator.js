@@ -350,6 +350,7 @@ class MapGenerator {
     GetModuleOptions(methods) {
         var options = {}; //new Dictionary<string, ModuleOption>();
         for (var mi in methods) {
+            this._log("---------------- PROCESSING METHOD: " + methods[mi].Name);
             let m = methods[mi];
             for (var pi in m.parameters) {
                 let p = m.parameters[pi];
@@ -357,7 +358,7 @@ class MapGenerator {
                     p.name.raw != "api-version" &&
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1)) {
-                    this._map.Info.push("  ** FOUND OPTION " + p.name.raw);
+                    this._log(" ... option -> " + p.Name.raw);
                     let type = this.Type_MappedType(p.modelType);
                     options[p.name.raw] = new ModuleMap_1.ModuleOption(p.name.raw, type, p.isRequired);
                     options[p.name.raw].Documentation = p.documentation.raw;
@@ -369,9 +370,12 @@ class MapGenerator {
                     // XXXX - fix this
                     //newParam.EnumValues = ModelTypeEnumValues(p.ModelType);
                     if (type == "dict") {
+                        // XXX - dirty removal of original option, if the name is no "parameters" algorithm fails here
+                        options.pop(p.name.raw);
                         // just call this option 'body' no matter what original name
                         var suboption = new ModuleMap_1.ModuleOption("parameters" /*p.name.raw*/, type, p.IsRequired);
                         suboption.DispositionSdk = "dictionary";
+                        // get model from option
                         let ref = p.modelType['$ref'];
                         let submodel = this.GetModelTypeByRef(ref);
                         suboption.IsList = this.Type_IsList(p.modelType);
@@ -403,6 +407,7 @@ class MapGenerator {
     }
     GetModelOptions(modelRef, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo) {
         let model = this.GetModelTypeByRef(modelRef);
+        model = this.Type_Get(model);
         var options = [];
         let p /*AutoRest.Core.Model.Parameter*/;
         if (level < 5) {

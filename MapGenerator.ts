@@ -505,6 +505,7 @@ export class MapGenerator
 
         for (var mi in methods)
         {
+            this._log("---------------- PROCESSING METHOD: " + methods[mi].Name)
             let m = methods[mi];
             for (var pi in m.parameters)
             {
@@ -514,8 +515,7 @@ export class MapGenerator
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1))
                 {
-                    this._map.Info.push("  ** FOUND OPTION " + p.name.raw);
-
+                    this._log(" ... option -> " + p.Name.raw);
                     let type: string = this.Type_MappedType(p.modelType);
 
                     options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
@@ -534,11 +534,14 @@ export class MapGenerator
     
                     if (type == "dict")
                     {
+                        // XXX - dirty removal of original option, if the name is no "parameters" algorithm fails here
+                        options.pop(p.name.raw);
+
                         // just call this option 'body' no matter what original name
                         var suboption = new ModuleOption("parameters"/*p.name.raw*/, type, p.IsRequired);
                         suboption.DispositionSdk = "dictionary";
                         
-                        
+                        // get model from option
                         let ref = p.modelType['$ref'];
                         let submodel = this.GetModelTypeByRef(ref);
                         
@@ -586,7 +589,9 @@ export class MapGenerator
                             isResponse: boolean,
                             isInfo: boolean): ModuleOption[]
     {
-        let model: any /*CompositeTypePy*/ = this.GetModelTypeByRef(modelRef);
+        let model: any = this.GetModelTypeByRef(modelRef);
+        model = this.Type_Get(model);
+        
         var options: ModuleOption[] = [];
         let p: any /*AutoRest.Core.Model.Parameter*/;
 
