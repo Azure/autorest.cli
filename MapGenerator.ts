@@ -515,7 +515,7 @@ export class MapGenerator
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1))
                 {
-                    this._log(" ... option -> " + p.Name.raw);
+                    this._log(" ... option -> " + p.name.raw);
                     let type: string = this.Type_MappedType(p.modelType);
 
                     options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
@@ -591,7 +591,7 @@ export class MapGenerator
     {
         let model: any = this.GetModelTypeByRef(modelRef);
         model = this.Type_Get(model);
-        
+
         var options: ModuleOption[] = [];
         let p: any /*AutoRest.Core.Model.Parameter*/;
 

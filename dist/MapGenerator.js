@@ -358,7 +358,7 @@ class MapGenerator {
                     p.name.raw != "api-version" &&
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1)) {
-                    this._log(" ... option -> " + p.Name.raw);
+                    this._log(" ... option -> " + p.name.raw);
                     let type = this.Type_MappedType(p.modelType);
                     options[p.name.raw] = new ModuleMap_1.ModuleOption(p.name.raw, type, p.isRequired);
                     options[p.name.raw].Documentation = p.documentation.raw;
