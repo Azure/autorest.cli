@@ -340,11 +340,12 @@ class MapGenerator {
             return [];
         }
         let ref = rawMethod['returnType']['body']['$ref'];
+        let model = this.GetModelTypeByRef(ref);
         if (isInfo) {
-            return this.GetModelOptions(ref, 0, null, "", "", true, true, true, isInfo);
+            return this.GetModelOptions(model, 0, null, "", "", true, true, true, isInfo);
         }
         else {
-            return this.GetModelOptions(ref, 0, null, "", "", true, false, true, isInfo);
+            return this.GetModelOptions(model, 0, null, "", "", true, false, true, isInfo);
         }
     }
     GetModuleOptions(methods) {
@@ -383,7 +384,7 @@ class MapGenerator {
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel));
-                        let suboptions = this.GetModelOptions(ref, 0, null, "", "", false, true, false, false);
+                        let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
                         options[p.name.raw] = suboption;
                         // these suboptions should all go to the body
@@ -404,19 +405,20 @@ class MapGenerator {
         }
         return arr;
     }
-    GetModelOptions(modelRef, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo) {
-        let model = this.GetModelTypeByRef(modelRef);
+    GetModelOptions(model, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo) {
         var options = [];
         if (level < 5) {
             if (model != null) {
                 let properties = model.properties;
                 if (model['baseModelType'] != undefined) {
                     if (model['baseModelType']['$ref'] != undefined) {
-                        options = this.GetModelOptions(model['baseModelType']['$ref'], level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        let submodel = this.GetModelTypeByRef(model['baseModelType']['$ref']);
+                        options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                     else if (model['baseModelType']['$id']) {
                         // XXX - fix this
-                        options = this.GetModelOptions(model['baseModelType']['$id'], level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        let submodel = this.GetModelTypeByRef(model['baseModelType']['$id']);
+                        options = this.GetModelOptions(submodel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                     }
                 }
                 for (var attri in model.properties) {
@@ -514,9 +516,10 @@ class MapGenerator {
                         option.PathSwagger = pathSwagger + "/" + attrName;
                         option.PathPython = pathPython + ((attrName != "properties") ? ("/" + attrName) : "");
                         option.PathGo = option.PathSwagger;
-                        let ref = type['$id']; // option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
+                        let ref = option.IsList ? attr.modelType.elementType['$ref'] : attr.modelType['$ref'];
                         // XXX - get next level of sample value
-                        option.SubOptions = this.GetModelOptions(ref, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        let submodel = this.GetModelTypeByRef(ref);
+                        option.SubOptions = this.GetModelOptions(submodel, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
                     }
                 }
