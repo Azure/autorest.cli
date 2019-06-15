@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("./Helpers");
 class CodeModel {
     constructor(map, moduleIdx) {
@@ -227,21 +226,25 @@ class CodeModel {
                     break;
                 }
             }
-            if (option == null) {
-                if (optionName == "parameters") {
-                    let hiddenParamatersOption = this.ModuleParametersOption;
-                    option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
-                    option.SubOptions = [];
-                    option.TypeName = hiddenParamatersOption.TypeName;
-                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
-                    // XXX - and because this stupid option has no suboptions
-                    for (let optionIdx in this.ModuleOptions) {
-                        if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/")) {
-                            option.SubOptions.push(this.ModuleOptions[optionIdx]);
-                        }
-                    }
-                }
-            }
+            //if (option == null)
+            //{
+            //    if (optionName == "parameters")
+            //    {
+            //        let hiddenParamatersOption = this.ModuleParametersOption;
+            //        option = new ModuleOption(optionName, "dict", false);
+            //        option.SubOptions = [];
+            //        option.TypeName =  hiddenParamatersOption.TypeName;
+            //        option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+            //        // XXX - and because this stupid option has no suboptions
+            //        for (let optionIdx in this.ModuleOptions)
+            //        {
+            //            if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/"))
+            //            {
+            //                option.SubOptions.push(this.ModuleOptions[optionIdx]);
+            //            }
+            //        }
+            //    }
+            //}
             if (option != null) {
                 moduleOptions.push(option);
             }
