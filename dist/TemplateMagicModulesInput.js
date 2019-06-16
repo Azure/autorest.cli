@@ -149,10 +149,19 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
                 case "boolean":
                     dataType = "!ruby/object:Api::Type::Boolean";
                     break;
+                case "datetime":
+                    dataType = "!ruby/object:Api::Azure::Type::DateTime";
+                    break;
                 default:
                     // [TODO] this should be handled earlier
                     if (option.NameSwagger == "tags") {
                         dataType = "!ruby/object:Api::Azure::Type::Tags";
+                    }
+                    else if (option.Type.startsWith("unknown[DictionaryType")) {
+                        dataType = "!ruby/object:Api::Type::KeyValuePairs";
+                    }
+                    else if (option.Type == "unknown-primary[timeSpan]") {
+                        dataType = "!ruby/object:Api::Azure::Type::Timespan";
                     }
                     else {
                         dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
@@ -251,10 +260,25 @@ function appendOption(output, option, isGo, isPython, isRead) {
         case "boolean":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
             break;
+        case "datetime":
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::DateTimeObject";
+            break;
         default:
             // XXX - this is a hack, should be solved earlier
             if (option.NameAnsible == "tags") {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringMapObject";
+            }
+            else if (option.Type.startsWith("unknown[DictionaryType")) {
+                // XXX - this needs to be handled properly
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringMapObject";
+            }
+            else if (option.Type == "unknown-primary[timeSpan]") {
+                // XXX - this needs to be handled properly
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Timespan";
+            }
+            else {
+                // XXX - this needs to be handled properly
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::[" + option.Type + "]";
             }
             break;
     }
