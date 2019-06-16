@@ -16,26 +16,6 @@ export class MapGenerator
         this._debug = debug;
     }
 
-    public GetGlobalFilename(): string
-    {
-        var method = this.Operations[this._index].methods[0];
-        var normalizedUrl = method.url;
-        var parts: string[] = normalizedUrl.split("/");
-        var filename: string = "";
-        for (var i: number = 0; i < parts.length; i++)
-        {
-            var part: string = parts[i].toLowerCase();
-            if (part.startsWith("microsoft."))
-            {
-                // add provided as a first part of filename
-                part = part.toLowerCase().substring("microsoft.".length);
-                return part;
-            }
-        }
-        return "unknown";
-    }
-
-
     private get ModuleName(): string
     {
         let multi: string = (this.Operations.length > 1) ? this.Namespace : "";
@@ -536,7 +516,6 @@ export class MapGenerator
                     }
                     else    
                     {
-                        // just call this option 'body' no matter what original name
                         var suboption = new ModuleOption(p.name.raw, type, p.IsRequired);
                         suboption.DispositionSdk = "dictionary";
                         

@@ -200,6 +200,10 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
                     {
                         dataType = "!ruby/object:Api::Azure::Type::Tags";
                     }
+                    else
+                    {
+                        dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
+                    }
             }
         }
 

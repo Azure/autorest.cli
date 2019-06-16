@@ -154,6 +154,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
                     if (option.NameSwagger == "tags") {
                         dataType = "!ruby/object:Api::Azure::Type::Tags";
                     }
+                    else {
+                        dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
+                    }
             }
         }
         output.push(prefix + "- " + dataType);

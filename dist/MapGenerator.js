@@ -15,21 +15,6 @@ class MapGenerator {
         this._adjustments = adjustments;
         this._debug = debug;
     }
-    GetGlobalFilename() {
-        var method = this.Operations[this._index].methods[0];
-        var normalizedUrl = method.url;
-        var parts = normalizedUrl.split("/");
-        var filename = "";
-        for (var i = 0; i < parts.length; i++) {
-            var part = parts[i].toLowerCase();
-            if (part.startsWith("microsoft.")) {
-                // add provided as a first part of filename
-                part = part.toLowerCase().substring("microsoft.".length);
-                return part;
-            }
-        }
-        return "unknown";
-    }
     get ModuleName() {
         let multi = (this.Operations.length > 1) ? this.Namespace : "";
         multi = multi.split('.').pop();
@@ -372,7 +357,6 @@ class MapGenerator {
                             options[p.Name].RequiredCount++;
                     }
                     else {
-                        // just call this option 'body' no matter what original name
                         var suboption = new ModuleMap_1.ModuleOption(p.name.raw, type, p.IsRequired);
                         suboption.DispositionSdk = "dictionary";
                         let ref = p.modelType['$ref'];
