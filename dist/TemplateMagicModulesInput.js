@@ -152,6 +152,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
                 case "datetime":
                     dataType = "!ruby/object:Api::Azure::Type::DateTime";
                     break;
+                case "number":
+                    dataType = "!ruby/object:Api::Azure::Type::Integer";
+                    break;
                 default:
                     // [TODO] this should be handled earlier
                     if (option.NameSwagger == "tags") {
@@ -262,6 +265,9 @@ function appendOption(output, option, isGo, isPython, isRead) {
             break;
         case "datetime":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::DateTimeObject";
+            break;
+        case "number":
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerObject";
             break;
         default:
             // XXX - this is a hack, should be solved earlier
