@@ -33,6 +33,7 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
         switch (method.Name)
         {
             case "Get":
+            case "GetByName":
                 operationName = "read";
                 break;
             case "CreateOrUpdate":

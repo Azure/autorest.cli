@@ -29,6 +29,7 @@ function GenerateMagicModulesInput(model) {
         let operationName = "";
         switch (method.Name) {
             case "Get":
+            case "GetByName":
                 operationName = "read";
                 break;
             case "CreateOrUpdate":
