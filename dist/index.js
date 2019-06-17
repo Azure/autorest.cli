@@ -118,9 +118,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdk_1.GenerateModuleSdk(model).join('\r\n'));
                         autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model).join('\r\n'));
                         let mn = model.ModuleName.split("azure_rm_")[1];
-                        if (mn == 'batchaccount')
-                            mn = "batchaccountxx";
-                        autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                        //if (mn == 'batchaccount') mn = "batchaccountxx";
+                        if (mn != "batchaccount") {
+                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                        }
                     }
                     else {
                         autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
@@ -133,10 +134,10 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         var filename = example.Filename;
                         autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", AnsibleExample_1.GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
                         if (!model.ModuleName.endsWith('_info')) {
-                            let mn = model.ModuleName.split("azure_rm_")[1];
-                            if (mn == 'batchaccount')
-                                mn = "batchaccountxx";
-                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                            let mn = model.ModuleName.split("azure_rm_")[1]; //if (mn == 'batchaccount') mn = "batchaccountxx";
+                            if (mn != 'batchaccount') {
+                                autoRestApi.WriteFile("magic-modules-input/" + mn + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                            }
                         }
                     }
                 }

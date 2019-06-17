@@ -195,7 +195,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
                     dataType = "!ruby/object:Api::Type::Boolean";
                     break;
                 case "datetime":
-                    dataType = "!ruby/object:Api::Azure::Type::DateTime";
+                    dataType = "!ruby/object:Api::Azure::Type::ISO8601DateTime";
                     break;
                 case "number":
                         dataType = "!ruby/object:Api::Azure::Type::Integer";
@@ -212,7 +212,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
                     }
                     else if (option.Type == "unknown-primary[timeSpan]")
                     {
-                        dataType = "!ruby/object:Api::Azure::Type::Timespan";
+                        dataType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
                     }
                     else
                     {
@@ -349,7 +349,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::BooleanObject";
             break;
         case "datetime":
-            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::DateTimeObject";
+            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ISO8601DateTimeObject";
             break;
         case "number":
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerObject";
@@ -368,7 +368,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             else if (option.Type == "unknown-primary[timeSpan]")
             {
                 // XXX - this needs to be handled properly
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Timespan";
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ISO8601DurationObject";
             }
             else
             {
