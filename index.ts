@@ -72,7 +72,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
     let swagger = JSON.parse(inputFiles[iif]);
     let exampleProcessor = new ExampleProcessor(swagger);
     let examples: Example[] = exampleProcessor.GetExamples();
-    let mapGenerator = new MapGenerator(swagger, adjustmentsObject, examples, debug, function(msg: string) {
+    let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, debug, function(msg: string) {
       autoRestApi.Message({
         Channel: "warning",
         Text: msg
@@ -166,10 +166,10 @@ extension.Add("azureresourceschema", async autoRestApi => {
           index++;
         }
 
-        autoRestApi.WriteFile("intermediate/" + namespace + "/_help.py", GenerateAzureCliHelp(new CodeModelCli(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/_params.py", GenerateAzureCliParams(new CodeModelCli(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/commands.py", GenerateAzureCliCommands(new CodeModelCli(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("intermediate/" + namespace + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", GenerateAzureCliHelp(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
 
         // write map after everything is done
         autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));

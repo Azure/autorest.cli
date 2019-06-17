@@ -3,16 +3,18 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("./Helpers");
 class MapGenerator {
-    constructor(swagger, adjustments, examples, debug, cb) {
+    constructor(swagger, adjustments, cliName, examples, debug, cb) {
         this._namespace = "";
         this._map = null;
         this._swagger = null;
+        this._cliName = null;
         this._modelCache = {};
         this._swagger = swagger;
         this._index = 0;
         this._examples = examples;
         this._log = cb;
         this._adjustments = adjustments;
+        this._cliName = cliName;
         this._debug = debug;
     }
     get ModuleName() {
@@ -52,6 +54,7 @@ class MapGenerator {
         this._map.Modules = [];
         this._map.ServiceName = this._swagger['name'];
         this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.CliName = this._cliName;
         this._map.Namespace = this._swagger['namespace'].toLowerCase();
         for (var idx = 0; idx < this.Operations.length; idx++) {
             this._index = idx;

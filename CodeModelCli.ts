@@ -24,7 +24,7 @@ export class CodeModelCli
 
     public GetCliCommandModuleName()
     {
-        return this.PythonNamespace.split(".").pop();
+        return this.Map.CliName;
     }
 
     public GetCliCommand(): string

@@ -103,6 +103,7 @@ class MapModuleGroup {
         this.Modules = [];
         this.ServiceName = null;
         this.MgmtClientName = null;
+        this.CliName = null;
         this.Namespace = null;
         this.Info = [];
     }

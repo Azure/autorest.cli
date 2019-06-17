@@ -21,7 +21,7 @@ class CodeModelCli {
         return false;
     }
     GetCliCommandModuleName() {
-        return this.PythonNamespace.split(".").pop();
+        return this.Map.CliName;
     }
     GetCliCommand() {
         let options = this.Map.Modules[this._selectedModule].Options;

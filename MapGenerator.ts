@@ -6,13 +6,19 @@ import { Adjustments } from "./Adjustments";
 
 export class MapGenerator
 {
-    public constructor (swagger: any, adjustments: Adjustments, examples: Example[], debug: boolean, cb: LogCallback)
+    public constructor (swagger: any,
+                        adjustments: Adjustments,
+                        cliName: string,
+                        examples: Example[],
+                        debug: boolean,
+                        cb: LogCallback)
     {
         this._swagger = swagger;
         this._index = 0;
         this._examples = examples;
         this._log = cb
         this._adjustments = adjustments;
+        this._cliName = cliName;
         this._debug = debug;
     }
 
@@ -69,6 +75,7 @@ export class MapGenerator
         this._map.Modules = [];
         this._map.ServiceName = this._swagger['name'];
         this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.CliName = this._cliName;
         this._map.Namespace = this._swagger['namespace'].toLowerCase();
 
         for (var idx = 0; idx < this.Operations.length; idx++)
@@ -950,6 +957,7 @@ export class MapGenerator
     private _map: MapModuleGroup = null;
     private _swagger: any = null;
     private _adjustments: Adjustments;
+    private _cliName: string = null;
     private _index: number;
     private _examples: Example[];
     private _log: LogCallback;
