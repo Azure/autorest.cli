@@ -1,4 +1,6 @@
 ﻿import { CodeModelCli } from "./CodeModelCli"
+import { Indent, ToSnakeCase } from "./Helpers";
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
 
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
@@ -18,12 +20,56 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         for (let mi in methods)
         {
             // create, delete, list, show, update
-            let method = methods[mi];
+            let methodName = methods[mi];
 
             output.push("");
             output.push("");
-            output.push("def " + method + "_" + model.GetCliCommand().split(" ").join(" ") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
-            output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
+            output.push("def " + methodName + "_" + model.GetCliCommand().split(" ").join(" ") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
+            //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
+
+            let methodCall = "    return client." + model.ModuleOperationName +"." + ToSnakeCase(methodName) +  "(";
+
+            let method: ModuleMethod = model.GetMethod(methodName);
+
+            if (method != null)
+            {
+                for (var pi in method.RequiredOptions)
+                {
+                    var p = method.RequiredOptions[pi];
+                    var o: ModuleOption = null;
+        
+                    for (var i = 0; i < model.ModuleOptions.length; i++)
+                    {
+                        if (model.ModuleOptions[i].NameSwagger == p)
+                        {
+                            o = model.ModuleOptions[i];
+                            break;
+                        }
+                    }
+        
+                    let optionName: string = (o != null) ? o.NameAnsible : p;
+        
+                    // XXX - this is a hack, can we unhack it?
+                    if (optionName.endsWith("_parameters") || optionName == "parameters")
+                        optionName = "body";
+        
+                    if (methodCall.endsWith("("))
+                    {
+                        methodCall += /*ToSnakeCase(p) +*/ "=self." + optionName;
+                    }
+                    else
+                    {
+                        methodCall += ",";
+                        //output.push(methodCall);
+                        methodCall += /*indent + ToSnakeCase(p) + "=self."*/ + " " + optionName;
+                    }
+                }
+            }
+        
+            //account_name, database_name, schema_name, table_name)
+            //");
+            methodCall += ")";
+            output.push(methodCall); 
         }
     } while (model.NextModule());
 

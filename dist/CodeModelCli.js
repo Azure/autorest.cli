@@ -28,9 +28,14 @@ class CodeModelCli {
         let command = "";
         for (let i = 0; i < options.length; i++) {
             if (options[i].IdPortion != null && options[i].IdPortion.toLowerCase() != "resourcegroups") {
-                if (command != "")
+                if (command != "") {
                     command += " ";
-                command += options[i].IdPortion.toLowerCase();
+                    command += options[i].IdPortion.toLowerCase();
+                }
+                else {
+                    // override first part with CLI Name, for instance "service" -> "apimgmt"
+                    command += this.Map.CliName;
+                }
             }
         }
         return command;
