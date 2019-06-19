@@ -7,7 +7,7 @@ script:
 
   - git clone https://github.com/Azure/azure-rest-api-specs.git ~/azure-rest-api-specs
   - git clone https://audevbot:${GH_TOKEN}@github.com/audevbot/autorest.devops.debug.git ~/autorest.devops.debug
-  - git clone https://audevbot:${GH_TOKEN}@github.com/zikalino/magic-module-specs.git ~/magic-module-specs;
+  - git clone https://audevbot:${GH_TOKEN}@github.com/audevbot/magic-module-specs.git ~/magic-module-specs;
   - git clone https://github.com/vschina/magic-modules.git ~/magic-modules
   - echo $(pwd)
   - export CURRENT_PATH=$(pwd)
