@@ -10,7 +10,6 @@ export class MapGenerator
                         adjustments: Adjustments,
                         cliName: string,
                         examples: Example[],
-                        debug: boolean,
                         cb: LogCallback)
     {
         this._swagger = swagger;
@@ -19,7 +18,6 @@ export class MapGenerator
         this._log = cb
         this._adjustments = adjustments;
         this._cliName = cliName;
-        this._debug = debug;
     }
 
     private get ModuleName(): string
@@ -574,17 +572,24 @@ export class MapGenerator
                             isInfo: boolean): ModuleOption[]
     {
         var options: ModuleOption[] = [];
+        this._log("-- INSIDE MODEL OPTIONS");
 
         if (level < 5)
         {
+            this._log("-- LEVEL < 5");
+
             if (model != null)
             {
+                this._log("-- MODEL IS NOT NULL");
+
                 // include options from base model if one exists
                 if (model['baseModelType'] != undefined)
                 {
+                    this._log("-- BASE MODEL TYPE");
                     let baseModel = this.Type_Get(model['baseModelType']);
                     options = this.GetModelOptions(baseModel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                 }
+                this._log("-- MODEL PROPERTIES COUNT " + model.properties.length);
 
                 for (var attri in model.properties)
                 {
@@ -596,15 +601,12 @@ export class MapGenerator
                         flatten = true;
                     }
 
-                    if (this._debug)
-                    {
-                        this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw)
-            
-                        if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
-                            this._log("INCLUDED IN RESPONSE");
-                        if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
-                            this._log("EXCLUDED FROM RESPONSE");
-                    }
+                    this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw)
+        
+                    if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("INCLUDED IN RESPONSE");
+                    if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("EXCLUDED FROM RESPONSE");
             
                     let includeOverride: boolean = false;
                     let excludeOverride: boolean = false;
@@ -961,6 +963,5 @@ export class MapGenerator
     private _index: number;
     private _examples: Example[];
     private _log: LogCallback;
-    private _debug: boolean;
     private _modelCache: any = {};
 }

@@ -67,11 +67,13 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
         let swagger = JSON.parse(inputFiles[iif]);
         let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger);
         let examples = exampleProcessor.GetExamples();
-        let mapGenerator = new MapGenerator_1.MapGenerator(swagger, adjustmentsObject, cliName, examples, debug, function (msg) {
-            autoRestApi.Message({
-                Channel: "warning",
-                Text: msg
-            });
+        let mapGenerator = new MapGenerator_1.MapGenerator(swagger, adjustmentsObject, cliName, examples, function (msg) {
+            if (debug) {
+                autoRestApi.Message({
+                    Channel: "warning",
+                    Text: msg
+                });
+            }
         });
         let map = null;
         try {

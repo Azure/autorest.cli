@@ -3,7 +3,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("./Helpers");
 class MapGenerator {
-    constructor(swagger, adjustments, cliName, examples, debug, cb) {
+    constructor(swagger, adjustments, cliName, examples, cb) {
         this._namespace = "";
         this._map = null;
         this._swagger = null;
@@ -15,7 +15,6 @@ class MapGenerator {
         this._log = cb;
         this._adjustments = adjustments;
         this._cliName = cliName;
-        this._debug = debug;
     }
     get ModuleName() {
         let multi = (this.Operations.length > 1) ? this.Namespace : "";
@@ -392,26 +391,29 @@ class MapGenerator {
     }
     GetModelOptions(model, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo) {
         var options = [];
+        this._log("-- INSIDE MODEL OPTIONS");
         if (level < 5) {
+            this._log("-- LEVEL < 5");
             if (model != null) {
+                this._log("-- MODEL IS NOT NULL");
                 // include options from base model if one exists
                 if (model['baseModelType'] != undefined) {
+                    this._log("-- BASE MODEL TYPE");
                     let baseModel = this.Type_Get(model['baseModelType']);
                     options = this.GetModelOptions(baseModel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                 }
+                this._log("-- MODEL PROPERTIES COUNT " + model.properties.length);
                 for (var attri in model.properties) {
                     let attr = model.properties[attri];
                     let flatten = false;
                     if (attr['x-ms-client-flatten']) {
                         flatten = true;
                     }
-                    if (this._debug) {
-                        this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw);
-                        if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
-                            this._log("INCLUDED IN RESPONSE");
-                        if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
-                            this._log("EXCLUDED FROM RESPONSE");
-                    }
+                    this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw);
+                    if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("INCLUDED IN RESPONSE");
+                    if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("EXCLUDED FROM RESPONSE");
                     let includeOverride = false;
                     let excludeOverride = false;
                     // check if path wa explicitly excluded
