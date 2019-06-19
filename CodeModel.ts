@@ -351,7 +351,8 @@ export class CodeModel
 
             if (option == null)
             {
-                if (optionName == "parameters")
+                // this is a hack, how to solve it properly?
+                if (optionName.toLowerCase().endsWith("parameters"))
                 {
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleOption(optionName, "dict", false);
