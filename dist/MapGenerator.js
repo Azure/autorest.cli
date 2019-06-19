@@ -370,9 +370,12 @@ class MapGenerator {
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel));
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = p.documentation.raw;
+                        this._log("---------- " + p.documentation.raw);
                         options[p.name.raw] = suboption;
+                        this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
                         // these suboptions should all go to the body
                         suboptions.forEach(element => {
+                            this._log("---------- ADDING FLATTENED " + element.NameAnsible);
                             // XXX - just fixing it
                             element.DispositionSdk = "/"; //suboption.NameAlt;
                             element.DispositionRest = "/";
