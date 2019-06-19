@@ -85,6 +85,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 Text: "ERROR " + e.stack,
             });
         }
+        autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
         // flatten the map using flattener
         let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, debug, function (msg) {
             autoRestApi.Message({
