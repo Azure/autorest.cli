@@ -402,7 +402,12 @@ class MapGenerator {
                     let baseModel = this.Type_Get(model['baseModelType']);
                     options = this.GetModelOptions(baseModel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                 }
-                this._log("-- MODEL PROPERTIES COUNT " + model.properties.length);
+                if (model.properties != undefined) {
+                    this._log("-- MODEL PROPERTIES COUNT " + model.properties.length);
+                }
+                else {
+                    this._log("-- MODEL PROPERTIES UNDEFINED ");
+                }
                 for (var attri in model.properties) {
                     let attr = model.properties[attri];
                     let flatten = false;
