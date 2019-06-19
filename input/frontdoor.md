@@ -53,4 +53,5 @@ azureresourceschema:
   namespace: azure.mgmt.frontdoor
   package-name: azure-mgmt-frontdoor
   clear-output-folder: false
+  debug: true
 ```
