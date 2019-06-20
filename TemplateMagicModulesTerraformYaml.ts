@@ -5,5 +5,6 @@ export function GenerateMagicModulesTerraformYaml(model: CodeModel) : string[] {
     output.push("overrides: !ruby/object:Provider::ResourceOverrides");
     output.push("  " + model.ObjectName + ": !ruby/object:Provider::Azure::Terraform::ResourceOverride");
     output.push("    properties: {}");
+    output.push("");
     return output;
 }
