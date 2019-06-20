@@ -295,7 +295,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
 
         // [TODO] this is another hack which has to be resolved earlier
-        if (option.NameAnsible == "name")
+        if (option.NameAnsible == "name" && (sdkReferences.indexOf("'/name'") < 0))
         {
             sdkReferences += ", '/name'";
         }
