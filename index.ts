@@ -9,6 +9,8 @@ import { GenerateModuleSdkInfo } from "./obsolete/AnsibleModuleSdkInfo"
 import { GenerateModuleRest } from "./obsolete/AnsibleModuleRest"
 import { GenerateModuleRestInfo } from "./obsolete/AnsibleModuleRestInfo"
 import { GenerateMagicModulesInput } from "./TemplateMagicModulesInput"
+import { GenerateMagicModulesAnsibleYaml } from "./TemplateMagicModulesAnsibleYaml"
+import { GenerateMagicModulesTerraformYaml } from "./TemplateMagicModulesTerraformYaml"
 
 import { GenerateExampleAnsibleRest } from "./AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./AnsibleExample"
@@ -144,6 +146,8 @@ extension.Add("azureresourceschema", async autoRestApi => {
               if (mn != "batchaccount")
               {
                 autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
               }
             } else {
               autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));

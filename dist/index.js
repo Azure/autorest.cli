@@ -19,6 +19,8 @@ const AnsibleModuleSdkInfo_1 = require("./obsolete/AnsibleModuleSdkInfo");
 const AnsibleModuleRest_1 = require("./obsolete/AnsibleModuleRest");
 const AnsibleModuleRestInfo_1 = require("./obsolete/AnsibleModuleRestInfo");
 const TemplateMagicModulesInput_1 = require("./TemplateMagicModulesInput");
+const TemplateMagicModulesAnsibleYaml_1 = require("./TemplateMagicModulesAnsibleYaml");
+const TemplateMagicModulesTerraformYaml_1 = require("./TemplateMagicModulesTerraformYaml");
 const AnsibleExampleRest_1 = require("./AnsibleExampleRest");
 const AnsibleExample_1 = require("./AnsibleExample");
 const TemplateExamplePythonRest_1 = require("./TemplateExamplePythonRest");
@@ -124,6 +126,8 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         //if (mn == 'batchaccount') mn = "batchaccountxx";
                         if (mn != "batchaccount") {
                             autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                         }
                     }
                     else {
