@@ -31,10 +31,10 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
         output.push("    name_arg_type = CLIArgumentType(options_list=('--name', '-n'), metavar='NAME')");
         output.push("");
-        output.push("    with self.argument_context('" + model.GetCliCommand() + "') as c:");
-        output.push("        c.argument('tags', tags_type)");
-        output.push("        c.argument('location', validator=get_default_location_from_resource_group)");
-        output.push("        c.argument('" + model.GetCliCommand() + "_name', name_arg_type, options_list=['--name', '-n'])");
+        //output.push("    with self.argument_context('" + model.GetCliCommand() + "') as c:");
+        //output.push("        c.argument('tags', tags_type)");
+        //output.push("        c.argument('location', validator=get_default_location_from_resource_group)");
+        //output.push("        c.argument('" + model.GetCliCommand() + "_name', name_arg_type, options_list=['--name', '-n'])");
         
         let options: ModuleOption[] = model.ModuleOptions;
         let methods: string[] = model.GetCliCommandMethods();
@@ -54,7 +54,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         continue;
                 }
 
-                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None)");
+                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None," + o.Documentation + ")");
             }        
 
             output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
