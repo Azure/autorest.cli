@@ -94,6 +94,8 @@ function Indent(original) {
 }
 exports.Indent = Indent;
 function EscapeString(original) {
+    if (original == undefined)
+        return "undefined";
     original = original.split('\n').join(" ");
     original = original.split('\'').join("\\\'");
     return original;

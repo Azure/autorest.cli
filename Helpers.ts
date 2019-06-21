@@ -122,8 +122,8 @@ export function Indent(original: string): string
 
 export function EscapeString(original: string): string
 {
+    if (original == undefined) return "undefined";
     original = original.split('\n').join(" ");
     original = original.split('\'').join("\\\'");
-
     return original;
 }

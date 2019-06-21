@@ -122,6 +122,10 @@ export class CodeModelCli
             {
                 if (method != "create" && method != "update")
                     continue;
+
+                // XXX - hack -- resolve
+                if (o.NameAnsible == "name")
+                    continue;
             }
 
             let param = new CommandParameter();
