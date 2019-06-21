@@ -1,6 +1,6 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
 import { Example } from "./Example";
-import { Uncapitalize, Indent } from "./Helpers"
+import { Uncapitalize, PluralToSingular } from "./Helpers"
 import { throws } from "assert";
 
 export class CodeModelCli
@@ -39,7 +39,7 @@ export class CodeModelCli
                 if (command != "")
                 {
                     command += " ";
-                    command += options[i].IdPortion.toLowerCase();
+                    command += PluralToSingular(options[i].IdPortion.toLowerCase());
                 }
                 else
                 {
