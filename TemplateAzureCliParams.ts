@@ -1,5 +1,6 @@
-﻿import { CodeModelCli } from "./CodeModelCli"
+﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
 import { ModuleOption } from "./ModuleMap";
+import { EscapeString } from "./Helpers";
 
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     var output: string[] = [];
@@ -44,18 +45,23 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             output.push("");
             output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
 
-            for (let oi = 0; oi < options.length; oi++)
-            {
-                let o: ModuleOption = options[oi];
+            //for (let oi = 0; oi < options.length; oi++)
+            //{
+            //    let o: ModuleOption = options[oi];
 
-                if (o.IdPortion == null || o.IdPortion == "")
-                {
-                    if (method != "create" && method != "update")
-                        continue;
-                }
+            //    if (o.IdPortion == null || o.IdPortion == "")
+            //    {
+            //        if (method != "create" && method != "update")
+            //            continue;
+            //    }
 
-                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
-            }        
+            //    output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
+            //}        
+            let params: CommandParameter[] = model.GetCommandParameters(method);
+
+            params.forEach(element => {
+            output.push("        c.argument('" + element.Name + "', id_part=None, help='" + EscapeString(element.Help) + "')");
+        });
 
             output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
 

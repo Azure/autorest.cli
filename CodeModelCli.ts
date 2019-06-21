@@ -3,6 +3,14 @@ import { Example } from "./Example";
 import { Uncapitalize, PluralToSingular } from "./Helpers"
 import { throws } from "assert";
 
+export class CommandParameter
+{
+    public Name: string;
+    public Help: string;
+    public Required: boolean;
+    public Type: string;
+}
+
 export class CodeModelCli
 {
     public constructor(map: MapModuleGroup, moduleIdx: number)
@@ -98,6 +106,34 @@ export class CodeModelCli
         }
 
         return methods;
+    }
+
+    public GetCommandParameters(method: string): CommandParameter[]
+    {
+        let parameters: CommandParameter[] = [];
+        
+       
+        let options: ModuleOption[] = this.ModuleOptions;
+        for (let oi = 0; oi < options.length; oi++)
+        {
+            let o: ModuleOption = options[oi];
+
+            if (o.IdPortion == null || o.IdPortion == "")
+            {
+                if (method != "create" && method != "update")
+                    continue;
+            }
+
+            let param = new CommandParameter();
+            param.Name = o.NameAnsible;
+            param.Help = o.Documentation;
+            param.Required = (o.IdPortion != null || o.IdPortion != "");
+            param.Type = "default";
+
+            parameters.push(param);
+        }
+
+        return parameters;
     }
 
     //-----------------------------------------------------------------------------------------------------

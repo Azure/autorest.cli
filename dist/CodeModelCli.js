@@ -2,6 +2,9 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("./Helpers");
+class CommandParameter {
+}
+exports.CommandParameter = CommandParameter;
 class CodeModelCli {
     constructor(map, moduleIdx) {
         this._selectedModule = 0;
@@ -71,6 +74,24 @@ class CodeModelCli {
             }
         }
         return methods;
+    }
+    GetCommandParameters(method) {
+        let parameters = [];
+        let options = this.ModuleOptions;
+        for (let oi = 0; oi < options.length; oi++) {
+            let o = options[oi];
+            if (o.IdPortion == null || o.IdPortion == "") {
+                if (method != "create" && method != "update")
+                    continue;
+            }
+            let param = new CommandParameter();
+            param.Name = o.NameAnsible;
+            param.Help = o.Documentation;
+            param.Required = (o.IdPortion != null || o.IdPortion != "");
+            param.Type = "default";
+            parameters.push(param);
+        }
+        return parameters;
     }
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------

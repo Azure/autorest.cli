@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Helpers_1 = require("./Helpers");
 function GenerateAzureCliParams(model) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
@@ -35,14 +36,20 @@ function GenerateAzureCliParams(model) {
             let method = methods[mi];
             output.push("");
             output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
-            for (let oi = 0; oi < options.length; oi++) {
-                let o = options[oi];
-                if (o.IdPortion == null || o.IdPortion == "") {
-                    if (method != "create" && method != "update")
-                        continue;
-                }
-                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
-            }
+            //for (let oi = 0; oi < options.length; oi++)
+            //{
+            //    let o: ModuleOption = options[oi];
+            //    if (o.IdPortion == null || o.IdPortion == "")
+            //    {
+            //        if (method != "create" && method != "update")
+            //            continue;
+            //    }
+            //    output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
+            //}        
+            let params = model.GetCommandParameters(method);
+            params.forEach(element => {
+                output.push("        c.argument('" + element.Name + "', id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')");
+            });
             output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
             if (method != "create" && method != "update") {
                 output.push("        c.argument('rest_body', name_arg_type, id_part=None)");

@@ -17,8 +17,16 @@ function GenerateAzureCliCustom(model) {
             let methodName = methods[mi];
             output.push("");
             output.push("");
-            output.push("def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
+            let call = "def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(";
+            let indent = " ".repeat(call.length);
+            output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
+            let params = model.GetCommandParameters(methodName);
+            params.forEach(element => {
+                output[output.length - 1] += ",";
+                output.push(indent + element.Name + (element.Required ? "" : "=None"));
+            });
+            output[output.length - 1] += "):";
             let methodCall = "    return client." + model.ModuleOperationName + "." + Helpers_1.ToSnakeCase(methodName) + "(";
             let method = model.GetMethod(methodName);
             if (method != null) {

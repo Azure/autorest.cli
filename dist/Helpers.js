@@ -93,3 +93,9 @@ function Indent(original) {
     return " ".repeat(original.length);
 }
 exports.Indent = Indent;
+function EscapeString(original) {
+    original = original.split('\n').join(" ");
+    original = original.split('\'').join("\\\'");
+    return original;
+}
+exports.EscapeString = EscapeString;

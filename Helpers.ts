@@ -119,3 +119,11 @@ export function Indent(original: string): string
 {
     return " ".repeat(original.length);
 }
+
+export function EscapeString(original: string): string
+{
+    original = original.split('\n').join(" ");
+    original = original.split('\'').join("\\\'");
+
+    return original;
+}
