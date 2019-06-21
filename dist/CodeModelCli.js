@@ -98,7 +98,7 @@ class CodeModelCli {
             let param = new CommandParameter();
             param.Name = o.NameAnsible;
             param.Help = o.Documentation;
-            param.Required = (o.IdPortion != null || o.IdPortion != "");
+            param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
             parameters.push(param);
         }
