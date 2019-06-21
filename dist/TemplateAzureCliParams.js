@@ -23,7 +23,7 @@ function GenerateAzureCliParams(model) {
         //output.push("        c.argument('tags', tags_type)");
         //output.push("        c.argument('location', validator=get_default_location_from_resource_group)");
         //output.push("        c.argument('apimanagement_name', apimanagement_name_type, options_list=['--name', '-n'])");
-        output.push("        name_arg_type = CLIArgumentType(options_list=('--name', '-n'), metavar='NAME')");
+        output.push("    name_arg_type = CLIArgumentType(options_list=('--name', '-n'), metavar='NAME')");
         output.push("");
         output.push("    with self.argument_context('" + model.GetCliCommand() + "') as c:");
         output.push("        c.argument('tags', tags_type)");
