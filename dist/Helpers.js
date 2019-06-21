@@ -80,6 +80,9 @@ function PluralToSingular(name) {
     else if (name.endsWith("sses") || name.endsWith("uses")) {
         name = name.substring(0, name.length - 2);
     }
+    else if (name.toLowerCase() == "apis") {
+        name = name.substring(0, name.length - 1);
+    }
     else if (name.endsWith('s') && !name.endsWith("us") && !name.endsWith("ss") && !name.endsWith("is")) {
         name = name.substring(0, name.length - 1);
     }
