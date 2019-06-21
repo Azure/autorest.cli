@@ -22,13 +22,16 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("");
     do
     {
-        output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
         let methods: string[] = model.GetCliCommandMethods();
-        for (let mi in methods)
+        if (methods.length > 0)
         {
-            // create, delete, list, show, update
-            let method = methods[mi];
-            output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
+            for (let mi in methods)
+            {
+                // create, delete, list, show, update
+                let method = methods[mi];
+                output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+            }
         }
     } while (model.NextModule());
 

@@ -18,12 +18,14 @@ function GenerateAzureCliCommands(model) {
     output.push("");
     output.push("");
     do {
-        output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
         let methods = model.GetCliCommandMethods();
-        for (let mi in methods) {
-            // create, delete, list, show, update
-            let method = methods[mi];
-            output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+        if (methods.length > 0) {
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
+            for (let mi in methods) {
+                // create, delete, list, show, update
+                let method = methods[mi];
+                output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+            }
         }
     } while (model.NextModule());
     // RESOLVE ALL THESE CUSTOM / NOT CUSTOM / GENERIC THINGIES
