@@ -24,7 +24,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             output.push("");
             output.push("");
-            output.push("def " + methodName + "_" + model.GetCliCommand().split(" ").join(" ") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
+            output.push("def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
 
             let methodCall = "    return client." + model.ModuleOperationName +"." + ToSnakeCase(methodName) +  "(";
