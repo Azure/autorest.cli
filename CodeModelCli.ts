@@ -128,6 +128,16 @@ export class CodeModelCli
                     continue;
             }
 
+            let found: boolean = false;
+            parameters.forEach(element => {
+                if (element.Name == o.NameAnsible)
+                {
+                    found = true;
+                }
+            });
+
+            if (found) continue;
+
             let param = new CommandParameter();
             param.Name = o.NameAnsible;
             param.Help = o.Documentation;
