@@ -54,7 +54,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         continue;
                 }
 
-                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None," + o.Documentation + ")");
+                output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
             }        
 
             output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
