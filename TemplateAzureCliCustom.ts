@@ -63,13 +63,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         
                     if (methodCall.endsWith("("))
                     {
-                        methodCall += /*ToSnakeCase(p) +*/ "=self." + optionName;
+                        methodCall += optionName;
                     }
                     else
                     {
-                        methodCall += ",";
-                        //output.push(methodCall);
-                        methodCall += /*indent + ToSnakeCase(p) + "=self."*/ + " " + optionName;
+                        methodCall += ", " + optionName;
                     }
                 }
             }

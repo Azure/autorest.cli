@@ -43,12 +43,10 @@ function GenerateAzureCliCustom(model) {
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
                     if (methodCall.endsWith("(")) {
-                        methodCall += /*ToSnakeCase(p) +*/ "=self." + optionName;
+                        methodCall += optionName;
                     }
                     else {
-                        methodCall += ",";
-                        //output.push(methodCall);
-                        methodCall += /*indent + ToSnakeCase(p) + "=self."*/ +" " + optionName;
+                        methodCall += ", " + optionName;
                     }
                 }
             }
