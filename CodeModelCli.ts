@@ -128,6 +128,7 @@ export class CodeModelCli
                     continue;
             }
 
+            // XXX - this shouldn't be here, i don't understand why options are repeated
             let found: boolean = false;
             parameters.forEach(element => {
                 if (element.Name == o.NameAnsible)

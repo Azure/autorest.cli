@@ -5,8 +5,6 @@ import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
-    output.push("# ");
-
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");

@@ -87,6 +87,7 @@ class CodeModelCli {
                 if (o.NameAnsible == "name")
                     continue;
             }
+            // XXX - this shouldn't be here, i don't understand why options are repeated
             let found = false;
             parameters.forEach(element => {
                 if (element.Name == o.NameAnsible) {

@@ -30,6 +30,7 @@ const TemplateAzureCliCommands_1 = require("./TemplateAzureCliCommands");
 const TemplateAzureCliCustom_1 = require("./TemplateAzureCliCustom");
 const TemplateAzureCliHelp_1 = require("./TemplateAzureCliHelp");
 const TemplateAzureCliParams_1 = require("./TemplateAzureCliParams");
+const TemplateAzureCliClientFactory_1 = require("./TemplateAzureCliClientFactory");
 const ExampleProcessor_1 = require("./ExampleProcessor");
 const Adjustments_1 = require("./Adjustments");
 //
@@ -160,6 +161,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
             autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(new CodeModelCli_1.CodeModelCli(map, 0)).join('\r\n'));
             // write map after everything is done
             autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
         }
