@@ -187,7 +187,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
         autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(new CodeModelCli(map, 0)).join('\r\n'));
         autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(new CodeModelCli(map, 0)).join('\r\n'));
         autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(new CodeModelCli(map, 0)).join('\r\n'));
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliClientFactory(new CodeModelCli(map, 0)).join('\r\n'));
+        autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(new CodeModelCli(map, 0)).join('\r\n'));
 
         // write map after everything is done
         autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
