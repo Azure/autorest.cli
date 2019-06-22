@@ -1,7 +1,8 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
 import { Example } from "./Example";
-import { Uncapitalize, PluralToSingular } from "./Helpers"
+import { Uncapitalize, PluralToSingular, ToSnakeCase } from "./Helpers"
 import { throws } from "assert";
+import { METHODS } from "http";
 
 export class CommandParameter
 {
@@ -108,6 +109,48 @@ export class CodeModelCli
         return methods;
     }
 
+    public GetSdkMethodNames(name: string): string[]
+    {
+        let names: string[] = [];
+        let method: ModuleMethod  = null;
+        if (name == "create")
+        {
+            method = this.GetMethod("CreateOrUpdate");
+
+            if (method == null)
+            {
+                method = this.GetMethod('Create');
+            }
+        }
+        else if (name == "update")
+        {
+            method = this.GetMethod("CreateOrUpdate");
+
+            if (method == null)
+            {
+                method = this.GetMethod('Update');
+            }
+        }
+        else if (name == "show")
+        {
+            method = this.GetMethod('Get');
+        }
+        else if (name == "list")
+        {
+            // XXX - fix this
+            method = this.GetMethod('Get');
+        }
+        else if (name == "delete")
+        {
+            // XXX - fix this
+            method = this.GetMethod('Delete');
+        }
+
+        names.push(ToSnakeCase(method.Name));
+
+        return names;
+    }
+
     public GetCliMethod(name: string): ModuleMethod
     {
         let method: ModuleMethod  = null;
@@ -146,6 +189,8 @@ export class CodeModelCli
 
         return method;
     }
+
+
 
     public GetCommandParameters(method: string): CommandParameter[]
     {
