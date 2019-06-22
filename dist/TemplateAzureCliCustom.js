@@ -27,7 +27,7 @@ function GenerateAzureCliCustom(model) {
             });
             output[output.length - 1] += "):";
             let methodCall = "    return client." + model.ModuleOperationName + "." + Helpers_1.ToSnakeCase(methodName) + "(";
-            let method = model.GetMethod(methodName);
+            let method = model.GetCliMethod(methodName);
             if (method != null) {
                 for (var pi in method.RequiredOptions) {
                     var p = method.RequiredOptions[pi];

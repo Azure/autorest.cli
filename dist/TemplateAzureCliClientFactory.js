@@ -12,6 +12,7 @@ function GenerateAzureCliClientFactory(model) {
     output.push("    from azure.cli.core.commands.client_factory import get_mgmt_service_client");
     output.push("    from " + model.PythonNamespace + " import " + model.PythonMgmtClient);
     output.push("    return get_mgmt_service_client(cli_ctx, " + model.PythonMgmtClient + ")");
+    output.push("");
     return output;
 }
 exports.GenerateAzureCliClientFactory = GenerateAzureCliClientFactory;

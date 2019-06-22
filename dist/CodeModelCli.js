@@ -75,6 +75,33 @@ class CodeModelCli {
         }
         return methods;
     }
+    GetCliMethod(name) {
+        let method = null;
+        if (name == "create") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Create');
+            }
+        }
+        else if (name == "update") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Update');
+            }
+        }
+        else if (name == "show") {
+            method = this.GetMethod('Get');
+        }
+        else if (name == "list") {
+            // XXX - fix this
+            method = this.GetMethod('Get');
+        }
+        else if (name == "delete") {
+            // XXX - fix this
+            method = this.GetMethod('Delete');
+        }
+        return method;
+    }
     GetCommandParameters(method) {
         let parameters = [];
         let options = this.ModuleOptions;

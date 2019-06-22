@@ -37,7 +37,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             let methodCall = "    return client." + model.ModuleOperationName +"." + ToSnakeCase(methodName) +  "(";
 
-            let method: ModuleMethod = model.GetMethod(methodName);
+            let method: ModuleMethod = model.GetCliMethod(methodName);
 
             if (method != null)
             {
