@@ -25,19 +25,22 @@ function GenerateAzureCliCustom(model) {
                 output.push(indent + element.Name + (element.Required ? "" : "=None"));
             });
             output[output.length - 1] += "):";
-            // body transformation
-            output.push("    body={}");
-            params.forEach(element => {
-                let access = "    body";
-                if (element.Disposition.startsWith("/")) {
-                    element.Disposition.split("/").forEach(part => {
-                        if (part != "" && part != "*")
-                            access += ".get('" + part + "', {})";
-                    });
-                    access += "['" + element.NameSdk + "'] = " + element.NameSdk;
-                    output.push(access);
-                }
-            });
+            // create body transformation for methods that support it
+            if (methodName != "show" && methodName != "list" && methodName != "delete") {
+                // body transformation
+                output.push("    body={}");
+                params.forEach(element => {
+                    let access = "    body";
+                    if (element.Disposition.startsWith("/")) {
+                        element.Disposition.split("/").forEach(part => {
+                            if (part != "" && part != "*")
+                                access += ".get('" + part + "', {})";
+                        });
+                        access += "['" + element.NameSdk + "'] = " + element.NameSdk;
+                        output.push(access);
+                    }
+                });
+            }
             // call client & return value
             // XXX - this is still a hack
             let methodCall = "    return client." + model.ModuleOperationName + "." + model.GetSdkMethodNames(methodName)[0] + "(";

@@ -35,20 +35,23 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             });
             output[output.length - 1] += "):";  
 
-            // body transformation
-            output.push("    body={}");
-
-            params.forEach(element => {
-                let access = "    body"
-                if (element.Disposition.startsWith("/"))
-                {
-                    element.Disposition.split("/").forEach(part => {
-                        if (part != "" && part != "*") access += ".get('" + part + "', {})";
-                    });
-                    access += "['" + element.NameSdk + "'] = " + element.NameSdk;
-                    output.push(access);
-                }
-            });
+            // create body transformation for methods that support it
+            if (methodName != "show" && methodName != "list" && methodName != "delete")
+            {
+                // body transformation
+                output.push("    body={}");
+                params.forEach(element => {
+                    let access = "    body"
+                    if (element.Disposition.startsWith("/"))
+                    {
+                        element.Disposition.split("/").forEach(part => {
+                            if (part != "" && part != "*") access += ".get('" + part + "', {})";
+                        });
+                        access += "['" + element.NameSdk + "'] = " + element.NameSdk;
+                        output.push(access);
+                    }
+                });
+            }
 
             // call client & return value
             // XXX - this is still a hack
