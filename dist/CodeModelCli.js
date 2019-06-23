@@ -83,25 +83,32 @@ class CodeModelCli {
             if (method == null) {
                 method = this.GetMethod('Create');
             }
+            names.push(Helpers_1.ToSnakeCase(method.Name));
         }
         else if (name == "update") {
             method = this.GetMethod("CreateOrUpdate");
             if (method == null) {
                 method = this.GetMethod('Update');
             }
+            names.push(Helpers_1.ToSnakeCase(method.Name));
         }
         else if (name == "show") {
             method = this.GetMethod('Get');
+            names.push(Helpers_1.ToSnakeCase(method.Name));
         }
         else if (name == "list") {
-            // XXX - fix this
-            method = this.GetMethod('Get');
+            var m = this.Map.Modules[this._selectedModule];
+            for (var mi in m.Methods) {
+                let method = m.Methods[mi];
+                if (method.Name.startsWith("List"))
+                    names.push(Helpers_1.ToSnakeCase(method.Name));
+            }
         }
         else if (name == "delete") {
             // XXX - fix this
             method = this.GetMethod('Delete');
+            names.push(Helpers_1.ToSnakeCase(method.Name));
         }
-        names.push(Helpers_1.ToSnakeCase(method.Name));
         return names;
     }
     GetCliMethod(name) {
