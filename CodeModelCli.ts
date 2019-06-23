@@ -41,22 +41,22 @@ export class CodeModelCli
     public GetCliCommand(): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
-        let command = "";
+        let command = this.Map.CliName;
 
         for (let i = 0; i < options.length; i++)
         {
             if (options[i].IdPortion != null && options[i].IdPortion.toLowerCase() != "resourcegroups")
             {
-                if (command != "")
-                {
+                //if (command != "")
+                //{
                     command += " ";
                     command += PluralToSingular(options[i].IdPortion.toLowerCase());
-                }
-                else
-                {
-                    // override first part with CLI Name, for instance "service" -> "apimgmt"
-                    command += this.Map.CliName;
-                }
+                //}
+                //else
+                //{
+                //    // override first part with CLI Name, for instance "service" -> "apimgmt"
+                //    command += this.Map.CliName;
+                //}
             }
         }
 

@@ -28,17 +28,19 @@ class CodeModelCli {
     }
     GetCliCommand() {
         let options = this.Map.Modules[this._selectedModule].Options;
-        let command = "";
+        let command = this.Map.CliName;
         for (let i = 0; i < options.length; i++) {
             if (options[i].IdPortion != null && options[i].IdPortion.toLowerCase() != "resourcegroups") {
-                if (command != "") {
-                    command += " ";
-                    command += Helpers_1.PluralToSingular(options[i].IdPortion.toLowerCase());
-                }
-                else {
-                    // override first part with CLI Name, for instance "service" -> "apimgmt"
-                    command += this.Map.CliName;
-                }
+                //if (command != "")
+                //{
+                command += " ";
+                command += Helpers_1.PluralToSingular(options[i].IdPortion.toLowerCase());
+                //}
+                //else
+                //{
+                //    // override first part with CLI Name, for instance "service" -> "apimgmt"
+                //    command += this.Map.CliName;
+                //}
             }
         }
         return command;
