@@ -23,7 +23,11 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     do
     {
-        //output.push("    apimanagement_name_type = CLIArgumentType(options_list='--apimanagement-name-name', help='Name of the Apimanagement.', id_part='name')");
+        // this is a hack, as everything can be produced from main module now
+        if (model.ModuleName.endsWith("_info"))
+            continue;
+
+            //output.push("    apimanagement_name_type = CLIArgumentType(options_list='--apimanagement-name-name', help='Name of the Apimanagement.', id_part='name')");
         //output.push("");
         //output.push("    with self.argument_context('apimanagement') as c:");
         //output.push("        c.argument('tags', tags_type)");

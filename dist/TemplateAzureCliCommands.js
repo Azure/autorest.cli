@@ -18,6 +18,9 @@ function GenerateAzureCliCommands(model) {
     output.push("");
     output.push("");
     do {
+        // this is a hack, as everything can be produced from main module now
+        if (model.ModuleName.endsWith("_info"))
+            continue;
         let methods = model.GetCliCommandMethods();
         if (methods.length > 0) {
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");

@@ -12,6 +12,9 @@ function GenerateAzureCliHelp(model) {
     output.push("");
     output.push("");
     do {
+        // this is a hack, as everything can be produced from main module now
+        if (model.ModuleName.endsWith("_info"))
+            continue;
         output.push("");
         output.push("helps['" + model.GetCliCommand() + "'] = \"\"\"");
         output.push("    type: group");
