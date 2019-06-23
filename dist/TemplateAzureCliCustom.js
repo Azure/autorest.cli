@@ -14,7 +14,7 @@ function GenerateAzureCliCustom(model) {
             // create, delete, list, show, update
             let methodName = methods[mi];
             output.push("");
-            output.push("");
+            output.push("# module equivalent: " + model.ModuleName);
             let call = "def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(";
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");
