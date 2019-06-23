@@ -73,7 +73,7 @@ export class CodeModelCli
     public GetCliCommandMethods(): string[]
     {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
-        let methods: string[] = [];
+        let methods: Set<string> = new Set();
 
         for (let i = 0; i < restMethods.length; i++)
         {
@@ -81,34 +81,32 @@ export class CodeModelCli
             
             if (name == "CreateOrUpdate")
             {
-                methods.push("create");
+                methods.add("create");
+                methods.add("update")
             }
             else if (name == "Create")
             {
-                methods.push("create");
+                methods.add("create");
             }
             else if (name == "Update")
             {
-                methods.push("update");
+                methods.add("update");
             }
             else if (name == "Get")
             {
-                methods.push("show")
+                methods.add("show")
             }
             else if (name.startsWith("List"))
             {
-                if (methods.indexOf("list") < 0)
-                {
-                    methods.push("list");
-                }
+                methods.add("list");
             }
             else if (name == "Delete")
             {
-                methods.push("delete");
+                methods.add("delete");
             }
         }
 
-        return methods;
+        return Array.from(methods.values());
     }
 
     public GetSdkMethodNames(name: string): string[]
