@@ -75,6 +75,35 @@ class CodeModelCli {
         }
         return methods;
     }
+    GetSdkMethodNames(name) {
+        let names = [];
+        let method = null;
+        if (name == "create") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Create');
+            }
+        }
+        else if (name == "update") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Update');
+            }
+        }
+        else if (name == "show") {
+            method = this.GetMethod('Get');
+        }
+        else if (name == "list") {
+            // XXX - fix this
+            method = this.GetMethod('Get');
+        }
+        else if (name == "delete") {
+            // XXX - fix this
+            method = this.GetMethod('Delete');
+        }
+        names.push(Helpers_1.ToSnakeCase(method.Name));
+        return names;
+    }
     GetCliMethod(name) {
         let method = null;
         if (name == "create") {

@@ -1,6 +1,5 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Helpers_1 = require("./Helpers");
 function GenerateAzureCliCustom(model) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
@@ -26,7 +25,8 @@ function GenerateAzureCliCustom(model) {
                 output.push(indent + element.Name + (element.Required ? "" : "=None"));
             });
             output[output.length - 1] += "):";
-            let methodCall = "    return client." + model.ModuleOperationName + "." + Helpers_1.ToSnakeCase(methodName) + "(";
+            // XXX - this is still a hack
+            let methodCall = "    return client." + model.ModuleOperationName + "." + model.GetSdkMethodNames(methodName)[0] + "(";
             let method = model.GetCliMethod(methodName);
             if (method != null) {
                 for (var pi in method.RequiredOptions) {
@@ -39,14 +39,15 @@ function GenerateAzureCliCustom(model) {
                         }
                     }
                     let optionName = (o != null) ? o.NameAnsible : p;
+                    let sdkParameterName = (o != null) ? o.NamePythonSdk : p;
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
                     if (methodCall.endsWith("(")) {
-                        methodCall += optionName;
+                        methodCall += sdkParameterName + "=" + optionName;
                     }
                     else {
-                        methodCall += ", " + optionName;
+                        methodCall += ", " + sdkParameterName + "=" + optionName;
                     }
                 }
             }
