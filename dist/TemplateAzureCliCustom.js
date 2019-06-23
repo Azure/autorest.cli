@@ -29,10 +29,10 @@ function GenerateAzureCliCustom(model) {
             output.push("    body={}");
             params.forEach(element => {
                 let access = "    body";
-                if (!element.Disposition.startsWith("/")) {
+                if (element.Disposition.startsWith("/")) {
                     element.Disposition.split("/").forEach(part => {
-                        if (part != "")
-                            access += ".get('" + part + "', {}";
+                        if (part != "" && part != "*")
+                            access += ".get('" + part + "', {})";
                     });
                     access += "['" + element.NameSdk + "'] = " + element.NameSdk;
                     output.push(access);
