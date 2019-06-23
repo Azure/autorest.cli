@@ -10,6 +10,8 @@ export class CommandParameter
     public Help: string;
     public Required: boolean;
     public Type: string;
+    public Disposition: string;
+    public NameSdk: string;
 }
 
 export class CodeModelCli
@@ -190,8 +192,6 @@ export class CodeModelCli
         return method;
     }
 
-
-
     public GetCommandParameters(method: string): CommandParameter[]
     {
         let parameters: CommandParameter[] = [];
@@ -228,6 +228,8 @@ export class CodeModelCli
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
+            param.Disposition = o.DispositionSdk;
+            param.NameSdk = o.NamePythonSdk;
 
             parameters.push(param);
         }
