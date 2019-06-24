@@ -353,9 +353,9 @@ class MapGenerator {
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
                         if (p.location == "path") {
-                            let splittedId = m.url.split("/{" + p.name.raw + '}')[0];
+                            let splittedId = m.url.split("/{" + p.name.raw + '}');
                             if (splittedId.length == 2) {
-                                options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
+                                options[p.name.raw].IdPortion = splittedId[0].split('/').pop();
                             }
                             else {
                                 this._log("ERROR: COULDN'T EXTRACT ID PORTION");

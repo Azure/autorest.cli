@@ -514,11 +514,11 @@ export class MapGenerator
         
                         if (p.location == "path")
                         {
-                            let splittedId: string[] = m.url.split("/{" + p.name.raw + '}')[0];
+                            let splittedId: string[] = m.url.split("/{" + p.name.raw + '}');
 
                             if (splittedId.length == 2)
                             {
-                                options[p.name.raw].IdPortion = m.url.split("/{" + p.name.raw + '}')[0].split('/').pop();
+                                options[p.name.raw].IdPortion = splittedId[0].split('/').pop();
                             }
                             else
                             {
