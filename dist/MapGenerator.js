@@ -516,7 +516,7 @@ class MapGenerator {
         if (method != null) {
             for (var pi in method.parameters) {
                 let p = method.parameters[pi];
-                if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && (p.isRequired == true || !required)) {
+                if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && p.name.raw != "If-Match" && (p.isRequired == true || !required)) {
                     this._log(" ... parameter: " + p.name.raw + " - INCLUDED");
                     options.push(p.name.raw);
                 }

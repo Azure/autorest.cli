@@ -49,7 +49,17 @@ export class CodeModelCli
         while (partIdx < urlParts.length)
         {
             let part: string = urlParts[partIdx];
-            if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups" || urlParts[partIdx] == "providers")
+            
+            if (command == "")
+            {
+                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups")
+                {
+                    partIdx += 2;
+                    continue;
+                }
+            }
+            
+            if (urlParts[partIdx] == "providers")
             {
                 partIdx += 2;
                 continue;
