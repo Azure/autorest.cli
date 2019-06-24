@@ -29,18 +29,26 @@ class CodeModelCli {
     GetCliCommand() {
         let options = this.Map.Modules[this._selectedModule].Options;
         let command = this.Map.CliName;
-        for (let i = 0; i < options.length; i++) {
-            if (options[i].IdPortion != null && options[i].IdPortion.toLowerCase() != "resourcegroups") {
-                //if (command != "")
-                //{
+        // use URL of any method to create CLI command path
+        let urlParts = this.Map.Modules[this._selectedModule].Methods[0].Url.split('/');
+        let partIdx = 0;
+        while (partIdx < urlParts.length) {
+            let part = urlParts[partIdx];
+            if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups" || urlParts[partIdx] == "providers") {
+                partIdx += 2;
+                continue;
+            }
+            if (part.startsWith("{")) {
+                partIdx++;
+                continue;
+            }
+            if (command != "") {
                 command += " ";
-                command += Helpers_1.PluralToSingular(options[i].IdPortion.toLowerCase());
-                //}
-                //else
-                //{
-                //    // override first part with CLI Name, for instance "service" -> "apimgmt"
-                //    command += this.Map.CliName;
-                //}
+                command += Helpers_1.PluralToSingular(part.toLowerCase());
+            }
+            else {
+                // override first part with CLI Name, for instance "service" -> "apimgmt"
+                command += this.Map.CliName;
             }
         }
         return command;
