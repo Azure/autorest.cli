@@ -50,6 +50,7 @@ class CodeModelCli {
                 // override first part with CLI Name, for instance "service" -> "apimgmt"
                 command += this.Map.CliName;
             }
+            partIdx++;
         }
         return command;
     }
