@@ -55,7 +55,7 @@ export class CodeModelCli
                 continue;
             }
 
-            if (part.startsWith("{"))
+            if (part == "" || part.startsWith("{"))
             {
                 partIdx++;
                 continue;

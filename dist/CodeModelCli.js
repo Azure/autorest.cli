@@ -38,7 +38,7 @@ class CodeModelCli {
                 partIdx += 2;
                 continue;
             }
-            if (part.startsWith("{")) {
+            if (part == "" || part.startsWith("{")) {
                 partIdx++;
                 continue;
             }
