@@ -85,4 +85,5 @@ azureresourceschema:
   namespace: azure.mgmt.apimanagement
   package-name: azure-mgmt-apimanagement
   clear-output-folder: false
+  debug: true
 ```
