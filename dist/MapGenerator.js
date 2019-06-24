@@ -511,11 +511,16 @@ class MapGenerator {
     GetMethodOptionNames(methodName, required = true) {
         var options = [];
         var method = this.ModuleFindMethod(methodName);
+        this._log(" MODULE: " + this.ModuleName + ", METHOD: " + methodName);
         if (method != null) {
             for (var pi in method.parameters) {
                 let p = method.parameters[pi];
                 if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && (p.isRequired == true || !required)) {
+                    this._log(" ... parameter: " + p.name.raw + " - INCLUDED");
                     options.push(p.name.raw);
+                }
+                else {
+                    this._log(" ... parameter: " + p.name.raw + " - EXCLUDED");
                 }
             }
         }

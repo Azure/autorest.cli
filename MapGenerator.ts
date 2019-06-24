@@ -3,6 +3,7 @@ import { Example } from "./Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "./Helpers";
 import { LogCallback } from "./index";
 import { Adjustments } from "./Adjustments";
+import { throws } from "assert";
 
 export class MapGenerator
 {
@@ -741,6 +742,8 @@ export class MapGenerator
         var options: string[] = [];
         var method = this.ModuleFindMethod(methodName);
 
+        this._log(" MODULE: " + this.ModuleName + ", METHOD: " + methodName);
+
         if (method != null)
         {
             for (var pi in method.parameters)
@@ -748,7 +751,12 @@ export class MapGenerator
                 let p = method.parameters[pi];
                 if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && (p.isRequired == true || !required))
                 {
+                    this._log(" ... parameter: " + p.name.raw + " - INCLUDED");
                     options.push(p.name.raw);
+                }
+                else
+                {
+                    this._log(" ... parameter: " + p.name.raw + " - EXCLUDED");
                 }
             }
         }
