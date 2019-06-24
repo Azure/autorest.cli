@@ -523,6 +523,9 @@ export class MapGenerator
                             else
                             {
                                 this._log("ERROR: COULDN'T EXTRACT ID PORTION");
+                                splittedId.forEach(element => {
+                                    this._log(" ... part: " + element);
+                                });
                                 this._log(" ... {" + p.name.raw + "}");
                                 this._log(" ... " + m.url);
                             }
