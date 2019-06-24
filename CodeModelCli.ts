@@ -224,8 +224,7 @@ export class CodeModelCli
     public GetCommandParameters(method: string): CommandParameter[]
     {
         let parameters: CommandParameter[] = [];
-        
-       
+           
         let options: ModuleOption[] = this.ModuleOptions;
         for (let oi = 0; oi < options.length; oi++)
         {
@@ -237,6 +236,13 @@ export class CodeModelCli
                     continue;
 
                 // XXX - hack -- resolve
+                if (o.NameAnsible == "name")
+                    continue;
+            }
+
+            // when method is "list", we will skip "name" parameter
+            if (method == "list")
+            {
                 if (o.NameAnsible == "name")
                     continue;
             }

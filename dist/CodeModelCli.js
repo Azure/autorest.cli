@@ -166,6 +166,11 @@ class CodeModelCli {
                 if (o.NameAnsible == "name")
                     continue;
             }
+            // when method is "list", we will skip "name" parameter
+            if (method == "list") {
+                if (o.NameAnsible == "name")
+                    continue;
+            }
             // XXX - this shouldn't be here, i don't understand why options are repeated
             let found = false;
             parameters.forEach(element => {
