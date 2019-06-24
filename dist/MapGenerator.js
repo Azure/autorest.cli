@@ -512,6 +512,7 @@ class MapGenerator {
         var options = [];
         var method = this.ModuleFindMethod(methodName);
         this._log(" MODULE: " + this.ModuleName + ", METHOD: " + methodName);
+        this._log(" ... " + method.url);
         if (method != null) {
             for (var pi in method.parameters) {
                 let p = method.parameters[pi];
