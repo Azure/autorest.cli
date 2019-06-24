@@ -28,7 +28,7 @@ class CodeModelCli {
     }
     GetCliCommand() {
         let options = this.Map.Modules[this._selectedModule].Options;
-        let command = this.Map.CliName;
+        let command = "";
         // use URL of any method to create CLI command path
         let urlParts = this.Map.Modules[this._selectedModule].Methods[0].Url.split('/');
         let partIdx = 0;
