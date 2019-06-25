@@ -160,8 +160,6 @@ export class CodeModelCli
         ctx.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
 
-        this._log(" CREATING CONTEXT: " + JSON.stringify(methods));
-
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method: CommandMethod = new CommandMethod();
@@ -176,20 +174,20 @@ export class CodeModelCli
                         parameter = p;
                 });
 
-                if (parameter == null)
-                {
-                    this._log(" ADDING PARAMETER: " + o.NameAnsible)
-                    parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible;
-                    parameter.Help = o.Documentation;
-                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = "default";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    parameter.RequiredCount = 1;
-                    ctx.Parameters.push(parameter);
-                }
-                method.Parameters.push(parameter);        
+                //if (parameter == null)
+                //{
+                //    this._log(" ADDING PARAMETER: " + o.NameAnsible)
+                //    parameter = new CommandParameter();
+                //    parameter.Name = o.NameAnsible;
+                //    parameter.Help = o.Documentation;
+                //    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                //    parameter.Type = "default";
+                //    parameter.Disposition = o.DispositionSdk;
+                //    parameter.NameSdk = o.NamePythonSdk;
+                //    parameter.RequiredCount = 1;
+                //    ctx.Parameters.push(parameter);
+                //}
+                //method.Parameters.push(parameter);        
             });
             ctx.Methods.push(method);
         });

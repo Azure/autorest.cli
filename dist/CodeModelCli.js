@@ -106,7 +106,6 @@ class CodeModelCli {
         ctx.Methods = [];
         ctx.Parameters = [];
         let methods = this.GetSwaggerMethodNames(name);
-        this._log(" CREATING CONTEXT: " + JSON.stringify(methods));
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
@@ -119,19 +118,20 @@ class CodeModelCli {
                     if (p.Name == o.NameAnsible)
                         parameter = p;
                 });
-                if (parameter == null) {
-                    this._log(" ADDING PARAMETER: " + o.NameAnsible);
-                    parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible;
-                    parameter.Help = o.Documentation;
-                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = "default";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    parameter.RequiredCount = 1;
-                    ctx.Parameters.push(parameter);
-                }
-                method.Parameters.push(parameter);
+                //if (parameter == null)
+                //{
+                //    this._log(" ADDING PARAMETER: " + o.NameAnsible)
+                //    parameter = new CommandParameter();
+                //    parameter.Name = o.NameAnsible;
+                //    parameter.Help = o.Documentation;
+                //    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                //    parameter.Type = "default";
+                //    parameter.Disposition = o.DispositionSdk;
+                //    parameter.NameSdk = o.NamePythonSdk;
+                //    parameter.RequiredCount = 1;
+                //    ctx.Parameters.push(parameter);
+                //}
+                //method.Parameters.push(parameter);        
             });
             ctx.Methods.push(method);
         });
