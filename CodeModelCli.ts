@@ -164,7 +164,7 @@ export class CodeModelCli
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method: CommandMethod = new CommandMethod();
-            method.Name = mm;
+            method.Name = ToSnakeCase(mm);
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;
