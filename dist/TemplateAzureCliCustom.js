@@ -53,46 +53,59 @@ function GenerateAzureCliCustom(model) {
                     }
                 });
             }
-            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
+            /*
+            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
+            {
                 let prefix = "    ";
-                if (ctx.Methods.length > 1) {
+                if (ctx.Methods.length > 1)
+                {
                     let ifStatement = prefix;
                     prefix += "    ";
-                    if (methodIdx < ctx.Methods.length - 1) {
+
+                    if (methodIdx < ctx.Methods.length - 1)
+                    {
                         ifStatement += (methodIdx = 0) ? "if" : "elif";
-                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+                        {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None";
+                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None"
                         }
                         ifStatement += ":";
                     }
-                    else {
-                        ifStatement += "else:";
+                    else
+                    {
+                        ifStatement += "else:"
                     }
                     output.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
-                let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
-                for (var pi in ctx.Methods[methodIdx].Parameters) {
+                let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+
+                for (var pi in ctx.Methods[methodIdx].Parameters)
+                {
+        
                     let p = ctx.Methods[methodIdx].Parameters[pi];
                     let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
-                    if (methodCall.endsWith("(")) {
+        
+                    if (methodCall.endsWith("("))
+                    {
                         methodCall += p.NameSdk + "=" + optionName;
                     }
-                    else {
+                    else
+                    {
                         methodCall += ", " + p.NameSdk + "=" + optionName;
                     }
                 }
+            
                 //account_name, database_name, schema_name, table_name)
                 //");
                 methodCall += ")";
                 output.push(methodCall);
-            }
-            ;
+            };*/
         }
     } while (model.NextModule());
     //def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):
