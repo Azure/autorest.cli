@@ -49,7 +49,13 @@ function GenerateAzureCliParams(model) {
             //    }
             //    output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
             //}        
-            let params = model.GetCommandParameters(method);
+            let params = null;
+            if (method != "list") {
+                model.GetCommandParameters(method);
+            }
+            else {
+                model.GetAggregatedCommandParameters(method);
+            }
             params.forEach(element => {
                 output.push("        c.argument('" + element.Name + "', id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')");
             });

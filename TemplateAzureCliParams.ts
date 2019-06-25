@@ -61,7 +61,16 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
             //    output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
             //}        
-            let params: CommandParameter[] = model.GetCommandParameters(method);
+            let params: CommandParameter[] = null;
+            
+            if (method != "list")
+            {
+                model.GetCommandParameters(method);
+            }
+            else
+            {
+                model.GetAggregatedCommandParameters(method);
+            }
 
             params.forEach(element => {
             output.push("        c.argument('" + element.Name + "', id_part=None, help='" + EscapeString(element.Help) + "')");

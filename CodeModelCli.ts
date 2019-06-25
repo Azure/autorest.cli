@@ -661,18 +661,14 @@ export class CodeModelCli
         let methodOptionNames: string[] = (required? this.GetMethodRequiredOptionNames(methodName) : this.GetMethodOptionNames(methodName));
         let moduleOptions: ModuleOption[] = [];
 
-        this._log("  NAMES: " + JSON.stringify(methodOptionNames));
-
         for (let optionNameIdx in methodOptionNames)
         {
             let optionName = methodOptionNames[optionNameIdx];
             let option = null;
             for (let optionIdx in this.ModuleOptions)
             {
-                this._log("  CHECKING " + optionName);
                 if (this.ModuleOptions[optionIdx].NameSwagger == optionName)
                 {
-                    this._log("  FOUND");
                     option = this.ModuleOptions[optionIdx];
                     break;
                 }
