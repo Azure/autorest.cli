@@ -131,8 +131,44 @@ class CodeModelCli {
         }
         return names;
     }
+    GetSwaggerMethodNames(name) {
+        let names = [];
+        let method = null;
+        if (name == "create") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Create');
+            }
+            names.push(method.Name);
+        }
+        else if (name == "update") {
+            method = this.GetMethod("CreateOrUpdate");
+            if (method == null) {
+                method = this.GetMethod('Update');
+            }
+            names.push(method.Name);
+        }
+        else if (name == "show") {
+            method = this.GetMethod('Get');
+            names.push(method.Name);
+        }
+        else if (name == "list") {
+            var m = this.Map.Modules[this._selectedModule];
+            for (var mi in m.Methods) {
+                let method = m.Methods[mi];
+                if (method.Name.startsWith("List"))
+                    names.push(method.Name);
+            }
+        }
+        else if (name == "delete") {
+            // XXX - fix this
+            method = this.GetMethod('Delete');
+            names.push(method.Name);
+        }
+        return names;
+    }
     GetSdkMethods(name) {
-        let methodNames = this.GetSdkMethodNames(name);
+        let methodNames = this.GetSwaggerMethodNames(name);
         let methods = [];
         methodNames.forEach(element => {
             methods.push(this.GetMethod(element));
@@ -142,7 +178,7 @@ class CodeModelCli {
     // this is for list methods
     GetAggregatedCommandParameters(method) {
         let parameters = [];
-        let methods = this.GetSdkMethodNames(method);
+        let methods = this.GetSwaggerMethodNames(method);
         this._log("--------- GETTING AGGREGATED COMMAND PARAMS");
         this._log(JSON.stringify(methods));
         methods.forEach(m => {

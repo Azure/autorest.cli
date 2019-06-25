@@ -190,9 +190,58 @@ export class CodeModelCli
         return names;
     }
 
+    public GetSwaggerMethodNames(name: string): string[]
+    {
+        let names: string[] = [];
+        let method: ModuleMethod  = null;
+        if (name == "create")
+        {
+            method = this.GetMethod("CreateOrUpdate");
+
+            if (method == null)
+            {
+                method = this.GetMethod('Create');
+            }
+            names.push(method.Name);
+        }
+        else if (name == "update")
+        {
+            method = this.GetMethod("CreateOrUpdate");
+
+            if (method == null)
+            {
+                method = this.GetMethod('Update');
+            }
+            names.push(method.Name);
+        }
+        else if (name == "show")
+        {
+            method = this.GetMethod('Get');
+            names.push(method.Name);
+        }
+        else if (name == "list")
+        {
+            var m = this.Map.Modules[this._selectedModule];
+            for (var mi in m.Methods)
+            {
+                let method = m.Methods[mi];
+                if (method.Name.startsWith("List"))
+                    names.push(method.Name);
+            }
+        }
+        else if (name == "delete")
+        {
+            // XXX - fix this
+            method = this.GetMethod('Delete');
+            names.push(method.Name);
+        }
+
+        return names;
+    }
+
     public GetSdkMethods(name: string): ModuleMethod[]
     {
-        let methodNames: string[] = this.GetSdkMethodNames(name);
+        let methodNames: string[] = this.GetSwaggerMethodNames(name);
         let methods: ModuleMethod[] = [];
 
         methodNames.forEach(element => {
@@ -206,7 +255,7 @@ export class CodeModelCli
     public GetAggregatedCommandParameters(method: string): CommandParameter[]
     {
         let parameters: CommandParameter[] = [];
-        let methods: string[] = this.GetSdkMethodNames(method);
+        let methods: string[] = this.GetSwaggerMethodNames(method);
 
         this._log("--------- GETTING AGGREGATED COMMAND PARAMS");
         this._log(JSON.stringify(methods));
