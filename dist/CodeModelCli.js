@@ -102,6 +102,7 @@ class CodeModelCli {
         return Array.from(methods.values());
     }
     GetCliCommandContext(name) {
+        this._log(" CREATING CONTEXT -- " + name);
         let ctx = new CommandContext();
         ctx.Methods = [];
         ctx.Parameters = [];

@@ -155,6 +155,7 @@ export class CodeModelCli
 
     public GetCliCommandContext(name: string): CommandContext
     {
+        this._log(" CREATING CONTEXT -- " + name);
         let ctx = new CommandContext();
         ctx.Methods = [];
         ctx.Parameters = [];
