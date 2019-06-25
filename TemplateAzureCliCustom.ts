@@ -68,7 +68,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 });
             }
 
-            
+            /*
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
             {
                 let prefix = "    ";
@@ -95,7 +95,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 }
                 // call client & return value
                 // XXX - this is still a hack
-/*
                 let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
 
                 for (var pi in ctx.Methods[methodIdx].Parameters)
@@ -120,9 +119,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 //account_name, database_name, schema_name, table_name)
                 //");
                 methodCall += ")";
-                output.push(methodCall);
-*/
-            };
+                output.push(methodCall); 
+            };*/
         }
     } while (model.NextModule());
 
