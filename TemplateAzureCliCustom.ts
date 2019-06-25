@@ -105,8 +105,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 // call client & return value
                 // XXX - this is still a hack
                 */
-               let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
-               for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+                let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
                 {
                     output.push(" --- PARAM: " + ctx.Methods[methodIdx].Parameters[paramIdx].Name)
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
