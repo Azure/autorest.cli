@@ -106,6 +106,7 @@ class CodeModelCli {
         ctx.Methods = [];
         ctx.Parameters = [];
         let methods = this.GetSwaggerMethodNames(name);
+        this._log(" CREATING CONTEXT: " + JSON.stringify(methods));
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
@@ -119,6 +120,7 @@ class CodeModelCli {
                         parameter = p;
                 });
                 if (parameter == null) {
+                    this._log(" ADDING PARAMETER: " + o.NameAnsible);
                     parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
@@ -131,6 +133,7 @@ class CodeModelCli {
                 }
                 method.Parameters.push(parameter);
             });
+            ctx.Methods.push(method);
         });
         // sort methods by number of parameters
         ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);

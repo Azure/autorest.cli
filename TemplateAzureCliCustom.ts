@@ -31,7 +31,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
 
-            let params: CommandParameter[] = [];
             
             //if (methodName != "list")
             //{
@@ -43,8 +42,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             //}
 
             let ctx = model.GetCliCommandContext(methodName);
-
-            ctx.Parameters.forEach(element => {
+            let params: CommandParameter[] = ctx.Parameters;
+ 
+            params.forEach(element => {
                 output[output.length - 1] += ",";  
                 output.push(indent + element.Name + (element.Required ? "": "=None"));
             });
