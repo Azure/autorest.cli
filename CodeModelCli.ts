@@ -12,6 +12,7 @@ export class CommandParameter
     public Type: string;
     public Disposition: string;
     public NameSdk: string;
+    public RequiredCount: number;
 }
 
 export class CodeModelCli
@@ -182,43 +183,54 @@ export class CodeModelCli
         return names;
     }
 
-    public GetCliMethod(name: string): ModuleMethod
+    public GetSdkMethods(name: string): ModuleMethod[]
     {
-        let method: ModuleMethod  = null;
-        if (name == "create")
-        {
-            method = this.GetMethod("CreateOrUpdate");
+        let methodNames: string[] = this.GetSdkMethodNames(name);
+        let methods: ModuleMethod[] = [];
 
-            if (method == null)
-            {
-                method = this.GetMethod('Create');
-            }
-        }
-        else if (name == "update")
-        {
-            method = this.GetMethod("CreateOrUpdate");
+        methodNames.forEach(element => {
+            methods.push(this.GetMethod(element));
+        });
 
-            if (method == null)
-            {
-                method = this.GetMethod('Update');
-            }
-        }
-        else if (name == "show")
-        {
-            method = this.GetMethod('Get');
-        }
-        else if (name == "list")
-        {
-            // XXX - fix this
-            method = this.GetMethod('Get');
-        }
-        else if (name == "delete")
-        {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
-        }
+        return methods;
+    }
 
-        return method;
+    // this is for list methods
+    public GetAggregatedCommandParameters(method: string): CommandParameter[]
+    {
+        let parameters: CommandParameter[] = [];
+        let methods: string[] = this.GetSdkMethodNames(method);
+
+        methods.forEach(m => {
+            let options = this.GetMethodOptions(m, false);
+
+            options.forEach(o => {
+                let parameter: CommandParameter = null;
+                // check if already in parameters
+                parameters.forEach(p => {
+                    if (p.Name == o.NameAnsible)
+                    {
+                        parameter = p;
+                        parameter.RequiredCount++;
+                    }
+                });
+
+                if (parameter == null)
+                {
+                    let parameter = new CommandParameter();
+                    parameter.Name = o.NameAnsible;
+                    parameter.Help = o.Documentation;
+                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                    parameter.Type = "default";
+                    parameter.Disposition = o.DispositionSdk;
+                    parameter.NameSdk = o.NamePythonSdk;
+                    parameter.RequiredCount = 1;
+                    parameters.push(parameter);        
+                }
+            });
+        });
+
+        return parameters;
     }
 
     public GetCommandParameters(method: string): CommandParameter[]

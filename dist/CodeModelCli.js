@@ -127,32 +127,43 @@ class CodeModelCli {
         }
         return names;
     }
-    GetCliMethod(name) {
-        let method = null;
-        if (name == "create") {
-            method = this.GetMethod("CreateOrUpdate");
-            if (method == null) {
-                method = this.GetMethod('Create');
-            }
-        }
-        else if (name == "update") {
-            method = this.GetMethod("CreateOrUpdate");
-            if (method == null) {
-                method = this.GetMethod('Update');
-            }
-        }
-        else if (name == "show") {
-            method = this.GetMethod('Get');
-        }
-        else if (name == "list") {
-            // XXX - fix this
-            method = this.GetMethod('Get');
-        }
-        else if (name == "delete") {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
-        }
-        return method;
+    GetSdkMethods(name) {
+        let methodNames = this.GetSdkMethodNames(name);
+        let methods = [];
+        methodNames.forEach(element => {
+            methods.push(this.GetMethod(element));
+        });
+        return methods;
+    }
+    // this is for list methods
+    GetAggregatedCommandParameters(method) {
+        let parameters = [];
+        let methods = this.GetSdkMethodNames(method);
+        methods.forEach(m => {
+            let options = this.GetMethodOptions(m, false);
+            options.forEach(o => {
+                let parameter = null;
+                // check if already in parameters
+                parameters.forEach(p => {
+                    if (p.Name == o.NameAnsible) {
+                        parameter = p;
+                        parameter.RequiredCount++;
+                    }
+                });
+                if (parameter == null) {
+                    let parameter = new CommandParameter();
+                    parameter.Name = o.NameAnsible;
+                    parameter.Help = o.Documentation;
+                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                    parameter.Type = "default";
+                    parameter.Disposition = o.DispositionSdk;
+                    parameter.NameSdk = o.NamePythonSdk;
+                    parameter.RequiredCount = 1;
+                    parameters.push(parameter);
+                }
+            });
+        });
+        return parameters;
     }
     GetCommandParameters(method) {
         let parameters = [];

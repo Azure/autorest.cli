@@ -31,7 +31,16 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
 
-            let params: CommandParameter[] = model.GetCommandParameters(methodName);
+            let params: CommandParameter[] = [];
+            
+            if (methodName != "list")
+            {
+                params = model.GetCommandParameters(methodName);
+            }
+            else
+            {
+                params = model.GetAggregatedCommandParameters(methodName);
+            }
 
             params.forEach(element => {
                 output[output.length - 1] += ",";  
@@ -61,13 +70,13 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             // XXX - this is still a hack
             let methodCall = "    return client." + model.ModuleOperationName +"." + model.GetSdkMethodNames(methodName)[0] +  "(";
 
-            let method: ModuleMethod = model.GetCliMethod(methodName);
+            let sdkMethods: ModuleMethod[] = model.GetSdkMethods(methodName);
 
-            if (method != null)
+            if (sdkMethods.length > 0)
             {
-                for (var pi in method.RequiredOptions)
+                for (var pi in sdkMethods[0].RequiredOptions)
                 {
-                    var p = method.RequiredOptions[pi];
+                    var p = sdkMethods[0].RequiredOptions[pi];
                     var o: ModuleOption = null;
         
                     for (var i = 0; i < model.ModuleOptions.length; i++)

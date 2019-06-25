@@ -22,7 +22,13 @@ function GenerateAzureCliCustom(model) {
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
-            let params = model.GetCommandParameters(methodName);
+            let params = [];
+            if (methodName != "list") {
+                params = model.GetCommandParameters(methodName);
+            }
+            else {
+                params = model.GetAggregatedCommandParameters(methodName);
+            }
             params.forEach(element => {
                 output[output.length - 1] += ",";
                 output.push(indent + element.Name + (element.Required ? "" : "=None"));
@@ -47,10 +53,10 @@ function GenerateAzureCliCustom(model) {
             // call client & return value
             // XXX - this is still a hack
             let methodCall = "    return client." + model.ModuleOperationName + "." + model.GetSdkMethodNames(methodName)[0] + "(";
-            let method = model.GetCliMethod(methodName);
-            if (method != null) {
-                for (var pi in method.RequiredOptions) {
-                    var p = method.RequiredOptions[pi];
+            let sdkMethods = model.GetSdkMethods(methodName);
+            if (sdkMethods.length > 0) {
+                for (var pi in sdkMethods[0].RequiredOptions) {
+                    var p = sdkMethods[0].RequiredOptions[pi];
                     var o = null;
                     for (var i = 0; i < model.ModuleOptions.length; i++) {
                         if (model.ModuleOptions[i].NameSwagger == p) {
