@@ -68,6 +68,14 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 });
             }
 
+            output.push(" METHODS: "+ ctx.Methods.length);
+            for (let i = 0; i < ctx.Methods.length; i++)
+            {
+                output.push(" METHOD PARAM COUNT: "+ ctx.Methods[i].Parameters.length);
+            }
+
+
+            /*
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
             {
                 let prefix = "    ";
@@ -120,6 +128,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 methodCall += ")";
                 //output.push(methodCall); 
             };
+            */
         }
     } while (model.NextModule());
 
