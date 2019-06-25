@@ -158,28 +158,26 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 }
                 index++;
             }
-            if (cliName == "apimgmt") {
-                debug = true;
-                let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, function (msg) {
-                    if (debug) {
-                        autoRestApi.Message({
-                            Channel: "warning",
-                            Text: msg
-                        });
-                    }
-                });
-                autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", TemplateAzureCliHelp_1.GenerateAzureCliHelp(modelCli).join('\r\n'));
-                modelCli.Reset();
-                autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(modelCli).join('\r\n'));
-                modelCli.Reset();
-                autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(modelCli).join('\r\n'));
-                modelCli.Reset();
-                autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(modelCli).join('\r\n'));
-                modelCli.Reset();
-                autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(modelCli).join('\r\n'));
-                // write map after everything is done
-                autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
-            }
+            debug = true;
+            let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, function (msg) {
+                if (debug) {
+                    autoRestApi.Message({
+                        Channel: "warning",
+                        Text: msg
+                    });
+                }
+            });
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", TemplateAzureCliHelp_1.GenerateAzureCliHelp(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", TemplateAzureCliParams_1.GenerateAzureCliParams(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", TemplateAzureCliCommands_1.GenerateAzureCliCommands(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+            // write map after everything is done
+            autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
         }
     }
 }));
