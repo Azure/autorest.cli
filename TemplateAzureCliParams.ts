@@ -65,11 +65,11 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             
             if (method != "list")
             {
-                model.GetCommandParameters(method);
+                params = model.GetCommandParameters(method);
             }
             else
             {
-                model.GetAggregatedCommandParameters(method);
+                params = model.GetAggregatedCommandParameters(method);
             }
 
             params.forEach(element => {
