@@ -107,36 +107,36 @@ class CodeModelCli {
         ctx.Parameters = [];
         let methods = this.GetSwaggerMethodNames(name);
         methods.forEach(mm => {
-            let options = this.GetMethodOptions(mm, false);
+            //let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
             method.Name = mm;
             method.Parameters = [];
-            options.forEach(o => {
-                let parameter = null;
-                // first find if parameter was already added
-                ctx.Parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible)
-                        parameter = p;
-                });
-                //if (parameter == null)
-                //{
-                //    this._log(" ADDING PARAMETER: " + o.NameAnsible)
-                //    parameter = new CommandParameter();
-                //    parameter.Name = o.NameAnsible;
-                //    parameter.Help = o.Documentation;
-                //    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                //    parameter.Type = "default";
-                //    parameter.Disposition = o.DispositionSdk;
-                //    parameter.NameSdk = o.NamePythonSdk;
-                //    parameter.RequiredCount = 1;
-                //    ctx.Parameters.push(parameter);
-                //}
-                //method.Parameters.push(parameter);        
-            });
+            //options.forEach(o => {
+            //    let parameter = null;
+            // first find if parameter was already added
+            //    ctx.Parameters.forEach(p => {
+            //        if (p.Name == o.NameAnsible)
+            //            parameter = p;
+            //    });
+            //if (parameter == null)
+            //{
+            //    this._log(" ADDING PARAMETER: " + o.NameAnsible)
+            //    parameter = new CommandParameter();
+            //    parameter.Name = o.NameAnsible;
+            //    parameter.Help = o.Documentation;
+            //    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+            //    parameter.Type = "default";
+            //    parameter.Disposition = o.DispositionSdk;
+            //    parameter.NameSdk = o.NamePythonSdk;
+            //    parameter.RequiredCount = 1;
+            //    ctx.Parameters.push(parameter);
+            //}
+            //method.Parameters.push(parameter);        
+            //});
             ctx.Methods.push(method);
         });
         // sort methods by number of parameters
-        ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
+        //ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
         return ctx;
     }
     GetSdkMethodNames(name) {
