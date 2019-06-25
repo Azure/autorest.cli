@@ -184,28 +184,31 @@ extension.Add("azureresourceschema", async autoRestApi => {
           index++;
         }
 
-        debug = true;
-        let modelCli = new CodeModelCli(map, 0, function(msg: string) {
-          if (debug) {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: msg
-            });
-          }
-        })
+        if (cliName == "apimgmt")
+        {
+          debug = true;
+          let modelCli = new CodeModelCli(map, 0, function(msg: string) {
+            if (debug) {
+              autoRestApi.Message({
+                Channel: "warning",
+                Text: msg
+              });
+            }
+          })
 
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", GenerateAzureCliHelp(modelCli).join('\r\n'));
-        modelCli.Reset();
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(modelCli).join('\r\n'));
-        modelCli.Reset();
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(modelCli).join('\r\n'));
-        modelCli.Reset();
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
-        modelCli.Reset();
-        autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", GenerateAzureCliHelp(modelCli).join('\r\n'));
+          modelCli.Reset();
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(modelCli).join('\r\n'));
+          modelCli.Reset();
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(modelCli).join('\r\n'));
+          modelCli.Reset();
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
+          modelCli.Reset();
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
 
-        // write map after everything is done
-        autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
+          // write map after everything is done
+          autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
+        }
       }
   }
 });
