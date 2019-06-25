@@ -6,7 +6,7 @@ class CommandParameter {
 }
 exports.CommandParameter = CommandParameter;
 class CodeModelCli {
-    constructor(map, moduleIdx) {
+    constructor(map, moduleIdx, cb) {
         this._selectedModule = 0;
         this.ModuleResourceGroupName = "resource_group";
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -15,6 +15,10 @@ class CodeModelCli {
         this.Map = null;
         this.Map = map;
         this._selectedModule = moduleIdx;
+        this._log = cb;
+    }
+    Reset() {
+        this._selectedModule = 0;
     }
     NextModule() {
         if (this._selectedModule < this.Map.Modules.length - 1) {
@@ -139,8 +143,11 @@ class CodeModelCli {
     GetAggregatedCommandParameters(method) {
         let parameters = [];
         let methods = this.GetSdkMethodNames(method);
+        this._log("--------- GETTING AGGREGATED COMMAND PARAMS");
+        this._log(JSON.stringify(methods));
         methods.forEach(m => {
             let options = this.GetMethodOptions(m, false);
+            this._log(" NUMBER OF OPTIONS IN " + m + ": " + options.length);
             options.forEach(o => {
                 let parameter = null;
                 // check if already in parameters
@@ -151,7 +158,8 @@ class CodeModelCli {
                     }
                 });
                 if (parameter == null) {
-                    let parameter = new CommandParameter();
+                    this._log(" PARAMETER IS NULL - ATTACHING");
+                    parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");

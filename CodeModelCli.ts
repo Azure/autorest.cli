@@ -3,6 +3,8 @@ import { Example } from "./Example";
 import { Uncapitalize, PluralToSingular, ToSnakeCase } from "./Helpers"
 import { throws } from "assert";
 import { METHODS } from "http";
+import { LogCallback } from "./index";
+import { stringify } from "querystring";
 
 export class CommandParameter
 {
@@ -17,12 +19,17 @@ export class CommandParameter
 
 export class CodeModelCli
 {
-    public constructor(map: MapModuleGroup, moduleIdx: number)
+    public constructor(map: MapModuleGroup, moduleIdx: number, cb: LogCallback)
     {
         this.Map = map;
         this._selectedModule = moduleIdx;
+        this._log = cb;
     }
 
+    public Reset()
+    {
+        this._selectedModule = 0;
+    }
     public NextModule(): boolean
     {
         if (this._selectedModule < this.Map.Modules.length - 1)
@@ -201,8 +208,11 @@ export class CodeModelCli
         let parameters: CommandParameter[] = [];
         let methods: string[] = this.GetSdkMethodNames(method);
 
+        this._log("--------- GETTING AGGREGATED COMMAND PARAMS");
+        this._log(JSON.stringify(methods));
         methods.forEach(m => {
             let options = this.GetMethodOptions(m, false);
+            this._log(" NUMBER OF OPTIONS IN " + m + ": " + options.length);
 
             options.forEach(o => {
                 let parameter: CommandParameter = null;
@@ -217,7 +227,8 @@ export class CodeModelCli
 
                 if (parameter == null)
                 {
-                    let parameter = new CommandParameter();
+                    this._log(" PARAMETER IS NULL - ATTACHING");
+                    parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
@@ -809,4 +820,6 @@ export class CodeModelCli
 
         return statements;
     }
+
+    private _log: LogCallback;
 }
