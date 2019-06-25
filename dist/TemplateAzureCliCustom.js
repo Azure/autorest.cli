@@ -69,7 +69,7 @@ function GenerateAzureCliCustom(model) {
                     else {
                         ifStatement += "else:";
                     }
-                    //output.push(ifStatement);
+                    output.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
