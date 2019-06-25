@@ -17,6 +17,18 @@ export class CommandParameter
     public RequiredCount: number;
 }
 
+export class CommandMethod
+{
+    public Name: string;
+    public Parameters: CommandParameter[];
+}
+
+export class CommandContext
+{
+    public Parameters: CommandParameter[];
+    public Methods: CommandMethod[];
+}
+
 export class CodeModelCli
 {
     public constructor(map: MapModuleGroup, moduleIdx: number, cb: LogCallback)
@@ -141,6 +153,49 @@ export class CodeModelCli
         return Array.from(methods.values());
     }
 
+    public GetCliCommandContext(name: string): CommandContext
+    {
+        let ctx = new CommandContext();
+        ctx.Methods = [];
+        ctx.Parameters = [];
+        let methods: string[] = this.GetSwaggerMethodNames(name);
+
+        methods.forEach(mm => {
+            let options = this.GetMethodOptions(mm, false);
+            let method: CommandMethod = new CommandMethod();
+            method.Name = mm;
+            method.Parameters = [];
+            options.forEach(o => {
+                let parameter = null;
+
+                // first find if parameter was already added
+                ctx.Parameters.forEach(p => {
+                    if (p.Name == o.NameAnsible)
+                        parameter = p;
+                });
+
+                if (parameter == null)
+                {
+                    parameter = new CommandParameter();
+                    parameter.Name = o.NameAnsible;
+                    parameter.Help = o.Documentation;
+                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                    parameter.Type = "default";
+                    parameter.Disposition = o.DispositionSdk;
+                    parameter.NameSdk = o.NamePythonSdk;
+                    parameter.RequiredCount = 1;
+                    ctx.Parameters.push(parameter);
+                }
+                method.Parameters.push(parameter);        
+            });
+        });
+
+        // sort methods by number of parameters
+        ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
+
+        return ctx;
+    }
+  
     public GetSdkMethodNames(name: string): string[]
     {
         let names: string[] = [];

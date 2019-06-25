@@ -23,13 +23,16 @@ function GenerateAzureCliCustom(model) {
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
             let params = [];
-            if (methodName != "list") {
-                params = model.GetCommandParameters(methodName);
-            }
-            else {
-                params = model.GetAggregatedCommandParameters(methodName);
-            }
-            params.forEach(element => {
+            //if (methodName != "list")
+            //{
+            //    params = model.GetCommandParameters(methodName);
+            //}
+            //else
+            //{
+            //    params = model.GetAggregatedCommandParameters(methodName);
+            //}
+            let ctx = model.GetCliCommandContext(methodName);
+            ctx.Parameters.forEach(element => {
                 output[output.length - 1] += ",";
                 output.push(indent + element.Name + (element.Required ? "" : "=None"));
             });
@@ -50,38 +53,46 @@ function GenerateAzureCliCustom(model) {
                     }
                 });
             }
-            // call client & return value
-            // XXX - this is still a hack
-            let methodCall = "    return client." + model.ModuleOperationName + "." + model.GetSdkMethodNames(methodName)[0] + "(";
-            let sdkMethods = model.GetSdkMethods(methodName);
-            // XXX -hack
-            if (sdkMethods.length > 0 && sdkMethods[0] != null) {
-                for (var pi in sdkMethods[0].RequiredOptions) {
-                    var p = sdkMethods[0].RequiredOptions[pi];
-                    var o = null;
-                    for (var i = 0; i < model.ModuleOptions.length; i++) {
-                        if (model.ModuleOptions[i].NameSwagger == p) {
-                            o = model.ModuleOptions[i];
-                            break;
+            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
+                let prefix = "    ";
+                if (ctx.Methods.length > 1) {
+                    let ifStatement = prefix;
+                    prefix += "    ";
+                    if (methodIdx < ctx.Methods.length - 1) {
+                        ifStatement += (methodIdx = 0) ? "if" : "elif";
+                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+                            ifStatement += (paramIdx == 0) ? "" : " and";
+                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None";
                         }
+                        ifStatement += ":";
                     }
-                    let optionName = (o != null) ? o.NameAnsible : p;
-                    let sdkParameterName = (o != null) ? o.NamePythonSdk : p;
+                    else {
+                        ifStatement += "else:";
+                    }
+                    output.push(ifStatement);
+                }
+                // call client & return value
+                // XXX - this is still a hack
+                let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
+                for (var pi in ctx.Methods[methodIdx].Parameters) {
+                    let p = ctx.Methods[methodIdx].Parameters[pi];
+                    let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
                     if (methodCall.endsWith("(")) {
-                        methodCall += sdkParameterName + "=" + optionName;
+                        methodCall += p.NameSdk + "=" + optionName;
                     }
                     else {
-                        methodCall += ", " + sdkParameterName + "=" + optionName;
+                        methodCall += ", " + p.NameSdk + "=" + optionName;
                     }
                 }
+                //account_name, database_name, schema_name, table_name)
+                //");
+                methodCall += ")";
+                output.push(methodCall);
             }
-            //account_name, database_name, schema_name, table_name)
-            //");
-            methodCall += ")";
-            output.push(methodCall);
+            ;
         }
     } while (model.NextModule());
     //def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):
