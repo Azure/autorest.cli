@@ -53,41 +53,28 @@ function GenerateAzureCliCustom(model) {
                     }
                 });
             }
-            output.push(" METHODS: " + ctx.Methods.length);
-            for (let i = 0; i < ctx.Methods.length; i++) {
-                output.push(" METHOD PARAM COUNT: " + ctx.Methods[i].Parameters.length);
-            }
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
-                output.push(" --- METHOD: " + ctx.Methods[methodIdx].Name);
                 let prefix = "    ";
-                /*
-                if (ctx.Methods.length > 1)
-                {
+                if (ctx.Methods.length > 1) {
                     let ifStatement = prefix;
                     prefix += "    ";
-
-                    if (methodIdx < ctx.Methods.length - 1)
-                    {
-                        ifStatement += (methodIdx = 0) ? "if" : "elif";
-                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
-                        {
+                    if (methodIdx < ctx.Methods.length - 1) {
+                        ifStatement += (methodIdx == 0) ? "if" : "elif";
+                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None"
+                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None";
                         }
                         ifStatement += ":";
                     }
-                    else
-                    {
-                        ifStatement += "else:"
+                    else {
+                        ifStatement += "else:";
                     }
                     //output.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
-                */
                 let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
                 for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
-                    output.push(" --- PARAM: " + ctx.Methods[methodIdx].Parameters[paramIdx].Name);
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
                     let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
