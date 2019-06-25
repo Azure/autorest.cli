@@ -57,9 +57,9 @@ function GenerateAzureCliCustom(model) {
             for (let i = 0; i < ctx.Methods.length; i++) {
                 output.push(" METHOD PARAM COUNT: " + ctx.Methods[i].Parameters.length);
             }
-            /*
-            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
-            {
+            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
+                output.push(" --- METHOD: " + ctx.Methods[methodIdx].Name);
+                /*
                 let prefix = "    ";
                 if (ctx.Methods.length > 1)
                 {
@@ -85,10 +85,10 @@ function GenerateAzureCliCustom(model) {
                 // call client & return value
                 // XXX - this is still a hack
                 let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
-
-                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
-                {
-
+                */
+                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+                    output.push(" --- PARAM: " + ctx.Methods[methodIdx].Parameters[paramIdx].Name);
+                    /*
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
                     let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
@@ -103,14 +103,14 @@ function GenerateAzureCliCustom(model) {
                     {
                         methodCall += ", " + p.NameSdk + "=" + optionName;
                     }
+                    */
                 }
-            
                 //account_name, database_name, schema_name, table_name)
                 //");
-                methodCall += ")";
-                //output.push(methodCall);
-            };
-            */
+                //methodCall += ")";
+                //output.push(methodCall); 
+            }
+            ;
         }
     } while (model.NextModule());
     //def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):

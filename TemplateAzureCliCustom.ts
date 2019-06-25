@@ -75,9 +75,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             }
 
 
-            /*
+            
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
             {
+                output.push(" --- METHOD: " + ctx.Methods[methodIdx].Name)
+                /*
                 let prefix = "    ";
                 if (ctx.Methods.length > 1)
                 {
@@ -103,10 +105,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 // call client & return value
                 // XXX - this is still a hack
                 let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
-
+                */
                 for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
                 {
-
+                    output.push(" --- PARAM: " + ctx.Methods[methodIdx].Parameters[paramIdx].Name)
+                    /*
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
                     let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
@@ -121,14 +124,15 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                     {
                         methodCall += ", " + p.NameSdk + "=" + optionName;
                     }
+                    */
                 }
             
                 //account_name, database_name, schema_name, table_name)
                 //");
-                methodCall += ")";
+                //methodCall += ")";
                 //output.push(methodCall); 
             };
-            */
+            
         }
     } while (model.NextModule());
 
