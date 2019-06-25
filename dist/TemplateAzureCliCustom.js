@@ -74,8 +74,8 @@ function GenerateAzureCliCustom(model) {
                 // call client & return value
                 // XXX - this is still a hack
                 let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
-                for (var pi in ctx.Methods[methodIdx].Parameters) {
-                    let p = ctx.Methods[methodIdx].Parameters[pi];
+                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+                    let p = ctx.Methods[methodIdx].Parameters[paramIdx];
                     let optionName = p.Name;
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
