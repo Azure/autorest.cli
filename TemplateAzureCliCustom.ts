@@ -72,7 +72,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             let sdkMethods: ModuleMethod[] = model.GetSdkMethods(methodName);
 
-            if (sdkMethods.length > 0)
+            // XXX -hack
+            if (sdkMethods.length > 0 && sdkMethods[0] != null)
             {
                 for (var pi in sdkMethods[0].RequiredOptions)
                 {

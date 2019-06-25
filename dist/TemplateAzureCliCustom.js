@@ -54,7 +54,8 @@ function GenerateAzureCliCustom(model) {
             // XXX - this is still a hack
             let methodCall = "    return client." + model.ModuleOperationName + "." + model.GetSdkMethodNames(methodName)[0] + "(";
             let sdkMethods = model.GetSdkMethods(methodName);
-            if (sdkMethods.length > 0) {
+            // XXX -hack
+            if (sdkMethods.length > 0 && sdkMethods[0] != null) {
                 for (var pi in sdkMethods[0].RequiredOptions) {
                     var p = sdkMethods[0].RequiredOptions[pi];
                     var o = null;
