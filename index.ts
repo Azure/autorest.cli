@@ -67,6 +67,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
 
   for (var iif in inputFiles)
   {
+    debug = false;
     autoRestApi.Message({
       Channel: "warning",
       Text: "URI: " + inputFileUris[iif]
@@ -183,6 +184,7 @@ extension.Add("azureresourceschema", async autoRestApi => {
           index++;
         }
 
+        debug = true;
         let modelCli = new CodeModelCli(map, 0, function(msg: string) {
           if (debug) {
             autoRestApi.Message({

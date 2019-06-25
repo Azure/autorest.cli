@@ -63,6 +63,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
     //  Text: "AutoRest offers the following input files: "  + inputFileUris.join("\n"),
     //});
     for (var iif in inputFiles) {
+        debug = false;
         autoRestApi.Message({
             Channel: "warning",
             Text: "URI: " + inputFileUris[iif]
@@ -157,6 +158,7 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                 }
                 index++;
             }
+            debug = true;
             let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, function (msg) {
                 if (debug) {
                     autoRestApi.Message({
