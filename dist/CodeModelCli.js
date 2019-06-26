@@ -102,7 +102,6 @@ class CodeModelCli {
         return Array.from(methods.values());
     }
     GetCliCommandContext(name) {
-        this._log(" CREATING CONTEXT -- " + name);
         let ctx = new CommandContext();
         ctx.Methods = [];
         ctx.Parameters = [];
@@ -120,7 +119,6 @@ class CodeModelCli {
                         parameter = p;
                 });
                 if (parameter == null) {
-                    this._log(" ADDING PARAMETER: " + o.NameAnsible);
                     parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
@@ -137,6 +135,23 @@ class CodeModelCli {
         });
         // sort methods by number of parameters
         ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
+        // this should be probably done when there's body
+        if (name == "create" || name == "udpate") {
+            // now add all the options that are not parameters
+            let options = this.ModuleOptions;
+            options.forEach(o => {
+                if (o.DispositionSdk.startsWith("/")) {
+                    let parameter = new CommandParameter();
+                    parameter.Name = o.NameAnsible;
+                    parameter.Help = o.Documentation;
+                    parameter.Required = false;
+                    parameter.Type = "body";
+                    parameter.Disposition = o.DispositionSdk;
+                    parameter.NameSdk = o.NamePythonSdk;
+                    ctx.Parameters.push(parameter);
+                }
+            });
+        }
         return ctx;
     }
     GetSdkMethodNames(name) {
