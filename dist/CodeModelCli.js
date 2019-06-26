@@ -140,15 +140,18 @@ class CodeModelCli {
             // now add all the options that are not parameters
             let options = this.ModuleOptions;
             options.forEach(o => {
-                if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/")) {
-                    let parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible;
-                    parameter.Help = o.Documentation;
-                    parameter.Required = false;
-                    parameter.Type = "body";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    ctx.Parameters.push(parameter);
+                // empty dictionaries are placeholders
+                if (!(o.Type == "dict" && o.SubOptions.length == 0)) {
+                    if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/")) {
+                        let parameter = new CommandParameter();
+                        parameter.Name = o.NameAnsible;
+                        parameter.Help = o.Documentation;
+                        parameter.Required = false;
+                        parameter.Type = "body";
+                        parameter.Disposition = o.DispositionSdk;
+                        parameter.NameSdk = o.NamePythonSdk;
+                        ctx.Parameters.push(parameter);
+                    }
                 }
             });
         }
