@@ -86,4 +86,6 @@ azureresourceschema:
   package-name: azure-mgmt-apimanagement
   clear-output-folder: false
   debug: true
+  adjustments:
+    "/sku": "Sku*"
 ```

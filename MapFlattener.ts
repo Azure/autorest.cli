@@ -69,6 +69,7 @@ export class MapFlattener
                 let flatten: any = this._flatten.GetFlatten(optionPath);
                 if (flatten != "")
                 {
+                    // all the suboptions of current option will be attached at the end
                     if (this._debug) this._log("flattener: found path - " + optionPath);
 
                     if (flatten == "hide")
@@ -98,10 +99,12 @@ export class MapFlattener
                                 if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
                                 dispositionSdk = dispositionParts.join('/');
 
-                                let newName = flatten.split("/")[0];
+                                let newName: string = flatten.split("/")[0];
 
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+
+                                newName = newName.replace("*", suboptions[si].NameSwagger);
 
                                 suboptions[si].NameAnsible = ToSnakeCase(newName);
                                 suboptions[si].NameSwagger = newName;
