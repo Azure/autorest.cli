@@ -72,14 +72,14 @@ class MapFlattener {
                                     dispositionParts[0] = suboptions[si].NamePythonSdk;
                                 dispositionSdk = dispositionParts.join('/');
                                 let newName = flatten.split("/")[0];
-                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
-                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+                                dispositionRest = (option.DispositionRest == "/" ? "/" : "") + option.NameSwagger + "/" + dispositionRest;
+                                dispositionSdk = (option.DispositionSdk == "/" ? "/" : "") + option.NamePythonSdk + "/" + dispositionSdk;
                                 newName = newName.replace("*", Helpers_1.Capitalize(suboptions[si].NameSwagger));
                                 suboptions[si].NameAnsible = Helpers_1.ToSnakeCase(newName);
-                                suboptions[si].NameSwagger = newName;
+                                suboptions[si].NameSwagger = Helpers_1.Uncapitalize(newName);
                                 //suboptions[si].NameGoSdk = newName;
                                 //suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = newName;
+                                suboptions[si].NameTerraform = Helpers_1.Uncapitalize(newName);
                             }
                             else if (flatten == "*/") {
                                 let dispositionParts = dispositionRest.split('/');

@@ -1,7 +1,7 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
 import { LogCallback } from "./index"
 import { Adjustments } from "./Adjustments";
-import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize } from "./Helpers";
+import { ToSnakeCase, Capitalize, Uncapitalize } from "./Helpers";
 
 export class MapFlattener
 {
@@ -101,16 +101,18 @@ export class MapFlattener
 
                                 let newName: string = flatten.split("/")[0];
 
-                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
-                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
+                                dispositionRest = (option.DispositionRest == "/" ? "/" : "") + option.NameSwagger + "/" + dispositionRest;
+                                dispositionSdk = (option.DispositionSdk == "/" ? "/" : "") + option.NamePythonSdk + "/" + dispositionSdk;
+
+                                
 
                                 newName = newName.replace("*", Capitalize(suboptions[si].NameSwagger));
 
                                 suboptions[si].NameAnsible = ToSnakeCase(newName);
-                                suboptions[si].NameSwagger = newName;
+                                suboptions[si].NameSwagger = Uncapitalize(newName);
                                 //suboptions[si].NameGoSdk = newName;
                                 //suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = newName;
+                                suboptions[si].NameTerraform = Uncapitalize(newName);
                             }
                             else if (flatten == "*/")
                             {
