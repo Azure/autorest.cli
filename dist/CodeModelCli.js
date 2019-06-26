@@ -140,7 +140,7 @@ class CodeModelCli {
             // now add all the options that are not parameters
             let options = this.ModuleOptions;
             options.forEach(o => {
-                if (o.DispositionSdk.startsWith("/")) {
+                if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/")) {
                     let parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;

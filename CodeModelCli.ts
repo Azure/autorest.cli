@@ -201,7 +201,7 @@ export class CodeModelCli
             let options: ModuleOption[] = this.ModuleOptions;
 
             options.forEach(o => {
-                if (o.DispositionSdk.startsWith("/"))
+                if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/"))
                 {
                     let parameter = new CommandParameter();
                     parameter.Name = o.NameAnsible;
