@@ -33,8 +33,10 @@ function GenerateAzureCliCustom(model) {
             let ctx = model.GetCliCommandContext(methodName);
             let params = ctx.Parameters;
             params.forEach(element => {
-                output[output.length - 1] += ",";
-                output.push(indent + element.Name + (element.Required ? "" : "=None"));
+                if (element.Type != "body") {
+                    output[output.length - 1] += ",";
+                    output.push(indent + element.Name + (element.Required ? "" : "=None"));
+                }
             });
             output[output.length - 1] += "):";
             // create body transformation for methods that support it

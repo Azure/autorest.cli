@@ -45,8 +45,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             let params: CommandParameter[] = ctx.Parameters;
  
             params.forEach(element => {
-                output[output.length - 1] += ",";  
-                output.push(indent + element.Name + (element.Required ? "": "=None"));
+                if (element.Type != "body")
+                {
+                    output[output.length - 1] += ",";  
+                    output.push(indent + element.Name + (element.Required ? "": "=None"));
+                }
             });
             output[output.length - 1] += "):";  
 

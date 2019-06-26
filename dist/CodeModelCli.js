@@ -123,7 +123,7 @@ class CodeModelCli {
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = "default";
+                    parameter.Type = (o.Type != "dict") ? "default" : "body";
                     parameter.Disposition = o.DispositionSdk;
                     parameter.NameSdk = o.NamePythonSdk;
                     parameter.RequiredCount = 1;
