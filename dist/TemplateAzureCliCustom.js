@@ -33,7 +33,7 @@ function GenerateAzureCliCustom(model) {
             let ctx = model.GetCliCommandContext(methodName);
             let params = ctx.Parameters;
             params.forEach(element => {
-                if (element.Type != "body") {
+                if (element.Type != "placeholder") {
                     output[output.length - 1] += ",";
                     output.push(indent + element.Name + (element.Required ? "" : "=None"));
                 }
