@@ -136,21 +136,29 @@ class CodeModelCli {
         // sort methods by number of parameters
         ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
         // this should be probably done when there's body
-        if (name == "create" || name == "udpate") {
+        if (name == "create" || name == "update") {
             // now add all the options that are not parameters
             let options = this.ModuleOptions;
             options.forEach(o => {
                 // empty dictionaries are placeholders
                 if (!(o.Type == "dict" && o.SubOptions.length == 0)) {
                     if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/")) {
-                        let parameter = new CommandParameter();
-                        parameter.Name = o.NameAnsible;
-                        parameter.Help = o.Documentation;
-                        parameter.Required = false;
-                        parameter.Type = "body";
-                        parameter.Disposition = o.DispositionSdk;
-                        parameter.NameSdk = o.NamePythonSdk;
-                        ctx.Parameters.push(parameter);
+                        let parameter = null;
+                        // make sure it's not duplicated
+                        ctx.Parameters.forEach(p => {
+                            if (p.Name == o.NameAnsible)
+                                parameter = p;
+                        });
+                        if (parameter == null) {
+                            parameter = new CommandParameter();
+                            parameter.Name = o.NameAnsible;
+                            parameter.Help = o.Documentation;
+                            parameter.Required = false;
+                            parameter.Type = "body";
+                            parameter.Disposition = o.DispositionSdk;
+                            parameter.NameSdk = o.NamePythonSdk;
+                            ctx.Parameters.push(parameter);
+                        }
                     }
                 }
             });
