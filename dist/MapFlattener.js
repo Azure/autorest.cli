@@ -74,7 +74,7 @@ class MapFlattener {
                                 let newName = flatten.split("/")[0];
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
-                                newName = newName.replace("*", suboptions[si].NameSwagger);
+                                newName = newName.replace("*", Helpers_1.Capitalize(suboptions[si].NameSwagger));
                                 suboptions[si].NameAnsible = Helpers_1.ToSnakeCase(newName);
                                 suboptions[si].NameSwagger = newName;
                                 //suboptions[si].NameGoSdk = newName;

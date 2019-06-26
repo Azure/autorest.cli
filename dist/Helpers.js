@@ -8,7 +8,7 @@ function ToSnakeCase(v) {
 }
 exports.ToSnakeCase = ToSnakeCase;
 function Capitalize(v) {
-    return v.charAt(0).toUpperCase() + v.toLowerCase().slice(1);
+    return v.charAt(0).toUpperCase() + v.slice(1);
 }
 exports.Capitalize = Capitalize;
 function Uncapitalize(v) {

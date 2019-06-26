@@ -11,7 +11,7 @@ export function ToSnakeCase(v: string)
 }
 
 export function Capitalize(v: string) {
-    return v.charAt(0).toUpperCase() + v.toLowerCase().slice(1);
+    return v.charAt(0).toUpperCase() + v.slice(1);
 }
 
 export function Uncapitalize(v: string) {

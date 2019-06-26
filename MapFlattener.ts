@@ -1,7 +1,7 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
 import { LogCallback } from "./index"
 import { Adjustments } from "./Adjustments";
-import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "./Helpers";
+import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize } from "./Helpers";
 
 export class MapFlattener
 {
@@ -104,7 +104,7 @@ export class MapFlattener
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
 
-                                newName = newName.replace("*", suboptions[si].NameSwagger);
+                                newName = newName.replace("*", Capitalize(suboptions[si].NameSwagger));
 
                                 suboptions[si].NameAnsible = ToSnakeCase(newName);
                                 suboptions[si].NameSwagger = newName;
