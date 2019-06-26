@@ -87,5 +87,5 @@ azureresourceschema:
   clear-output-folder: false
   debug: true
   adjustments:
-    "/sku": "Sku*"
+    "/sku": "Sku*/"
 ```
