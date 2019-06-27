@@ -82,13 +82,13 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         });
                         access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = ";
 
-                        if (element.Type != "dict")
+                        if (element.Type != "dict" && element.Type != "list")
                         {
                             access += element.Name + " # " + element.Type;
                         }
                         else
                         {
-                            access += "json.parse(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name
+                            access += "json.loads(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name
                         }
 
                         output.push(access);

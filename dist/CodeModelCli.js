@@ -154,7 +154,7 @@ class CodeModelCli {
                             parameter.Name = o.NameAnsible;
                             parameter.Help = o.Documentation;
                             parameter.Required = false;
-                            parameter.Type = o.Type;
+                            parameter.Type = (o.IsList) ? "list" : o.Type;
                             parameter.Disposition = o.DispositionSdk;
                             parameter.NameSdk = o.NamePythonSdk;
                             ctx.Parameters.push(parameter);
