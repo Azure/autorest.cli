@@ -64,7 +64,7 @@ function GenerateAzureCliCustom(model) {
                         });
                         access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = ";
                         if (element.Type != "dict" && element.Type != "list") {
-                            access += element.Name + " # " + element.Type;
+                            access += element.Name + " # " + JSON.stringify(element);
                         }
                         else {
                             access += "json.loads(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name;

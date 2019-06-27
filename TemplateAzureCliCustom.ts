@@ -84,7 +84,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
                         if (element.Type != "dict" && element.Type != "list")
                         {
-                            access += element.Name + " # " + element.Type;
+                            access += element.Name + " # " + JSON.stringify(element);
                         }
                         else
                         {
