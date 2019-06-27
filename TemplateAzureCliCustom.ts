@@ -80,11 +80,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         parts.forEach(part => {
                             if (part != "" && part != "*") access += ".setdefault('" + part + "', {})";
                         });
-                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = " + element.Name;
+                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = ";
 
                         if (element.Type != "dict")
                         {
-                            access += element.Name;
+                            access += element.Name + " # " + element.Type;
                         }
                         else
                         {
