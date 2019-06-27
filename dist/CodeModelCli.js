@@ -159,7 +159,7 @@ class CodeModelCli {
                             parameter.NameSdk = o.NamePythonSdk;
                             ctx.Parameters.push(parameter);
                             if (o.IsList) {
-                                this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + o.Type);
+                                this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + parameter.Type);
                             }
                         }
                     }
