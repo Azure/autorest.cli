@@ -5,7 +5,6 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     var output: string[] = [];
     output.push("--- !ruby/object:Api::Product");
     output.push("name: Azure " + model.ObjectName + " Management");
-    output.push("prefix: " + model.ModuleName);
     output.push("versions:");
     output.push("  - !ruby/object:Api::Product::Version");
     output.push("    name: ga");

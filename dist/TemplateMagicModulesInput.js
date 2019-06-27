@@ -5,7 +5,6 @@ function GenerateMagicModulesInput(model) {
     var output = [];
     output.push("--- !ruby/object:Api::Product");
     output.push("name: Azure " + model.ObjectName + " Management");
-    output.push("prefix: " + model.ModuleName);
     output.push("versions:");
     output.push("  - !ruby/object:Api::Product::Version");
     output.push("    name: ga");
