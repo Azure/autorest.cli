@@ -62,10 +62,12 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                     let access = "    body"
                     if (element.Disposition.startsWith("/"))
                     {
-                        element.Disposition.split("/").forEach(part => {
-                            if (part != "" && part != "*") access += ".get('" + part + "', {})";
+                        let parts = element.Disposition.split("/");
+                        let last: string = parts.pop();
+                        parts.forEach(part => {
+                            if (part != "" && part != "*") access += ".setdefault('" + part + "', {})";
                         });
-                        access += "['" + element.NameSdk + "'] = " + element.NameSdk;
+                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = " + element.Name;
                         output.push(access);
                     }
                 });

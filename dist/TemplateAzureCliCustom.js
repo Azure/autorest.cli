@@ -46,11 +46,13 @@ function GenerateAzureCliCustom(model) {
                 params.forEach(element => {
                     let access = "    body";
                     if (element.Disposition.startsWith("/")) {
-                        element.Disposition.split("/").forEach(part => {
+                        let parts = element.Disposition.split("/");
+                        let last = parts.pop();
+                        parts.forEach(part => {
                             if (part != "" && part != "*")
-                                access += ".get('" + part + "', {})";
+                                access += ".setdefault('" + part + "', {})";
                         });
-                        access += "['" + element.NameSdk + "'] = " + element.NameSdk;
+                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = " + element.Name;
                         output.push(access);
                     }
                 });
