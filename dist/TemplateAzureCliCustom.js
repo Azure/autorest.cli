@@ -48,6 +48,7 @@ function GenerateAzureCliCustom(model) {
                     if (element.Disposition.startsWith("/")) {
                         let parts = element.Disposition.split("/");
                         let last = parts.pop();
+                        last = ((last == "") ? "*" : last);
                         parts.forEach(part => {
                             if (part != "" && part != "*")
                                 access += ".setdefault('" + part + "', {})";

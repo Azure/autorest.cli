@@ -64,6 +64,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                     {
                         let parts = element.Disposition.split("/");
                         let last: string = parts.pop();
+                        last = ((last == "") ? "*" : last);
                         parts.forEach(part => {
                             if (part != "" && part != "*") access += ".setdefault('" + part + "', {})";
                         });
