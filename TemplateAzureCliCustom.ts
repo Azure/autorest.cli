@@ -11,6 +11,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("");
     output.push("from knack.util import CLIError");
+    output.push("import json");
     
     do
     {
@@ -80,6 +81,16 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                             if (part != "" && part != "*") access += ".setdefault('" + part + "', {})";
                         });
                         access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = " + element.Name;
+
+                        if (element.Type != "dict")
+                        {
+                            access += element.Name;
+                        }
+                        else
+                        {
+                            access += "json.parse(" + element.Name + ")"
+                        }
+
                         output.push(access);
                     }
                 });

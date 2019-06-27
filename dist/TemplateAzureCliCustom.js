@@ -8,6 +8,7 @@ function GenerateAzureCliCustom(model) {
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("");
     output.push("from knack.util import CLIError");
+    output.push("import json");
     do {
         // this is a hack, as everything can be produced from main module now
         if (model.ModuleName.endsWith("_info"))
@@ -62,6 +63,12 @@ function GenerateAzureCliCustom(model) {
                                 access += ".setdefault('" + part + "', {})";
                         });
                         access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = " + element.Name;
+                        if (element.Type != "dict") {
+                            access += element.Name;
+                        }
+                        else {
+                            access += "json.parse(" + element.Name + ")";
+                        }
                         output.push(access);
                     }
                 });
