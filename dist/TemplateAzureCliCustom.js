@@ -67,7 +67,7 @@ function GenerateAzureCliCustom(model) {
                             access += element.Name + " # " + element.Type;
                         }
                         else {
-                            access += "json.parse(" + element.Name + ")";
+                            access += "json.parse(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name;
                         }
                         output.push(access);
                     }

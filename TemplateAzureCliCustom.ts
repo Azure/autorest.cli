@@ -88,7 +88,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         }
                         else
                         {
-                            access += "json.parse(" + element.Name + ")"
+                            access += "json.parse(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name
                         }
 
                         output.push(access);
