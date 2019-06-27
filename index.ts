@@ -145,12 +145,12 @@ extension.Add("azureresourceschema", async autoRestApi => {
               let mn = model.ModuleName.split("azure_rm_")[1];
               
               //if (mn == 'batchaccount') mn = "batchaccountxx";
-              if (mn != "batchaccount")
-              {
+              //if (mn != "batchaccount")
+              //{
                 autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
                 autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
                 autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
-              }
+              //}
             } else {
               autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
               autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model).join('\r\n'));

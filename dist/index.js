@@ -126,11 +126,12 @@ extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, vo
                         autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model).join('\r\n'));
                         let mn = model.ModuleName.split("azure_rm_")[1];
                         //if (mn == 'batchaccount') mn = "batchaccountxx";
-                        if (mn != "batchaccount") {
-                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
-                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                            autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
-                        }
+                        //if (mn != "batchaccount")
+                        //{
+                        autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                        autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                        autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                        //}
                     }
                     else {
                         autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
