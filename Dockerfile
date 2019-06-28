@@ -15,7 +15,7 @@ RUN apt-get update
 RUN apt-get install -y apt-transport-https libcurl3 libicu55
 RUN apt-get install -y dotnet-runtime-2.0.5
 RUN apt-get install -y dotnet-sdk-2.1.4
-ADD . /autorest.
+ADD . /autorest.devops
 RUN cd /autorest.devops; npm install
 
 #RUN apt-get install -y software-properties-common build-essential
