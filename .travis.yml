@@ -3,7 +3,7 @@ services:
 sudo: required
 
 script:
-  - docker build --tag zikalino/autorest.devops.base ./Dockerfile-base
+  - docker build --tag zikalino/autorest.devops.base -f Dockerfile-base .
   - docker build --tag zikalino/autorest.devops .
 
   - docker login -u=${DOCKER_USER} -p=${DOCKER_PASSWORD}
