@@ -3,8 +3,11 @@ services:
 sudo: required
 
 script:
+  - docker build --tag zikalino/autorest.devops.base ./Dockerfile-base
   - docker build --tag zikalino/autorest.devops .
+
   - docker login -u=${DOCKER_USER} -p=${DOCKER_PASSWORD}
+  - docker push zikalino/autorest.devops.base
   - docker push zikalino/autorest.devops
 
   - git clone https://github.com/Azure/azure-rest-api-specs.git ~/azure-rest-api-specs
