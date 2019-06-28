@@ -52,4 +52,6 @@ azureresourceschema:
   namespace: azure.mgmt.automation
   package-name: azure-mgmt-automation
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

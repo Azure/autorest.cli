@@ -52,4 +52,6 @@ azureresourceschema:
   namespace: azure.mgmt.servicebus
   package-name: azure-mgmt-servicebus
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

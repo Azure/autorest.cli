@@ -54,4 +54,6 @@ azureresourceschema:
   package-name: azure-mgmt-frontdoor
   clear-output-folder: false
   debug: true
+  disable-mm: true
+  disable-azure-cli: true
 ```

@@ -52,4 +52,6 @@ azureresourceschema:
   namespace: azure.mgmt.compute
   package-name: azure-mgmt-compute
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

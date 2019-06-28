@@ -63,4 +63,5 @@ azureresourceschema:
     "/name": "hide"
     "/type": "hide"
   debug: true
+  disable-azure-cli: true
 ```

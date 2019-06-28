@@ -56,4 +56,6 @@ azureresourceschema:
   debug: true
   adjustments:
     "/sku": "Sku*/"
+  disable-mm: true
+  disable-azure-cli: true
 ```

@@ -53,4 +53,6 @@ azureresourceschema:
   namespace: azure.mgmt.managementgroups
   package-name: azure-mgmt-managementgroups
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

@@ -52,4 +52,6 @@ azureresourceschema:
   namespace: azure.mgmt.cosmosdb
   package-name: azure-mgmt-cosmosdb
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

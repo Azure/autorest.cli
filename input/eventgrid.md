@@ -52,4 +52,6 @@ azureresourceschema:
   namespace: azure.mgmt.eventgrid
   package-name: azure-mgmt-eventgrid
   clear-output-folder: false
+  disable-mm: true
+  disable-azure-cli: true
 ```

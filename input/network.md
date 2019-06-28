@@ -71,4 +71,6 @@ azureresourceschema:
     "/type":
       response: false
   debug: true
+  disable-mm: true
+  disable-azure-cli: true
 ```
