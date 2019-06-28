@@ -1,7 +1,11 @@
 ﻿import { CodeModel } from "./CodeModel"
 import { ModuleOption, ModuleMethod } from "./ModuleMap";
 import { ToSnakeCase, ToCamelCase, Uncapitalize } from "./Helpers"
+
+let g_model: CodeModel = null;
+
 export function GenerateMagicModulesInput(model: CodeModel) : string[] {
+    g_model = model;
     var output: string[] = [];
     output.push("--- !ruby/object:Api::Product");
     output.push("name: Azure " + model.ObjectName + " Management");
@@ -61,7 +65,18 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
 
         if (method.Name.startsWith("List"))
         {
-            appendMethod(output, model, method, ToSnakeCase(method.Name));
+            if (method.Name == "List")
+            {
+                appendMethod(output, model, method, "list_by_subscription");
+            }
+            else if (method.Name == "ListByResourceGroup")
+            {
+                appendMethod(output, model, method, "list_by_resource_group");
+            }
+            else
+            {
+                appendMethod(output, model, method, "list_by_parent");
+            }
         }
     }
 
@@ -439,7 +454,13 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             }
             else
             {
-                output.push("            go_field_name: " + option.NameTerraform);
+                if (g_model.ObjectName == "Application" && option.NameTerraform == "Properties")
+                {
+                }
+                else
+                {
+                    output.push("            go_field_name: " + option.NameTerraform);
+                }
             }
         }
 

@@ -1,7 +1,9 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("./Helpers");
+let g_model = null;
 function GenerateMagicModulesInput(model) {
+    g_model = model;
     var output = [];
     output.push("--- !ruby/object:Api::Product");
     output.push("name: Azure " + model.ObjectName + " Management");
@@ -53,7 +55,15 @@ function GenerateMagicModulesInput(model) {
         let method = model.ModuleMethods[method_index];
         let operationName = "";
         if (method.Name.startsWith("List")) {
-            appendMethod(output, model, method, Helpers_1.ToSnakeCase(method.Name));
+            if (method.Name == "List") {
+                appendMethod(output, model, method, "list_by_subscription");
+            }
+            else if (method.Name == "ListByResourceGroup") {
+                appendMethod(output, model, method, "list_by_resource_group");
+            }
+            else {
+                appendMethod(output, model, method, "list_by_parent");
+            }
         }
     }
     // actual module interface description
@@ -329,7 +339,11 @@ function appendOption(output, option, isGo, isPython, isRead) {
                 output.push("            go_field_name: Properties");
             }
             else {
-                output.push("            go_field_name: " + option.NameTerraform);
+                if (g_model.ObjectName == "Application" && option.NameTerraform == "Properties") {
+                }
+                else {
+                    output.push("            go_field_name: " + option.NameTerraform);
+                }
             }
         }
         if (option.Type == "dict") {
