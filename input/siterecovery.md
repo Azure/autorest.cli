@@ -33,7 +33,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-- /azure-rest-api-specs/specification/recoveryservicessiterecovery/resource-manager/Microsoft.RecoveryServices/stable/2018-07-10/service.json
+- /azure-rest-api-specs/specification/recoveryservices/resource-manager/Microsoft.RecoveryServices/stable/2016-06-01/vaults.json
 ```
 
 ---
