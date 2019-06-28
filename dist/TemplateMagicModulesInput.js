@@ -55,14 +55,16 @@ function GenerateMagicModulesInput(model) {
         let method = model.ModuleMethods[method_index];
         let operationName = "";
         if (method.Name.startsWith("List")) {
-            if (method.Name == "List") {
-                appendMethod(output, model, method, "list_by_subscription");
-            }
-            else if (method.Name == "ListByResourceGroup") {
-                appendMethod(output, model, method, "list_by_resource_group");
+            if (method.Options.indexOf("resourceGroupName") > -1) {
+                if (method.Options.length > 1) {
+                    appendMethod(output, model, method, "list_by_parent");
+                }
+                else {
+                    appendMethod(output, model, method, "list_by_resource_group");
+                }
             }
             else {
-                appendMethod(output, model, method, "list_by_parent");
+                appendMethod(output, model, method, "list_by_subscription");
             }
         }
     }
@@ -340,6 +342,8 @@ function appendOption(output, option, isGo, isPython, isRead) {
             }
             else {
                 if (g_model.ObjectName == "Application" && option.NameTerraform == "Properties") {
+                    // XXX - this is a hack!!!
+                    output.push("            go_field_name: " + "ApplicationProperties");
                 }
                 else {
                     output.push("            go_field_name: " + option.NameTerraform);
