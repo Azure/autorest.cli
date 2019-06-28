@@ -14,7 +14,9 @@ RUN sh -c 'echo "deb [arch=amd64] https://packages.microsoft.com/repos/microsoft
 RUN apt-get update
 RUN apt-get install -y apt-transport-https libcurl3 libicu55
 RUN apt-get install -y dotnet-runtime-2.0.5
-RUN apt-get install -y dotnet-sdk-2.1.4 
+RUN apt-get install -y dotnet-sdk-2.1.4
+ADD . /autorest.
+RUN cd /autorest.devops; npm install
 
 #RUN apt-get install -y software-properties-common build-essential
 #RUN gpg --keyserver hkp://pool.sks-keyservers.net --recv-keys 409B6B1796C275462A1703113804BB82D39DC0E3 7D2BAF1CF37B13E2069D6956105BD0E739499BDB
