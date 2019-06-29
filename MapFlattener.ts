@@ -37,6 +37,10 @@ export class MapFlattener
                 option.NameTerraform = "name";
                 break;
             }
+
+            // if the option is already part of the resource URL and doesn't end with name, don't rename
+            if (option.IdPortion != null && option.IdPortion != "")
+                break;
         }
 
         for (let oi in options)
