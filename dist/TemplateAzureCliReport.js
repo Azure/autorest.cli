@@ -45,7 +45,7 @@ function GenerateAzureCliReport(model) {
     var keys = Object.keys(cmds);
     keys.sort();
     for (var i = 0; i < keys.length; i++) {
-        output.concat(cmds[keys[i]]);
+        output = output.concat(cmds[keys[i]]);
     }
     return output;
 }
