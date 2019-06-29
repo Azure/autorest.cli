@@ -122,8 +122,6 @@ class MapGenerator {
             }
         }
         if (isInfo) {
-            // XXX - what's this?
-            this.UpdateResourceNameFields(module);
             // update options required parameters
             module.Options.forEach(o => {
                 o.Required = true;
@@ -155,36 +153,6 @@ class MapGenerator {
             }
         }
         return examplesList;
-    }
-    UpdateResourceNameFields(m) {
-        // try to set default resource name fields
-        let firstSuggestedName = this.ModuleOperationNameSingular + "_name";
-        m.ResourceNameFieldInRequest = firstSuggestedName;
-        m.ResourceNameFieldInResponse = firstSuggestedName;
-        // Verify that field exists in options, if not, we will find last field ending with "_name"
-        if (m.Options != null) {
-            let found = false;
-            let lastNameField = null;
-            for (var oi in m.Options) {
-                let o = m.Options[oi];
-                if (o.NameSwagger.endsWith("_name"))
-                    lastNameField = o.NameSwagger;
-                if (o.NameSwagger == m.ResourceNameFieldInRequest)
-                    found = true;
-            }
-            if (!found) {
-                m.ResourceNameFieldInRequest = lastNameField;
-                m.ResourceNameFieldInResponse = lastNameField;
-            }
-        }
-        // Check if response fields contains "name". If it does that will be our resource field name in response
-        if (m.ResponseFields != null) {
-            for (var rfi in m.ResponseFields) {
-                let rf = m.ResponseFields[rfi];
-                if (rf.NameAnsible == "name")
-                    m.ResourceNameFieldInResponse = "name";
-            }
-        }
     }
     get Namespace() {
         if (this._namespace != "")

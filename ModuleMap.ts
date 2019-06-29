@@ -101,7 +101,6 @@ export class Module
     public ModuleOperationNameUpper: string = null;
     public ModuleOperationName: string = null;
     public ObjectName: string = null;
-    public ResourceNameFieldInRequest: string = null;
     public ResourceNameFieldInResponse: string = null;
     public NeedsDeleteBeforeUpdate: boolean = false;
     public NeedsForceUpdate: boolean = false;

@@ -88,7 +88,6 @@ class Module {
         this.ModuleOperationNameUpper = null;
         this.ModuleOperationName = null;
         this.ObjectName = null;
-        this.ResourceNameFieldInRequest = null;
         this.ResourceNameFieldInResponse = null;
         this.NeedsDeleteBeforeUpdate = false;
         this.NeedsForceUpdate = false;
