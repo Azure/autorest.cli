@@ -23,6 +23,7 @@ import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"
 import { GenerateAzureCliParams} from "./TemplateAzureCliParams"
 import { GenerateAzureCliClientFactory } from "./TemplateAzureCliClientFactory"
+import { GenerateAzureCliReport } from "./TemplateAzureCliReport"
 
 import { ExampleProcessor } from "./ExampleProcessor"; 
 import { Example } from "./Example";
@@ -209,6 +210,8 @@ extension.Add("azureresourceschema", async autoRestApi => {
           autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
           modelCli.Reset();
           autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+          modelCli.Reset();
+          autoRestApi.WriteFile("azure-cli/" + cliName + "/report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
         }
         
         // write map after everything is done
