@@ -6,6 +6,8 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
 
     output.push("# Azure CLI Module Creation Report");
     output.push("");
+
+    let cmds = {};
     
     do
     {
@@ -13,8 +15,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         if (model.ModuleName.endsWith("_info"))
             continue;
 
-        output.push("## " + model.GetCliCommand());
-        output.push("");
+        var mo: string[] = [];
+        mo.push("## " + model.GetCliCommand());
+        mo.push("");
 
         let methods: string[] = model.GetCliCommandMethods();
         for (let mi = 0; mi < methods.length; mi++)
@@ -22,13 +25,13 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             // create, delete, list, show, update
             let method: string = methods[mi];
 
-            output.push("### " + model.GetCliCommand() + " " + method);
-            output.push("");
-            output.push(method + " a " + model.GetCliCommand() +  ".");
-            output.push("");
+            mo.push("### " + model.GetCliCommand() + " " + method);
+            mo.push("");
+            mo.push(method + " a " + model.GetCliCommand() +  ".");
+            mo.push("");
 
-            output.push("|Option|Required|Type|Description|Target Path|");
-            output.push("|------|--------|----|-----------|-----------|");
+            mo.push("|Option|Required|Type|Description|Target Path|");
+            mo.push("|------|--------|----|-----------|-----------|");
 
             // options
             let ctx = model.GetCliCommandContext(method);
@@ -38,7 +41,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             params.forEach(element => {
                 if (element.Type != "placeholder" && element.Required)
                 {
-                    output.push("|--" + element.Name + "|" + "YES" + "|" + element.Type + "|" + element.Help + "|" + element.Disposition + "|");
+                    mo.push("|--" + element.Name + "|" + "YES" + "|" + element.Type + "|" + element.Help + "|" + element.Disposition + "|");
                 }
             });
 
@@ -46,11 +49,22 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             params.forEach(element => {
                 if (element.Type != "placeholder" && !element.Required)
                 {
-                    output.push("|--" + element.Name + "|" + "NO" + "|" + element.Type + "|" + element.Help + "|" + element.Disposition + "|");
+                    mo.push("|--" + element.Name + "|" + "NO" + "|" + element.Type + "|" + element.Help + "|" + element.Disposition + "|");
                 }
             });
         }
+
+        cmds[model.GetCliCommand()] = mo;
     } while (model.NextModule());;
+
+    // build sorted output
+    var keys = Object.keys(cmds);
+    keys.sort();
+
+    for (var i = 0; i < keys.length; i++)
+    {
+        output.concat(cmds[keys[i]]);
+    } 
 
     return output;
 }
