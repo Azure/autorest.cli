@@ -462,7 +462,7 @@ export class MapGenerator
                     if (type != "dict")
                     {
                         options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
-                        options[p.name.raw].Documentation = p.documentation.raw;
+                        options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
 
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
@@ -505,7 +505,7 @@ export class MapGenerator
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel))
 
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
-                        suboption.Documentation = p.documentation.raw;
+                        suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
  
                         this._log("---------- " + p.documentation.raw)
 
@@ -669,7 +669,7 @@ export class MapGenerator
                         let typeName: string = this.Type_MappedType(attr.modelType);
 
                         var option = new ModuleOption(attrName, typeName, attr.isRequired);
-                        option.Documentation = attr.documentation.raw;
+                        option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList =  this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
@@ -824,8 +824,12 @@ export class MapGenerator
         return undefined;
     }
 
-    private NormalizeString(s: string): string
+    private ProcessDocumentation(s: string): string
     {
+        if (s == null) s = "";
+
+        let lines: string[] = s.split(/[\r\n]*/);
+        return lines.join("<br>");
         /* XXXX - fix this
         char[] a = s.ToCharArray();
         int l = a.length;
@@ -846,7 +850,6 @@ export class MapGenerator
 
         return new string(a);
         */ 
-       return "";
     }
 
 

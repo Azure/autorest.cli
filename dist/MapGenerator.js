@@ -317,7 +317,7 @@ class MapGenerator {
                     let type = this.Type_MappedType(p.modelType);
                     if (type != "dict") {
                         options[p.name.raw] = new ModuleMap_1.ModuleOption(p.name.raw, type, p.isRequired);
-                        options[p.name.raw].Documentation = p.documentation.raw;
+                        options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
                         if (p.location == "path") {
@@ -348,7 +348,7 @@ class MapGenerator {
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel));
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
-                        suboption.Documentation = p.documentation.raw;
+                        suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
                         this._log("---------- " + p.documentation.raw);
                         options[p.name.raw] = suboption;
                         this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
@@ -458,7 +458,7 @@ class MapGenerator {
                         let type = this.Type_Get(attr.modelType);
                         let typeName = this.Type_MappedType(attr.modelType);
                         var option = new ModuleMap_1.ModuleOption(attrName, typeName, attr.isRequired);
-                        option.Documentation = attr.documentation.raw;
+                        option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList = this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
@@ -566,7 +566,11 @@ class MapGenerator {
         }
         return undefined;
     }
-    NormalizeString(s) {
+    ProcessDocumentation(s) {
+        if (s == null)
+            s = "";
+        let lines = s.split(/[\r\n]*/);
+        return lines.join("<br>");
         /* XXXX - fix this
         char[] a = s.ToCharArray();
         int l = a.length;
@@ -587,7 +591,6 @@ class MapGenerator {
 
         return new string(a);
         */
-        return "";
     }
     GetProviderFromUrl(url) {
         var parts = url.split("/");
