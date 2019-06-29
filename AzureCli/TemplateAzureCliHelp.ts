@@ -1,5 +1,5 @@
 ﻿import { CodeModelCli } from "./CodeModelCli"
-import { ModuleMethod } from "./ModuleMap";
+import { ModuleMethod } from "../ModuleMap";
 
 export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     var output: string[] = [];

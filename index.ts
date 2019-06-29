@@ -3,7 +3,7 @@ import * as yaml from "node-yaml";
 import { MapGenerator } from "./MapGenerator"
 import { MapFlattener } from "./MapFlattener"
 import { CodeModel } from "./CodeModel"
-import { CodeModelCli } from "./CodeModelCli"
+import { CodeModelCli } from "./AzureCli/CodeModelCli"
 import { GenerateModuleSdk } from "./obsolete/AnsibleModuleSdk"
 import { GenerateModuleSdkInfo } from "./obsolete/AnsibleModuleSdkInfo"
 import { GenerateModuleRest } from "./obsolete/AnsibleModuleRest"
@@ -18,12 +18,12 @@ import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest"
 import { GenerateExampleAzureCLI } from "./TemplateExampleAzureCLI"
 import { GenerateMagicModulesAnsibleExample } from "./TemplateMagicModulesAnsibleExample"
 
-import { GenerateAzureCliCommands } from "./TemplateAzureCliCommands"
-import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
-import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"
-import { GenerateAzureCliParams} from "./TemplateAzureCliParams"
-import { GenerateAzureCliClientFactory } from "./TemplateAzureCliClientFactory"
-import { GenerateAzureCliReport } from "./TemplateAzureCliReport"
+import { GenerateAzureCliCommands } from "./AzureCli/TemplateAzureCliCommands"
+import { GenerateAzureCliCustom } from "./AzureCli/TemplateAzureCliCustom"
+import { GenerateAzureCliHelp } from "./AzureCli/TemplateAzureCliHelp"
+import { GenerateAzureCliParams} from "./AzureCli/TemplateAzureCliParams"
+import { GenerateAzureCliClientFactory } from "./AzureCli/TemplateAzureCliClientFactory"
+import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
 
 import { ExampleProcessor } from "./ExampleProcessor"; 
 import { Example } from "./Example";

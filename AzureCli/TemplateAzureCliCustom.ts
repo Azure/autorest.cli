@@ -1,6 +1,6 @@
 ﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
-import { Indent, ToSnakeCase } from "./Helpers";
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
+import { Indent, ToSnakeCase } from "../Helpers";
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
