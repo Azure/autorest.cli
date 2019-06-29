@@ -828,7 +828,7 @@ export class MapGenerator
     {
         if (s == null) s = "";
 
-        let lines: string[] = s.split(/[\r\n]*/);
+        let lines: string[] = s.split(/[\r\n]+/);
         return lines.join("<br>");
         /* XXXX - fix this
         char[] a = s.ToCharArray();

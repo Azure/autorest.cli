@@ -569,7 +569,7 @@ class MapGenerator {
     ProcessDocumentation(s) {
         if (s == null)
             s = "";
-        let lines = s.split(/[\r\n]*/);
+        let lines = s.split(/[\r\n]+/);
         return lines.join("<br>");
         /* XXXX - fix this
         char[] a = s.ToCharArray();
