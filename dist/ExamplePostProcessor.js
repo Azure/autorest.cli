@@ -17,7 +17,7 @@ class ExamplePostProcessor {
     CreateDictionaryFromParameters(dict, example, path, level) {
         for (let k in example) {
             if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string") {
-                dict[(path == "") ? k : (path + "/" + k)] = example[k];
+                dict[(path == "") ? k : (path + k)] = example[k];
             }
             else if (typeof example[k] == "object") {
                 if (!(example[k] instanceof Array)) {
