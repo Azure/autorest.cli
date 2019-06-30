@@ -198,11 +198,7 @@ export class CodeModelCli
             });
 
             // get method examples
-            let examples: CommandExample[] = [];
-            methods.forEach(swaggerMethodName => {
-                let methodExamples: CommandExample[] = this.GetExamples(swaggerMethodName);
-                examples = examples.concat(methodExamples);
-            });
+            let examples: CommandExample[] = this.GetExamples();
             method.Examples = examples;
 
             ctx.Methods.push(method);
@@ -255,7 +251,7 @@ export class CodeModelCli
         return ctx;
     }
 
-    private GetExamples(method: string): CommandExample[]
+    private GetExamples(): CommandExample[]
     {
 
         let pp = new ExamplePostProcessor(this.Module);
@@ -267,13 +263,10 @@ export class CodeModelCli
         for (let exampleIdx in moduleExamples)
         {
             let moduleExample: Example = moduleExamples[exampleIdx];
-            if (moduleExample.Method == method)
-            {
-                let example = new CommandExample();
-                example.Description = moduleExample.Name;
-                example.Parameters["--xxx"] = "yyy";
-                examples.push(example);
-            }
+            let example = new CommandExample();
+            example.Description = moduleExample.Name;
+            example.Parameters["--xxx"] = "yyy";
+            examples.push(example);
         }
         
         return examples
