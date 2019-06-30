@@ -155,8 +155,9 @@ class CodeModelCli {
                             parameter.Help = o.Documentation;
                             parameter.Required = false;
                             parameter.Type = ((o.IsList) ? "list" : o.Type);
-                            parameter.DispositionSdk = o.DispositionSdk;
-                            parameter.DispositionSwagger = o.DispositionRest;
+                            parameter.PathSdk = o.DispositionSdk;
+                            parameter.PathSwagger = o.DispositionRest;
+                            this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             if (o.IsList) {
                                 this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + parameter.Type);

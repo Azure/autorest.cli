@@ -205,7 +205,7 @@ export class CodeModelCli
                 {
                     if (o.IncludeInArgSpec && o.DispositionSdk.startsWith("/"))
                     {
-                        let parameter = null;
+                        let parameter: CommandParameter = null;
 
                         // make sure it's not duplicated
                         ctx.Parameters.forEach(p => {
@@ -220,8 +220,9 @@ export class CodeModelCli
                             parameter.Help = o.Documentation;
                             parameter.Required = false;
                             parameter.Type = ((o.IsList) ? "list" : o.Type);
-                            parameter.DispositionSdk = o.DispositionSdk;
-                            parameter.DispositionSwagger = o.DispositionRest;
+                            parameter.PathSdk = o.DispositionSdk;
+                            parameter.PathSwagger = o.DispositionRest;
+                            this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             if (o.IsList)
                             {
