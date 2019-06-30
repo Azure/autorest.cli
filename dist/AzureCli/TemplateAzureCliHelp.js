@@ -31,17 +31,19 @@ function GenerateAzureCliHelp(model) {
             output.push("    short-summary: " + method + " a " + model.GetCliCommand() + ".");
             output.push("    examples:");
             ctx.Methods.forEach(element => {
-                if (element.Name == method) {
-                    let examples = element.Examples;
-                    examples.forEach(example => {
-                        let parameters = "";
-                        for (let k in example.Parameters) {
-                            parameters += " " + k + " " + example.Parameters[k];
-                        }
-                        output.push("      - name: " + example.Description);
-                        output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
-                    });
-                }
+                output.push("# " + element.Name + " -- " + method);
+                //if (element.Name == method)
+                //{
+                let examples = element.Examples;
+                examples.forEach(example => {
+                    let parameters = "";
+                    for (let k in example.Parameters) {
+                        parameters += " " + k + " " + example.Parameters[k];
+                    }
+                    output.push("      - name: " + example.Description);
+                    output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
+                });
+                //}
             });
             output.push("\"\"\"");
         }

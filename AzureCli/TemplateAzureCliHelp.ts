@@ -41,8 +41,9 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
             output.push("    examples:");
 
             ctx.Methods.forEach(element => {
-                if (element.Name == method)
-                {
+                output.push ("# " + element.Name + " -- " + method);
+                //if (element.Name == method)
+                //{
                     let examples: CommandExample[] = element.Examples;
                     examples.forEach(example => {
                         let parameters: string = "";
@@ -53,7 +54,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                         output.push("      - name: " + example.Description);
                         output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
                     });        
-                }
+                //}
             });
 
             output.push("\"\"\"");
