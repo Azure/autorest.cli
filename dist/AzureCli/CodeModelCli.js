@@ -124,9 +124,9 @@ class CodeModelCli {
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = (o.Type == "dict") ? "placeholder" : "default";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    parameter.RequiredCount = 1;
+                    parameter.PathSdk = o.DispositionSdk;
+                    parameter.PathSwagger = o.DispositionRest;
+                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                     ctx.Parameters.push(parameter);
                 }
                 method.Parameters.push(parameter);
@@ -155,8 +155,8 @@ class CodeModelCli {
                             parameter.Help = o.Documentation;
                             parameter.Required = false;
                             parameter.Type = ((o.IsList) ? "list" : o.Type);
-                            parameter.Disposition = o.DispositionSdk;
-                            parameter.NameSdk = o.NamePythonSdk;
+                            parameter.DispositionSdk = o.DispositionSdk;
+                            parameter.DispositionSwagger = o.DispositionRest;
                             ctx.Parameters.push(parameter);
                             if (o.IsList) {
                                 this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + parameter.Type);
@@ -274,19 +274,7 @@ class CodeModelCli {
                     parameter.Type = "default";
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
-                    // XXX - move this to function
-                    if (parameter.PathSdk.endsWith("/")) {
-                        parameter.PathSdk += o.NamePythonSdk;
-                    }
-                    else if (parameter.PathSdk.endsWith("/*")) {
-                        parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + o.NamePythonSdk);
-                    }
-                    if (parameter.PathSwagger.endsWith("/")) {
-                        parameter.PathSwagger += o.NameSwagger;
-                    }
-                    else if (parameter.PathSwagger.endsWith("/*")) {
-                        parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + o.NameSwagger);
-                    }
+                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                     parameters.push(parameter);
                 }
             });
@@ -326,22 +314,28 @@ class CodeModelCli {
             param.Type = "default";
             param.PathSdk = o.DispositionSdk;
             param.PathSwagger = o.DispositionRest;
-            // XXX - move this to function
-            if (param.PathSdk.endsWith("/")) {
-                param.PathSdk += o.NamePythonSdk;
-            }
-            else if (param.PathSdk.endsWith("/*")) {
-                param.PathSdk = param.PathSdk.replace("/*", "/" + o.NamePythonSdk);
-            }
-            if (param.PathSwagger.endsWith("/")) {
-                param.PathSwagger += o.NameSwagger;
-            }
-            else if (param.PathSwagger.endsWith("/*")) {
-                param.PathSwagger = param.PathSwagger.replace("/*", "/" + o.NameSwagger);
-            }
+            this.FixPath(param, o.NamePythonSdk, o.NameSwagger);
             parameters.push(param);
         }
         return parameters;
+    }
+    FixPath(parameter, nameSdk, nameSwagger) {
+        if (!parameter.PathSdk)
+            parameter.PathSdk = "";
+        if (!parameter.PathSwagger)
+            parameter.PathSwagger = "";
+        if (parameter.PathSdk.endsWith("/") || parameter.PathSdk == "") {
+            parameter.PathSdk += nameSdk;
+        }
+        else if (parameter.PathSdk.endsWith("/*")) {
+            parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + nameSdk);
+        }
+        if (parameter.PathSwagger.endsWith("/") || parameter.PathSwagger == "") {
+            parameter.PathSwagger += nameSwagger;
+        }
+        else if (parameter.PathSwagger.endsWith("/*")) {
+            parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + nameSwagger);
+        }
     }
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------

@@ -165,7 +165,7 @@ export class CodeModelCli
             method.Name = ToSnakeCase(mm);
             method.Parameters = [];
             options.forEach(o => {
-                let parameter = null;
+                let parameter: CommandParameter = null;
 
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
@@ -180,9 +180,9 @@ export class CodeModelCli
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = (o.Type == "dict") ? "placeholder" : "default";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    parameter.RequiredCount = 1;
+                    parameter.PathSdk = o.DispositionSdk;
+                    parameter.PathSwagger = o.DispositionRest;
+                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                     ctx.Parameters.push(parameter);
                 }
                 method.Parameters.push(parameter);        
@@ -220,8 +220,8 @@ export class CodeModelCli
                             parameter.Help = o.Documentation;
                             parameter.Required = false;
                             parameter.Type = ((o.IsList) ? "list" : o.Type);
-                            parameter.Disposition = o.DispositionSdk;
-                            parameter.NameSdk = o.NamePythonSdk;
+                            parameter.DispositionSdk = o.DispositionSdk;
+                            parameter.DispositionSwagger = o.DispositionRest;
                             ctx.Parameters.push(parameter);
                             if (o.IsList)
                             {
@@ -379,23 +379,7 @@ export class CodeModelCli
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
 
-                    // XXX - move this to function
-                    if (parameter.PathSdk.endsWith("/"))
-                    {
-                        parameter.PathSdk += o.NamePythonSdk;
-                    }
-                    else if (parameter.PathSdk.endsWith("/*"))
-                    {
-                        parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + o.NamePythonSdk);
-                    }
-                    if (parameter.PathSwagger.endsWith("/"))
-                    {
-                        parameter.PathSwagger += o.NameSwagger;
-                    }
-                    else if (parameter.PathSwagger.endsWith("/*"))
-                    {
-                        parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + o.NameSwagger);
-                    }
+                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
         
                     parameters.push(parameter);        
                 }
@@ -442,7 +426,7 @@ export class CodeModelCli
 
             if (found) continue;
 
-            let param = new CommandParameter();
+            let param: CommandParameter = new CommandParameter();
             param.Name = o.NameAnsible;
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
@@ -450,24 +434,7 @@ export class CodeModelCli
             param.PathSdk = o.DispositionSdk;
             param.PathSwagger = o.DispositionRest;
 
-            // XXX - move this to function
-            if (param.PathSdk.endsWith("/"))
-            {
-                param.PathSdk += o.NamePythonSdk;
-            }
-            else if (param.PathSdk.endsWith("/*"))
-            {
-                param.PathSdk = param.PathSdk.replace("/*", "/" + o.NamePythonSdk);
-            }
-
-            if (param.PathSwagger.endsWith("/"))
-            {
-                param.PathSwagger += o.NameSwagger;
-            }
-            else if (param.PathSwagger.endsWith("/*"))
-            {
-                param.PathSwagger = param.PathSwagger.replace("/*", "/" + o.NameSwagger);
-            }
+            this.FixPath(param, o.NamePythonSdk, o.NameSwagger);
 
             parameters.push(param);
         }
@@ -475,6 +442,28 @@ export class CodeModelCli
         return parameters;
     }
 
+    private FixPath(parameter: CommandParameter, nameSdk: string, nameSwagger :string): void
+    {
+        if (!parameter.PathSdk) parameter.PathSdk = "";
+        if (!parameter.PathSwagger) parameter.PathSwagger = "";
+
+        if (parameter.PathSdk.endsWith("/") || parameter.PathSdk == "")
+        {
+            parameter.PathSdk += nameSdk;
+        }
+        else if (parameter.PathSdk.endsWith("/*"))
+        {
+            parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + nameSdk);
+        }
+        if (parameter.PathSwagger.endsWith("/") || parameter.PathSwagger == "")
+        {
+            parameter.PathSwagger += nameSwagger;
+        }
+        else if (parameter.PathSwagger.endsWith("/*"))
+        {
+            parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + nameSwagger);
+        }    
+    }
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------
     //-----------------------------------------------------------------------------------------------------
