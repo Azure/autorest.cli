@@ -60,11 +60,11 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                     examples.forEach(example => {
     
                         mo.push("");
-                        output.push ("**Example: " + example.Description + "**");
+                        mo.push ("**Example: " + example.Description + "**");
                         mo.push("");
                         mo.push("```");
 
-                        let next: string = model.GetCliCommand() + " " + method;
+                        let next: string = model.GetCliCommand() + " " + method + " s";
                         for (let k in example.Parameters)
                         {
                             let v: string = example.Parameters[k];
@@ -73,9 +73,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                                 v = "\"" + v.replace("\"", "\\\"") + "\"";
                             }
 
-                            next += "    " + k + " " + v;
+                            next += k + " " + v;
                             mo.push(next);
-                            next = "";
+                            next = "        ";
                         }
                         mo.push("```");
                     });        
