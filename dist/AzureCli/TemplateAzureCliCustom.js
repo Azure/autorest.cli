@@ -100,10 +100,11 @@ function GenerateAzureCliCustom(model) {
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
                     if (methodCall.endsWith("(")) {
-                        methodCall += p.PathSdk + "=" + optionName;
+                        // XXX - split and pop is a hack
+                        methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
                     }
                     else {
-                        methodCall += ", " + p.PathSdk + "=" + optionName;
+                        methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
                     }
                 }
                 methodCall += ")";
