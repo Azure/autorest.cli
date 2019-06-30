@@ -135,9 +135,6 @@ class CodeModelCli {
                 }
                 method.Parameters.push(parameter);
             });
-            // get method examples
-            let examples = this.GetExamples();
-            method.Examples = examples;
             ctx.Methods.push(method);
         });
         // sort methods by number of parameters
@@ -174,9 +171,12 @@ class CodeModelCli {
                 }
             });
         }
+        // get method examples
+        let examples = this.GetExamples(ctx);
+        ctx.Examples = examples;
         return ctx;
     }
-    GetExamples() {
+    GetExamples(ctx) {
         let pp = new ExamplePostProcessor_1.ExamplePostProcessor(this.Module);
         let moduleExamples = this.ModuleExamples;
         let examples = [];
@@ -186,7 +186,14 @@ class CodeModelCli {
             let example = new CommandExample();
             example.Parameters = new Map();
             example.Description = moduleExample.Name;
-            example.Parameters["--xxx"] = "yyy";
+            let exampleDict = pp.GetExampleAsDictionary(moduleExample);
+            ctx.Parameters.forEach(element => {
+                let v = exampleDict[element.PathSwagger];
+                if (v != undefined) {
+                    example.Parameters[element.Name] = v;
+                }
+            });
+            //example.Parameters["--xxx"] = "yyy";
             examples.push(example);
         }
         return examples;

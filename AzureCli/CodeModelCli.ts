@@ -27,14 +27,13 @@ export class CommandMethod
 {
     public Name: string;
     public Parameters: CommandParameter[];
-
-    public Examples: CommandExample[];
 }
 
 export class CommandContext
 {
     public Parameters: CommandParameter[];
     public Methods: CommandMethod[];
+    public Examples: CommandExample[];
 }
 
 export class CodeModelCli
@@ -197,10 +196,6 @@ export class CodeModelCli
                 method.Parameters.push(parameter);        
             });
 
-            // get method examples
-            let examples: CommandExample[] = this.GetExamples();
-            method.Examples = examples;
-
             ctx.Methods.push(method);
         });
 
@@ -248,10 +243,14 @@ export class CodeModelCli
             });
         }
 
+        // get method examples
+        let examples: CommandExample[] = this.GetExamples(ctx);
+        ctx.Examples = examples;
+
         return ctx;
     }
 
-    private GetExamples(): CommandExample[]
+    private GetExamples(ctx: CommandContext): CommandExample[]
     {
 
         let pp = new ExamplePostProcessor(this.Module);
@@ -266,7 +265,18 @@ export class CodeModelCli
             let example = new CommandExample();
             example.Parameters = new Map<string,string>();
             example.Description = moduleExample.Name;
-            example.Parameters["--xxx"] = "yyy";
+
+            let exampleDict = pp.GetExampleAsDictionary(moduleExample);
+
+            ctx.Parameters.forEach(element => {
+                let v = exampleDict[element.PathSwagger];
+                if (v != undefined)
+                {
+                    example.Parameters[element.Name] = v;
+                }
+            });
+
+            //example.Parameters["--xxx"] = "yyy";
             examples.push(example);
         }
         

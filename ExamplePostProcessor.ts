@@ -14,6 +14,35 @@ export class ExamplePostProcessor
         this._module = module;
     }
 
+    public GetExampleAsDictionary(example: Example): any
+    {
+        let dict = {};
+
+        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "");
+        return dict;
+    }
+
+    public CreateDictionaryFromParameters(dict: any, example: any, path)
+    {
+        for (let k in example) {
+            if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string")
+            {
+                let newPath = path;
+                if (newPath != "") newPath += "/";
+                newPath += k;
+                dict[newPath] = example[k];
+            }
+            else if (typeof example[k] == "object")
+            {
+                if (!(example[k] instanceof Array))
+                {
+                    this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k)
+                }
+                // XXX - handle arrays
+            }
+        }
+    }
+
     public ProcessExample(example: Example, type: ExampleType, useVars: boolean): any
     {
         let e: any = {};

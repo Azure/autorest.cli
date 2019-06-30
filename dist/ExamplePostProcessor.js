@@ -9,6 +9,28 @@ class ExamplePostProcessor {
     constructor(module) {
         this._module = module;
     }
+    GetExampleAsDictionary(example) {
+        let dict = {};
+        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "");
+        return dict;
+    }
+    CreateDictionaryFromParameters(dict, example, path) {
+        for (let k in example) {
+            if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string") {
+                let newPath = path;
+                if (newPath != "")
+                    newPath += "/";
+                newPath += k;
+                dict[newPath] = example[k];
+            }
+            else if (typeof example[k] == "object") {
+                if (!(example[k] instanceof Array)) {
+                    this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k);
+                }
+                // XXX - handle arrays
+            }
+        }
+    }
     ProcessExample(example, type, useVars) {
         let e = {};
         e['name'] = example.Name;
