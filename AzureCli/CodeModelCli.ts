@@ -264,6 +264,7 @@ export class CodeModelCli
         {
             let moduleExample: Example = moduleExamples[exampleIdx];
             let example = new CommandExample();
+            example.Parameters = new Map<string,string>();
             example.Description = moduleExample.Name;
             example.Parameters["--xxx"] = "yyy";
             examples.push(example);
