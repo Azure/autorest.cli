@@ -190,9 +190,10 @@ class CodeModelCli {
             ctx.Parameters.forEach(element => {
                 let v = exampleDict[element.PathSwagger];
                 if (v != undefined) {
-                    example.Parameters[element.Name] = v;
+                    example.Parameters["--" + element.Name] = v;
                 }
             });
+            this._log("EXAMPLE: " + JSON.stringify(exampleDict));
             //example.Parameters["--xxx"] = "yyy";
             examples.push(example);
         }
