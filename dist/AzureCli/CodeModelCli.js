@@ -328,14 +328,14 @@ class CodeModelCli {
         if (parameter.PathSdk.endsWith("/") || parameter.PathSdk == "") {
             parameter.PathSdk += nameSdk;
         }
-        else if (parameter.PathSdk.endsWith("/*")) {
-            parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + nameSdk);
+        else if (parameter.PathSdk.endsWith("*")) {
+            parameter.PathSdk = parameter.PathSdk.replace("*", nameSdk);
         }
         if (parameter.PathSwagger.endsWith("/") || parameter.PathSwagger == "") {
             parameter.PathSwagger += nameSwagger;
         }
-        else if (parameter.PathSwagger.endsWith("/*")) {
-            parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + nameSwagger);
+        else if (parameter.PathSwagger.endsWith("*")) {
+            parameter.PathSwagger = parameter.PathSwagger.replace("*", nameSwagger);
         }
     }
     //-----------------------------------------------------------------------------------------------------

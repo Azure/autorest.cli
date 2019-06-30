@@ -452,17 +452,17 @@ export class CodeModelCli
         {
             parameter.PathSdk += nameSdk;
         }
-        else if (parameter.PathSdk.endsWith("/*"))
+        else if (parameter.PathSdk.endsWith("*"))
         {
-            parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + nameSdk);
+            parameter.PathSdk = parameter.PathSdk.replace("*", nameSdk);
         }
         if (parameter.PathSwagger.endsWith("/") || parameter.PathSwagger == "")
         {
             parameter.PathSwagger += nameSwagger;
         }
-        else if (parameter.PathSwagger.endsWith("/*"))
+        else if (parameter.PathSwagger.endsWith("*"))
         {
-            parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + nameSwagger);
+            parameter.PathSwagger = parameter.PathSwagger.replace("*", nameSwagger);
         }    
     }
     //-----------------------------------------------------------------------------------------------------
