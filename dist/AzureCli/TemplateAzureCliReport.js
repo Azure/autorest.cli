@@ -20,21 +20,21 @@ function GenerateAzureCliReport(model) {
             mo.push("");
             mo.push(method + " a " + model.GetCliCommand() + ".");
             mo.push("");
-            mo.push("|Option|Required|Type|Description|Path (SDK)|Path (swagger)|");
-            mo.push("|------|--------|----|-----------|----------|--------------|");
+            mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
+            mo.push("|------|----|-----------|----------|--------------|");
             // options
             let ctx = model.GetCliCommandContext(method);
             let params = ctx.Parameters;
             // first parameters that are required
             params.forEach(element => {
                 if (element.Type != "placeholder" && element.Required) {
-                    mo.push("|--" + element.Name + "|" + "YES" + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
+                    mo.push("|**--" + element.Name + "**|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
                 }
             });
             // following by required parameters
             params.forEach(element => {
                 if (element.Type != "placeholder" && !element.Required) {
-                    mo.push("|--" + element.Name + "|" + "NO" + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
+                    mo.push("|--" + element.Name + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
                 }
             });
         }
