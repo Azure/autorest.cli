@@ -54,15 +54,14 @@ function GenerateAzureCliCustom(model) {
                 output.push("    body={}");
                 params.forEach(element => {
                     let access = "    body";
-                    if (element.Disposition.startsWith("/")) {
-                        let parts = element.Disposition.split("/");
+                    if (element.PathSdk.startsWith("/")) {
+                        let parts = element.PathSdk.split("/");
                         let last = parts.pop();
-                        last = ((last == "") ? "*" : last);
                         parts.forEach(part => {
                             if (part != "" && part != "*")
                                 access += ".setdefault('" + part + "', {})";
                         });
-                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = ";
+                        access += "['" + last + "'] = ";
                         if (element.Type != "dict" && element.Type != "list") {
                             access += element.Name + " # " + element.Type; // # JSON.stringify(element);
                         }
@@ -101,10 +100,10 @@ function GenerateAzureCliCustom(model) {
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
                     if (methodCall.endsWith("(")) {
-                        methodCall += p.NameSdk + "=" + optionName;
+                        methodCall += p.PathSdk + "=" + optionName;
                     }
                     else {
-                        methodCall += ", " + p.NameSdk + "=" + optionName;
+                        methodCall += ", " + p.PathSdk + "=" + optionName;
                     }
                 }
                 methodCall += ")";

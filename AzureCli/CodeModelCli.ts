@@ -12,9 +12,8 @@ export class CommandParameter
     public Help: string;
     public Required: boolean;
     public Type: string;
-    public Disposition: string;
-    public NameSdk: string;
-    public RequiredCount: number;
+    public PathSdk: string;
+    public PathSwagger: string;
 }
 
 export class CommandMethod
@@ -366,7 +365,6 @@ export class CodeModelCli
                     if (p.Name == o.NameAnsible)
                     {
                         parameter = p;
-                        parameter.RequiredCount++;
                     }
                 });
 
@@ -378,9 +376,26 @@ export class CodeModelCli
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = "default";
-                    parameter.Disposition = o.DispositionSdk;
-                    parameter.NameSdk = o.NamePythonSdk;
-                    parameter.RequiredCount = 1;
+                    parameter.PathSdk = o.DispositionSdk;
+
+                    // XXX - move this to function
+                    if (parameter.PathSdk.endsWith("/"))
+                    {
+                        parameter.PathSdk += o.NamePythonSdk;
+                    }
+                    else if (parameter.PathSdk.endsWith("/*"))
+                    {
+                        parameter.PathSdk = parameter.PathSdk.replace("/*", "/" + o.NamePythonSdk);
+                    }
+                    if (parameter.PathSwagger.endsWith("/"))
+                    {
+                        parameter.PathSwagger += o.NameSwagger;
+                    }
+                    else if (parameter.PathSwagger.endsWith("/*"))
+                    {
+                        parameter.PathSwagger = parameter.PathSwagger.replace("/*", "/" + o.NameSwagger);
+                    }
+        
                     parameters.push(parameter);        
                 }
             });
@@ -431,8 +446,27 @@ export class CodeModelCli
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
-            param.Disposition = o.DispositionSdk;
-            param.NameSdk = o.NamePythonSdk;
+            param.PathSdk = o.DispositionSdk;
+            param.PathSwagger = o.DispositionRest;
+
+            // XXX - move this to function
+            if (param.PathSdk.endsWith("/"))
+            {
+                param.PathSdk += o.NamePythonSdk;
+            }
+            else if (param.PathSdk.endsWith("/*"))
+            {
+                param.PathSdk = param.PathSdk.replace("/*", "/" + o.NamePythonSdk);
+            }
+
+            if (param.PathSwagger.endsWith("/"))
+            {
+                param.PathSwagger += o.NameSwagger;
+            }
+            else if (param.PathSwagger.endsWith("/*"))
+            {
+                param.PathSwagger = param.PathSwagger.replace("/*", "/" + o.NameSwagger);
+            }
 
             parameters.push(param);
         }

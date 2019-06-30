@@ -72,15 +72,14 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 output.push("    body={}");
                 params.forEach(element => {
                     let access = "    body"
-                    if (element.Disposition.startsWith("/"))
+                    if (element.PathSdk.startsWith("/"))
                     {
-                        let parts = element.Disposition.split("/");
+                        let parts = element.PathSdk.split("/");
                         let last: string = parts.pop();
-                        last = ((last == "") ? "*" : last);
                         parts.forEach(part => {
                             if (part != "" && part != "*") access += ".setdefault('" + part + "', {})";
                         });
-                        access += "['" + ((last == "*") ? element.NameSdk : last) + "'] = ";
+                        access += "['" + last + "'] = ";
 
                         if (element.Type != "dict" && element.Type != "list")
                         {
@@ -134,11 +133,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         
                     if (methodCall.endsWith("("))
                     {
-                        methodCall += p.NameSdk + "=" + optionName;
+                        methodCall += p.PathSdk + "=" + optionName;
                     }
                     else
                     {
-                        methodCall += ", " + p.NameSdk + "=" + optionName;
+                        methodCall += ", " + p.PathSdk + "=" + optionName;
                     }
                 }
             
