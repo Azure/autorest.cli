@@ -37,6 +37,23 @@ function GenerateAzureCliReport(model) {
                     mo.push("|--" + element.Name + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
                 }
             });
+            ctx.Methods.forEach(element => {
+                //if (element.Name == method)
+                //{
+                let examples = ctx.Examples;
+                examples.forEach(example => {
+                    mo.push("");
+                    mo.push("```");
+                    let parameters = "";
+                    for (let k in example.Parameters) {
+                        parameters += " " + k + " " + example.Parameters[k];
+                    }
+                    output.push("# " + example.Description);
+                    output.push(model.GetCliCommand() + " " + method + " " + parameters);
+                    mo.push("```");
+                });
+                //}
+            });
         }
         cmds[model.GetCliCommand()] = mo;
     } while (model.NextModule());

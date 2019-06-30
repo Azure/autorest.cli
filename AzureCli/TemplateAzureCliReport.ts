@@ -1,4 +1,4 @@
-﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
+﻿import { CodeModelCli, CommandParameter, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../ModuleMap";
 
 export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
@@ -52,6 +52,27 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                     mo.push("|--" + element.Name + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
                 }
             });
+
+            ctx.Methods.forEach(element => {
+                //if (element.Name == method)
+                //{
+                    let examples: CommandExample[] = ctx.Examples;
+                    examples.forEach(example => {
+    
+                        mo.push("");
+                        mo.push("```");
+                        let parameters: string = "";
+                        for (let k in example.Parameters)
+                        {
+                            parameters += " " + k + " " + example.Parameters[k];
+                        }
+                        output.push ("# " + example.Description);
+                        output.push(model.GetCliCommand() + " " + method + " " + parameters);
+                        mo.push("```");
+                    });        
+                //}
+            });
+    
         }
 
         cmds[model.GetCliCommand()] = mo;
