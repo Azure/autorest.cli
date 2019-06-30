@@ -34,7 +34,7 @@ function GenerateAzureCliHelp(model) {
                 output.push("# " + element.Name + " -- " + method);
                 //if (element.Name == method)
                 //{
-                let examples = element.Examples;
+                let examples = ctx.Examples;
                 examples.forEach(example => {
                     let parameters = "";
                     for (let k in example.Parameters) {
