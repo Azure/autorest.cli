@@ -273,6 +273,7 @@ class CodeModelCli {
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = "default";
                     parameter.PathSdk = o.DispositionSdk;
+                    parameter.PathSwagger = o.DispositionRest;
                     // XXX - move this to function
                     if (parameter.PathSdk.endsWith("/")) {
                         parameter.PathSdk += o.NamePythonSdk;
