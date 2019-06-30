@@ -52,8 +52,9 @@ function GenerateAzureCliReport(model) {
                         if (/\s/.test(v)) {
                             v = "\"" + v.replace("\"", "\\\"") + "\"";
                         }
-                        next += "    " + k + " ";
-                        output.push(next);
+                        next += "    " + k + " " + v;
+                        mo.push(next);
+                        next = "";
                     }
                     mo.push("```");
                 });

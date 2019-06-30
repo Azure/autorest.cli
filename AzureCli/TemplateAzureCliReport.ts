@@ -73,8 +73,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                                 v = "\"" + v.replace("\"", "\\\"") + "\"";
                             }
 
-                            next += "    " + k + " ";
-                            output.push(next);
+                            next += "    " + k + " " + v;
+                            mo.push(next);
+                            next = "";
                         }
                         mo.push("```");
                     });        
