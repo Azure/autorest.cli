@@ -25,7 +25,13 @@ class ExamplePostProcessor {
             }
             else if (typeof example[k] == "object") {
                 if (!(example[k] instanceof Array)) {
-                    this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k);
+                    if (path == "") {
+                        // "parameters" shouldnt be included in the path
+                        this.CreateDictionaryFromParameters(dict, example[k], "/");
+                    }
+                    else {
+                        this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k);
+                    }
                 }
                 // XXX - handle arrays
             }
