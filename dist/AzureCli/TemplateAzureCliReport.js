@@ -49,7 +49,7 @@ function GenerateAzureCliReport(model) {
                     let next = model.GetCliCommand() + " " + method;
                     for (let k in example.Parameters) {
                         let v = example.Parameters[k];
-                        if (/\S/.test(v)) {
+                        if (/\s/.test(v)) {
                             v = "\"" + v.replace("\"", "\\\"") + "\"";
                         }
                         next += "    " + k + " ";
