@@ -153,7 +153,7 @@ class CodeModelCli {
                             parameter = new CommandParameter();
                             parameter.Name = o.NameAnsible;
                             parameter.Help = o.Documentation;
-                            parameter.Required = false;
+                            parameter.Required = o.Required;
                             parameter.Type = ((o.IsList) ? "list" : o.Type);
                             parameter.PathSdk = o.DispositionSdk;
                             parameter.PathSwagger = o.DispositionRest;
