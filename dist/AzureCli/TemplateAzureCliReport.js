@@ -43,13 +43,18 @@ function GenerateAzureCliReport(model) {
                 let examples = ctx.Examples;
                 examples.forEach(example => {
                     mo.push("");
+                    output.push("**Example: " + example.Description + "**");
+                    mo.push("");
                     mo.push("```");
-                    let parameters = "";
+                    let next = model.GetCliCommand() + " " + method;
                     for (let k in example.Parameters) {
-                        parameters += " " + k + " " + example.Parameters[k];
+                        let v = example.Parameters[k];
+                        if (/\S/.test(v)) {
+                            v = "\"" + v.replace("\"", "\\\"") + "\"";
+                        }
+                        next += "    " + k + " ";
+                        output.push(next);
                     }
-                    output.push("# " + example.Description);
-                    output.push(model.GetCliCommand() + " " + method + " " + parameters);
                     mo.push("```");
                 });
                 //}
