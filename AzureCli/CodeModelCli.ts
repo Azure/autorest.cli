@@ -1,5 +1,6 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 import { Example } from "../Example";
+import { ExamplePostProcessor, ExampleType } from "../ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase } from "../Helpers"
 import { throws } from "assert";
 import { METHODS } from "http";
@@ -16,10 +17,18 @@ export class CommandParameter
     public PathSwagger: string;
 }
 
+export class CommandExample
+{
+    public Description: string;
+    public Parameters: Map<string, string>;
+}
+
 export class CommandMethod
 {
     public Name: string;
     public Parameters: CommandParameter[];
+
+    public Examples: CommandExample[];
 }
 
 export class CommandContext
@@ -187,6 +196,15 @@ export class CodeModelCli
                 }
                 method.Parameters.push(parameter);        
             });
+
+            // get method examples
+            let examples: CommandExample[] = [];
+            methods.forEach(swaggerMethodName => {
+                let methodExamples: CommandExample[] = this.GetExamples(swaggerMethodName);
+                examples = examples.concat(methodExamples);
+            });
+            method.Examples = examples;
+
             ctx.Methods.push(method);
         });
 
@@ -235,6 +253,30 @@ export class CodeModelCli
         }
 
         return ctx;
+    }
+
+    private GetExamples(method: string): CommandExample[]
+    {
+
+        let pp = new ExamplePostProcessor(this.Module);
+
+        let moduleExamples: Example[] = this.ModuleExamples;
+        let examples: CommandExample[] = [];
+        let processedExamples: any[] = []
+    
+        for (let exampleIdx in moduleExamples)
+        {
+            let moduleExample: Example = moduleExamples[exampleIdx];
+            if (moduleExample.Method == method)
+            {
+                let example = new CommandExample();
+                example.Description = moduleExample.Name;
+                example.Parameters["--xxx"] = "yyy";
+                examples.push(example);
+            }
+        }
+        
+        return examples
     }
   
     public GetSdkMethodNames(name: string): string[]

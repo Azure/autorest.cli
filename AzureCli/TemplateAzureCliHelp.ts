@@ -1,4 +1,4 @@
-﻿import { CodeModelCli } from "./CodeModelCli"
+﻿import { CodeModelCli, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../ModuleMap";
 
 export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
@@ -31,11 +31,31 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
+            let ctx = model.GetCliCommandContext(method);
 
             output.push("");
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
             output.push("    short-summary: " + method + " a " + model.GetCliCommand() +  ".");
+
+            output.push("    examples:");
+
+            ctx.Methods.forEach(element => {
+                if (element.Name == method)
+                {
+                    let examples: CommandExample[] = element.Examples;
+                    examples.forEach(example => {
+                        let parameters: string = "";
+                        for (let k in example.Parameters)
+                        {
+                            parameters += " " + k + " " + example.Parameters[k];
+                        }
+                        output.push("      - name: " + example.Description);
+                        output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
+                    });        
+                }
+            });
+
             output.push("\"\"\"");
         }
     } while (model.NextModule());;

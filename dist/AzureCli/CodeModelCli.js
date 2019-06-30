@@ -1,10 +1,14 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("../ModuleMap");
+const ExamplePostProcessor_1 = require("../ExamplePostProcessor");
 const Helpers_1 = require("../Helpers");
 class CommandParameter {
 }
 exports.CommandParameter = CommandParameter;
+class CommandExample {
+}
+exports.CommandExample = CommandExample;
 class CommandMethod {
 }
 exports.CommandMethod = CommandMethod;
@@ -131,6 +135,13 @@ class CodeModelCli {
                 }
                 method.Parameters.push(parameter);
             });
+            // get method examples
+            let examples = [];
+            methods.forEach(swaggerMethodName => {
+                let methodExamples = this.GetExamples(swaggerMethodName);
+                examples = examples.concat(methodExamples);
+            });
+            method.Examples = examples;
             ctx.Methods.push(method);
         });
         // sort methods by number of parameters
@@ -168,6 +179,22 @@ class CodeModelCli {
             });
         }
         return ctx;
+    }
+    GetExamples(method) {
+        let pp = new ExamplePostProcessor_1.ExamplePostProcessor(this.Module);
+        let moduleExamples = this.ModuleExamples;
+        let examples = [];
+        let processedExamples = [];
+        for (let exampleIdx in moduleExamples) {
+            let moduleExample = moduleExamples[exampleIdx];
+            if (moduleExample.Method == method) {
+                let example = new CommandExample();
+                example.Description = moduleExample.Name;
+                example.Parameters["--xxx"] = "yyy";
+                examples.push(example);
+            }
+        }
+        return examples;
     }
     GetSdkMethodNames(name) {
         let names = [];

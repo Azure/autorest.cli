@@ -24,10 +24,25 @@ function GenerateAzureCliHelp(model) {
         for (let mi = 0; mi < methods.length; mi++) {
             // create, delete, list, show, update
             let method = methods[mi];
+            let ctx = model.GetCliCommandContext(method);
             output.push("");
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
             output.push("    short-summary: " + method + " a " + model.GetCliCommand() + ".");
+            output.push("    examples:");
+            ctx.Methods.forEach(element => {
+                if (element.Name == method) {
+                    let examples = element.Examples;
+                    examples.forEach(example => {
+                        let parameters = "";
+                        for (let k in example.Parameters) {
+                            parameters += " " + k + " " + example.Parameters[k];
+                        }
+                        output.push("      - name: " + example.Description);
+                        output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
+                    });
+                }
+            });
             output.push("\"\"\"");
         }
     } while (model.NextModule());
