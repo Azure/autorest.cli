@@ -11,26 +11,22 @@ class ExamplePostProcessor {
     }
     GetExampleAsDictionary(example) {
         let dict = {};
-        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "");
+        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0);
         return dict;
     }
-    CreateDictionaryFromParameters(dict, example, path) {
+    CreateDictionaryFromParameters(dict, example, path, level) {
         for (let k in example) {
             if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string") {
-                let newPath = path;
-                if (newPath != "")
-                    newPath += "/";
-                newPath += k;
-                dict[newPath] = example[k];
+                dict[(path == "") ? k : (path + "/" + k)] = example[k];
             }
             else if (typeof example[k] == "object") {
                 if (!(example[k] instanceof Array)) {
-                    if (path == "") {
+                    if (level == 0) {
                         // "parameters" shouldnt be included in the path
-                        this.CreateDictionaryFromParameters(dict, example[k], "/");
+                        this.CreateDictionaryFromParameters(dict, example[k], "/", level + 1);
                     }
                     else {
-                        this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k);
+                        this.CreateDictionaryFromParameters(dict, example[k], path + k + "/", level + 1);
                     }
                 }
                 // XXX - handle arrays
