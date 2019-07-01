@@ -189,7 +189,7 @@ export class CodeModelCli
                     parameter.Name = o.NameAnsible;
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = (o.Type == "dict") ? "placeholder" : "default";
+                    parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
                     this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
@@ -230,7 +230,7 @@ export class CodeModelCli
                             parameter.Name = o.NameAnsible;
                             parameter.Help = o.Documentation;
                             parameter.Required = o.Required;
-                            parameter.Type = ((o.IsList) ? "list" : o.Type);
+                            parameter.Type = this.GetCliTypeFromOption(o);
                             parameter.PathSdk = o.DispositionSdk;
                             parameter.PathSwagger = o.DispositionRest;
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
@@ -250,6 +250,30 @@ export class CodeModelCli
         ctx.Examples = examples;
 
         return ctx;
+    }
+
+    private GetCliTypeFromOption(o: ModuleOption): string
+    {
+        let type: string = "";
+        if (o.IsList)
+        {
+            return "list";
+        }
+        else if (o.Type.startsWith("undefined["))
+        {
+            if (o.Type.startsWith("undefined[DictionaryType"))
+            {
+                return "dictionary";
+            }
+            else
+            {
+                return "unknown";
+            }
+        }
+        else
+        {
+            return o.Type;
+        }
     }
 
     private GetExamples(ctx: CommandContext): CommandExample[]
