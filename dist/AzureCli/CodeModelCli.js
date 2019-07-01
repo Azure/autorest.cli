@@ -124,7 +124,7 @@ class CodeModelCli {
                 });
                 if (parameter == null) {
                     parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible;
+                    parameter.Name = o.NameAnsible.replace("_", "-");
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
