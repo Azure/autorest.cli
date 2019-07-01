@@ -37,14 +37,14 @@ function GenerateAzureCliCustom(model) {
             params.forEach(element => {
                 if (element.Type != "placeholder" && element.Required) {
                     output[output.length - 1] += ",";
-                    output.push(indent + element.Name);
+                    output.push(indent + element.Name.replace("-", "_"));
                 }
             });
             // following by required parameters
             params.forEach(element => {
                 if (element.Type != "placeholder" && !element.Required) {
                     output[output.length - 1] += ",";
-                    output.push(indent + element.Name + "=None");
+                    output.push(indent + element.Name.replace("-", "_") + "=None");
                 }
             });
             output[output.length - 1] += "):";
@@ -63,10 +63,10 @@ function GenerateAzureCliCustom(model) {
                         });
                         access += "['" + last + "'] = ";
                         if (element.Type != "dict" && element.Type != "list") {
-                            access += element.Name + " # " + element.Type; // # JSON.stringify(element);
+                            access += element.Name.replace("-", "_") + " # " + element.Type; // # JSON.stringify(element);
                         }
                         else {
-                            access += "json.loads(" + element.Name + ") if isinstance(" + element.Name + ", str) else " + element.Name;
+                            access += "json.loads(" + element.Name.replace("-", "_") + ") if isinstance(" + element.Name.replace("-", "_") + ", str) else " + element.Name.replace("-", "_");
                         }
                         output.push(access);
                     }
@@ -81,7 +81,7 @@ function GenerateAzureCliCustom(model) {
                         ifStatement += (methodIdx == 0) ? "if" : "elif";
                         for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name + " is not None";
+                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name.replace("-", "_") + " is not None";
                         }
                         ifStatement += ":";
                     }
@@ -95,7 +95,7 @@ function GenerateAzureCliCustom(model) {
                 let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
                 for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-                    let optionName = p.Name;
+                    let optionName = p.Name.replace("-", "_");
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                         optionName = "body";
