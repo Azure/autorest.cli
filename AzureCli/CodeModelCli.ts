@@ -179,7 +179,7 @@ export class CodeModelCli
 
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible)
+                    if (p.Name == o.NameAnsible.replace("_", "-"))
                         parameter = p;
                 });
 
@@ -220,14 +220,14 @@ export class CodeModelCli
 
                         // make sure it's not duplicated
                         ctx.Parameters.forEach(p => {
-                            if (p.Name == o.NameAnsible)
+                            if (p.Name == o.NameAnsible.replace("_", "-"))
                                 parameter = p;
                         });
         
                         if (parameter == null)
                         {
                             parameter = new CommandParameter();
-                            parameter.Name = o.NameAnsible;
+                            parameter.Name = o.NameAnsible.replace("_", "-");
                             parameter.Help = o.Documentation;
                             parameter.Required = o.Required;
                             parameter.Type = this.GetCliTypeFromOption(o);
@@ -461,7 +461,7 @@ export class CodeModelCli
                 let parameter: CommandParameter = null;
                 // check if already in parameters
                 parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible)
+                    if (p.Name == o.NameAnsible.replace("_", "-"))
                     {
                         parameter = p;
                     }
@@ -471,7 +471,7 @@ export class CodeModelCli
                 {
                     this._log(" PARAMETER IS NULL - ATTACHING");
                     parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible;
+                    parameter.Name = o.NameAnsible.replace("_", "-");
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = "default";
@@ -517,7 +517,7 @@ export class CodeModelCli
             // XXX - this shouldn't be here, i don't understand why options are repeated
             let found: boolean = false;
             parameters.forEach(element => {
-                if (element.Name == o.NameAnsible)
+                if (element.Name == o.NameAnsible.replace("_", "-"))
                 {
                     found = true;
                 }
@@ -526,7 +526,7 @@ export class CodeModelCli
             if (found) continue;
 
             let param: CommandParameter = new CommandParameter();
-            param.Name = o.NameAnsible;
+            param.Name = o.NameAnsible.replace("_", "-");
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
