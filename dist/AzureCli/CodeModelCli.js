@@ -181,8 +181,8 @@ class CodeModelCli {
         if (o.IsList) {
             return "list";
         }
-        else if (o.Type.startsWith("undefined[")) {
-            if (o.Type.startsWith("undefined[DictionaryType")) {
+        else if (o.Type.startsWith("unknown[")) {
+            if (o.Type.startsWith("unknown[DictionaryType")) {
                 return "dictionary";
             }
             else {

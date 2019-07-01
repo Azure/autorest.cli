@@ -259,9 +259,9 @@ export class CodeModelCli
         {
             return "list";
         }
-        else if (o.Type.startsWith("undefined["))
+        else if (o.Type.startsWith("unknown["))
         {
-            if (o.Type.startsWith("undefined[DictionaryType"))
+            if (o.Type.startsWith("unknown[DictionaryType"))
             {
                 return "dictionary";
             }
