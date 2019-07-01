@@ -37,30 +37,25 @@ function GenerateAzureCliReport(model) {
                     mo.push("|--" + element.Name + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
                 }
             });
-            ctx.Methods.forEach(element => {
-                //if (element.Name == method)
-                //{
-                let examples = ctx.Examples;
-                examples.forEach(example => {
-                    if (element.Name == example.Method) {
-                        mo.push("");
-                        mo.push("**Example: " + example.Description + "**");
-                        mo.push("");
-                        mo.push("```");
-                        let next = model.GetCliCommand() + " " + method + " ";
-                        for (let k in example.Parameters) {
-                            let v = example.Parameters[k];
-                            if (/\s/.test(v)) {
-                                v = "\"" + v.replace("\"", "\\\"") + "\"";
-                            }
-                            next += k + " " + v;
-                            mo.push(next);
-                            next = "        ";
+            let examples = ctx.Examples;
+            examples.forEach(example => {
+                if (method == example.Method) {
+                    mo.push("");
+                    mo.push("**Example: " + example.Description + "**");
+                    mo.push("");
+                    mo.push("```");
+                    let next = model.GetCliCommand() + " " + method + " ";
+                    for (let k in example.Parameters) {
+                        let v = example.Parameters[k];
+                        if (/\s/.test(v)) {
+                            v = "\"" + v.replace("\"", "\\\"") + "\"";
                         }
-                        mo.push("```");
+                        next += k + " " + v;
+                        mo.push(next);
+                        next = "        ";
                     }
-                });
-                //}
+                    mo.push("```");
+                }
             });
         }
         cmds[model.GetCliCommand()] = mo;

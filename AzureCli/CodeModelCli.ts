@@ -327,9 +327,8 @@ export class CodeModelCli
                 }
             });
 
-            this._log("EXAMPLE: " + JSON.stringify(exampleDict));
-
-            //example.Parameters["--xxx"] = "yyy";
+            // this log is too large
+            //this._log("EXAMPLE: " + JSON.stringify(exampleDict));
             examples.push(example);
         }
         

@@ -227,8 +227,8 @@ class CodeModelCli {
                     example.Parameters["--" + element.Name] = v;
                 }
             });
-            this._log("EXAMPLE: " + JSON.stringify(exampleDict));
-            //example.Parameters["--xxx"] = "yyy";
+            // this log is too large
+            //this._log("EXAMPLE: " + JSON.stringify(exampleDict));
             examples.push(example);
         }
         return examples;

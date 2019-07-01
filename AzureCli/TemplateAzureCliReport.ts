@@ -53,38 +53,32 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                 }
             });
 
-            ctx.Methods.forEach(element => {
-                //if (element.Name == method)
-                //{
-                    let examples: CommandExample[] = ctx.Examples;
-                    examples.forEach(example => {
+            let examples: CommandExample[] = ctx.Examples;
+            examples.forEach(example => {
 
-                        if (element.Name== example.Method)
+                if (method == example.Method)
+                {
+                    mo.push("");
+                    mo.push ("**Example: " + example.Description + "**");
+                    mo.push("");
+                    mo.push("```");
+
+                    let next: string = model.GetCliCommand() + " " + method + " ";
+                    for (let k in example.Parameters)
+                    {
+                        let v: string = example.Parameters[k];
+                        if (/\s/.test(v))
                         {
-                            mo.push("");
-                            mo.push ("**Example: " + example.Description + "**");
-                            mo.push("");
-                            mo.push("```");
-
-                            let next: string = model.GetCliCommand() + " " + method + " ";
-                            for (let k in example.Parameters)
-                            {
-                                let v: string = example.Parameters[k];
-                                if (/\s/.test(v))
-                                {
-                                    v = "\"" + v.replace("\"", "\\\"") + "\"";
-                                }
-
-                                next += k + " " + v;
-                                mo.push(next);
-                                next = "        ";
-                            }
-                            mo.push("```");
+                            v = "\"" + v.replace("\"", "\\\"") + "\"";
                         }
-                    });        
-                //}
-            });
-    
+
+                        next += k + " " + v;
+                        mo.push(next);
+                        next = "        ";
+                    }
+                    mo.push("```");
+                }
+            });            
         }
 
         cmds[model.GetCliCommand()] = mo;
