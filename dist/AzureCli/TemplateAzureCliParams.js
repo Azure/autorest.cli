@@ -57,7 +57,7 @@ function GenerateAzureCliParams(model) {
                 params = model.GetAggregatedCommandParameters(method);
             }
             params.forEach(element => {
-                output.push("        c.argument('" + element.Name + "', id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')");
+                output.push("        c.argument('" + element.Name.replace("-", "_") + "', id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')");
             });
             output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
             if (method != "create" && method != "update") {
