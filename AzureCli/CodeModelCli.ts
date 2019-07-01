@@ -270,7 +270,7 @@ export class CodeModelCli
             {
                 example.Method = "create";
             }
-            else if (moduleExample.Method == "post")
+            else if (moduleExample.Method == "patch")
             {
                 example.Method = "update";
             }

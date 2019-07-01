@@ -187,7 +187,7 @@ class CodeModelCli {
             if (moduleExample.Method == "put") {
                 example.Method = "create";
             }
-            else if (moduleExample.Method == "post") {
+            else if (moduleExample.Method == "patch") {
                 example.Method = "update";
             }
             else if (moduleExample.Method == "get") {
