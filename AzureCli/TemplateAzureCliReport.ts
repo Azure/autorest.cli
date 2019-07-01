@@ -58,26 +58,29 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                 //{
                     let examples: CommandExample[] = ctx.Examples;
                     examples.forEach(example => {
-    
-                        mo.push("");
-                        mo.push ("**Example: " + example.Description + "**");
-                        mo.push("");
-                        mo.push("```");
 
-                        let next: string = model.GetCliCommand() + " " + method + " s";
-                        for (let k in example.Parameters)
+                        if (element.Name== example.Method)
                         {
-                            let v: string = example.Parameters[k];
-                            if (/\s/.test(v))
-                            {
-                                v = "\"" + v.replace("\"", "\\\"") + "\"";
-                            }
+                            mo.push("");
+                            mo.push ("**Example: " + example.Description + "**");
+                            mo.push("");
+                            mo.push("```");
 
-                            next += k + " " + v;
-                            mo.push(next);
-                            next = "        ";
+                            let next: string = model.GetCliCommand() + " " + method + " ";
+                            for (let k in example.Parameters)
+                            {
+                                let v: string = example.Parameters[k];
+                                if (/\s/.test(v))
+                                {
+                                    v = "\"" + v.replace("\"", "\\\"") + "\"";
+                                }
+
+                                next += k + " " + v;
+                                mo.push(next);
+                                next = "        ";
+                            }
+                            mo.push("```");
                         }
-                        mo.push("```");
                     });        
                 //}
             });

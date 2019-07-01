@@ -184,6 +184,23 @@ class CodeModelCli {
         for (let exampleIdx in moduleExamples) {
             let moduleExample = moduleExamples[exampleIdx];
             let example = new CommandExample();
+            if (moduleExample.Method == "put") {
+                example.Method = "create";
+            }
+            else if (moduleExample.Method == "post") {
+                example.Method = "update";
+            }
+            else if (moduleExample.Method == "get") {
+                // XXX - could be list
+                example.Method = "show";
+            }
+            else if (moduleExample.Method == "delete") {
+                example.Method = "delete";
+            }
+            else {
+                // XXX - need warning
+                continue;
+            }
             example.Parameters = new Map();
             example.Description = moduleExample.Name;
             let exampleDict = pp.GetExampleAsDictionary(moduleExample);

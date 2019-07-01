@@ -42,21 +42,23 @@ function GenerateAzureCliReport(model) {
                 //{
                 let examples = ctx.Examples;
                 examples.forEach(example => {
-                    mo.push("");
-                    mo.push("**Example: " + example.Description + "**");
-                    mo.push("");
-                    mo.push("```");
-                    let next = model.GetCliCommand() + " " + method + " s";
-                    for (let k in example.Parameters) {
-                        let v = example.Parameters[k];
-                        if (/\s/.test(v)) {
-                            v = "\"" + v.replace("\"", "\\\"") + "\"";
+                    if (element.Name == example.Method) {
+                        mo.push("");
+                        mo.push("**Example: " + example.Description + "**");
+                        mo.push("");
+                        mo.push("```");
+                        let next = model.GetCliCommand() + " " + method + " ";
+                        for (let k in example.Parameters) {
+                            let v = example.Parameters[k];
+                            if (/\s/.test(v)) {
+                                v = "\"" + v.replace("\"", "\\\"") + "\"";
+                            }
+                            next += k + " " + v;
+                            mo.push(next);
+                            next = "        ";
                         }
-                        next += k + " " + v;
-                        mo.push(next);
-                        next = "        ";
+                        mo.push("```");
                     }
-                    mo.push("```");
                 });
                 //}
             });

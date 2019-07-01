@@ -19,6 +19,8 @@ export class CommandParameter
 
 export class CommandExample
 {
+    // this should be "create", "update", "list", "show"
+    public Method: string;
     public Description: string;
     public Parameters: Map<string, string>;
 }
@@ -263,6 +265,31 @@ export class CodeModelCli
         {
             let moduleExample: Example = moduleExamples[exampleIdx];
             let example = new CommandExample();
+
+            if (moduleExample.Method == "put")
+            {
+                example.Method = "create";
+            }
+            else if (moduleExample.Method == "post")
+            {
+                example.Method = "update";
+            }
+            else if (moduleExample.Method == "get")
+            {
+                // XXX - could be list
+                example.Method = "show";
+            }
+            else if (moduleExample.Method == "delete")
+            {
+                example.Method = "delete";
+            }
+            else
+            {
+                // XXX - need warning
+                continue;
+            }
+
+
             example.Parameters = new Map<string,string>();
             example.Description = moduleExample.Name;
 
