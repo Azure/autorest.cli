@@ -9,9 +9,9 @@ use-extension:
   "@microsoft.azure/autorest.modeler": "2.3.45" # keep in sync with package.json's dev dependency in order to have meaningful tests
 
 pipeline:
-    devops: # <- name of plugin
-        scope: devops
-        # ^ will make this plugin run only when `--devops` is passed on the CLI or
+    #devops: # <- name of plugin
+    #    scope: devops
+    #    # ^ will make this plugin run only when `--devops` is passed on the CLI or
 
     devops/imodeler1:
         input: openapi-document/identity
