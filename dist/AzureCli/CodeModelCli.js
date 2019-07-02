@@ -164,7 +164,7 @@ class CodeModelCli {
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             if (o.IsList) {
-                                this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + parameter.Type);
+                                this._log(" XXXXXX PARAM TYPE IS DUPA: " + parameter.Name + " --- " + parameter.Type);
                             }
                         }
                     }
