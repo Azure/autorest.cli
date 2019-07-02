@@ -33,7 +33,7 @@ script:
         -v ~/autorest.devops.debug/generated:/generated
         zikalino/autorest.devops
         autorest
-        --devops
+        --devops --debug
         --use=/autorest.devops
         --python-sdks-folder=/generated
         --output-folder=/generated
