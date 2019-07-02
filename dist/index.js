@@ -36,7 +36,7 @@ const ExampleProcessor_1 = require("./ExampleProcessor");
 const Adjustments_1 = require("./Adjustments");
 //
 const extension = new autorest_extension_base_1.AutoRestExtension();
-extension.Add("azureresourceschema", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
+extension.Add("devops", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
     // read files offered to this plugin
     const inputFileUris = yield autoRestApi.ListInputs();
     const inputFiles = yield Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
