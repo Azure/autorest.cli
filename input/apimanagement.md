@@ -77,7 +77,7 @@ input-file:
 These settings apply only when `--azureresourceschema` is specified on the command line.
 
 ``` yaml $(azureresourceschema)
-azureresourceschema:
+devops:
   cli-name: apimgmt
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
