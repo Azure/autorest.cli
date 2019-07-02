@@ -40,12 +40,12 @@ input-file:
 
 # Code Generation
 
-## azureresourceschema
+## devops
 
-These settings apply only when `--azureresourceschema` is specified on the command line.
+These settings apply only when `--devops` is specified on the command line.
 
-``` yaml $(azureresourceschema)
-azureresourceschema:
+``` yaml $(devops)
+devops:
   cli-name: mgmtgroups
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION

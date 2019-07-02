@@ -9,20 +9,20 @@ Note: **readme.md** files will be moved to **azure-rest-api-specs** repo.
 
 ### Debugging
 
-Add **debug** flag under **azureresourceschema** section in your **input/xxxxx.md** file:
+Add **debug** flag under **devops** section in your **input/xxxxx.md** file:
 
-``` yaml $(azureresourceschema)
-azureresourceschema:
+``` yaml $(devops)
+devops:
   ...
   debug: true
 ```
 
 ### Enabling/Disabling Options
 
-Add **adjustments** section under **azureresourceschema** section in your **input/xxxxx.md** file.
+Add **adjustments** section under **devops** section in your **input/xxxxx.md** file.
 
-``` yaml $(azureresourceschema)
-azureresourceschema:
+``` yaml $(devops)
+devops:
   ...
   adjustments:
     "/properties/networkrulecollections/id": "hide"
