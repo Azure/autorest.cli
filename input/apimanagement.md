@@ -76,8 +76,8 @@ input-file:
 
 These settings apply only when `--azureresourceschema` is specified on the command line.
 
-``` yaml $(azureresourceschema)
-azureresourceschema:
+``` yaml $(devops)
+devops:
   cli-name: apimgmt
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
@@ -89,4 +89,8 @@ azureresourceschema:
   disable-mm: true
   adjustments:
     "/sku": "Sku*/"
+
+use-extension:
+  devops: ../../autorest.devops
 ```
+
