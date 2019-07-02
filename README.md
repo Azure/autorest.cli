@@ -11,7 +11,7 @@ use-extension:
 pipeline:
     devops: # <- name of plugin
         scope: devops
-        # ^ will make this plugin run only when `--hello` is passed on the CLI or
+        # ^ will make this plugin run only when `--devops` is passed on the CLI or
 
     devops/imodeler1:
         input: openapi-document/identity

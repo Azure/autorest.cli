@@ -76,7 +76,7 @@ input-file:
 
 These settings apply only when `--azureresourceschema` is specified on the command line.
 
-``` yaml $(azureresourceschema)
+``` yaml $(devops)
 devops:
   cli-name: apimgmt
   azure-arm: true
