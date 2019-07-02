@@ -34,7 +34,7 @@ export type LogCallback = (message: string) => void;
 //
 const extension = new AutoRestExtension();
 
-extension.Add("devops", async autoRestApi => {
+extension.Add("azureresourceschema", async autoRestApi => {
   // read files offered to this plugin
   const inputFileUris = await autoRestApi.ListInputs();
   const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
