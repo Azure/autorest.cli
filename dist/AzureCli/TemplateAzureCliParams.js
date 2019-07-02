@@ -50,7 +50,16 @@ function GenerateAzureCliParams(model) {
                 if (element.Type == "boolean") {
                     argument += ", arg_type=get_three_state_flag()";
                 }
-                argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')" + " # " + element.Type;
+                else if (element.EnumValues.length > 0) {
+                    argument += ", arg_type=get_enum_type([";
+                    element.EnumValues.forEach(element => {
+                        if (!argument.endsWith("["))
+                            argument += ", ";
+                        argument += "'" + element + "'";
+                    });
+                    argument += "])";
+                }
+                argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')";
                 output.push(argument);
             });
         }

@@ -128,6 +128,8 @@ class CodeModelCli {
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
+                    parameter.EnumValues = [];
+                    o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key); });
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
                     this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
@@ -159,6 +161,8 @@ class CodeModelCli {
                             parameter.Help = o.Documentation;
                             parameter.Required = o.Required;
                             parameter.Type = this.GetCliTypeFromOption(o);
+                            parameter.EnumValues = [];
+                            o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key); });
                             parameter.PathSdk = o.DispositionSdk;
                             parameter.PathSwagger = o.DispositionRest;
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
@@ -337,6 +341,8 @@ class CodeModelCli {
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = "default";
+                    parameter.EnumValues = [];
+                    o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key); });
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
                     this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
@@ -377,6 +383,7 @@ class CodeModelCli {
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
+            param.EnumValues = [];
             param.PathSdk = o.DispositionSdk;
             param.PathSwagger = o.DispositionRest;
             this.FixPath(param, o.NamePythonSdk, o.NameSwagger);

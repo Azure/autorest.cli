@@ -62,8 +62,17 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 {
                     argument += ", arg_type=get_three_state_flag()";
                 }
-                argument += ", id_part=None, help='" + EscapeString(element.Help) + "')" + " # " + element.Type 
+                else if (element.EnumValues.length > 0)
+                {
+                    argument += ", arg_type=get_enum_type([";
 
+                    element.EnumValues.forEach(element => {
+                        if (!argument.endsWith("[")) argument += ", ";
+                        argument += "'" + element + "'";
+                    });
+                    argument += "])";
+                }
+                argument += ", id_part=None, help='" + EscapeString(element.Help) + "')"; 
                 output.push(argument);
             });
         }
