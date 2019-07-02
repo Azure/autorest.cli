@@ -10,13 +10,17 @@ function GenerateAzureCliParams(model) {
     output.push("# pylint: disable=line-too-long");
     output.push("");
     output.push("from knack.arguments import CLIArgumentType");
+    output.push("from azure.cli.core.commands.parameters import (");
+    output.push("    tags_type,");
+    output.push("    get_resource_name_completion_list,");
+    output.push("    quotes,");
+    output.push("    get_three_state_flag,");
+    output.push("    get_enum_type");
+    output.push(")");
+    output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
     output.push("");
     output.push("");
     output.push("def load_arguments(self, _):");
-    output.push("");
-    output.push("    from azure.cli.core.commands.parameters import tags_type");
-    output.push("    from azure.cli.core.commands.validators import get_default_location_from_resource_group");
-    output.push("");
     do {
         // this is a hack, as everything can be produced from main module now
         if (model.ModuleName.endsWith("_info"))
@@ -39,33 +43,16 @@ function GenerateAzureCliParams(model) {
             let method = methods[mi];
             output.push("");
             output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
-            //for (let oi = 0; oi < options.length; oi++)
-            //{
-            //    let o: ModuleOption = options[oi];
-            //    if (o.IdPortion == null || o.IdPortion == "")
-            //    {
-            //        if (method != "create" && method != "update")
-            //            continue;
-            //    }
-            //    output.push("        c.argument('" + o.NameAnsible + "', name_arg_type, id_part=None, help='" + o.Documentation + "')");
-            //}        
-            let params = null;
-            if (method != "list") {
-                params = model.GetCommandParameters(method);
-            }
-            else {
-                params = model.GetAggregatedCommandParameters(method);
-            }
+            let ctx = model.GetCliCommandContext(method);
+            let params = ctx.Parameters;
             params.forEach(element => {
-                output.push("        c.argument('" + element.Name.replace("-", "_") + "', id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')");
+                let argument = "        c.argument('" + element.Name.replace("-", "_") + "'";
+                if (element.Type == "boolean") {
+                    argument += ", arg_type=get_three_state_flag()";
+                }
+                argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')" + " # " + element.Type;
+                output.push(argument);
             });
-            output.push("        c.argument('resource_id', name_arg_type, id_part=None)");
-            if (method != "create" && method != "update") {
-                output.push("        c.argument('rest_body', name_arg_type, id_part=None)");
-            }
-            //output.push("");
-            //output.push("    with self.argument_context('apimanagement list') as c:");
-            //output.push("        c.argument('apimanagement_name', apimanagement_name_type, id_part=None)");
         }
     } while (model.NextModule());
     ;
