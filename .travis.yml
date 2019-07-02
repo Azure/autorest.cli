@@ -32,11 +32,6 @@ script:
         -v ~/azure-rest-api-specs:/azure-rest-api-specs
         -v ~/autorest.devops.debug/generated:/generated
         zikalino/autorest.devops
-        autorest
-        --devops
-        --use=/autorest.devops
-        --python-sdks-folder=/generated
-        --output-folder=/generated
         /autorest.devops/input/$d;
      done'
 
