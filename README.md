@@ -12,7 +12,7 @@ pipeline:
 ```
     
 
-``` yaml 
-use-extension:
-  "devops": "$(this-folder)"
-```
+#``` yaml 
+#use-extension:
+#  "devops": "$(this-folder)"
+#```
