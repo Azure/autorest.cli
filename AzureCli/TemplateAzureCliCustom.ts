@@ -33,6 +33,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             output.push("");
             output.push("# module equivalent: " + model.ModuleName);
+            output.push("# URL: " + ctx.Url);
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_") + "(";
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");

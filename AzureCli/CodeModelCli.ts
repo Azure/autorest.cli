@@ -35,6 +35,7 @@ export class CommandMethod
 export class CommandContext
 {
     public Command: string;
+    public Url: string;
     public Parameters: CommandParameter[];
     public Methods: CommandMethod[];
     public Examples: CommandExample[];
@@ -195,6 +196,7 @@ export class CodeModelCli
         let methods: string[] = this.GetSwaggerMethodNames(name);
         let url: string = this.ModuleUrl;
         ctx.Command = this.GetCliCommandFromUrl(url);
+        ctx.Url = url;
 
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);

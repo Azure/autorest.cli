@@ -128,6 +128,7 @@ class CodeModelCli {
         let methods = this.GetSwaggerMethodNames(name);
         let url = this.ModuleUrl;
         ctx.Command = this.GetCliCommandFromUrl(url);
+        ctx.Url = url;
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
