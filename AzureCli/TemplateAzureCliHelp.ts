@@ -10,6 +10,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("");
+    output.push("# pylint: disable=too-many-lines");
     output.push("from knack.help_files import helps  # pylint: disable=unused-import");
     output.push("");
     output.push("");

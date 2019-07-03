@@ -9,6 +9,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
     output.push("# --------------------------------------------------------------------------------------------");
+    output.push("# pylint: disable=line-too-long");
+    output.push("# pylint: disable=too-many-statements");   
     output.push("");
     output.push("from knack.util import CLIError");
     output.push("import json");
@@ -69,7 +71,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             if (methodName != "show" && methodName != "list" && methodName != "delete")
             {
                 // body transformation
-                output.push("    body={}");
+                output.push("    body = {}");
                 params.forEach(element => {
                     let access = "    body"
                     if (element.PathSdk.startsWith("/"))
@@ -149,6 +151,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         }
     } while (model.NextModule());
 
+    output.push("");
 
 
     //def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):

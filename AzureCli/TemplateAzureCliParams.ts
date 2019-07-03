@@ -10,6 +10,8 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# pylint: disable=line-too-long");
+    output.push("# pylint: disable=too-many-lines");
+    output.push("# pylint: disable=too-many-statements");   
     output.push("");
     output.push("from knack.arguments import CLIArgumentType");
     output.push("from azure.cli.core.commands.parameters import (");
@@ -86,6 +88,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     output.push("        c.argument('tags', tags_type)");
     output.push("        c.argument('location', validator=get_default_location_from_resource_group)");
     output.push("        c.argument('apimanagement_name', name_arg_type, options_list=['--name', '-n'])");
-    
+    output.push("");
+
     return output;
 }
