@@ -34,6 +34,7 @@ export class CommandMethod
 
 export class CommandContext
 {
+    public Command: string;
     public Parameters: CommandParameter[];
     public Methods: CommandMethod[];
     public Examples: CommandExample[];
@@ -89,7 +90,13 @@ export class CodeModelCli
             url = this.Map.Modules[this._selectedModule].Methods[0].Url;
         }
 
+        return this.GetCliCommandFromUrl(url);
+    }
+
+    public GetCliCommandFromUrl(url: string)
+    {
         // use URL of any method to create CLI command path
+        let command = "";
         let urlParts: string[] = url.split('/');
         let partIdx = 0;
         while (partIdx < urlParts.length)
@@ -130,6 +137,7 @@ export class CodeModelCli
 
             partIdx++;
         }
+
         return command;
     }
 
@@ -185,6 +193,8 @@ export class CodeModelCli
         ctx.Methods = [];
         ctx.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
+        let url: string = this.ModuleUrl;
+        ctx.Command = this.GetCliCommandFromUrl(url);
 
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);

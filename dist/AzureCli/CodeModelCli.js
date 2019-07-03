@@ -55,7 +55,11 @@ class CodeModelCli {
         else {
             url = this.Map.Modules[this._selectedModule].Methods[0].Url;
         }
+        return this.GetCliCommandFromUrl(url);
+    }
+    GetCliCommandFromUrl(url) {
         // use URL of any method to create CLI command path
+        let command = "";
         let urlParts = url.split('/');
         let partIdx = 0;
         while (partIdx < urlParts.length) {
@@ -122,6 +126,8 @@ class CodeModelCli {
         ctx.Methods = [];
         ctx.Parameters = [];
         let methods = this.GetSwaggerMethodNames(name);
+        let url = this.ModuleUrl;
+        ctx.Command = this.GetCliCommandFromUrl(url);
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
