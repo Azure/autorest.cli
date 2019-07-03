@@ -59,11 +59,11 @@ function NormalizeResourceId(oldId) {
             }
         }
         else if (splitted[idx].startsWith("{")) {
-            newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
+            newId += "{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
             idx++;
         }
         else {
-            newId += "/" + splitted[idx++];
+            newId += splitted[idx++];
         }
         if (idx < splitted.length)
             newId += "/";
