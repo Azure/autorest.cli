@@ -9,6 +9,8 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("");
     output.push("# pylint: disable=line-too-long");
+    output.push("# pylint: disable=too-many-lines");
+    output.push("# pylint: disable=too-many-statements");
     output.push("from azure.cli.core.commands import CliCommandType");
     output.push("from azure.cli.command_modules." + model.GetCliCommandModuleName() + "._client_factory import cf_" + model.GetCliCommandModuleName());
     
@@ -39,17 +41,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         }
     } while (model.NextModule());
 
-    // RESOLVE ALL THESE CUSTOM / NOT CUSTOM / GENERIC THINGIES
-    //    with self.command_group('apimanagement', apimanagement_sdk, client_factory=cf_apimanagement) as g:
-    //        g.custom_command('create', 'create_apimanagement')
-    //        g.command('delete', 'delete')
-    //        g.custom_command('list', 'list_apimanagement')
-    //        g.show_command('show', 'get')
-    //        g.generic_update_command('update', setter_name='update', custom_func_name='update_apimanagement')
-    
-    // XXX - why this is needed?
-    //output.push("    with self.command_group('apimanagement', is_preview=True):");
-    //output.push("        pass");
+    output.push("");
 
     return output;
 }
