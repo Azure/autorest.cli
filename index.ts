@@ -35,188 +35,198 @@ export type LogCallback = (message: string) => void;
 const extension = new AutoRestExtension();
 
 extension.Add("devops", async autoRestApi => {
-  // read files offered to this plugin
-  const inputFileUris = await autoRestApi.ListInputs();
-  const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
-  let generateMagicModules = !await autoRestApi.GetValue("disable-mm");
-  let generateAzureCli = !await autoRestApi.GetValue("disable-azure-cli");
+  try {
+    // read files offered to this plugin
+    const inputFileUris = await autoRestApi.ListInputs();
+    const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
-  // get settings
-  const isDebugFlagSet = await autoRestApi.GetValue("debug");
-  const namespace = await autoRestApi.GetValue("namespace");
+    let generateMagicModules = !await autoRestApi.GetValue("disable-mm");
+    let generateAzureCli = !await autoRestApi.GetValue("disable-azure-cli");
 
-  let adjustments = await autoRestApi.GetValue("adjustments");
-  let cliName = await autoRestApi.GetValue("cli-name");
+    // get settings
+    const isDebugFlagSet = await autoRestApi.GetValue("debug");
+    const namespace = await autoRestApi.GetValue("namespace");
 
-  if (adjustments == null) adjustments = {};
-  let adjustmentsObject = new Adjustments(adjustments);
-  let debug = await autoRestApi.GetValue("debug");
+    let adjustments = await autoRestApi.GetValue("adjustments");
+    let cliName = await autoRestApi.GetValue("cli-name");
 
-  // emit a messages
-  autoRestApi.Message({
-    Channel: "information",
-    Text: "adjustments " + JSON.stringify(adjustments)
-  });
+    if (adjustments == null) adjustments = {};
+    let adjustmentsObject = new Adjustments(adjustments);
+    let debug = await autoRestApi.GetValue("debug");
 
-  // emit a messages
-  //autoRestApi.Message({
-  //  Channel: "warning",
-  //  Text: "Hello World! The `debug` flag is " + (isDebugFlagSet ? "set" : "not set"),
-  //});
-  //autoRestApi.Message({
-  //  Channel: "information",
-  //  Text: "AutoRest offers the following input files: "  + inputFileUris.join("\n"),
-  //});
-
-  for (var iif in inputFiles)
-  {
-    debug = false;
+    // emit a messages
     autoRestApi.Message({
-      Channel: "warning",
-      Text: "URI: " + inputFileUris[iif]
+      Channel: "information",
+      Text: "adjustments " + JSON.stringify(adjustments)
     });
 
-    let swagger = JSON.parse(inputFiles[iif]);
-    let exampleProcessor = new ExampleProcessor(swagger);
-    let examples: Example[] = exampleProcessor.GetExamples();
-    let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
-      if (debug) {
-        autoRestApi.Message({
-          Channel: "warning",
-          Text: msg
-        });
-      }
-    });
-  
-      let map = null;
-      try
-      {
-        map = mapGenerator.CreateMap();
-      } catch (e) {
-        autoRestApi.Message({
-          Channel: "warning",
-          Text: "ERROR " + e.stack,
-        });
-      }
+    // emit a messages
+    //autoRestApi.Message({
+    //  Channel: "warning",
+    //  Text: "Hello World! The `debug` flag is " + (isDebugFlagSet ? "set" : "not set"),
+    //});
+    //autoRestApi.Message({
+    //  Channel: "information",
+    //  Text: "AutoRest offers the following input files: "  + inputFileUris.join("\n"),
+    //});
 
-      autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
-
-      // flatten the map using flattener
-      let mapFlattener = new MapFlattener(map, adjustmentsObject, debug, function(msg: string) {
-        autoRestApi.Message({
-          Channel: "warning",
-          Text: msg
-        });
+    for (var iif in inputFiles)
+    {
+      debug = false;
+      autoRestApi.Message({
+        Channel: "warning",
+        Text: "URI: " + inputFileUris[iif]
       });
-      mapFlattener.Flatten();
 
-      autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
-  
-      if (map != null)
-      {
-        autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
-
-        // Generate raw REST examples
-        for (var i = 0; i < examples.length; i++)
+      let swagger = JSON.parse(inputFiles[iif]);
+      let exampleProcessor = new ExampleProcessor(swagger);
+      let examples: Example[] = exampleProcessor.GetExamples();
+      let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
+        if (debug) {
+          autoRestApi.Message({
+            Channel: "warning",
+            Text: msg
+          });
+        }
+      });
+    
+        let map = null;
+        try
         {
-          var example: Example = examples[i];
-          var filename = example.Filename;
-          autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", GenerateExampleAnsibleRest(example));
-          autoRestApi.WriteFile("intermediate/examples_python/" + filename + ".yml", GenerateExamplePythonRest(example).join('\r\n'));
-
-          let code = GenerateExampleAzureCLI(example);
-          if (code != null)
-          {
-            autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", code.join('\r\n'));
-          }
+          map = mapGenerator.CreateMap();
+        } catch (e) {
+          autoRestApi.Message({
+            Channel: "warning",
+            Text: "ERROR " + e.stack,
+          });
         }
 
-        // generate modules & mm input files
-        let index = 0;
-        while (index < map.Modules.length) {
-          let model = new CodeModel(map, index);
-          try
+        autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
+
+        // flatten the map using flattener
+        let mapFlattener = new MapFlattener(map, adjustmentsObject, debug, function(msg: string) {
+          autoRestApi.Message({
+            Channel: "warning",
+            Text: msg
+          });
+        });
+        mapFlattener.Flatten();
+
+        autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
+    
+        if (map != null)
+        {
+          autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
+
+          // Generate raw REST examples
+          for (var i = 0; i < examples.length; i++)
           {
-            autoRestApi.Message({
-              Channel: "information",
-              Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
-            });
+            var example: Example = examples[i];
+            var filename = example.Filename;
+            autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", GenerateExampleAnsibleRest(example));
+            autoRestApi.WriteFile("intermediate/examples_python/" + filename + ".yml", GenerateExamplePythonRest(example).join('\r\n'));
 
-            if (!model.ModuleName.endsWith('_info')) {
-              autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
-              autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRest(model).join('\r\n'));
-              let mn = model.ModuleName.split("azure_rm_")[1];
-              
-              //if (mn == 'batchaccount') mn = "batchaccountxx";
-              //if (mn != "batchaccount")
-              if (generateMagicModules)
-              {
-                autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
-                autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
-              }
-            } else {
-              autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
-              autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model).join('\r\n'));
-            }
-
-            // generate magic modules input example files
-            let moduleExamples: Example[] = model.ModuleExamples;
-            for (let exampleIdx in moduleExamples)
+            let code = GenerateExampleAzureCLI(example);
+            if (code != null)
             {
-              var example = moduleExamples[exampleIdx];
-              var filename = example.Filename;
-              autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
-              if (!model.ModuleName.endsWith('_info'))
-              {
-                let mn = model.ModuleName.split("azure_rm_")[1]; //if (mn == 'batchaccount') mn = "batchaccountxx";
+              autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", code.join('\r\n'));
+            }
+          }
+
+          // generate modules & mm input files
+          let index = 0;
+          while (index < map.Modules.length) {
+            let model = new CodeModel(map, index);
+            try
+            {
+              autoRestApi.Message({
+                Channel: "information",
+                Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
+              });
+
+              if (!model.ModuleName.endsWith('_info')) {
+                autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
+                autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRest(model).join('\r\n'));
+                let mn = model.ModuleName.split("azure_rm_")[1];
+                
+                //if (mn == 'batchaccount') mn = "batchaccountxx";
+                //if (mn != "batchaccount")
                 if (generateMagicModules)
                 {
-                  autoRestApi.WriteFile("magic-modules-input/" + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                  autoRestApi.WriteFile("magic-modules-input/" + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                  autoRestApi.WriteFile("magic-modules-input/" + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                  autoRestApi.WriteFile("magic-modules-input/" + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                }
+              } else {
+                autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
+                autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model).join('\r\n'));
+              }
+
+              // generate magic modules input example files
+              let moduleExamples: Example[] = model.ModuleExamples;
+              for (let exampleIdx in moduleExamples)
+              {
+                var example = moduleExamples[exampleIdx];
+                var filename = example.Filename;
+                autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
+                if (!model.ModuleName.endsWith('_info'))
+                {
+                  let mn = model.ModuleName.split("azure_rm_")[1]; //if (mn == 'batchaccount') mn = "batchaccountxx";
+                  if (generateMagicModules)
+                  {
+                    autoRestApi.WriteFile("magic-modules-input/" + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                  }
                 }
               }
+
             }
-
+            catch (e)
+            {
+              autoRestApi.Message({
+                Channel: "warning",
+                Text: "ERROR " + e.stack,
+              });
+            }
+            index++;
           }
-          catch (e)
+
+          debug = true;
+          let modelCli = new CodeModelCli(map, 0, function(msg: string) {
+            if (debug) {
+              autoRestApi.Message({
+                Channel: "warning",
+                Text: msg
+              });
+            }
+          })
+
+          if (generateAzureCli)
           {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: "ERROR " + e.stack,
-            });
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", GenerateAzureCliHelp(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
           }
-          index++;
+          
+          // write map after everything is done
+          autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
         }
-
-        debug = true;
-        let modelCli = new CodeModelCli(map, 0, function(msg: string) {
-          if (debug) {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: msg
-            });
-          }
-        })
-
-        if (generateAzureCli)
-        {
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/_help.py", GenerateAzureCliHelp(modelCli).join('\r\n'));
-          modelCli.Reset();
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/_params.py", GenerateAzureCliParams(modelCli).join('\r\n'));
-          modelCli.Reset();
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/commands.py", GenerateAzureCliCommands(modelCli).join('\r\n'));
-          modelCli.Reset();
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
-          modelCli.Reset();
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
-          modelCli.Reset();
-          autoRestApi.WriteFile("azure-cli/" + cliName + "/report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
-        }
-        
-        // write map after everything is done
-        autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
-      }
+    }
+  }
+  catch (e)
+  {
+    autoRestApi.Message({
+      Channel: "warning",
+      Text: e.message + " -- " + JSON.stringify(e.stack)
+    });
   }
 });
 
