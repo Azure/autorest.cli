@@ -64,7 +64,6 @@ function NormalizeResourceId(oldId) {
         }
         else {
             newId += "/" + splitted[idx++];
-            idx++;
         }
         if (idx < splitted.length)
             newId += "/";

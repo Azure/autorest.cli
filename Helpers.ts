@@ -82,7 +82,6 @@ export function NormalizeResourceId(oldId: string): string
         else
         {
             newId += "/" + splitted[idx++];
-            idx++;
         }
 
 
