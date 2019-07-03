@@ -74,17 +74,17 @@ export function NormalizeResourceId(oldId: string): string
                 newId += "/" + splitted[idx++];
             }
         }
+        else if (splitted[idx].startsWith("{"))
+        {
+            newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
+            idx++;
+        }
         else
         {
-            // subresource_type
-            newId += splitted[idx++];
-
-            if (idx < splitted.length)
-            {
-                newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
-                idx++;
-            }
+            newId += "/" + splitted[idx++];
+            idx++;
         }
+
 
         if (idx < splitted.length) newId += "/";
     }
