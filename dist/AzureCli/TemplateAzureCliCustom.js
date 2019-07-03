@@ -10,6 +10,7 @@ function GenerateAzureCliCustom(model) {
     output.push("# pylint: disable=too-many-statements");
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-locals");
+    output.push("# pylint: disable=unused-argument");
     output.push("");
     output.push("from knack.util import CLIError");
     output.push("import json");
