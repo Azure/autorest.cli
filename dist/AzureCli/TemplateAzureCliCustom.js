@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const Helpers_1 = require("../Helpers");
 function GenerateAzureCliCustom(model) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
@@ -22,9 +23,10 @@ function GenerateAzureCliCustom(model) {
         for (let mi in methods) {
             // create, delete, list, show, update
             let methodName = methods[mi];
+            let ctx = model.GetCliCommandContext(methodName);
             output.push("");
             output.push("# module equivalent: " + model.ModuleName);
-            let call = "def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(";
+            let call = "def " + methodName + "_" + model.GetCliCommand(Helpers_1.ToCamelCase(ctx.Methods[methodIdx].Name)).split(" ").join("_") + "(";
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
@@ -36,7 +38,6 @@ function GenerateAzureCliCustom(model) {
             //{
             //    params = model.GetAggregatedCommandParameters(methodName);
             //}
-            let ctx = model.GetCliCommandContext(methodName);
             let params = ctx.Parameters;
             // first parameters that are required
             params.forEach(element => {

@@ -1,5 +1,5 @@
 ﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
-import { Indent, ToSnakeCase } from "../Helpers";
+import { Indent, ToSnakeCase, ToCamelCase } from "../Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
@@ -29,10 +29,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         {
             // create, delete, list, show, update
             let methodName = methods[mi];
+            let ctx = model.GetCliCommandContext(methodName);
 
             output.push("");
             output.push("# module equivalent: " + model.ModuleName);
-            let call = "def " + methodName + "_" + model.GetCliCommand().split(" ").join("_") + "(";
+            let call = "def " + methodName + "_" + model.GetCliCommand(ToCamelCase(ctx.Methods[methodIdx].Name)).split(" ").join("_") + "(";
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
@@ -47,7 +48,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             //    params = model.GetAggregatedCommandParameters(methodName);
             //}
 
-            let ctx = model.GetCliCommandContext(methodName);
             let params: CommandParameter[] = ctx.Parameters;
  
             // first parameters that are required

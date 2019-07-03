@@ -68,13 +68,29 @@ export class CodeModelCli
         return this.Map.CliName;
     }
 
-    public GetCliCommand(): string
+    public GetCliCommand(methodName: string = null): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
         let command = "";
 
+        // XXX - fix this for all the commands
+        let url = "";
+        if (methodName != null)
+        {
+            this.Map.Modules[this._selectedModule].Methods.forEach(m => {
+                if (m.Name.toLowerCase() == methodName.toLowerCase())
+                {
+                    url = m.Url;
+                }
+            });
+        }
+        else
+        {
+            url = this.Map.Modules[this._selectedModule].Methods[0].Url;
+        }
+
         // use URL of any method to create CLI command path
-        let urlParts: string[] = this.Map.Modules[this._selectedModule].Methods[0].Url.split('/');
+        let urlParts: string[] = url.split('/');
         let partIdx = 0;
         while (partIdx < urlParts.length)
         {
