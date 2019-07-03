@@ -170,14 +170,16 @@ class ExampleProcessor {
                 if (varName != "subscription_id") {
                     var varValue = Helpers_1.ToCamelCase(("my_" + varName).split("_name")[0].toLowerCase());
                     var swaggerName = (unprocessedUrl ? unprocessedParts[i] : "{}");
-                    swaggerName = swaggerName.substr(1, swaggerName.length - 2);
-                    var found = false;
-                    for (var vi in vars) {
-                        if (vars[vi].name == varName)
-                            found = true;
+                    if (swaggerName) {
+                        swaggerName = swaggerName.substr(1, swaggerName.length - 2);
+                        var found = false;
+                        for (var vi in vars) {
+                            if (vars[vi].name == varName)
+                                found = true;
+                        }
+                        if (!found)
+                            vars.push(new Example_1.ExampleVariable(varName, varValue, swaggerName));
                     }
-                    if (!found)
-                        vars.push(new Example_1.ExampleVariable(varName, varValue, swaggerName));
                 }
             }
         }

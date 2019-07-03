@@ -264,16 +264,20 @@ export class ExampleProcessor
                 {
                     var varValue: string = ToCamelCase(("my_" + varName).split("_name")[0].toLowerCase());
                     var swaggerName: string = (unprocessedUrl ? unprocessedParts[i] : "{}");
-                    swaggerName = swaggerName.substr(1, swaggerName.length - 2);
-                    var found: boolean = false;
-                    for (var vi in vars)
-                    {
-                        if (vars[vi].name == varName)
-                            found = true;
-                    }
 
-                    if (!found)
-                        vars.push(new ExampleVariable(varName, varValue, swaggerName));
+                    if (swaggerName)
+                    {
+                        swaggerName = swaggerName.substr(1, swaggerName.length - 2);
+                        var found: boolean = false;
+                        for (var vi in vars)
+                        {
+                            if (vars[vi].name == varName)
+                                found = true;
+                        }
+
+                        if (!found)
+                            vars.push(new ExampleVariable(varName, varValue, swaggerName));
+                    }
                 }
             }
         }
