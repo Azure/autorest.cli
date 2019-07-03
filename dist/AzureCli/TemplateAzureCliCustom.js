@@ -53,10 +53,11 @@ function GenerateAzureCliCustom(model) {
                 }
             });
             output[output.length - 1] += "):";
+            let output_body = [];
             // create body transformation for methods that support it
             if (methodName != "show" && methodName != "list" && methodName != "delete") {
                 // body transformation
-                output.push("    body = {}");
+                output_body.push("    body = {}");
                 params.forEach(element => {
                     let access = "    body";
                     if (element.PathSdk.startsWith("/")) {
@@ -73,10 +74,12 @@ function GenerateAzureCliCustom(model) {
                         else {
                             access += "json.loads(" + element.Name.replace("-", "_") + ") if isinstance(" + element.Name.replace("-", "_") + ", str) else " + element.Name.replace("-", "_");
                         }
-                        output.push(access);
+                        output_body.push(access);
                     }
                 });
             }
+            let hasBody = false;
+            let output_method_call = [];
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
                 let prefix = "    ";
                 if (ctx.Methods.length > 1) {
@@ -93,7 +96,7 @@ function GenerateAzureCliCustom(model) {
                     else {
                         ifStatement += "else:";
                     }
-                    output.push(ifStatement);
+                    output_method_call.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
@@ -102,8 +105,10 @@ function GenerateAzureCliCustom(model) {
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
                     let optionName = p.Name.replace("-", "_");
                     // XXX - this is a hack, can we unhack it?
-                    if (optionName.endsWith("_parameters") || optionName == "parameters")
+                    if (optionName.endsWith("_parameters") || optionName == "parameters") {
                         optionName = "body";
+                        hasBody = true;
+                    }
                     if (methodCall.endsWith("(")) {
                         // XXX - split and pop is a hack
                         methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
@@ -113,9 +118,13 @@ function GenerateAzureCliCustom(model) {
                     }
                 }
                 methodCall += ")";
-                output.push(methodCall);
+                output_method_call.push(methodCall);
             }
             ;
+            if (hasBody) {
+                output = output.concat(output_body);
+            }
+            output = output.concat(output_method_call);
         }
     } while (model.NextModule());
     output.push("");

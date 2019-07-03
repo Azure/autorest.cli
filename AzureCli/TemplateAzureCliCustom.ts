@@ -70,11 +70,12 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             output[output.length - 1] += "):";  
 
+            let output_body: string[] = []
             // create body transformation for methods that support it
             if (methodName != "show" && methodName != "list" && methodName != "delete")
             {
                 // body transformation
-                output.push("    body = {}");
+                output_body.push("    body = {}");
                 params.forEach(element => {
                     let access = "    body"
                     if (element.PathSdk.startsWith("/"))
@@ -95,11 +96,13 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                             access += "json.loads(" + element.Name.replace("-", "_") + ") if isinstance(" + element.Name.replace("-", "_") + ", str) else " + element.Name.replace("-", "_")
                         }
 
-                        output.push(access);
+                        output_body.push(access);
                     }
                 });
             }
 
+            let hasBody: boolean = false;
+            let output_method_call: string[] = [];
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
             {
                 let prefix = "    ";
@@ -122,7 +125,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                     {
                         ifStatement += "else:"
                     }
-                    output.push(ifStatement);
+                    output_method_call.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
@@ -134,7 +137,10 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                     let optionName = p.Name.replace("-", "_");
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
+                    {
                         optionName = "body";
+                        hasBody = true;
+                    }
         
                     if (methodCall.endsWith("("))
                     {
@@ -148,9 +154,15 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 }
             
                 methodCall += ")";
-                output.push(methodCall); 
+                output_method_call.push(methodCall); 
             };
             
+            if (hasBody)
+            {
+                output = output.concat(output_body);
+            }
+
+            output = output.concat(output_method_call);
         }
     } while (model.NextModule());
 
