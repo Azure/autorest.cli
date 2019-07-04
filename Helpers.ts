@@ -81,8 +81,19 @@ export function NormalizeResourceId(oldId: string): string
 
             if (idx < splitted.length)
             {
-                newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
-                idx++;
+                let type = splitted[idx - 1];
+
+                // XXX - handle exception like this for now
+                if (type == "portalsettings")
+                {
+                    // Next part should not be changed
+                    newId += splitted[idx++];
+                }
+                else
+                {
+                    newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
+                    idx++;
+                }
             }
         }
 

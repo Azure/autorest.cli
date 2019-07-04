@@ -58,12 +58,21 @@ function NormalizeResourceId(oldId) {
                 newId += "/" + splitted[idx++];
             }
         }
-        else if (splitted[idx].startsWith("{")) {
-            newId += "{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
-            idx++;
-        }
         else {
+            // subresource_type
             newId += splitted[idx++];
+            if (idx < splitted.length) {
+                let type = splitted[idx - 1];
+                // XXX - handle exception like this for now
+                if (type == "portalsettings") {
+                    // Next part should not be changed
+                    newId += splitted[idx++];
+                }
+                else {
+                    newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
+                    idx++;
+                }
+            }
         }
         if (idx < splitted.length)
             newId += "/";
