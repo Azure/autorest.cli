@@ -67,7 +67,7 @@ function GenerateAzureCliParams(model) {
         }
     } while (model.NextModule());
     ;
-    output.push("    apimanagement_name_type = CLIArgumentType(options_list='--apimanagement-name-name', help='Name of the Apimanagement.', id_part='name')");
+    //output.push("    apimanagement_name_type = CLIArgumentType(options_list='--apimanagement-name-name', help='Name of the Apimanagement.', id_part='name')");
     output.push("");
     output.push("    with self.argument_context('apimanagement') as c:");
     output.push("        c.argument('tags', tags_type)");

@@ -19,7 +19,7 @@ function GenerateAzureCliCustom(model) {
     output.push("# pylint: disable=too-many-locals");
     output.push("# pylint: disable=unused-argument");
     output.push("");
-    output.push("from knack.util import CLIError");
+    //output.push("from knack.util import CLIError");
     output.push("import json");
     do {
         // this is a hack, as everything can be produced from main module now
@@ -101,11 +101,12 @@ function GenerateAzureCliCustom(model) {
                             ifStatement += " " + PythonParameterName(ctx.Methods[methodIdx].Parameters[paramIdx].Name) + " is not None";
                         }
                         ifStatement += ":";
+                        output_method_call.push(ifStatement);
                     }
                     else {
-                        ifStatement += "else:";
+                        ifStatement == "";
+                        prefix = "    ";
                     }
-                    output_method_call.push(ifStatement);
                 }
                 // call client & return value
                 // XXX - this is still a hack
