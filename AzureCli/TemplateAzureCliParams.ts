@@ -16,8 +16,8 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     output.push("from knack.arguments import CLIArgumentType");
     output.push("from azure.cli.core.commands.parameters import (");
     output.push("    tags_type,");
-    output.push("    get_resource_name_completion_list,");
-    output.push("    quotes,");
+    //output.push("    get_resource_name_completion_list,");
+    //output.push("    quotes,");
     output.push("    get_three_state_flag,");
     output.push("    get_enum_type");
     output.push(")");

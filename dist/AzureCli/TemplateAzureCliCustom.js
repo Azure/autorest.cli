@@ -1,5 +1,12 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+function PythonParameterName(name) {
+    let newName = name.split("-").join("_");
+    if (newName == "type" || newName == "format") {
+        newName = "_" + newName;
+    }
+    return newName;
+}
 function GenerateAzureCliCustom(model) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
@@ -42,15 +49,16 @@ function GenerateAzureCliCustom(model) {
             // first parameters that are required
             params.forEach(element => {
                 if (element.Type != "placeholder" && element.Required) {
+                    let name = PythonParameterName(element.Name);
                     output[output.length - 1] += ",";
-                    output.push(indent + element.Name.replace("-", "_"));
+                    output.push(indent + PythonParameterName(element.Name));
                 }
             });
             // following by required parameters
             params.forEach(element => {
                 if (element.Type != "placeholder" && !element.Required) {
                     output[output.length - 1] += ",";
-                    output.push(indent + element.Name.replace("-", "_") + "=None");
+                    output.push(indent + PythonParameterName(element.Name) + "=None");
                 }
             });
             output[output.length - 1] += "):";
@@ -61,7 +69,7 @@ function GenerateAzureCliCustom(model) {
                 output_body.push("    body = {}");
                 params.forEach(element => {
                     let access = "    body";
-                    if (element.PathSdk.startsWith("/")) {
+                    if (element.PathSdk.startsWith("/") && element.Type != "placeholder") {
                         let parts = element.PathSdk.split("/");
                         let last = parts.pop();
                         parts.forEach(part => {
@@ -70,10 +78,10 @@ function GenerateAzureCliCustom(model) {
                         });
                         access += "['" + last + "'] = ";
                         if (element.Type != "dict" && element.Type != "list") {
-                            access += element.Name.replace("-", "_") + " # " + element.Type; // # JSON.stringify(element);
+                            access += PythonParameterName(element.Name) + " # " + element.Type; // # JSON.stringify(element);
                         }
                         else {
-                            access += "json.loads(" + element.Name.replace("-", "_") + ") if isinstance(" + element.Name.replace("-", "_") + ", str) else " + element.Name.replace("-", "_");
+                            access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name);
                         }
                         output_body.push(access);
                     }
@@ -90,7 +98,7 @@ function GenerateAzureCliCustom(model) {
                         ifStatement += (methodIdx == 0) ? "if" : "elif";
                         for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name.replace("-", "_") + " is not None";
+                            ifStatement += " " + PythonParameterName(ctx.Methods[methodIdx].Parameters[paramIdx].Name) + " is not None";
                         }
                         ifStatement += ":";
                     }
@@ -104,7 +112,7 @@ function GenerateAzureCliCustom(model) {
                 let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
                 for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-                    let optionName = p.Name.replace("-", "_");
+                    let optionName = PythonParameterName(p.Name);
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters") {
                         optionName = "body";

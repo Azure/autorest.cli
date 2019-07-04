@@ -2,6 +2,17 @@
 import { Indent, ToSnakeCase, ToCamelCase } from "../Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 
+function PythonParameterName(name: string): string
+{
+    let newName = name.split("-").join("_");
+    if (newName == "type" || newName == "format")
+    {
+        newName = "_" + newName;
+    }
+
+    return newName;
+}
+
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
@@ -55,8 +66,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             params.forEach(element => {
                 if (element.Type != "placeholder" && element.Required)
                 {
+                    let name = PythonParameterName(element.Name);
                     output[output.length - 1] += ",";  
-                    output.push(indent + element.Name.replace("-", "_"));
+                    output.push(indent + PythonParameterName(element.Name));
                 }
             });
 
@@ -65,7 +77,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 if (element.Type != "placeholder" && !element.Required)
                 {
                     output[output.length - 1] += ",";  
-                    output.push(indent + element.Name.replace("-", "_") + "=None");
+                    output.push(indent + PythonParameterName(element.Name) + "=None");
                 }
             });
 
@@ -79,7 +91,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 output_body.push("    body = {}");
                 params.forEach(element => {
                     let access = "    body"
-                    if (element.PathSdk.startsWith("/"))
+                    if (element.PathSdk.startsWith("/") && element.Type != "placeholder")
                     {
                         let parts = element.PathSdk.split("/");
                         let last: string = parts.pop();
@@ -90,11 +102,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
                         if (element.Type != "dict" && element.Type != "list")
                         {
-                            access += element.Name.replace("-", "_") + " # " + element.Type; // # JSON.stringify(element);
+                            access += PythonParameterName(element.Name) + " # " + element.Type; // # JSON.stringify(element);
                         }
                         else
                         {
-                            access += "json.loads(" + element.Name.replace("-", "_") + ") if isinstance(" + element.Name.replace("-", "_") + ", str) else " + element.Name.replace("-", "_")
+                            access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name)
                         }
 
                         output_body.push(access);
@@ -118,7 +130,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
                         {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + ctx.Methods[methodIdx].Parameters[paramIdx].Name.replace("-", "_") + " is not None"
+                            ifStatement += " " + PythonParameterName(ctx.Methods[methodIdx].Parameters[paramIdx].Name) + " is not None"
                         }
                         ifStatement += ":";
                     }
@@ -135,7 +147,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
                 {
                     let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-                    let optionName = p.Name.replace("-", "_");
+                    let optionName = PythonParameterName(p.Name);
                     // XXX - this is a hack, can we unhack it?
                     if (optionName.endsWith("_parameters") || optionName == "parameters")
                     {
