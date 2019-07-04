@@ -31,6 +31,7 @@ function GenerateAzureCliCustom(model) {
             let methodName = methods[mi];
             let ctx = model.GetCliCommandContext(methodName);
             output.push("");
+            output.push("");
             output.push("# module equivalent: " + model.ModuleName);
             output.push("# URL: " + ctx.Url);
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_") + "(";
@@ -78,7 +79,7 @@ function GenerateAzureCliCustom(model) {
                         });
                         access += "['" + last + "'] = ";
                         if (element.Type != "dict" && element.Type != "list") {
-                            access += PythonParameterName(element.Name) + " # " + element.Type; // # JSON.stringify(element);
+                            access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }
                         else {
                             access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name);
