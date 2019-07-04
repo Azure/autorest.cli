@@ -13,14 +13,13 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("# pylint: disable=too-many-statements");
     output.push("from azure.cli.core.commands import CliCommandType");
     output.push("from azure.cli.command_modules." + model.GetCliCommandModuleName() + "._client_factory import cf_" + model.GetCliCommandModuleName());
-    
-    
+    output.push("");
+    output.push("");
     output.push("def load_command_table(self, _):");
     output.push("");
     output.push("    " + model.GetCliCommandModuleName() + "_sdk = CliCommandType(");
     output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + ".operations#ApiManagementOperations.{}',");
     output.push("        client_factory=cf_" + model.GetCliCommandModuleName() +")");
-    output.push("");
     output.push("");
     do
     {

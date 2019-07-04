@@ -13,7 +13,6 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     output.push("# pylint: disable=too-many-lines");
     output.push("from knack.help_files import helps  # pylint: disable=unused-import");
     output.push("");
-    output.push("");
     
     do
     {
@@ -50,6 +49,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                         let parameters: string = "";
                         for (let k in example.Parameters)
                         {
+                            let slp = example.Parameters[k].split(/[\r\n]+/).join("<br>");
                             parameters += " " + k + " " + example.Parameters[k];
                         }
                         output.push("      - name: " + example.Description);
@@ -61,6 +61,8 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
             output.push("\"\"\"");
         }
     } while (model.NextModule());;
+
+    output.push("");
 
     return output;
 }

@@ -11,7 +11,6 @@ function GenerateAzureCliHelp(model) {
     output.push("# pylint: disable=too-many-lines");
     output.push("from knack.help_files import helps  # pylint: disable=unused-import");
     output.push("");
-    output.push("");
     do {
         // this is a hack, as everything can be produced from main module now
         if (model.ModuleName.endsWith("_info"))
@@ -39,6 +38,7 @@ function GenerateAzureCliHelp(model) {
                 examples.forEach(example => {
                     let parameters = "";
                     for (let k in example.Parameters) {
+                        let slp = example.Parameters[k].split(/[\r\n]+/).join("<br>");
                         parameters += " " + k + " " + example.Parameters[k];
                     }
                     output.push("      - name: " + example.Description);
@@ -50,6 +50,7 @@ function GenerateAzureCliHelp(model) {
         }
     } while (model.NextModule());
     ;
+    output.push("");
     return output;
 }
 exports.GenerateAzureCliHelp = GenerateAzureCliHelp;

@@ -7,6 +7,7 @@ function GenerateAzureCliClientFactory(model) {
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("");
+    output.push("");
     output.push("def cf_apimgmt(cli_ctx, *_):");
     output.push("");
     output.push("    from azure.cli.core.commands.client_factory import get_mgmt_service_client");
