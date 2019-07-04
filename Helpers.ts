@@ -87,7 +87,7 @@ export function NormalizeResourceId(oldId: string): string
                 if (type == "portalsettings")
                 {
                     // Next part should not be changed
-                    newId += splitted[idx++];
+                    newId += "/" + splitted[idx++];
                 }
                 else
                 {

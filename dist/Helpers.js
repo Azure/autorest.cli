@@ -66,7 +66,7 @@ function NormalizeResourceId(oldId) {
                 // XXX - handle exception like this for now
                 if (type == "portalsettings") {
                     // Next part should not be changed
-                    newId += splitted[idx++];
+                    newId += "/" + splitted[idx++];
                 }
                 else {
                     newId += "/{{ " + PluralToSingular(ToSnakeCase(splitted[idx - 1])) + "_name }}";
