@@ -216,7 +216,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
                     dataType = "!ruby/object:Api::Azure::Type::ISO8601DateTime";
                     break;
                 case "number":
-                        dataType = "!ruby/object:Api::Azure::Type::Integer";
+                        dataType = "!ruby/object:Api::Type::Integer";
                         break;
                 default:
                     // [TODO] this should be handled earlier
