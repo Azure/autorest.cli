@@ -521,5 +521,5 @@ function EscapeDocumentation(d: string)
 {
     if (d.indexOf("'") < 0)
         return d;
-    return d.split("'").join("\'");
+    return d.split("'").join("\\'");
 }
