@@ -217,6 +217,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
         else if (option.ExampleValue) {
             output.push(prefix + "  sample_value: " + option.ExampleValue);
         }
+        if (dataType == "!ruby/object:Api::Azure::Type::ResourceReference") {
+            output.push(prefix + "  resource_type_name: " + "TBD");
+        }
         let sdkReferences = '';
         if (option.PathSwagger != '') {
             if (option.PathPython == option.PathGo) {

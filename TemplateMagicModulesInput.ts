@@ -287,6 +287,11 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
             output.push(prefix + "  sample_value: " + option.ExampleValue);
         }
 
+        if (dataType == "!ruby/object:Api::Azure::Type::ResourceReference")
+        {
+            output.push(prefix + "  resource_type_name: " + "TBD");
+        }
+
         let sdkReferences: string = '';
 
         if (option.PathSwagger != '')
