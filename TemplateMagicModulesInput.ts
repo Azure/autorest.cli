@@ -241,7 +241,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
 
         output.push(prefix + "- " + dataType);
         output.push(prefix + "  name: '" + ToCamelCase(option.NameAnsible) + "'");
-        output.push(prefix + "  description: '" + option.Documentation + "'");
+        output.push(prefix + "  description: '" + EscapeDocumentation(option.Documentation) + "'");
 
         if (!appendReadOnly)
         {
@@ -517,3 +517,9 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
     }
 }
 
+function EscapeDocumentation(d: string)
+{
+    if (d.indexOf("'") < 0)
+        return d;
+    return d.split("'").join("\'");
+}

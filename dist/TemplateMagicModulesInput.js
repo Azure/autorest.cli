@@ -185,7 +185,7 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
         }
         output.push(prefix + "- " + dataType);
         output.push(prefix + "  name: '" + Helpers_1.ToCamelCase(option.NameAnsible) + "'");
-        output.push(prefix + "  description: '" + option.Documentation + "'");
+        output.push(prefix + "  description: '" + EscapeDocumentation(option.Documentation) + "'");
         if (!appendReadOnly) {
             output.push(prefix + "  required: " + (option.Required ? "true" : "false"));
         }
@@ -381,4 +381,9 @@ function appendOption(output, option, isGo, isPython, isRead) {
             }
         }
     }
+}
+function EscapeDocumentation(d) {
+    if (d.indexOf("'") < 0)
+        return d;
+    return d.split("'").join("\'");
 }
