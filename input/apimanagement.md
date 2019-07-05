@@ -86,7 +86,7 @@ devops:
   package-name: azure-mgmt-apimanagement
   clear-output-folder: false
   debug: true
-  disable-mm: true
+  #disable-mm: true
   adjustments:
     "/sku": "Sku*/"
 ```
