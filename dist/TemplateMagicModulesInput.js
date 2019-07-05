@@ -383,7 +383,7 @@ function appendOption(output, option, isGo, isPython, isRead) {
     }
 }
 function EscapeDocumentation(d) {
-    if (d.indexOf("'") < 0)
-        return d;
-    return d.split("'").join("''");
+    d = d.split("'").join("''");
+    d = d.split(/[\r\n]+/).join("\\n");
+    return d;
 }
