@@ -215,7 +215,12 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             output.push(prefix + "  sample_value: " + pattern);
         }
         else if (option.ExampleValue) {
-            output.push(prefix + "  sample_value: " + EscapeDocumentation(option.ExampleValue));
+            if (dataType == "!ruby/object:Api::Type::String") {
+                output.push(prefix + "  sample_value: '" + EscapeDocumentation(option.ExampleValue) + "'");
+            }
+            else {
+                output.push(prefix + "  sample_value: " + option.ExampleValue);
+            }
         }
         if (dataType == "!ruby/object:Api::Azure::Type::ResourceReference") {
             output.push(prefix + "  resource_type_name: " + "TBD");
