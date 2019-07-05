@@ -383,6 +383,8 @@ function appendOption(output, option, isGo, isPython, isRead) {
     }
 }
 function EscapeDocumentation(d) {
+    if (typeof d != "string")
+        d = JSON.stringify(d);
     d = d.split("'").join("''");
     d = d.split(/[\r\n]+/).join("\\n");
     return d;

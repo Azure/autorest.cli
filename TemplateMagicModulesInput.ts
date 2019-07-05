@@ -519,6 +519,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
 function EscapeDocumentation(d: string)
 {
+    if (typeof d != "string") d = JSON.stringify(d);
     d = d.split("'").join("''");
     d = d.split(/[\r\n]+/).join("\\n");
     return d;
