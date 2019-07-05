@@ -284,7 +284,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
         else if (option.ExampleValue)
         {
-            output.push(prefix + "  sample_value: " + option.ExampleValue);
+            output.push(prefix + "  sample_value: " + EscapeDocumentation(option.ExampleValue));
         }
 
         if (dataType == "!ruby/object:Api::Azure::Type::ResourceReference")
