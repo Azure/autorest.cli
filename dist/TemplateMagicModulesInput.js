@@ -178,6 +178,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
                     else if (option.Type == "unknown-primary[timeSpan]") {
                         dataType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
                     }
+                    else if (option.Type == "unknown-primary[uuid]") {
+                        dataType = "!ruby/object:Api::Type::String";
+                    }
                     else {
                         dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
                     }

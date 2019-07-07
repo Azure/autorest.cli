@@ -232,6 +232,10 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
                     {
                         dataType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
                     }
+                    else if (option.Type == "unknown-primary[uuid]")
+                    {
+                        dataType = "!ruby/object:Api::Type::String";
+                    }
                     else
                     {
                         dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
