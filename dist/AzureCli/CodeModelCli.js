@@ -186,6 +186,7 @@ class CodeModelCli {
                             parameter.PathSwagger = o.DispositionRest;
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
+                            parameter.IsList = o.IsList;
                             if (o.IsList) {
                                 this._log(" XXXXXX PARAM TYPE IS LIST: " + parameter.Name + " --- " + parameter.Type);
                             }

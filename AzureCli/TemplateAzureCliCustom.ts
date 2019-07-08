@@ -101,7 +101,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         });
                         access += "['" + last + "'] = ";
 
-                        if (element.Type != "dict" && element.Type != "list")
+                        if (element.Type != "dict" && !element.IsList)
                         {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }
@@ -182,21 +182,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     } while (model.NextModule());
 
     output.push("");
-
-
-    //def create_apimanagement(cmd, client, resource_group_name, apimanagement_name, location=None, tags=None):
-    //    raise CLIError('TODO: Implement `apimanagement create`')
-    
-    
-    //def list_apimanagement(cmd, client, resource_group_name=None):
-    //    raise CLIError('TODO: Implement `apimanagement list`')
-    
-    
-    //def update_apimanagement(cmd, instance, tags=None):
-    //    with cmd.update_context(instance) as c:
-    //        c.set_param('tags', tags)
-    //    return instance
-    
 
     return output;
 }
