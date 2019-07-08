@@ -54,7 +54,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                             parameters += " " + k + " " + slp;
                         }
                         output.push("      - name: " + example.Description);
-                        output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
+                        output.push("        text: az " + model.GetCliCommand() + " " + method + " " + parameters);
                     });        
                 //}
             });

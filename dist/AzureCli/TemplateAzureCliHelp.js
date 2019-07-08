@@ -43,7 +43,7 @@ function GenerateAzureCliHelp(model) {
                         parameters += " " + k + " " + slp;
                     }
                     output.push("      - name: " + example.Description);
-                    output.push("        text: " + model.GetCliCommand() + " " + method + " " + parameters);
+                    output.push("        text: az " + model.GetCliCommand() + " " + method + " " + parameters);
                 });
                 //}
             });
