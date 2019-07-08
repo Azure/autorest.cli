@@ -31,6 +31,7 @@ const TemplateAzureCliCustom_1 = require("./AzureCli/TemplateAzureCliCustom");
 const TemplateAzureCliHelp_1 = require("./AzureCli/TemplateAzureCliHelp");
 const TemplateAzureCliParams_1 = require("./AzureCli/TemplateAzureCliParams");
 const TemplateAzureCliClientFactory_1 = require("./AzureCli/TemplateAzureCliClientFactory");
+const TemplateAzureCliTestScenario_1 = require("./AzureCli/TemplateAzureCliTestScenario");
 const TemplateAzureCliReport_1 = require("./AzureCli/TemplateAzureCliReport");
 const ExampleProcessor_1 = require("./ExampleProcessor");
 const Adjustments_1 = require("./Adjustments");
@@ -182,6 +183,8 @@ extension.Add("devops", (autoRestApi) => __awaiter(this, void 0, void 0, functio
                     autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", TemplateAzureCliCustom_1.GenerateAzureCliCustom(modelCli).join('\r\n'));
                     modelCli.Reset();
                     autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+                    modelCli.Reset();
+                    autoRestApi.WriteFile("azure-cli/" + cliName + "/tests/latest/test_" + cliName + "_scenario.py", TemplateAzureCliTestScenario_1.GenerateAzureCliTestScenario(modelCli).join('\r\n'));
                     modelCli.Reset();
                     autoRestApi.WriteFile("azure-cli/" + cliName + "/report.md", TemplateAzureCliReport_1.GenerateAzureCliReport(modelCli).join('\r\n'));
                 }

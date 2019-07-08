@@ -23,6 +23,7 @@ import { GenerateAzureCliCustom } from "./AzureCli/TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./AzureCli/TemplateAzureCliHelp"
 import { GenerateAzureCliParams} from "./AzureCli/TemplateAzureCliParams"
 import { GenerateAzureCliClientFactory } from "./AzureCli/TemplateAzureCliClientFactory"
+import { GenerateAzureCliTestScenario } from "./AzureCli/TemplateAzureCliTestScenario"
 import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
 
 import { ExampleProcessor } from "./ExampleProcessor"; 
@@ -212,6 +213,8 @@ extension.Add("devops", async autoRestApi => {
             autoRestApi.WriteFile("azure-cli/" + cliName + "/custom.py", GenerateAzureCliCustom(modelCli).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile("azure-cli/" + cliName + "/_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile("azure-cli/" + cliName + "/tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile("azure-cli/" + cliName + "/report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
           }
