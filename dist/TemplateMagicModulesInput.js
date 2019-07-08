@@ -305,6 +305,9 @@ function appendOption(output, option, isGo, isPython, isRead) {
                 // XXX - this needs to be handled properly
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ISO8601DurationObject";
             }
+            else if (option.Type == "unknown-primary[uuid]") {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
+            }
             else {
                 // XXX - this needs to be handled properly
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::[" + option.Type + "]";
