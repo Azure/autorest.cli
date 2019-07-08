@@ -152,6 +152,7 @@ class CodeModelCli {
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
                     this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
+                    parameter.IsList = o.IsList;
                     ctx.Parameters.push(parameter);
                 }
                 method.Parameters.push(parameter);
@@ -366,6 +367,7 @@ class CodeModelCli {
                     parameter.PathSdk = o.DispositionSdk;
                     parameter.PathSwagger = o.DispositionRest;
                     this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
+                    parameter.IsList = o.IsList;
                     parameters.push(parameter);
                 }
             });
@@ -407,6 +409,7 @@ class CodeModelCli {
             param.PathSdk = o.DispositionSdk;
             param.PathSwagger = o.DispositionRest;
             this.FixPath(param, o.NamePythonSdk, o.NameSwagger);
+            param.IsList = o.IsList;
             parameters.push(param);
         }
         return parameters;
