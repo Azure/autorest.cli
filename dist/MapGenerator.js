@@ -192,7 +192,11 @@ class MapGenerator {
         return this.ModuleFindMethod("CreateOrUpdate");
     }
     get ModuleCreateMethod() {
-        return this.ModuleFindMethod("Create");
+        let method = this.ModuleFindMethod("Create");
+        if (method == null) {
+            method = this.ModuleFindMethod("CreateSubscriptionInEnrollmentAccount");
+        }
+        return method;
     }
     get ModuleUpdateMethod() {
         return this.ModuleFindMethod("Update");

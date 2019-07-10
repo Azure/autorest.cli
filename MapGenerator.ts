@@ -278,7 +278,14 @@ export class MapGenerator
 
     public get ModuleCreateMethod(): any //Method
     {
-        return this.ModuleFindMethod("Create");
+        let method: any = this.ModuleFindMethod("Create");
+
+        if (method == null)
+        {
+            method = this.ModuleFindMethod("CreateSubscriptionInEnrollmentAccount");
+        }
+
+        return method;
     }
 
     public get ModuleUpdateMethod(): any //Method
