@@ -71,7 +71,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                             }
                             else if (element.length < 90)
                             {
-                                line += " \\";
+                                line += " \\\\";
                                 output.push("               " + line);
                                 line = element;
                             }
@@ -85,7 +85,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                                 {
                                     let amount = (90 - line.length);
                                     amount = (amount > element.length) ? element.length : amount;
-                                    line += element.substr(0, amount);
+                                    line += "**" + element.substr(0, amount) + "**";
                                     element = (amount < element.length) ? element.substr(amount) : "";
 
                                     if (element != "")
