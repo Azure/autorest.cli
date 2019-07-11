@@ -68,9 +68,9 @@ function GenerateAzureCliHelp(model) {
                                 let amount = (90 - line.length);
                                 amount = (amount > element.length) ? element.length : amount;
                                 line += element.substr(0, amount);
-                                element = element.substr(amount);
+                                element = (amount < element.length) ? element.substr(amount) : "";
                                 if (element != "") {
-                                    line += +(quoted ? "" : "\\");
+                                    line += +(quoted ? "" : "\\\\");
                                     output.push("               " + line);
                                     line = "";
                                 }
