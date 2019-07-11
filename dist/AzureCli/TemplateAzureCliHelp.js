@@ -37,13 +37,49 @@ function GenerateAzureCliHelp(model) {
                 //{
                 let examples = ctx.Examples;
                 examples.forEach(example => {
-                    let parameters = "";
+                    let parameters = [];
+                    parameters.push("az");
+                    parameters = parameters.concat(model.GetCliCommand().split(" "));
+                    parameters.push(method);
                     for (let k in example.Parameters) {
                         let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                        parameters += " " + k + " " + slp;
+                        //parameters += " " + k + " " + slp;
+                        parameters.push(k);
+                        parameters.push(slp);
                     }
                     output.push("      - name: " + example.Description);
-                    output.push("        text: az " + model.GetCliCommand() + " " + method + " " + parameters);
+                    output.push("        text: |-");
+                    // output.push("               az " + model.GetCliCommand() + " " + method + " " + parameters);
+                    let line = "";
+                    parameters.forEach(element => {
+                        if (line.length + element.length + 1 < 90) {
+                            line += ((line != "") ? " " : "") + element;
+                        }
+                        else if (element.length < 90) {
+                            line += " \\";
+                            output.push("               " + line);
+                            line = element;
+                        }
+                        else {
+                            // longer than 90
+                            let quoted = (element.startsWith('\"') || element.startsWith("'"));
+                            line += ((line != "") ? " " : "");
+                            while (element.length > 0) {
+                                let amount = (90 - line.length);
+                                amount = (amount > element.length) ? element.length : amount;
+                                line += element.substr(0, amount);
+                                element = element.substr(amount);
+                                if (element != "") {
+                                    line += +(quoted ? "" : "\\");
+                                    output.push("               " + line);
+                                    line = "";
+                                }
+                            }
+                        }
+                    });
+                    if (line != "") {
+                        output.push("               " + line);
+                    }
                 });
                 //}
             });
