@@ -37,6 +37,7 @@ function GenerateAzureCliHelp(model) {
                 //{
                 let examples = ctx.Examples;
                 examples.forEach(example => {
+                    output.push("# " + example.Method);
                     let parameters = [];
                     parameters.push("az");
                     parameters = parameters.concat(model.GetCliCommand().split(" "));

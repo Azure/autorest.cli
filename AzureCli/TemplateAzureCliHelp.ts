@@ -47,6 +47,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                 //{
                     let examples: CommandExample[] = ctx.Examples;
                     examples.forEach(example => {
+                        output.push ("# " + example.Method);
                         let parameters: string[] = [];
 
                         parameters.push("az");
