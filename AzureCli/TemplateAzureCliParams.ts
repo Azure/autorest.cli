@@ -57,7 +57,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             let params: CommandParameter[] = ctx.Parameters;
 
             params.forEach(element => {
-                let argument = "        c.argument('" + element.Name.replace("-", "_") + "'";
+                let argument = "        c.argument('" + element.Name.split("-").join("_") + "'";
 
                 if (element.Type == "boolean")
                 {

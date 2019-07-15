@@ -12,7 +12,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-statements");
     output.push("from azure.cli.core.commands import CliCommandType");
-    output.push("from azure.cli.command_modules." + model.GetCliCommandModuleName() + "._client_factory import cf_" + model.GetCliCommandModuleName());
+    output.push("from ._client_factory import cf_" + model.GetCliCommandModuleName());
     output.push("");
     output.push("");
     output.push("def load_command_table(self, _):");

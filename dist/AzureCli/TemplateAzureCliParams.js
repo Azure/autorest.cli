@@ -47,7 +47,7 @@ function GenerateAzureCliParams(model) {
             let ctx = model.GetCliCommandContext(method);
             let params = ctx.Parameters;
             params.forEach(element => {
-                let argument = "        c.argument('" + element.Name.replace("-", "_") + "'";
+                let argument = "        c.argument('" + element.Name.split("-").join("_") + "'";
                 if (element.Type == "boolean") {
                     argument += ", arg_type=get_three_state_flag()";
                 }
