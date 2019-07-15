@@ -138,12 +138,12 @@ class CodeModelCli {
                 let parameter = null;
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible.replace("_", "-"))
+                    if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
                 if (parameter == null) {
                     parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible.replace("_", "-");
+                    parameter.Name = o.NameAnsible.split("_").join("-");
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
@@ -172,12 +172,12 @@ class CodeModelCli {
                         let parameter = null;
                         // make sure it's not duplicated
                         ctx.Parameters.forEach(p => {
-                            if (p.Name == o.NameAnsible.replace("_", "-"))
+                            if (p.Name == o.NameAnsible.split("_").join("-"))
                                 parameter = p;
                         });
                         if (parameter == null) {
                             parameter = new CommandParameter();
-                            parameter.Name = o.NameAnsible.replace("_", "-");
+                            parameter.Name = o.NameAnsible.split("_").join("-");
                             parameter.Help = o.Documentation;
                             parameter.Required = o.Required;
                             parameter.Type = this.GetCliTypeFromOption(o);
@@ -351,14 +351,14 @@ class CodeModelCli {
                 let parameter = null;
                 // check if already in parameters
                 parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible.replace("_", "-")) {
+                    if (p.Name == o.NameAnsible.split("_").join("-")) {
                         parameter = p;
                     }
                 });
                 if (parameter == null) {
                     this._log(" PARAMETER IS NULL - ATTACHING");
                     parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible.replace("_", "-");
+                    parameter.Name = o.NameAnsible.split("_").join("-");
                     parameter.Help = o.Documentation;
                     parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                     parameter.Type = "default";
@@ -401,7 +401,7 @@ class CodeModelCli {
             if (found)
                 continue;
             let param = new CommandParameter();
-            param.Name = o.NameAnsible.replace("_", "-");
+            param.Name = o.NameAnsible.split("_").join("-");
             param.Help = o.Documentation;
             param.Required = (o.IdPortion != null && o.IdPortion != "");
             param.Type = "default";
