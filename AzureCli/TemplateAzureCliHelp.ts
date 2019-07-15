@@ -66,6 +66,11 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                             for (let k in example.Parameters)
                             {
                                 let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+
+                                // XXX - this is a hack here, i should find a source
+                                slp = slp.split("\\r").join("\\\\r");
+                                slp = slp.split("\\n").join("\\\\n");
+
                                 //parameters += " " + k + " " + slp;
                                 parameters.push(k);
                                 parameters.push(slp);
