@@ -129,6 +129,11 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             if (!option.IncludeInResponse || option.IncludeInArgSpec)
                 continue;
         }
+        // if option is dict and there are no suboptions defined, don't add it!!
+        // warning needs to be generated
+        if (option.Type == "dict" && (option.SubOptions == null || option.SubOptions.length == 0)) {
+            continue;
+        }
         let dataType = "";
         if (option.EnumValues != null && option.EnumValues.length > 0) {
             dataType = "!ruby/object:Api::Type::Enum";
