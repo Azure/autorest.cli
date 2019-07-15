@@ -55,7 +55,6 @@ function GenerateAzureCliHelp(model) {
                         }
                         output.push("      - name: " + example.Description);
                         output.push("        text: |-");
-                        // output.push("               az " + model.GetCliCommand() + " " + method + " " + parameters);
                         let line = "";
                         parameters.forEach(element => {
                             if (line.length + element.length + 1 < 90) {
