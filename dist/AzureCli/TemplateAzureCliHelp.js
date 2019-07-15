@@ -30,7 +30,7 @@ function GenerateAzureCliHelp(model) {
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
             output.push("    short-summary: " + method + " a " + model.GetCliCommand() + ".");
-            output.push("    examples:");
+            let examplesStarted = false;
             ctx.Methods.forEach(element => {
                 output.push("# " + element.Name + " -- " + method);
                 //if (element.Name == method)
@@ -38,6 +38,10 @@ function GenerateAzureCliHelp(model) {
                 let examples = ctx.Examples;
                 examples.forEach(example => {
                     if (example.Method == method) {
+                        if (!examplesStarted) {
+                            output.push("    examples:");
+                            examplesStarted = true;
+                        }
                         output.push("# " + example.Method);
                         let parameters = [];
                         parameters.push("az");
