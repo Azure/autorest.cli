@@ -49,9 +49,6 @@ function GenerateAzureCliHelp(model) {
                         parameters.push(method);
                         for (let k in example.Parameters) {
                             let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                            // XXX - this is a hack here, i should find a source
-                            slp = slp.split("\\r").join("\\\\r");
-                            slp = slp.split("\\n").join("\\\\n");
                             //parameters += " " + k + " " + slp;
                             parameters.push(k);
                             parameters.push(slp);
@@ -64,7 +61,8 @@ function GenerateAzureCliHelp(model) {
                                 line += ((line != "") ? " " : "") + element;
                             }
                             else if (element.length < 90) {
-                                line += " \\\\";
+                                line += " \\";
+                                line = line.split("\\").join("\\\\");
                                 output.push("               " + line);
                                 line = element;
                             }
@@ -78,7 +76,8 @@ function GenerateAzureCliHelp(model) {
                                     line += element.substr(0, amount);
                                     element = (amount < element.length) ? element.substr(amount) : "";
                                     if (element != "") {
-                                        line += (quoted ? "" : "\\\\");
+                                        line += (quoted ? "" : "\\");
+                                        line = line.split("\\").join("\\\\");
                                         output.push("               " + line);
                                         line = "";
                                     }
@@ -86,6 +85,7 @@ function GenerateAzureCliHelp(model) {
                             }
                         });
                         if (line != "") {
+                            line = line.split("\\").join("\\\\");
                             output.push("               " + line);
                         }
                     }
