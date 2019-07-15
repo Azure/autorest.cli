@@ -83,6 +83,12 @@ after_success:
   - cp -R ~/autorest.devops.debug/generated/magic-modules-input/frontdoorhealthprobesetting ~/magic-module-specs
   - cp -R ~/autorest.devops.debug/generated/magic-modules-input/frontdoorloadbalancingsetting ~/magic-module-specs
 
+  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/batchcertificate ~/magic-module-specs
+  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/batchpool ~/magic-module-specs
+  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/frontdoor ~/magic-module-specs
+  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/frontdoorroutingrule ~/magic-module-specs
+  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/softwareupdateconfiguration ~/magic-module-specs
+
 #
 #  - cp -R ~/autorest.devops.debug/generated/magic-modules-input/batchapplication ~/magic-module-specs
 #  #- shopt -s globstar; cd ~/autorest.devops.debug/generated/magic-modules-input; cp --parents --no-clobber ./**/ansible.yaml ~/magic-module-specs; cp --parents --no-clobber ./**/terraform.yaml ~/magic-module-specs; cp --parents ./**/api.yaml ~/magic-module-specs
