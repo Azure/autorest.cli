@@ -47,7 +47,12 @@ function GenerateAzureCliParams(model) {
             let ctx = model.GetCliCommandContext(method);
             let params = ctx.Parameters;
             params.forEach(element => {
-                let argument = "        c.argument('" + element.Name.split("-").join("_") + "'";
+                let parameterName = element.Name.split("-").join("_");
+                let argument = "        c.argument('" + parameterName + "'";
+                // this is to handle names like "format", "type", etc
+                if (parameterName.startsWith("_")) {
+                    argument += ", option_list=['--" + element.Name.substr(1) + "']";
+                }
                 if (element.Type == "boolean") {
                     argument += ", arg_type=get_three_state_flag()";
                 }
