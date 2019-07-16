@@ -52,7 +52,7 @@ function GenerateAzureCliParams(model) {
                 // this is to handle names like "format", "type", etc
                 if (parameterName == "type" || parameterName == "format") {
                     argument = "        c.argument('_" + parameterName + "'";
-                    argument += ", option_list=['--" + parameterName + "']";
+                    argument += ", options_list=['--" + parameterName + "']";
                 }
                 if (element.Type == "boolean") {
                     argument += ", arg_type=get_three_state_flag()";

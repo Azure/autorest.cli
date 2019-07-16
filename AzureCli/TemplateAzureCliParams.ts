@@ -64,7 +64,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 if (parameterName == "type" || parameterName == "format")
                 {
                     argument = "        c.argument('_" + parameterName + "'";
-                    argument += ", option_list=['--" + parameterName + "']";
+                    argument += ", options_list=['--" + parameterName + "']";
                 }
 
                 if (element.Type == "boolean")
