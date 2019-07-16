@@ -50,8 +50,9 @@ function GenerateAzureCliParams(model) {
                 let parameterName = element.Name.split("-").join("_");
                 let argument = "        c.argument('" + parameterName + "'";
                 // this is to handle names like "format", "type", etc
-                if (parameterName.startsWith("_")) {
-                    argument += ", option_list=['--" + element.Name.substr(1) + "']";
+                if (parameterName == "type" || parameterName == "format") {
+                    argument = "        c.argument('_" + parameterName + "'";
+                    argument += ", option_list=['--" + parameterName + "']";
                 }
                 if (element.Type == "boolean") {
                     argument += ", arg_type=get_three_state_flag()";

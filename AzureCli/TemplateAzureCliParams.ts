@@ -61,9 +61,10 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 let argument = "        c.argument('" + parameterName + "'";
 
                 // this is to handle names like "format", "type", etc
-                if (parameterName.startsWith("_"))
+                if (parameterName == "type" || parameterName == "format")
                 {
-                    argument += ", option_list=['--" + element.Name.substr(1) + "']";
+                    argument = "        c.argument('_" + parameterName + "'";
+                    argument += ", option_list=['--" + parameterName + "']";
                 }
 
                 if (element.Type == "boolean")
