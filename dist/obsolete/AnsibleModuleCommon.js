@@ -177,9 +177,10 @@ function GetHelpFromOptions(model, options, padding) {
             option_doc['required'] = true;
         }
         // right now just add type if option is a list or bool
-        if (option.IsList || option.Type == "bool") {
-            option_doc['type'] = (option.IsList ? "list" : option.Type);
-        }
+        //if (option.IsList || option.Type == "bool")
+        //{
+        option_doc['type'] = (option.IsList ? "list" : option.Type);
+        //}
         if (option.DefaultValue != null) {
             option_doc['default'] = option.DefaultValue;
         }
@@ -248,6 +249,7 @@ function GetArgSpecFromOptions(model, options, prefix, mainModule, useSdk) {
         argSpec.push(prefix + option.NameAnsible + "=dict(");
         let type = (option.IsList ? "list" : option.Type);
         // XXX - clean it up
+        // XXX - do the same in documentation
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
             type = "raw";
         }

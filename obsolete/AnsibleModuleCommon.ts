@@ -229,10 +229,10 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
         }
 
         // right now just add type if option is a list or bool
-        if (option.IsList || option.Type == "bool")
-        {
+        //if (option.IsList || option.Type == "bool")
+        //{
             option_doc['type'] = (option.IsList ? "list" : option.Type);
-        }
+        //}
 
         if (option.DefaultValue != null)
         {
@@ -324,6 +324,7 @@ function GetArgSpecFromOptions(model: CodeModel, options: ModuleOption[], prefix
         let type = (option.IsList ? "list" : option.Type);
 
         // XXX - clean it up
+        // XXX - do the same in documentation
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/'))
         {
             type = "raw";
