@@ -1,11 +1,11 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const AnsibleModuleCommon_1 = require("./AnsibleModuleCommon");
-function GenerateModuleRestInfo(model) {
+function GenerateModuleRestInfo(model, collection) {
     var output = [];
     AnsibleModuleCommon_1.AppendModuleHeader(output);
-    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, true);
-    AnsibleModuleCommon_1.AppendModuleExamples(output, model);
+    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, true, collection);
+    AnsibleModuleCommon_1.AppendModuleExamples(output, model, collection);
     AnsibleModuleCommon_1.AppendModuleReturnDoc(output, model, true);
     output.push("");
     output.push("import time");

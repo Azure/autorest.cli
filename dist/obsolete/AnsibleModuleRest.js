@@ -2,11 +2,11 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Helpers");
 const AnsibleModuleCommon_1 = require("./AnsibleModuleCommon");
-function GenerateModuleRest(model) {
+function GenerateModuleRest(model, collection) {
     var output = [];
     AnsibleModuleCommon_1.AppendModuleHeader(output);
-    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, false);
-    AnsibleModuleCommon_1.AppendModuleExamples(output, model);
+    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, false, collection);
+    AnsibleModuleCommon_1.AppendModuleExamples(output, model, collection);
     AnsibleModuleCommon_1.AppendModuleReturnDoc(output, model, false);
     output.push("");
     output.push("import time");

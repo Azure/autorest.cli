@@ -11,13 +11,13 @@ import {
     AppendModuleReturnDoc
 } from "./AnsibleModuleCommon"
 
-export function GenerateModuleRest(model: CodeModel) : string[] {
+export function GenerateModuleRest(model: CodeModel, collection: boolean) : string[] {
     
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, false);
-    AppendModuleExamples(output, model);
+    AppendModuleDocumentation(output, model, false, collection);
+    AppendModuleExamples(output, model, collection);
     AppendModuleReturnDoc(output, model, false);
 
     output.push("");

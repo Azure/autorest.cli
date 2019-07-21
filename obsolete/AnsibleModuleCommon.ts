@@ -24,13 +24,13 @@ export function AppendModuleHeader(output: string[])
     output.push("");
 }
 
-export function AppendModuleDocumentation(output: string[], model: CodeModel, isInfoModule: boolean)
+export function AppendModuleDocumentation(output: string[], model: CodeModel, isInfoModule: boolean, isCollection: boolean)
 {
     output.push("DOCUMENTATION = '''");
     output.push("---");
 
     var doc: any = {};
-    doc['module'] = model.ModuleName;
+    doc['module'] = (isCollection ? model.ModuleName.split("_").pop() : model.ModuleName);
     doc['version_added'] = '2.9';
 
     if (isInfoModule)
@@ -66,7 +66,7 @@ export function AppendModuleDocumentation(output: string[], model: CodeModel, is
     output.push("");
 }
 
-export function AppendModuleExamples(output: string[], model: CodeModel)
+export function AppendModuleExamples(output: string[], model: CodeModel, isCollection: boolean)
 {
     output.push("EXAMPLES = '''");
 
@@ -77,7 +77,7 @@ export function AppendModuleExamples(output: string[], model: CodeModel)
     for (let exampleIdx in examples)
     {
         let example = examples[exampleIdx];
-        processedExamples.push(pp.ProcessExample(example, ExampleType.Ansible, false));
+        processedExamples.push(pp.ProcessExample(example, isCollection ? ExampleType.AnsibleCollection : ExampleType.Ansible, false));
     }
 
     yaml.dump(processedExamples).split(/\r?\n/).forEach(element => {

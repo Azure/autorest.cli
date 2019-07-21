@@ -3,7 +3,8 @@ Object.defineProperty(exports, "__esModule", { value: true });
 var ExampleType;
 (function (ExampleType) {
     ExampleType[ExampleType["Ansible"] = 0] = "Ansible";
-    ExampleType[ExampleType["Terraform"] = 1] = "Terraform";
+    ExampleType[ExampleType["AnsibleCollection"] = 1] = "AnsibleCollection";
+    ExampleType[ExampleType["Terraform"] = 2] = "Terraform";
 })(ExampleType = exports.ExampleType || (exports.ExampleType = {}));
 class ExamplePostProcessor {
     constructor(module) {
@@ -36,7 +37,7 @@ class ExamplePostProcessor {
     ProcessExample(example, type, useVars) {
         let e = {};
         e['name'] = example.Name;
-        e[this._module.ModuleName] = this.GetExampleProperties(example, type, useVars);
+        e[(type == ExampleType.AnsibleCollection) ? this._module.ModuleName.split("_").join(".") : this._module.ModuleName] = this.GetExampleProperties(example, type, useVars);
         return e;
     }
     GetExampleProperties(example, type, useVars) {

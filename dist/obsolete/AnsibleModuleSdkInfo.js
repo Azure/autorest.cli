@@ -4,8 +4,8 @@ const AnsibleModuleCommon_1 = require("./AnsibleModuleCommon");
 function GenerateModuleSdkInfo(model) {
     var output = [];
     AnsibleModuleCommon_1.AppendModuleHeader(output);
-    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, true);
-    AnsibleModuleCommon_1.AppendModuleExamples(output, model);
+    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, true, false);
+    AnsibleModuleCommon_1.AppendModuleExamples(output, model, false);
     AnsibleModuleCommon_1.AppendModuleReturnDoc(output, model, true);
     output.push("");
     output.push("import time");

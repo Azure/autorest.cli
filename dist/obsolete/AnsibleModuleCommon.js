@@ -21,11 +21,11 @@ function AppendModuleHeader(output) {
     output.push("");
 }
 exports.AppendModuleHeader = AppendModuleHeader;
-function AppendModuleDocumentation(output, model, isInfoModule) {
+function AppendModuleDocumentation(output, model, isInfoModule, isCollection) {
     output.push("DOCUMENTATION = '''");
     output.push("---");
     var doc = {};
-    doc['module'] = model.ModuleName;
+    doc['module'] = (isCollection ? model.ModuleName.split("_").pop() : model.ModuleName);
     doc['version_added'] = '2.9';
     if (isInfoModule) {
         doc['short_description'] = "Get " + model.ObjectName + " info.";
@@ -54,14 +54,14 @@ function AppendModuleDocumentation(output, model, isInfoModule) {
     output.push("");
 }
 exports.AppendModuleDocumentation = AppendModuleDocumentation;
-function AppendModuleExamples(output, model) {
+function AppendModuleExamples(output, model, isCollection) {
     output.push("EXAMPLES = '''");
     let pp = new ExamplePostProcessor_1.ExamplePostProcessor(model.Module);
     let examples = model.ModuleExamples;
     let processedExamples = [];
     for (let exampleIdx in examples) {
         let example = examples[exampleIdx];
-        processedExamples.push(pp.ProcessExample(example, ExamplePostProcessor_1.ExampleType.Ansible, false));
+        processedExamples.push(pp.ProcessExample(example, isCollection ? ExamplePostProcessor_1.ExampleType.AnsibleCollection : ExamplePostProcessor_1.ExampleType.Ansible, false));
     }
     yaml.dump(processedExamples).split(/\r?\n/).forEach(element => {
         output.push(element);

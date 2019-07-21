@@ -4,6 +4,7 @@ import { Example, ExampleVariable } from "./Example"
 export enum ExampleType
 {
     Ansible,
+    AnsibleCollection,
     Terraform
 }
 
@@ -53,7 +54,7 @@ export class ExamplePostProcessor
         let e: any = {};
 
         e['name'] = example.Name;
-        e[this._module.ModuleName] = this.GetExampleProperties(example, type, useVars);
+        e[(type == ExampleType.AnsibleCollection) ? this._module.ModuleName.split("_").join(".") : this._module.ModuleName] = this.GetExampleProperties(example, type, useVars);
 
         return e;
     }

@@ -11,12 +11,12 @@ import {
     AppendInfoModuleLogic
 } from "./AnsibleModuleCommon"
 
-export function GenerateModuleRestInfo(model: CodeModel) : string[] {
+export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, true);
-    AppendModuleExamples(output, model);
+    AppendModuleDocumentation(output, model, true, collection);
+    AppendModuleExamples(output, model, collection);
     AppendModuleReturnDoc(output, model, true);
 
     output.push("");

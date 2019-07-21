@@ -5,8 +5,8 @@ const Helpers_1 = require("../Helpers");
 function GenerateModuleSdk(model) {
     var output = [];
     AnsibleModuleCommon_1.AppendModuleHeader(output);
-    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, false);
-    AnsibleModuleCommon_1.AppendModuleExamples(output, model);
+    AnsibleModuleCommon_1.AppendModuleDocumentation(output, model, false, false);
+    AnsibleModuleCommon_1.AppendModuleExamples(output, model, false);
     AnsibleModuleCommon_1.AppendModuleReturnDoc(output, model, false);
     output.push("");
     output.push("import time");

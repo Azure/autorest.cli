@@ -15,8 +15,8 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
     var output: string[] = [];
 
     AppendModuleHeader(output);
-    AppendModuleDocumentation(output, model, true);
-    AppendModuleExamples(output, model);
+    AppendModuleDocumentation(output, model, true, false);
+    AppendModuleExamples(output, model, false);
     AppendModuleReturnDoc(output, model, true);
 
     output.push("");
