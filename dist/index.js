@@ -129,7 +129,7 @@ extension.Add("devops", (autoRestApi) => __awaiter(this, void 0, void 0, functio
                         if (!model.ModuleName.endsWith('_info')) {
                             autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdk_1.GenerateModuleSdk(model).join('\r\n'));
                             autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model, false).join('\r\n'));
-                            autoRestApi.WriteFile("ansible-collection/" + model.ModuleName + ".py", AnsibleModuleRest_1.GenerateModuleRest(model, true).join('\r\n'));
+                            autoRestApi.WriteFile("ansible-collection/" + model.ModuleName.split('_').pop() + ".py", AnsibleModuleRest_1.GenerateModuleRest(model, true).join('\r\n'));
                             let mn = model.ModuleName.split("azure_rm_")[1];
                             //if (mn == 'batchaccount') mn = "batchaccountxx";
                             //if (mn != "batchaccount")
@@ -142,7 +142,7 @@ extension.Add("devops", (autoRestApi) => __awaiter(this, void 0, void 0, functio
                         else {
                             autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
                             autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, false).join('\r\n'));
-                            autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, true).join('\r\n'));
+                            autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName.split('_').pop() + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, true).join('\r\n'));
                         }
                         // generate magic modules input example files
                         let moduleExamples = model.ModuleExamples;

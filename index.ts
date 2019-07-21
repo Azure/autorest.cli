@@ -149,7 +149,7 @@ extension.Add("devops", async autoRestApi => {
               if (!model.ModuleName.endsWith('_info')) {
                 autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
                 autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRest(model, false).join('\r\n'));
-                autoRestApi.WriteFile("ansible-collection/" + model.ModuleName + ".py", GenerateModuleRest(model, true).join('\r\n'));
+                autoRestApi.WriteFile("ansible-collection/" + model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true).join('\r\n'));
                 let mn = model.ModuleName.split("azure_rm_")[1];
                 
                 //if (mn == 'batchaccount') mn = "batchaccountxx";
@@ -163,7 +163,7 @@ extension.Add("devops", async autoRestApi => {
               } else {
                 autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
                 autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model, false).join('\r\n'));
-                autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", GenerateModuleRestInfo(model, true).join('\r\n'));
+                autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName.split('_').pop() + ".py", GenerateModuleRestInfo(model, true).join('\r\n'));
               }
 
               // generate magic modules input example files
