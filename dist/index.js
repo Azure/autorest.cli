@@ -142,7 +142,7 @@ extension.Add("devops", (autoRestApi) => __awaiter(this, void 0, void 0, functio
                         else {
                             autoRestApi.WriteFile("intermediate/ansible-module-sdk/" + model.ModuleName + ".py", AnsibleModuleSdkInfo_1.GenerateModuleSdkInfo(model).join('\r\n'));
                             autoRestApi.WriteFile("intermediate/ansible-module-rest/" + model.ModuleName + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, false).join('\r\n'));
-                            autoRestApi.WriteFile("ansible-collection/" + model.ModuleName.split('_info')[0].split('_').pop() + ".py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, true).join('\r\n'));
+                            autoRestApi.WriteFile("ansible-collection/" + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", AnsibleModuleRestInfo_1.GenerateModuleRestInfo(model, true).join('\r\n'));
                         }
                         // generate magic modules input example files
                         let moduleExamples = model.ModuleExamples;

@@ -30,7 +30,20 @@ export function AppendModuleDocumentation(output: string[], model: CodeModel, is
     output.push("---");
 
     var doc: any = {};
-    doc['module'] = (isCollection ? model.ModuleName.split("_").pop() : model.ModuleName);
+    let moduleName = model.ModuleName;
+
+    if (isCollection)
+    {
+        if (isInfoModule)
+        {
+            moduleName = model.ModuleName.split("_").pop();
+        }
+        else
+        {
+            moduleName = model.ModuleName.split("_info")[0].split("_").pop() + "_info";
+        }
+    }
+    doc['module'] = moduleName;
     doc['version_added'] = '2.9';
 
     if (isInfoModule)
