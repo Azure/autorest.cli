@@ -27,7 +27,7 @@ function AppendModuleDocumentation(output, model, isInfoModule, isCollection) {
     var doc = {};
     let moduleName = model.ModuleName;
     if (isCollection) {
-        if (isInfoModule) {
+        if (!isInfoModule) {
             moduleName = model.ModuleName.split("_").pop();
         }
         else {

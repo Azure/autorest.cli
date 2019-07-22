@@ -34,7 +34,7 @@ export function AppendModuleDocumentation(output: string[], model: CodeModel, is
 
     if (isCollection)
     {
-        if (isInfoModule)
+        if (!isInfoModule)
         {
             moduleName = model.ModuleName.split("_").pop();
         }
