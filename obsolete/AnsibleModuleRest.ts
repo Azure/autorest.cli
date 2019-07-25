@@ -27,7 +27,11 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("from ansible.module_utils.azure_rm_common_ext import AzureRMModuleBaseExt");
     output.push("from ansible.module_utils.azure_rm_common_rest import GenericRestClient");
     output.push("from copy import deepcopy");
-    output.push("from msrestazure.azure_exceptions import CloudError");
+    output.push("try:");
+    output.push("    from msrestazure.azure_exceptions import CloudError");
+    output.push("except ImportError:");
+    output.push("    # this is handled in azure_rm_common");
+    output.push("    pass");
     output.push("");
     output.push("");
     output.push("class Actions:");
@@ -135,6 +139,10 @@ export function GenerateModuleRest(model: CodeModel, collection: boolean) : stri
     output.push("            else:");
     output.push("                modifiers = {}");
     output.push("                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)");
+    output.push("                self.results['modifiers'] = modifiers");
+    output.push("                self.results['compare'] = []");
+    output.push("                self.create_compare_modifiers(self.module_arg_spec, '', modifiers)");
+
     output.push("                if not self.default_compare(modifiers, self.body, old_response, '', self.results):");
     output.push("                    self.to_do = Actions.Update");
 
