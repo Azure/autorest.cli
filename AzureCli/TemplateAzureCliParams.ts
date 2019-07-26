@@ -19,7 +19,9 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     //output.push("    get_resource_name_completion_list,");
     //output.push("    quotes,");
     output.push("    get_three_state_flag,");
-    output.push("    get_enum_type");
+    output.push("    get_enum_type,");
+    output.push("    resource_group_name_type,");
+    output.push("    get_location_type");
     output.push(")");
     output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
     output.push("");
@@ -81,7 +83,22 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                     });
                     argument += "])";
                 }
-                argument += ", id_part=None, help='" + EscapeString(element.Help) + "')"; 
+                if (parameterName == "resource_group")
+                {
+                    argument += ", resource_group_name_type)";
+                }
+                else if (parameterName == "tags")
+                {
+                    argument += ", tags_type)";
+                }
+                else if (parameterName == "location")
+                {
+                    argument += ", arg_type=get_location_type(self.cli_ctx))";
+                }
+                else
+                {
+                    argument += ", id_part=None, help='" + EscapeString(element.Help) + "')"; 
+                }
                 output.push(argument);
             });
         }

@@ -78,7 +78,7 @@ These settings apply only when `--devops` is specified on the command line.
 
 ``` yaml $(devops)
 devops:
-  cli-name: apimgmt
+  cli-name: apim
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
   payload-flattening-threshold: 2

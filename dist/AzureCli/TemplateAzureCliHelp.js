@@ -32,7 +32,7 @@ function GenerateAzureCliHelp(model) {
             output.push("    short-summary: " + method + " a " + model.GetCliCommand() + ".");
             let examplesStarted = false;
             ctx.Methods.forEach(element => {
-                output.push("# " + element.Name + " -- " + method);
+                //output.push ("# " + element.Name + " -- " + method);
                 //if (element.Name == method)
                 //{
                 let examples = ctx.Examples;
