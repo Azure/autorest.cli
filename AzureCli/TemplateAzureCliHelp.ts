@@ -56,7 +56,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                                 examplesStarted = true;
                             }
 
-                            output.push ("# " + example.Method);
+                            //output.push ("# " + example.Method);
                             let parameters: string[] = [];
 
                             parameters.push("az");

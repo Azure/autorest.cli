@@ -42,7 +42,7 @@ function GenerateAzureCliHelp(model) {
                             output.push("    examples:");
                             examplesStarted = true;
                         }
-                        output.push("# " + example.Method);
+                        //output.push ("# " + example.Method);
                         let parameters = [];
                         parameters.push("az");
                         parameters = parameters.concat(model.GetCliCommand().split(" "));
