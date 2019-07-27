@@ -34,9 +34,18 @@ function GenerateAzureCliCustom(model) {
             output.push("");
             output.push("# module equivalent: " + model.ModuleName);
             output.push("# URL: " + ctx.Url);
+            //
+            // method
+            //
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
-            output.push(call + "cmd, client");
+            let genericUpdate = (methodName == "update");
+            if (!genericUpdate) {
+                output.push(call + "cmd, client");
+            }
+            else {
+                output.push(call + "cmd, client, body");
+            }
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
             //if (methodName != "list")
             //{
@@ -67,17 +76,30 @@ function GenerateAzureCliCustom(model) {
             // create body transformation for methods that support it
             if (methodName != "show" && methodName != "list" && methodName != "delete") {
                 // body transformation
-                output_body.push("    body = {}");
+                if (!genericUpdate) {
+                    output_body.push("    body = {}");
+                }
                 params.forEach(element => {
                     let access = "    body";
                     if (element.PathSdk.startsWith("/") && element.Type != "placeholder") {
                         let parts = element.PathSdk.split("/");
                         let last = parts.pop();
                         parts.forEach(part => {
-                            if (part != "" && part != "*")
-                                access += ".setdefault('" + part + "', {})";
+                            if (part != "" && part != "*") {
+                                if (!genericUpdate) {
+                                    access += ".setdefault('" + part + "', {})";
+                                }
+                                else {
+                                    access += "." + part;
+                                }
+                            }
                         });
-                        access += "['" + last + "'] = ";
+                        if (!genericUpdate) {
+                            access += "['" + last + "'] = ";
+                        }
+                        else {
+                            access += "." + last + " = ";
+                        }
                         if (element.Type != "dict" && !element.IsList) {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }

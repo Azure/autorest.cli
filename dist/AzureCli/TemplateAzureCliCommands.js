@@ -30,7 +30,12 @@ function GenerateAzureCliCommands(model) {
             for (let mi in methods) {
                 // create, delete, list, show, update
                 let method = methods[mi];
-                output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+                if (method == 'update') {
+                    output.push("        g.generic_update_command('update', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+                }
+                else {
+                    output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+                }
             }
         }
     } while (model.NextModule());
