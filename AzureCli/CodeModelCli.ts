@@ -1,7 +1,7 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 import { Example } from "../Example";
 import { ExamplePostProcessor, ExampleType } from "../ExamplePostProcessor";
-import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName } from "../Helpers"
+import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Helpers"
 import { throws } from "assert";
 import { METHODS } from "http";
 import { LogCallback } from "../index";
@@ -134,7 +134,7 @@ export class CodeModelCli
             if (command != "")
             {
                 command += " ";
-                command += PluralToSingular(part.toLowerCase());
+                command += PluralToSingular(ToCamelCase(part).split("_").join("-"));
             }
             else
             {

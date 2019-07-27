@@ -83,7 +83,7 @@ class CodeModelCli {
             }
             if (command != "") {
                 command += " ";
-                command += Helpers_1.PluralToSingular(part.toLowerCase());
+                command += Helpers_1.PluralToSingular(Helpers_1.ToCamelCase(part).split("_").join("-"));
             }
             else {
                 // override first part with CLI Name, for instance "service" -> "apimgmt"
