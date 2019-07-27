@@ -24,7 +24,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
         output.push("");
         output.push("helps['" + model.GetCliCommand() + "'] = \"\"\"");
         output.push("    type: group");
-        output.push("    short-summary: Commands to manage " +  model.ObjectName + ".");
+        output.push("    short-summary: Commands to manage " +  model.GetCliCommandDescriptionName() + ".");
         output.push("\"\"\"");
 
         let methods: string[] = model.GetCliCommandMethods();
