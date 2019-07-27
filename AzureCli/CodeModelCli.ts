@@ -97,23 +97,7 @@ export class CodeModelCli
 
     public GetCliCommandDescriptionName(methodName: string = null): string
     {
-        // XXX - fix this for all the commands
-        let url = "";
-        if (methodName != null)
-        {
-            this.Map.Modules[this._selectedModule].Methods.forEach(m => {
-                if (m.Name.toLowerCase() == methodName.toLowerCase())
-                {
-                    url = m.Url;
-                }
-            });
-        }
-        else
-        {
-            url = this.Map.Modules[this._selectedModule].Methods[0].Url;
-        }
-
-        return this.GetCliCommandDescriptionFromUrl(url);
+        return ToDescriptiveName(this.Map.Modules[this._selectedModule].ObjectName);
     }
 
     public GetCliCommandFromUrl(url: string)
@@ -156,54 +140,6 @@ export class CodeModelCli
             {
                 // override first part with CLI Name, for instance "service" -> "apimgmt"
                 command += this.Map.CliName;
-            }
-
-            partIdx++;
-        }
-
-        return command;
-    }
-
-    public GetCliCommandDescriptionFromUrl(url: string)
-    {
-        // use URL of any method to create CLI command path
-        let command = "";
-        let urlParts: string[] = url.split('/');
-        let partIdx = 0;
-        while (partIdx < urlParts.length)
-        {
-            let part: string = urlParts[partIdx];
-            
-            if (command == "")
-            {
-                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups")
-                {
-                    partIdx += 2;
-                    continue;
-                }
-            }
-            
-            if (urlParts[partIdx] == "providers")
-            {
-                partIdx += 2;
-                continue;
-            }
-
-            if (part == "" || part.startsWith("{"))
-            {
-                partIdx++;
-                continue;
-            }
-
-            if (command != "")
-            {
-                command += " ";
-                command += ToDescriptiveName(part);
-            }
-            else
-            {
-                // override first part with CLI Name, for instance "service" -> "apimgmt"
-                command += ToDescriptiveName(this.ModuleClassName);
             }
 
             partIdx++;
