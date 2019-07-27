@@ -26,11 +26,11 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         if (methods.length > 0)
         {
 
-            output.push("from ._client_factory import cf_" + model.ModuleOperationName;
+            output.push("");
+            output.push("from ._client_factory import cf_" + model.ModuleOperationName);
             output.push("    " + model.GetCliCommandModuleName() + "_sdk = CliCommandType(");
             output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + "." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             output.push("        client_factory=cf_" + model.ModuleOperationName +  +")");
-            output.push("");
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
             for (let mi in methods)
             {
