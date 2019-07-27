@@ -95,10 +95,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 }
                 else
                 {
-                    let getCtx: CommandContext = model.GetCliCommandContext("show");
-
-                    if (getCtx != null)
+                    if ("show" in methods)
                     {
+                        let getCtx: CommandContext = model.GetCliCommandContext("show");
                         output_body.push("    body = " + GetMethodCall(model, getCtx, 0) + ".as_dict()");
                     }
                     else

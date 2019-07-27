@@ -69,8 +69,8 @@ function GenerateAzureCliCustom(model) {
                     output_body.push("    body = {}");
                 }
                 else {
-                    let getCtx = model.GetCliCommandContext("show");
-                    if (getCtx != null) {
+                    if ("show" in methods) {
+                        let getCtx = model.GetCliCommandContext("show");
                         output_body.push("    body = " + GetMethodCall(model, getCtx, 0) + ".as_dict()");
                     }
                     else {
