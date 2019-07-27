@@ -36,11 +36,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 // create, delete, list, show, update
                 let method = methods[mi];
 
-                if (method == 'update')
-                {
-                    output.push("        g.generic_update_command('update', custom_func_name='" + method + "_" + model.GetCliCommandUnderscored() + "')");
-                }
-                else if (method == 'delete')
+                if (method == 'delete')
                 {
                     output.push("        g.command('delete', 'delete')");
                 }

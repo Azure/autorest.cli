@@ -1,4 +1,4 @@
-﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
+﻿import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
 import { Indent, ToSnakeCase, ToCamelCase } from "../Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
 
@@ -57,27 +57,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             //
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
-            let genericUpdate = (methodName == "update");
+            let isUpdate = (methodName == "update");
 
-            if (!genericUpdate)
-            {
-                output.push(call + "cmd, client");
-            }
-            else
-            {
-                output.push(call + "cmd, client, body");
-            }
-            //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
-
-            
-            //if (methodName != "list")
-            //{
-            //    params = model.GetCommandParameters(methodName);
-            //}
-            //else
-            //{
-            //    params = model.GetAggregatedCommandParameters(methodName);
-            //}
+            output.push(call + "cmd, client");
 
             let params: CommandParameter[] = ctx.Parameters;
  
@@ -107,9 +89,13 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             if (methodName != "show" && methodName != "list" && methodName != "delete")
             {
                 // body transformation
-                if (!genericUpdate)
+                if (!isUpdate)
                 {
                     output_body.push("    body = {}");
+                }
+                else
+                {
+                    output_body.push("    body = " + GetMethodCall(model, model.GetCliCommandContext("show"), 0) + ".as_dict()");
                 }
                 params.forEach(element => {
                     let access = "    body"
@@ -120,25 +106,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         parts.forEach(part => {
                             if (part != "" && part != "*")
                             {
-                                if (!genericUpdate)
-                                {
-                                    access += ".setdefault('" + part + "', {})";
-                                }
-                                else
-                                {
-                                    access += "." + part;
-                                }
+                                access += ".setdefault('" + part + "', {})";
                             }
                         });
 
-                        if (!genericUpdate)
-                        {
-                            access += "['" + last + "'] = ";
-                        }
-                        else
-                        {
-                            access += "." + last + " = ";
-                        }
+                        access += "['" + last + "'] = ";
 
                         if (element.Type != "dict" && !element.IsList)
                         {
@@ -154,8 +126,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 });
             }
 
-            let hasBody: boolean = false;
             let output_method_call: string[] = [];
+            let hasBody = false;
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
             {
                 let prefix = "    ";
@@ -184,30 +156,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 // call client & return value
                 // XXX - this is still a hack
 
-                let methodCall = prefix + "return client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
-                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
-                {
-                    let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-                    let optionName = PythonParameterName(p.Name);
-                    // XXX - this is a hack, can we unhack it?
-                    if (optionName.endsWith("_parameters") || optionName == "parameters")
-                    {
-                        optionName = "body";
-                        hasBody = true;
-                    }
-        
-                    if (methodCall.endsWith("("))
-                    {
-                        // XXX - split and pop is a hack
-                        methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
-                    }
-                    else
-                    {
-                        methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
-                    }
-                }
-            
-                methodCall += ")";
+                let methodCall = prefix + "return " + GetMethodCall(model, ctx, methodIdx);
+                if (HasBody(model, ctx, methodIdx)) hasBody = true;
                 output_method_call.push(methodCall); 
             };
             
@@ -223,4 +173,50 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     output.push("");
 
     return output;
+}
+
+function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: number): string
+{
+    let methodCall: string = "";
+    methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+    {
+        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
+        let optionName = PythonParameterName(p.Name);
+        // XXX - this is a hack, can we unhack it?
+        if (optionName.endsWith("_parameters") || optionName == "parameters")
+        {
+            optionName = "body";
+        }
+
+        if (methodCall.endsWith("("))
+        {
+            // XXX - split and pop is a hack
+            methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
+        }
+        else
+        {
+            methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
+        }
+    }
+
+    methodCall += ")";
+
+    return methodCall;
+}
+
+function HasBody(model: CodeModelCli, ctx: CommandContext, methodIdx: number): boolean
+{
+    let hasBody: boolean = false;
+    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+    {
+        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
+        let optionName = PythonParameterName(p.Name);
+        // XXX - this is a hack, can we unhack it?
+        if (optionName.endsWith("_parameters") || optionName == "parameters")
+        {
+            return true;
+        }
+    }
+    return false;
 }

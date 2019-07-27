@@ -42,22 +42,8 @@ function GenerateAzureCliCustom(model) {
             //
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
-            let genericUpdate = (methodName == "update");
-            if (!genericUpdate) {
-                output.push(call + "cmd, client");
-            }
-            else {
-                output.push(call + "cmd, client, body");
-            }
-            //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");
-            //if (methodName != "list")
-            //{
-            //    params = model.GetCommandParameters(methodName);
-            //}
-            //else
-            //{
-            //    params = model.GetAggregatedCommandParameters(methodName);
-            //}
+            let isUpdate = (methodName == "update");
+            output.push(call + "cmd, client");
             let params = ctx.Parameters;
             // first parameters that are required
             params.forEach(element => {
@@ -79,8 +65,11 @@ function GenerateAzureCliCustom(model) {
             // create body transformation for methods that support it
             if (methodName != "show" && methodName != "list" && methodName != "delete") {
                 // body transformation
-                if (!genericUpdate) {
+                if (!isUpdate) {
                     output_body.push("    body = {}");
+                }
+                else {
+                    output_body.push("    body = " + GetMethodCall(model, model.GetCliCommandContext("show"), 0) + ".as_dict()");
                 }
                 params.forEach(element => {
                     let access = "    body";
@@ -89,20 +78,10 @@ function GenerateAzureCliCustom(model) {
                         let last = parts.pop();
                         parts.forEach(part => {
                             if (part != "" && part != "*") {
-                                if (!genericUpdate) {
-                                    access += ".setdefault('" + part + "', {})";
-                                }
-                                else {
-                                    access += "." + part;
-                                }
+                                access += ".setdefault('" + part + "', {})";
                             }
                         });
-                        if (!genericUpdate) {
-                            access += "['" + last + "'] = ";
-                        }
-                        else {
-                            access += "." + last + " = ";
-                        }
+                        access += "['" + last + "'] = ";
                         if (element.Type != "dict" && !element.IsList) {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }
@@ -113,8 +92,8 @@ function GenerateAzureCliCustom(model) {
                     }
                 });
             }
-            let hasBody = false;
             let output_method_call = [];
+            let hasBody = false;
             for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++) {
                 let prefix = "    ";
                 if (ctx.Methods.length > 1) {
@@ -136,24 +115,9 @@ function GenerateAzureCliCustom(model) {
                 }
                 // call client & return value
                 // XXX - this is still a hack
-                let methodCall = prefix + "return client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
-                for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
-                    let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-                    let optionName = PythonParameterName(p.Name);
-                    // XXX - this is a hack, can we unhack it?
-                    if (optionName.endsWith("_parameters") || optionName == "parameters") {
-                        optionName = "body";
-                        hasBody = true;
-                    }
-                    if (methodCall.endsWith("(")) {
-                        // XXX - split and pop is a hack
-                        methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
-                    }
-                    else {
-                        methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
-                    }
-                }
-                methodCall += ")";
+                let methodCall = prefix + "return " + GetMethodCall(model, ctx, methodIdx);
+                if (HasBody(model, ctx, methodIdx))
+                    hasBody = true;
                 output_method_call.push(methodCall);
             }
             ;
@@ -167,3 +131,36 @@ function GenerateAzureCliCustom(model) {
     return output;
 }
 exports.GenerateAzureCliCustom = GenerateAzureCliCustom;
+function GetMethodCall(model, ctx, methodIdx) {
+    let methodCall = "";
+    methodCall += "client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
+    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
+        let optionName = PythonParameterName(p.Name);
+        // XXX - this is a hack, can we unhack it?
+        if (optionName.endsWith("_parameters") || optionName == "parameters") {
+            optionName = "body";
+        }
+        if (methodCall.endsWith("(")) {
+            // XXX - split and pop is a hack
+            methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
+        }
+        else {
+            methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
+        }
+    }
+    methodCall += ")";
+    return methodCall;
+}
+function HasBody(model, ctx, methodIdx) {
+    let hasBody = false;
+    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
+        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
+        let optionName = PythonParameterName(p.Name);
+        // XXX - this is a hack, can we unhack it?
+        if (optionName.endsWith("_parameters") || optionName == "parameters") {
+            return true;
+        }
+    }
+    return false;
+}
