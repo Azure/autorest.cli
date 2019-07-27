@@ -152,7 +152,7 @@ export class CodeModelCli
     {
         let command: string = this.GetCliCommand();
 
-        return command.split(" ").join("_");
+        return command.split(" ").join("_").split("-").join("_");
     }
 
     public GetCliCommandMethods(): string[]

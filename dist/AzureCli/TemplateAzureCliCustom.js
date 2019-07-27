@@ -34,7 +34,7 @@ function GenerateAzureCliCustom(model) {
             output.push("");
             output.push("# module equivalent: " + model.ModuleName);
             output.push("# URL: " + ctx.Url);
-            let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_") + "(";
+            let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
             output.push(call + "cmd, client");
             //output.push("    raise CLIError('TODO: Implement `" + model.GetCliCommand() +  " " + method + "`')");

@@ -95,7 +95,7 @@ class CodeModelCli {
     }
     GetCliCommandUnderscored() {
         let command = this.GetCliCommand();
-        return command.split(" ").join("_");
+        return command.split(" ").join("_").split("-").join("_");
     }
     GetCliCommandMethods() {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
