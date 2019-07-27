@@ -134,7 +134,7 @@ export class CodeModelCli
             if (command != "")
             {
                 command += " ";
-                command += PluralToSingular(ToCamelCase(part).split("_").join("-"));
+                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
             }
             else
             {
