@@ -69,7 +69,13 @@ function GenerateAzureCliCustom(model) {
                     output_body.push("    body = {}");
                 }
                 else {
-                    //output_body.push("    body = " + GetMethodCall(model, model.GetCliCommandContext("show"), 0) + ".as_dict()");
+                    let getCtx = model.GetCliCommandContext("show");
+                    if (getCtx != null) {
+                        output_body.push("    body = " + GetMethodCall(model, getCtx, 0) + ".as_dict()");
+                    }
+                    else {
+                        output_body.push("    body = {}");
+                    }
                 }
                 params.forEach(element => {
                     let access = "    body";
