@@ -23,7 +23,7 @@ function GenerateAzureCliCommands(model) {
         let methods = model.GetCliCommandMethods();
         if (methods.length > 0) {
             output.push("    " + model.GetCliCommandModuleName() + "_sdk = CliCommandType(");
-            output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + ".operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+            output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + "." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             output.push("        client_factory=cf_" + model.GetCliCommandModuleName() + ")");
             output.push("");
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
