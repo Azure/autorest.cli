@@ -40,6 +40,11 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
         {
             // create, delete, list, show, update
             let methodName = methods[mi];
+
+            // just use generic delete
+            if (methodName == 'delete')
+                continue;
+
             let ctx = model.GetCliCommandContext(methodName);
 
             output.push("");
