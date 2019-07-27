@@ -11,7 +11,6 @@ function GenerateAzureCliCommands(model) {
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-statements");
     output.push("from azure.cli.core.commands import CliCommandType");
-    output.push("from ._client_factory import cf_" + model.GetCliCommandModuleName());
     output.push("");
     output.push("");
     output.push("def load_command_table(self, _):");
@@ -22,11 +21,12 @@ function GenerateAzureCliCommands(model) {
             continue;
         let methods = model.GetCliCommandMethods();
         if (methods.length > 0) {
+            output.push("from ._client_factory import cf_" + model.ModuleOperationName);
             output.push("    " + model.GetCliCommandModuleName() + "_sdk = CliCommandType(");
             output.push("        operations_tmpl='azure.mgmt." + model.GetCliCommandModuleName() + "." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
-            output.push("        client_factory=cf_" + model.GetCliCommandModuleName() + ")");
+            output.push("        client_factory=cf_" + model.ModuleOperationName + +")");
             output.push("");
-            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + "_sdk, client_factory=cf_" + model.GetCliCommandModuleName() + ") as g:");
             for (let mi in methods) {
                 // create, delete, list, show, update
                 let method = methods[mi];
