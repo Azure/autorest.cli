@@ -7,6 +7,11 @@ function ToSnakeCase(v) {
     return snake;
 }
 exports.ToSnakeCase = ToSnakeCase;
+function ToDescriptiveName(v) {
+    let name = PluralToSingular(ToSnakeCase(v).split("_").join(" ").trim());
+    return name;
+}
+exports.ToDescriptiveName = ToDescriptiveName;
 function Capitalize(v) {
     return v.charAt(0).toUpperCase() + v.slice(1);
 }

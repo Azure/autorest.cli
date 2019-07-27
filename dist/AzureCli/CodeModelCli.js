@@ -57,6 +57,21 @@ class CodeModelCli {
         }
         return this.GetCliCommandFromUrl(url);
     }
+    GetCliCommandDescriptionName(methodName = null) {
+        // XXX - fix this for all the commands
+        let url = "";
+        if (methodName != null) {
+            this.Map.Modules[this._selectedModule].Methods.forEach(m => {
+                if (m.Name.toLowerCase() == methodName.toLowerCase()) {
+                    url = m.Url;
+                }
+            });
+        }
+        else {
+            url = this.Map.Modules[this._selectedModule].Methods[0].Url;
+        }
+        return this.GetCliCommandDescriptionFromUrl(url);
+    }
     GetCliCommandFromUrl(url) {
         // use URL of any method to create CLI command path
         let command = "";
@@ -85,6 +100,39 @@ class CodeModelCli {
             else {
                 // override first part with CLI Name, for instance "service" -> "apimgmt"
                 command += this.Map.CliName;
+            }
+            partIdx++;
+        }
+        return command;
+    }
+    GetCliCommandDescriptionFromUrl(url) {
+        // use URL of any method to create CLI command path
+        let command = "";
+        let urlParts = url.split('/');
+        let partIdx = 0;
+        while (partIdx < urlParts.length) {
+            let part = urlParts[partIdx];
+            if (command == "") {
+                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups") {
+                    partIdx += 2;
+                    continue;
+                }
+            }
+            if (urlParts[partIdx] == "providers") {
+                partIdx += 2;
+                continue;
+            }
+            if (part == "" || part.startsWith("{")) {
+                partIdx++;
+                continue;
+            }
+            if (command != "") {
+                command += " ";
+                command += Helpers_1.ToDescriptiveName(part);
+            }
+            else {
+                // override first part with CLI Name, for instance "service" -> "apimgmt"
+                command += Helpers_1.ToDescriptiveName(this.ModuleClassName);
             }
             partIdx++;
         }

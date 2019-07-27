@@ -10,6 +10,12 @@ export function ToSnakeCase(v: string)
     return snake;
 }
 
+export function ToDescriptiveName(v: string)
+{
+    let name: string = PluralToSingular(ToSnakeCase(v).split("_").join(" ").trim());
+    return name;
+}
+
 export function Capitalize(v: string) {
     return v.charAt(0).toUpperCase() + v.slice(1);
 }
