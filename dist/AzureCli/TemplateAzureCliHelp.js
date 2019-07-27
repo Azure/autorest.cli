@@ -29,7 +29,7 @@ function GenerateAzureCliHelp(model) {
             output.push("");
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
-            output.push("    short-summary: " + method + model.GetCliCommandDescriptionName() + ".");
+            output.push("    short-summary: " + method + " " + model.GetCliCommandDescriptionName() + ".");
             let examplesStarted = false;
             ctx.Methods.forEach(element => {
                 //output.push ("# " + element.Name + " -- " + method);
