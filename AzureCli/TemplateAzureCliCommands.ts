@@ -29,7 +29,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             output.push("");
             output.push("    from ._client_factory import cf_" + model.ModuleOperationName);
             output.push("    " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + " = CliCommandType(");
-            output.push("        operations_tmpl='" + model.PythonNamespace + "." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+            output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
             for (let mi in methods)
