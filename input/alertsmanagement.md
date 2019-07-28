@@ -33,8 +33,8 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-  - Microsoft.AlertsManagement/preview/2019-05-05-preview/AlertsManagement.json
-  - Microsoft.AlertsManagement/stable/2019-06-01/SmartDetectorAlertRulesApi.json
+  - /azure-rest-api-specs/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/preview/2019-05-05-preview/AlertsManagement.json
+  - /azure-rest-api-specs/specification/alertsmanagement/resource-manager/Microsoft.AlertsManagement/stable/2019-06-01/SmartDetectorAlertRulesApi.json
 ```
 
 ---
