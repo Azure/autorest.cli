@@ -42,7 +42,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             let methodName = methods[mi];
 
             // just use generic delete
-            if (methodName == 'delete')
+            if (methodName == 'delete' || methodName == "show")
                 continue;
 
             let ctx = model.GetCliCommandContext(methodName);
@@ -186,7 +186,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: number): string
 {
     let methodCall: string = "";
-    methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+    //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+    methodCall += "client." + ctx.Methods[methodIdx].Name +  "(";
     for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
     {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];

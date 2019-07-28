@@ -41,6 +41,11 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 {
                     output.push("        g.command('delete', 'delete')");
                 }
+                else if (method == 'show')
+                {
+                    // XXX - is this correct support for show?
+                    output.push("        g.command('show', 'get')");
+                }
                 else
                 {
                     output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");

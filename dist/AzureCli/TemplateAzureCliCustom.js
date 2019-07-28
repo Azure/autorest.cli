@@ -30,7 +30,7 @@ function GenerateAzureCliCustom(model) {
             // create, delete, list, show, update
             let methodName = methods[mi];
             // just use generic delete
-            if (methodName == 'delete')
+            if (methodName == 'delete' || methodName == "show")
                 continue;
             let ctx = model.GetCliCommandContext(methodName);
             output.push("");
@@ -139,7 +139,8 @@ function GenerateAzureCliCustom(model) {
 exports.GenerateAzureCliCustom = GenerateAzureCliCustom;
 function GetMethodCall(model, ctx, methodIdx) {
     let methodCall = "";
-    methodCall += "client." + model.ModuleOperationName + "." + ctx.Methods[methodIdx].Name + "(";
+    //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+    methodCall += "client." + ctx.Methods[methodIdx].Name + "(";
     for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
