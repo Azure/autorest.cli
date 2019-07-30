@@ -35,7 +35,10 @@ function GenerateAzureCliCommands(model) {
                 }
                 else if (method == 'show') {
                     // XXX - is this correct support for show?
-                    output.push("        g.command('show', 'get')");
+                    output.push("        g.show_command('show', 'get')");
+                }
+                else if (method == 'update') {
+                    output.push("        g.generic_update_command('update', custom_func_name='update_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else {
                     output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
