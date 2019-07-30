@@ -43,7 +43,12 @@ function GenerateAzureCliCustom(model) {
             let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
-            output.push(call + "cmd, client");
+            if (!isUpdate) {
+                output.push(call + "cmd, client");
+            }
+            else {
+                output.push(call + "cmd, client, body");
+            }
             let params = ctx.Parameters;
             // first parameters that are required
             params.forEach(element => {
@@ -66,7 +71,9 @@ function GenerateAzureCliCustom(model) {
             if (methodName != "show" && methodName != "list" && methodName != "delete") {
                 // body transformation
                 if (!isUpdate) {
-                    output_body.push("    body = {}");
+                    if (!isUpdate) {
+                        output_body.push("    body = {}");
+                    }
                 }
                 else {
                     if (methods.indexOf("show") >= 0) {
@@ -84,10 +91,20 @@ function GenerateAzureCliCustom(model) {
                         let last = parts.pop();
                         parts.forEach(part => {
                             if (part != "" && part != "*") {
-                                access += ".setdefault('" + part + "', {})";
+                                if (!isUpdate) {
+                                    access += ".setdefault('" + part + "', {})";
+                                }
+                                else {
+                                    access += "." + part;
+                                }
                             }
                         });
-                        access += "['" + last + "'] = ";
+                        if (!isUpdate) {
+                            access += "['" + last + "'] = ";
+                        }
+                        else {
+                            access += "." + last + " = ";
+                        }
                         if (element.Type != "dict" && !element.IsList) {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }

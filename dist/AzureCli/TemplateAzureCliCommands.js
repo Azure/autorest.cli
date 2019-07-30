@@ -10,11 +10,11 @@ function GenerateAzureCliCommands(model) {
     output.push("# pylint: disable=line-too-long");
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-statements");
+    output.push("# pylint: disable=too-many-locals");
     output.push("from azure.cli.core.commands import CliCommandType");
     output.push("");
     output.push("");
     output.push("def load_command_table(self, _):");
-    output.push("");
     do {
         // this is a hack, as everything can be produced from main module now
         if (model.ModuleName.endsWith("_info"))

@@ -59,7 +59,14 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
 
-            output.push(call + "cmd, client");
+            if (!isUpdate)
+            {
+                output.push(call + "cmd, client");
+            }
+            else
+            {
+                output.push(call + "cmd, client, body");
+            }
 
             let params: CommandParameter[] = ctx.Parameters;
  
@@ -91,7 +98,10 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                 // body transformation
                 if (!isUpdate)
                 {
-                    output_body.push("    body = {}");
+                    if (!isUpdate)
+                    {
+                        output_body.push("    body = {}");
+                    }
                 }
                 else
                 {
@@ -114,11 +124,25 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         parts.forEach(part => {
                             if (part != "" && part != "*")
                             {
-                                access += ".setdefault('" + part + "', {})";
+                                if (!isUpdate)
+                                {
+                                    access += ".setdefault('" + part + "', {})";
+                                }
+                                else
+                                {
+                                    access += "." + part;
+                                }
                             }
                         });
 
-                        access += "['" + last + "'] = ";
+                        if (!isUpdate)
+                        {
+                            access += "['" + last + "'] = ";
+                        }
+                        else
+                        {
+                            access += "." + last + " = ";
+                        }
 
                         if (element.Type != "dict" && !element.IsList)
                         {
