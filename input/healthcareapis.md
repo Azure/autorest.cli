@@ -25,7 +25,7 @@ To see additional help and options, run:
 These are the global settings for the HealthCareApis.
 
 ``` yaml
-title: 
+title: HealthCareApis
 openapi-type: arm
 ```
 
