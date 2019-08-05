@@ -50,7 +50,7 @@ devops:
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION
   payload-flattening-threshold: 2
-  namespace: azure.mgmt.subscriptions
+  namespace: azure.mgmt.healthcareapis
   package-name: azure-mgmt-healthcareapis
   clear-output-folder: false
   debug: true
