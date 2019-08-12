@@ -56,6 +56,9 @@ devops:
   debug: true
   adjustments:
     "/sku": "Sku*/"
-    "/properties/authenticationconfiguration": "*/"
+    "/properties/authenticationconfiguration": "Authentication*/"
+    "/properties/corsconfiguration": "Cors*/"
+    "/properties/cosmosdbconfiguration": "CosmosDb*/"
+    "/properties/accesspolicies": "AccessPolicies*/"
   disable-mm: true
 ```
