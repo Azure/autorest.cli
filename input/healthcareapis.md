@@ -56,5 +56,6 @@ devops:
   debug: true
   adjustments:
     "/sku": "Sku*/"
+    "/properties/authenticationconfiguration": "*/"
   disable-mm: true
 ```
