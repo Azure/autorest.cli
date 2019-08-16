@@ -40,12 +40,12 @@ input-file:
 
 # Code Generation
 
-## devops
+## cli
 
-These settings apply only when `--devops` is specified on the command line.
+These settings apply only when `--cli` is specified on the command line.
 
-``` yaml $(devops)
-devops:
+``` yaml $(cli)
+cli:
   cli-name: frontdoor
   azure-arm: true
   license-header: MICROSOFT_MIT_NO_VERSION

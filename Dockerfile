@@ -1,6 +1,6 @@
-FROM zikalino/autorest.devops.base
+FROM zikalino/autorest.cli.base
 MAINTAINER zikalino
 
-ADD . /autorest.devops
-# RUN cd /autorest.devops; npm install
-ENTRYPOINT ["bash", "/autorest.devops/run.sh"]
+ADD . /autorest.cli
+# RUN cd /autorest.cli; npm install
+ENTRYPOINT ["bash", "/autorest.cli/run.sh"]

@@ -1,5 +1,5 @@
 {
-  "name": "devops",
+  "name": "cli",
   "version": "0.1.0",
   "description": "Simple AutoRest extension",
   "main": "dist/index.js",

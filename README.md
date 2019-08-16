@@ -9,45 +9,45 @@ use-extension:
   "@microsoft.azure/autorest.modeler": "2.3.45" # keep in sync with package.json's dev dependency in order to have meaningful tests
 
 pipeline:
-    #devops: # <- name of plugin
-    #    scope: devops
-    #    # ^ will make this plugin run only when `--devops` is passed on the CLI or
+    #cli: # <- name of plugin
+    #    scope: cli
+    #    # ^ will make this plugin run only when `--cli` is passed on the CLI or
 
-    devops/imodeler1:
+    cli/imodeler1:
         input: openapi-document/identity
         output-artifact: code-model-v1
-        scope: devops
-    devops/commonmarker:
+        scope: cli
+    cli/commonmarker:
         input: imodeler1
         output-artifact: code-model-v1
-    devops/cm/transform:
+    cli/cm/transform:
         input: commonmarker
         output-artifact: code-model-v1
-    devops/cm/emitter:
+    cli/cm/emitter:
         input: transform
         scope: scope-cm/emitter
-    devops/generate:
-        plugin: devops
+    cli/generate:
+        plugin: cli
         input: cm/transform
-        output-artifact: source-file-devops
-    devops/transform:
+        output-artifact: source-file-cli
+    cli/transform:
         input: generate
-        output-artifact: source-file-devops
+        output-artifact: source-file-cli
         scope: scope-transform-string
-    devops/emitter:
+    cli/emitter:
         input: transform
-        scope: scope-devops/emitter
+        scope: scope-cli/emitter
 
-scope-devops/emitter:
-  input-artifact: source-file-devops
+scope-cli/emitter:
+  input-artifact: source-file-cli
   output-uri-expr: $key
 
 output-artifact:
-- source-file-devops
+- source-file-cli
 ```
     
 
 #``` yaml 
 #use-extension:
-#  "devops": "$(this-folder)"
+#  "cli": "$(this-folder)"
 #```

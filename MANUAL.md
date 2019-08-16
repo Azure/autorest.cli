@@ -1,6 +1,6 @@
 # Defining Input
 
-In order to generate any new resource, add **[resource name].md** file to **autorest.devops/input** folder.
+In order to generate any new resource, add **[resource name].md** file to **autorest.cli/input** folder.
 File should follow the format used by **readme.md** files from Azure REST API specification.
 
 Note: **readme.md** files will be moved to **azure-rest-api-specs** repo.
@@ -9,20 +9,20 @@ Note: **readme.md** files will be moved to **azure-rest-api-specs** repo.
 
 ### Debugging
 
-Add **debug** flag under **devops** section in your **input/xxxxx.md** file:
+Add **debug** flag under **cli** section in your **input/xxxxx.md** file:
 
-``` yaml $(devops)
-devops:
+``` yaml $(cli)
+cli:
   ...
   debug: true
 ```
 
 ### Enabling/Disabling Options
 
-Add **adjustments** section under **devops** section in your **input/xxxxx.md** file.
+Add **adjustments** section under **cli** section in your **input/xxxxx.md** file.
 
-``` yaml $(devops)
-devops:
+``` yaml $(cli)
+cli:
   ...
   adjustments:
     "/properties/networkrulecollections/id": "hide"
@@ -49,7 +49,7 @@ Possible values to remove are:
 
 Complete output of is generated here:
 
-https://github.com/zikalino/devops-hatchery
+https://github.com/zikalino/cli-hatchery
 
 **/generated/input**
 

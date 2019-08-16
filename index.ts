@@ -35,7 +35,7 @@ export type LogCallback = (message: string) => void;
 //
 const extension = new AutoRestExtension();
 
-extension.Add("devops", async autoRestApi => {
+extension.Add("cli", async autoRestApi => {
 
   try {
     // read files offered to this plugin
