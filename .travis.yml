@@ -6,8 +6,8 @@ script:
   - docker login -u=${DOCKER_USER} -p=${DOCKER_PASSWORD}
 
   # uncomment these lines if you want to build and push base tools
-  #- docker build --tag zikalino/autorest.cli.base -f Dockerfile-base .
-  #- docker push zikalino/autorest.cli.base
+  - docker build --tag zikalino/autorest.cli.base -f Dockerfile-base .
+  - docker push zikalino/autorest.cli.base
 
   - docker build --tag zikalino/autorest.cli .
   - docker push zikalino/autorest.cli
