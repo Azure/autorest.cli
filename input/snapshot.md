@@ -32,7 +32,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-  - /azure-rest-api-specs/specification/compute/resource-manager/Microsoft.Compute/stable/2019-03-01/gallery.json
+  - /azure-rest-api-specs/specification/compute/resource-manager/Microsoft.Compute/stable/2018-09-30/disk.json
 ```
 
 ---
