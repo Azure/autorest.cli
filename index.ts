@@ -1,23 +1,15 @@
 import { AutoRestExtension } from "autorest-extension-base";
 import * as yaml from "node-yaml";
-import { MapGenerator } from "./MapGenerator"
-import { MapFlattener } from "./MapFlattener"
-import { CodeModel } from "./CodeModel"
+
+// Generic
+import { MapGenerator } from "./Common/MapGenerator"
+import { MapFlattener } from "./Common/MapFlattener"
+import { CodeModel } from "./Common/CodeModel"
+import { ExampleProcessor } from "./Common/ExampleProcessor"; 
+import { Example } from "./Common/Example";
+
+// Azure CLI
 import { CodeModelCli } from "./AzureCli/CodeModelCli"
-import { GenerateModuleSdk } from "./obsolete/AnsibleModuleSdk"
-import { GenerateModuleSdkInfo } from "./obsolete/AnsibleModuleSdkInfo"
-import { GenerateModuleRest } from "./obsolete/AnsibleModuleRest"
-import { GenerateModuleRestInfo } from "./obsolete/AnsibleModuleRestInfo"
-import { GenerateMagicModulesInput } from "./TemplateMagicModulesInput"
-import { GenerateMagicModulesAnsibleYaml } from "./TemplateMagicModulesAnsibleYaml"
-import { GenerateMagicModulesTerraformYaml } from "./TemplateMagicModulesTerraformYaml"
-
-import { GenerateExampleAnsibleRest } from "./AnsibleExampleRest"
-import { GenerateExampleAnsibleRrm } from "./AnsibleExample"
-import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest"
-import { GenerateExampleAzureCLI } from "./TemplateExampleAzureCLI"
-import { GenerateMagicModulesAnsibleExample } from "./TemplateMagicModulesAnsibleExample"
-
 import { GenerateAzureCliCommands } from "./AzureCli/TemplateAzureCliCommands"
 import { GenerateAzureCliCustom } from "./AzureCli/TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./AzureCli/TemplateAzureCliHelp"
@@ -26,9 +18,24 @@ import { GenerateAzureCliClientFactory } from "./AzureCli/TemplateAzureCliClient
 import { GenerateAzureCliTestScenario } from "./AzureCli/TemplateAzureCliTestScenario"
 import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
 
-import { ExampleProcessor } from "./ExampleProcessor"; 
-import { Example } from "./Example";
-import { Adjustments } from "./Adjustments"; 
+// Ansible
+import { GenerateModuleSdk } from "./Ansible/AnsibleModuleSdk"
+import { GenerateModuleSdkInfo } from "./Ansible/AnsibleModuleSdkInfo"
+import { GenerateModuleRest } from "./Ansible/AnsibleModuleRest"
+import { GenerateModuleRestInfo } from "./Ansible/AnsibleModuleRestInfo"
+
+// Magic Modules
+import { GenerateMagicModulesInput } from "./MagicModules/TemplateMagicModulesInput"
+import { GenerateMagicModulesAnsibleYaml } from "./MagicModules/TemplateMagicModulesAnsibleYaml"
+import { GenerateMagicModulesTerraformYaml } from "./MagicModules/TemplateMagicModulesTerraformYaml"
+import { GenerateMagicModulesAnsibleExample } from "./MagicModules/TemplateMagicModulesAnsibleExample"
+
+import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
+import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
+import { GenerateExamplePythonRest } from "./Examples/TemplateExamplePythonRest"
+import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
+
+import { Adjustments } from "./Common/Adjustments"; 
 
 export type LogCallback = (message: string) => void;
 

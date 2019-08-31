@@ -1,6 +1,6 @@
 ﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
-import { ModuleOption } from "../ModuleMap";
-import { EscapeString } from "../Helpers";
+import { ModuleOption } from "../Common/ModuleMap";
+import { EscapeString } from "../Common/Helpers";
 
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     var output: string[] = [];

@@ -1,7 +1,7 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
-import { Example } from "../Example";
-import { ExamplePostProcessor, ExampleType } from "../ExamplePostProcessor";
-import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Helpers"
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
+import { Example } from "../Common/Example";
+import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
+import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
 import { throws } from "assert";
 import { METHODS } from "http";
 import { LogCallback } from "../index";

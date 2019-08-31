@@ -1,8 +1,8 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const ModuleMap_1 = require("../ModuleMap");
-const ExamplePostProcessor_1 = require("../ExamplePostProcessor");
-const Helpers_1 = require("../Helpers");
+const ModuleMap_1 = require("../Common/ModuleMap");
+const ExamplePostProcessor_1 = require("../Common/ExamplePostProcessor");
+const Helpers_1 = require("../Common/Helpers");
 class CommandParameter {
 }
 exports.CommandParameter = CommandParameter;

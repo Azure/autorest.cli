@@ -1,6 +1,6 @@
 ﻿import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
-import { Indent, ToSnakeCase, ToCamelCase } from "../Helpers";
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../ModuleMap"
+import { Indent, ToSnakeCase, ToCamelCase } from "../Common/Helpers";
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
 function PythonParameterName(name: string): string
 {

@@ -10,22 +10,13 @@ var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, ge
 Object.defineProperty(exports, "__esModule", { value: true });
 const autorest_extension_base_1 = require("autorest-extension-base");
 const yaml = require("node-yaml");
-const MapGenerator_1 = require("./MapGenerator");
-const MapFlattener_1 = require("./MapFlattener");
-const CodeModel_1 = require("./CodeModel");
+// Generic
+const MapGenerator_1 = require("./Common/MapGenerator");
+const MapFlattener_1 = require("./Common/MapFlattener");
+const CodeModel_1 = require("./Common/CodeModel");
+const ExampleProcessor_1 = require("./Common/ExampleProcessor");
+// Azure CLI
 const CodeModelCli_1 = require("./AzureCli/CodeModelCli");
-const AnsibleModuleSdk_1 = require("./obsolete/AnsibleModuleSdk");
-const AnsibleModuleSdkInfo_1 = require("./obsolete/AnsibleModuleSdkInfo");
-const AnsibleModuleRest_1 = require("./obsolete/AnsibleModuleRest");
-const AnsibleModuleRestInfo_1 = require("./obsolete/AnsibleModuleRestInfo");
-const TemplateMagicModulesInput_1 = require("./TemplateMagicModulesInput");
-const TemplateMagicModulesAnsibleYaml_1 = require("./TemplateMagicModulesAnsibleYaml");
-const TemplateMagicModulesTerraformYaml_1 = require("./TemplateMagicModulesTerraformYaml");
-const AnsibleExampleRest_1 = require("./AnsibleExampleRest");
-const AnsibleExample_1 = require("./AnsibleExample");
-const TemplateExamplePythonRest_1 = require("./TemplateExamplePythonRest");
-const TemplateExampleAzureCLI_1 = require("./TemplateExampleAzureCLI");
-const TemplateMagicModulesAnsibleExample_1 = require("./TemplateMagicModulesAnsibleExample");
 const TemplateAzureCliCommands_1 = require("./AzureCli/TemplateAzureCliCommands");
 const TemplateAzureCliCustom_1 = require("./AzureCli/TemplateAzureCliCustom");
 const TemplateAzureCliHelp_1 = require("./AzureCli/TemplateAzureCliHelp");
@@ -33,8 +24,21 @@ const TemplateAzureCliParams_1 = require("./AzureCli/TemplateAzureCliParams");
 const TemplateAzureCliClientFactory_1 = require("./AzureCli/TemplateAzureCliClientFactory");
 const TemplateAzureCliTestScenario_1 = require("./AzureCli/TemplateAzureCliTestScenario");
 const TemplateAzureCliReport_1 = require("./AzureCli/TemplateAzureCliReport");
-const ExampleProcessor_1 = require("./ExampleProcessor");
-const Adjustments_1 = require("./Adjustments");
+// Ansible
+const AnsibleModuleSdk_1 = require("./Ansible/AnsibleModuleSdk");
+const AnsibleModuleSdkInfo_1 = require("./Ansible/AnsibleModuleSdkInfo");
+const AnsibleModuleRest_1 = require("./Ansible/AnsibleModuleRest");
+const AnsibleModuleRestInfo_1 = require("./Ansible/AnsibleModuleRestInfo");
+// Magic Modules
+const TemplateMagicModulesInput_1 = require("./MagicModules/TemplateMagicModulesInput");
+const TemplateMagicModulesAnsibleYaml_1 = require("./MagicModules/TemplateMagicModulesAnsibleYaml");
+const TemplateMagicModulesTerraformYaml_1 = require("./MagicModules/TemplateMagicModulesTerraformYaml");
+const TemplateMagicModulesAnsibleExample_1 = require("./MagicModules/TemplateMagicModulesAnsibleExample");
+const AnsibleExampleRest_1 = require("./Examples/AnsibleExampleRest");
+const AnsibleExample_1 = require("./Examples/AnsibleExample");
+const TemplateExamplePythonRest_1 = require("./Examples/TemplateExamplePythonRest");
+const TemplateExampleAzureCLI_1 = require("./Examples/TemplateExampleAzureCLI");
+const Adjustments_1 = require("./Common/Adjustments");
 //
 const extension = new autorest_extension_base_1.AutoRestExtension();
 extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {

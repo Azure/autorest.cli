@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-const Helpers_1 = require("../Helpers");
+const Helpers_1 = require("../Common/Helpers");
 function GenerateAzureCliParams(model) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
