@@ -57,6 +57,12 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             adjustments = {};
         let adjustmentsObject = new Adjustments_1.Adjustments(adjustments);
         let debug = yield autoRestApi.GetValue("debug");
+        let test = yield autoRestApi.GetValue("xyz");
+        // emit a messages
+        autoRestApi.Message({
+            Channel: "information",
+            Text: "test " + test
+        });
         // emit a messages
         autoRestApi.Message({
             Channel: "information",

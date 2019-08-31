@@ -63,6 +63,15 @@ extension.Add("cli", async autoRestApi => {
     let adjustmentsObject = new Adjustments(adjustments);
     let debug = await autoRestApi.GetValue("debug");
 
+
+    let test = await autoRestApi.GetValue("xyz");
+
+    // emit a messages
+    autoRestApi.Message({
+      Channel: "information",
+      Text: "test " + test
+    });
+    
     // emit a messages
     autoRestApi.Message({
       Channel: "information",
