@@ -33,7 +33,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-- /azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/preview/2018-08-20-preview/healthcare-apis.json
+- /azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json
 ```
 
 ---
