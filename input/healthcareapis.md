@@ -61,4 +61,6 @@ cli:
     "/properties/cosmosdbconfiguration": "CosmosDb*/"
     "/properties/accesspolicies": "AccessPolicies*/"
   disable-mm: true
+  test-setup:
+    - name: Create or Update a service with all parameters
 ```

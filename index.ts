@@ -236,7 +236,24 @@ extension.Add("cli", async autoRestApi => {
 
           if (generateSwaggerIntegrationTest)
           {
-            let code = GenerateSwaggerIntegrationTest(examples);
+            let config: any[] = await autoRestApi.GetValue("test-setup");
+
+            // if test config is not specified
+            if (!config)
+            {
+              Info("TEST SETUP WAS EMPTY");
+              config = [];
+              for (var i = 0; i < examples.length; i++)
+              {
+                var example: Example = examples[i];
+                //var filename = example.Filename;
+
+                config.push( { name: example.Name });
+              }
+              Info("TEST SETUP IS: " + JSON.stringify(config));
+            }
+
+            let code = GenerateSwaggerIntegrationTest(examples, config);
             autoRestApi.WriteFile(folderSwaggerIntegrationTest + cliName + ".py", code.join('\r\n'));
           }
 

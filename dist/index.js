@@ -195,7 +195,19 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     }
                 }
                 if (generateSwaggerIntegrationTest) {
-                    let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples);
+                    let config = yield autoRestApi.GetValue("test-setup");
+                    // if test config is not specified
+                    if (!config) {
+                        Info("TEST SETUP WAS EMPTY");
+                        config = [];
+                        for (var i = 0; i < examples.length; i++) {
+                            var example = examples[i];
+                            //var filename = example.Filename;
+                            config.push({ name: example.Name });
+                        }
+                        Info("TEST SETUP IS: " + JSON.stringify(config));
+                    }
+                    let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, config);
                     autoRestApi.WriteFile(folderSwaggerIntegrationTest + cliName + ".py", code.join('\r\n'));
                 }
                 // generate modules & mm input files

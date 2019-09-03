@@ -1,8 +1,7 @@
 ﻿import { Example } from "../Common/Example"
 
-export function GenerateSwaggerIntegrationTest(model: Example[]) : string[] {
+export function GenerateSwaggerIntegrationTest(model: Example[], config: any) : string[] {
     var output: string[] = [];
-
 
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
@@ -34,43 +33,50 @@ export function GenerateSwaggerIntegrationTest(model: Example[]) : string[] {
     output.push("        self.kwargs['sub'] = self.get_subscription_id()");
     output.push("        self.kwargs['name'] = 'zimsxyzname'");
     
-    // XXX - particular test here
-    for (var i = 0; i < model.length; i++)
+    for (var ci = 0; ci < config.length; ci++)
     {
-      var example: Example = model[i];
-      var filename = example.Filename;
-
-      output.push("");
-      output.push("        # " + example.Filename);
-
-      if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post')
-      {
-        output.push("        body = (");
-        let json: string[] = GetExampleBodyJson(example.GetExampleBody());
-        for (var lidx in json)
+        var example: Example = null;
+        for (var i = 0; i < model.length; i++)
         {
-            var line: string = "                 '" + json[lidx] + "'";
-            if (json[lidx] == "}") line += ")";
-            output.push(line);
+            if (model[i].Name == config[ci]['name'])
+            {
+                example = model[i];
+                break;
+            }
+        }
+        if (example == null)
+            continue;
+        output.push("");
+        output.push("        # " + example.Name);
+
+        if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post')
+        {
+            output.push("        body = (");
+            let json: string[] = GetExampleBodyJson(example.GetExampleBody());
+            for (var lidx in json)
+            {
+                var line: string = "                 '" + json[lidx] + "'";
+                if (json[lidx] == "}") line += ")";
+                output.push(line);
+            }
+
+            output.push("        self.kwargs['body'] = body.replace('\"', '\\\\\"')");
         }
 
-        output.push("        self.kwargs['body'] = body.replace('\"', '\\\\\"')");
-      }
+        output.push("        self.cmd('rest '");
+        output.push("                 '--method " + example.Method.toLowerCase() + " '");
+        output.push("                 '--uri " + ConvertUrl(example.Url) + "?api-version=" + example.GetExampleApiVersion() + " '");
 
-      output.push("        self.cmd('rest '");
-      output.push("                 '--method " + example.Method.toLowerCase() + " '");
-      output.push("                 '--uri " + ConvertUrl(example.Url) + "?api-version=" + example.GetExampleApiVersion() + " '");
-
-      if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post')
-      {
-        output.push("                 '--body \"{body}\"'");
-      }
-      
-      
-      output.push("                 , checks=[");
-      //output.push("            self.check('name', '{rg}'),");
-      //output.push("            self.check('tags', {'a': 'b', 'c': ''})");
-      output.push("                          ])");
+        if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post')
+        {
+            output.push("                 '--body \"{body}\"'");
+        }
+        
+        
+        output.push("                 , checks=[");
+        //output.push("            self.check('name', '{rg}'),");
+        //output.push("            self.check('tags', {'a': 'b', 'c': ''})");
+        output.push("                          ])");
     }
 
     //var json: string[] = GetExampleBodyJson(model.GetExampleBody());

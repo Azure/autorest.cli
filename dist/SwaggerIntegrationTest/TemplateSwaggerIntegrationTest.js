@@ -1,6 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
-function GenerateSwaggerIntegrationTest(model) {
+function GenerateSwaggerIntegrationTest(model, config) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
@@ -31,12 +31,18 @@ function GenerateSwaggerIntegrationTest(model) {
     output.push("");
     output.push("        self.kwargs['sub'] = self.get_subscription_id()");
     output.push("        self.kwargs['name'] = 'zimsxyzname'");
-    // XXX - particular test here
-    for (var i = 0; i < model.length; i++) {
-        var example = model[i];
-        var filename = example.Filename;
+    for (var ci = 0; ci < config.length; ci++) {
+        var example = null;
+        for (var i = 0; i < model.length; i++) {
+            if (model[i].Name == config[ci]['name']) {
+                example = model[i];
+                break;
+            }
+        }
+        if (example == null)
+            continue;
         output.push("");
-        output.push("        # " + example.Filename);
+        output.push("        # " + example.Name);
         if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post') {
             output.push("        body = (");
             let json = GetExampleBodyJson(example.GetExampleBody());
