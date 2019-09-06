@@ -53,10 +53,9 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let generateAnsibleRest = false;
         let generateAnsibleCollection = false;
         let generateSwaggerIntegrationTest = false;
-        let generatePythonExamplesRest = false;
-        let generatePythonExamplesSdk = false;
         let generateExamplesAzureCliRest = false;
         let generateExamplesPythonRest = false;
+        let generateExamplesPythonSdk = false;
         let generateExamplesAnsibleRest = false;
         let generateExamplesAnsibleModule = false;
         let writeIntermediate = false;
@@ -110,6 +109,14 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             Info("GENERATION: --swagger-integration-test");
             generateSwaggerIntegrationTest = true;
         }
+        else if (yield autoRestApi.GetValue("python-examples-rest")) {
+            Info("GENERATION: --python-examples-rest");
+            generateExamplesPythonRest = true;
+        }
+        else if (yield autoRestApi.GetValue("python-examples-sdk")) {
+            Info("GENERATION: --python-examples-sdk");
+            generateExamplesPythonSdk = true;
+        }
         else {
             Info("GENERATION: --all");
             generateAzureCli = !(yield autoRestApi.GetValue("disable-azure-cli"));
@@ -118,10 +125,9 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             generateAnsibleRest = true;
             generateAnsibleCollection = true;
             generateSwaggerIntegrationTest = true;
-            generatePythonExamplesRest = true;
-            generatePythonExamplesSdk = true;
             generateExamplesAzureCliRest = true;
             generateExamplesPythonRest = true;
+            generateExamplesPythonSdk = true;
             generateExamplesAnsibleRest = true;
             generateExamplesAnsibleModule = true;
             writeIntermediate = true;
