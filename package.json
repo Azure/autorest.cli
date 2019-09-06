@@ -1,6 +1,6 @@
 {
-  "name": "cli",
-  "version": "0.1.0",
+  "name": "autorest.cli",
+  "version": "0.1.2",
   "description": "Simple AutoRest extension",
   "main": "dist/index.js",
   "scripts": {
@@ -8,7 +8,7 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/olydis/autorest-extension-helloworld.git"
+    "url": "git+https://github.com/Azure/autorest.cli.git"
   },
   "keywords": [
     "autorest",
