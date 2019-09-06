@@ -42,9 +42,3 @@ scope-cli/emitter:
 output-artifact:
 - source-file-cli
 ```
-    
-
-#``` yaml 
-#use-extension:
-#  "cli": "$(this-folder)"
-#```
