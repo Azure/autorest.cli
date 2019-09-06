@@ -70,6 +70,8 @@ extension.Add("cli", async autoRestApi => {
     let folderAnsibleModulesRest = "";
     let folderAnsibleModulesCollection = "";
     let folderSwaggerIntegrationTest = "";
+    let folderExamplesCli = "";
+    let folderExamplesPythonRest = "";
 
     // get settings
     const isDebugFlagSet = await autoRestApi.GetValue("debug");
@@ -135,6 +137,12 @@ extension.Add("cli", async autoRestApi => {
       Info("GENERATION: --python-examples-sdk");
       generateExamplesPythonSdk = true;
     }
+    else if (await autoRestApi.GetValue("cli-examples-rest"))
+    {
+      Info("GENERATION: --cli-examples-rest");
+      generateExamplesAzureCliRest = true;
+      folderExamplesCli = "examples-cli/";
+    }
     else
     {
       Info("GENERATION: --all");
@@ -158,6 +166,7 @@ extension.Add("cli", async autoRestApi => {
       folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
       folderAnsibleModulesCollection = "ansible-collection/";
       folderSwaggerIntegrationTest = "swagger-integration-test/";
+      folderExamplesCli = "intermediate/examples_cli/";
     }
 
     for (var iif in inputFiles)
@@ -212,6 +221,7 @@ extension.Add("cli", async autoRestApi => {
     
         if (map != null)
         {
+          Info("NUMBER OF EXAMPLES: " + examples.length);
           if (writeIntermediate)
           {
             autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
@@ -222,6 +232,7 @@ extension.Add("cli", async autoRestApi => {
           {
             var example: Example = examples[i];
             var filename = example.Filename;
+            Info("EXAMPLE: " + filename);
             if (generateExamplesAnsibleRest)
             {
               autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", GenerateExampleAnsibleRest(example));
@@ -237,7 +248,11 @@ extension.Add("cli", async autoRestApi => {
               let code = GenerateExampleAzureCLI(example);
               if (code != null)
               {
-                autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", code.join('\r\n'));
+                autoRestApi.WriteFile(folderExamplesCli + filename + ".sh", code.join('\n'));
+              }
+              else
+              {
+                Info("EXAMPLE CODE WAS NULL: " + filename);
               }
             }
           }

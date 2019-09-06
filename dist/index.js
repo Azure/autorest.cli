@@ -66,6 +66,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let folderAnsibleModulesRest = "";
         let folderAnsibleModulesCollection = "";
         let folderSwaggerIntegrationTest = "";
+        let folderExamplesCli = "";
+        let folderExamplesPythonRest = "";
         // get settings
         const isDebugFlagSet = yield autoRestApi.GetValue("debug");
         const namespace = yield autoRestApi.GetValue("namespace");
@@ -117,6 +119,11 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             Info("GENERATION: --python-examples-sdk");
             generateExamplesPythonSdk = true;
         }
+        else if (yield autoRestApi.GetValue("cli-examples-rest")) {
+            Info("GENERATION: --cli-examples-rest");
+            generateExamplesAzureCliRest = true;
+            folderExamplesCli = "examples-cli/";
+        }
         else {
             Info("GENERATION: --all");
             generateAzureCli = !(yield autoRestApi.GetValue("disable-azure-cli"));
@@ -137,6 +144,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
             folderAnsibleModulesCollection = "ansible-collection/";
             folderSwaggerIntegrationTest = "swagger-integration-test/";
+            folderExamplesCli = "intermediate/examples_cli/";
         }
         for (var iif in inputFiles) {
             debug = false;
@@ -180,6 +188,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
             }
             if (map != null) {
+                Info("NUMBER OF EXAMPLES: " + examples.length);
                 if (writeIntermediate) {
                     autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
                 }
@@ -187,6 +196,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 for (var i = 0; i < examples.length; i++) {
                     var example = examples[i];
                     var filename = example.Filename;
+                    Info("EXAMPLE: " + filename);
                     if (generateExamplesAnsibleRest) {
                         autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", AnsibleExampleRest_1.GenerateExampleAnsibleRest(example));
                     }
@@ -196,7 +206,10 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     if (generateExamplesAzureCliRest) {
                         let code = TemplateExampleAzureCLI_1.GenerateExampleAzureCLI(example);
                         if (code != null) {
-                            autoRestApi.WriteFile("intermediate/examples_cli/" + filename + ".sh", code.join('\r\n'));
+                            autoRestApi.WriteFile(folderExamplesCli + filename + ".sh", code.join('\n'));
+                        }
+                        else {
+                            Info("EXAMPLE CODE WAS NULL: " + filename);
                         }
                     }
                 }

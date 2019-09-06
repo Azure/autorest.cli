@@ -13,23 +13,18 @@ export function GenerateExampleAzureCLI(model: Example) : string[] {
     output.push("");
 
     var json: string[] = GetExampleBodyJson(model.GetExampleBody());
+    var method: string = model.Method.toLowerCase();
+    var hasBody:boolean = (method == "put" || method == "post");
+    output.push("az rest --method " + model.Method.toLowerCase() + " --uri " + ConvertUrl(model.Url) + "?api-version=" + model.GetExampleApiVersion() + (hasBody ? " --body '": ""));
 
-    switch (model.Method.toLowerCase())
+    if (hasBody)
     {
-        case 'put':
-            output.push("az resource create --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion() + " --is-full-object --properties '")
-            for (var lidx in json)
-            {
-                var line: string = json[lidx]; 
-                output.push(line);
-            }
-            output.push("'")
-            break;
-        case 'get':
-            output.push("az resource show --id " + ConvertUrl(model.Url) + " --api-version " + model.GetExampleApiVersion())
-            break;
-        default:
-        return null;
+        for (var lidx in json)
+        {
+            var line: string = json[lidx]; 
+            output.push(line);
+        }
+        output.push("'")
     }
 
     return output;
