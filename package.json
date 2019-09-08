@@ -1,6 +1,6 @@
 {
   "name": "autorest.cli",
-  "version": "0.1.7",
+  "version": "0.1.8",
   "description": "Simple AutoRest extension",
   "main": "dist/index.js",
   "scripts": {

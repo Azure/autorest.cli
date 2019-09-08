@@ -17,6 +17,9 @@ import { GenerateAzureCliParams} from "./AzureCli/TemplateAzureCliParams"
 import { GenerateAzureCliClientFactory } from "./AzureCli/TemplateAzureCliClientFactory"
 import { GenerateAzureCliTestScenario } from "./AzureCli/TemplateAzureCliTestScenario"
 import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
+import { GenerateAzureCliInit } from "./AzureCli/TemplateAzureCliInit"
+import { GenerateAzureCliAzextMetadata } from "./AzureCli/TemplateAzureCliAzextMetadata"
+import { GenerateAzureCliValidators } from "./AzureCli/TemplateAzureCliValidators"
 
 // Ansible
 import { GenerateModuleSdk } from "./Ansible/AnsibleModuleSdk"
@@ -167,6 +170,7 @@ extension.Add("cli", async autoRestApi => {
       folderAnsibleModulesCollection = "ansible-collection/";
       folderSwaggerIntegrationTest = "swagger-integration-test/";
       folderExamplesCli = "intermediate/examples_cli/";
+      folderExamplesPythonRest = "intermediate/examples_python/";
     }
 
     for (var iif in inputFiles)
@@ -227,28 +231,53 @@ extension.Add("cli", async autoRestApi => {
             autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
           }
 
-          // Generate raw REST examples
+          //-------------------------------------------------------------------------------------------------------------------------
+          //
+          // REST EXAMPLES
+          //
+          //-------------------------------------------------------------------------------------------------------------------------
           for (var i = 0; i < examples.length; i++)
           {
             var example: Example = examples[i];
             var filename = example.Filename;
-            Info("EXAMPLE: " + filename);
+
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // ANSIBLE REST EXAMPLES
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             if (generateExamplesAnsibleRest)
             {
-              autoRestApi.WriteFile("intermediate/examples_rest/" + filename + ".yml", GenerateExampleAnsibleRest(example));
+              let p = "intermediate/examples_rest/" + filename + ".yml";
+              autoRestApi.WriteFile(p, GenerateExampleAnsibleRest(example));
+              Info("EXAMPLE: " + p);
             }
 
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // PYTHON REST EXAMPLES
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             if (generateExamplesPythonRest)
             {
-              autoRestApi.WriteFile("intermediate/examples_python/" + filename + ".yml", GenerateExamplePythonRest(example).join('\r\n'));
+              let p = folderExamplesPythonRest + filename + ".py";
+              autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
+              Info("EXAMPLE: " + p);
             }
 
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // AZURE CLI REST EXAMPLES
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             if (generateExamplesAzureCliRest)
             {
               let code = GenerateExampleAzureCLI(example);
               if (code != null)
               {
-                autoRestApi.WriteFile(folderExamplesCli + filename + ".sh", code.join('\n'));
+                let p = folderExamplesCli + filename + ".sh";
+                autoRestApi.WriteFile(p, code.join('\n'));
+                Info("EXAMPLE: " + p);
               }
               else
               {
@@ -257,6 +286,11 @@ extension.Add("cli", async autoRestApi => {
             }
           }
 
+          //-------------------------------------------------------------------------------------------------------------------------
+          //
+          // SWAGGER INTEGRATION TEST
+          //
+          //-------------------------------------------------------------------------------------------------------------------------
           if (generateSwaggerIntegrationTest)
           {
             let config: any[] = await autoRestApi.GetValue("test-setup");
@@ -277,109 +311,124 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GenerateSwaggerIntegrationTest(examples, config);
-            autoRestApi.WriteFile(folderSwaggerIntegrationTest + cliName + ".py", code.join('\r\n'));
+            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            autoRestApi.WriteFile(p, code.join('\r\n'));
+            Info("INTEGRATION TEST: " + p)
           }
 
-          // generate modules & mm input files
-          let index = 0;
-          while (index < map.Modules.length) {
-            let model = new CodeModel(map, index);
-            try
-            {
-              autoRestApi.Message({
-                Channel: "information",
-                Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
-              });
-
-              if (!model.ModuleName.endsWith('_info')) {
-
-                if (generateAnsibleSdk)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesSdk + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
-                }
-
-                if (generateAnsibleRest)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesRest + model.ModuleName + ".py", GenerateModuleRest(model, false).join('\r\n'));
-                }
-
-                if (generateAnsibleCollection)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesCollection + model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true).join('\r\n'));
-                }
-                
-                let mn = model.ModuleName.split("azure_rm_")[1];
-                
-                //if (mn == 'batchaccount') mn = "batchaccountxx";
-                //if (mn != "batchaccount")
-                if (generateMagicModules)
-                {
-                  autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
-                  autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                  autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
-                }
-              } else {
-
-                if (generateAnsibleSdk)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesSdk + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
-                }
-
-                if (generateAnsibleRest)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesRest + model.ModuleName + ".py", GenerateModuleRestInfo(model, false).join('\r\n'));
-                }
-
-                if (generateAnsibleCollection)
-                {
-                  autoRestApi.WriteFile(folderAnsibleModulesCollection + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true).join('\r\n'));
-                }
-              }
-
-              // generate magic modules input example files
-              let moduleExamples: Example[] = model.ModuleExamples;
-              for (let exampleIdx in moduleExamples)
+          //-------------------------------------------------------------------------------------------------------------------------
+          //
+          // ANSIBLE MODULES & MAGIC MODULES INPUT
+          //
+          //-------------------------------------------------------------------------------------------------------------------------
+          if (generateAnsibleSdk || generateAnsibleRest || generateAnsibleCollection || generateMagicModules)
+          {
+            // generate modules & mm input files
+            let index = 0;
+            while (index < map.Modules.length) {
+              let model = new CodeModel(map, index);
+              try
               {
-                var example = moduleExamples[exampleIdx];
-                var filename = example.Filename;
-                if (generateExamplesAnsibleModule)
-                {
-                  autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
-                }
+                autoRestApi.Message({
+                  Channel: "information",
+                  Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
+                });
 
-                if (!model.ModuleName.endsWith('_info'))
-                {
-                  let mn = model.ModuleName.split("azure_rm_")[1]; //if (mn == 'batchaccount') mn = "batchaccountxx";
+                if (!model.ModuleName.endsWith('_info')) {
+
+                  if (generateAnsibleSdk)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesSdk + model.ModuleName + ".py", GenerateModuleSdk(model).join('\r\n'));
+                  }
+
+                  if (generateAnsibleRest)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesRest + model.ModuleName + ".py", GenerateModuleRest(model, false).join('\r\n'));
+                  }
+
+                  if (generateAnsibleCollection)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesCollection + model.ModuleName.split('_').pop() + ".py", GenerateModuleRest(model, true).join('\r\n'));
+                  }
+                  
+                  let mn = model.ModuleName.split("azure_rm_")[1];
+                  
+                  //if (mn == 'batchaccount') mn = "batchaccountxx";
+                  //if (mn != "batchaccount")
                   if (generateMagicModules)
                   {
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                  }
+                } else {
+
+                  if (generateAnsibleSdk)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesSdk + model.ModuleName + ".py", GenerateModuleSdkInfo(model).join('\r\n'));
+                  }
+
+                  if (generateAnsibleRest)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesRest + model.ModuleName + ".py", GenerateModuleRestInfo(model, false).join('\r\n'));
+                  }
+
+                  if (generateAnsibleCollection)
+                  {
+                    autoRestApi.WriteFile(folderAnsibleModulesCollection + model.ModuleName.split('_info')[0].split('_').pop() + "_info.py", GenerateModuleRestInfo(model, true).join('\r\n'));
                   }
                 }
-              }
 
+                // generate magic modules input example files
+                let moduleExamples: Example[] = model.ModuleExamples;
+                for (let exampleIdx in moduleExamples)
+                {
+                  var example = moduleExamples[exampleIdx];
+                  var filename = example.Filename;
+                  if (generateExamplesAnsibleModule)
+                  {
+                    autoRestApi.WriteFile("intermediate/examples_rrm/" + filename + ".yml", GenerateExampleAnsibleRrm(example, model.Module).join('\r\n'));
+                  }
+
+                  if (!model.ModuleName.endsWith('_info'))
+                  {
+                    let mn = model.ModuleName.split("azure_rm_")[1]; //if (mn == 'batchaccount') mn = "batchaccountxx";
+                    if (generateMagicModules)
+                    {
+                      autoRestApi.WriteFile(folderMagicModules + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
+                    }
+                  }
+                }
+
+              }
+              catch (e)
+              {
+                autoRestApi.Message({
+                  Channel: "warning",
+                  Text: "ERROR " + e.stack,
+                });
+              }
+              index++;
             }
-            catch (e)
-            {
-              autoRestApi.Message({
-                Channel: "warning",
-                Text: "ERROR " + e.stack,
-              });
-            }
-            index++;
           }
 
-          debug = true;
-          let modelCli = new CodeModelCli(map, 0, function(msg: string) {
-            if (debug) {
-              autoRestApi.Message({
-                Channel: "warning",
-                Text: msg
-              });
-            }
-          })
-
+          //-------------------------------------------------------------------------------------------------------------------------
+          //
+          // AZURE CLI COMMAND MODULE
+          //
+          //-------------------------------------------------------------------------------------------------------------------------
           if (generateAzureCli)
           {
+            debug = true;
+            let modelCli = new CodeModelCli(map, 0, function(msg: string) {
+              if (debug) {
+                autoRestApi.Message({
+                  Channel: "warning",
+                  Text: msg
+                });
+              }
+            })
+  
             autoRestApi.WriteFile(folderAzureCliMain + "_help.py", GenerateAzureCliHelp(modelCli).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "_params.py", GenerateAzureCliParams(modelCli).join('\r\n'));
@@ -393,6 +442,12 @@ extension.Add("cli", async autoRestApi => {
             autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile(folderAzureCliMain + "__init__.py", GenerateAzureCliInit(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile(folderAzureCliMain + "azext_metadata.json", GenerateAzureCliAzextMetadata(modelCli).join('\r\n'));
+            modelCli.Reset();
+            autoRestApi.WriteFile(folderAzureCliMain + "_validators.py", GenerateAzureCliValidators(modelCli).join('\r\n'));
 
             if (folderAzureCliExt != "")
             {
