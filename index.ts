@@ -20,6 +20,10 @@ import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
 import { GenerateAzureCliInit } from "./AzureCli/TemplateAzureCliInit"
 import { GenerateAzureCliAzextMetadata } from "./AzureCli/TemplateAzureCliAzextMetadata"
 import { GenerateAzureCliValidators } from "./AzureCli/TemplateAzureCliValidators"
+import { GenerateAzureCliHistory } from "./AzureCli/TemplateAzureCliHistory"
+import { GenerateAzureCliReadme } from "./AzureCli/TemplateAzureCliReadme"
+import { GenerateAzureCliSetupCfg } from "./AzureCli/TemplateAzureCliSetupCfg"
+import { GenerateAzureCliSetupPy } from "./AzureCli/TemplateAzureCliSetupPy"
 
 // Ansible
 import { GenerateModuleSdk } from "./Ansible/AnsibleModuleSdk"
@@ -454,10 +458,12 @@ extension.Add("cli", async autoRestApi => {
             autoRestApi.WriteFile(folderAzureCliMain + "azext_metadata.json", GenerateAzureCliAzextMetadata(modelCli).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "_validators.py", GenerateAzureCliValidators(modelCli).join('\r\n'));
-
             if (folderAzureCliExt != "")
             {
-              // XXX - generate extension wrapper files
+              autoRestApi.WriteFile(folderAzureCliExt + "HISTORY.rst", GenerateAzureCliHistory(modelCli).join('\r\n'));
+              autoRestApi.WriteFile(folderAzureCliExt + "README.rst", GenerateAzureCliReadme(modelCli).join('\r\n'));
+              autoRestApi.WriteFile(folderAzureCliExt + "setup.cfg", GenerateAzureCliSetupCfg(modelCli).join('\r\n'));
+              autoRestApi.WriteFile(folderAzureCliExt + "setup.py", GenerateAzureCliSetupPy(modelCli).join('\r\n'));  
             }
           }
           
