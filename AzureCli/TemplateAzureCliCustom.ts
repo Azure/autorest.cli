@@ -49,8 +49,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             output.push("");
             output.push("");
-            output.push("# module equivalent: " + model.ModuleName);
-            output.push("# URL: " + ctx.Url);
 
             //
             // method

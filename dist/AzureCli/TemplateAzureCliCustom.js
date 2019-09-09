@@ -35,8 +35,6 @@ function GenerateAzureCliCustom(model) {
             let ctx = model.GetCliCommandContext(methodName);
             output.push("");
             output.push("");
-            output.push("# module equivalent: " + model.ModuleName);
-            output.push("# URL: " + ctx.Url);
             //
             // method
             //
