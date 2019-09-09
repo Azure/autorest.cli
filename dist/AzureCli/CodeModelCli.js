@@ -698,7 +698,7 @@ class CodeModelCli {
         return this.Map.MgmtClientName;
     }
     get ServiceNameX() {
-        return this.Map.MgmtClientName.split("ManagementClient").join();
+        return this.Map.MgmtClientName.split("ManagementClient").join("");
     }
     get ServiceName() {
         return this.Map.ServiceName;
