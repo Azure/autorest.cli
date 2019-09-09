@@ -30,7 +30,18 @@ class ExamplePostProcessor {
                         this.CreateDictionaryFromParameters(dict, example[k], path + k + "/", level + 1);
                     }
                 }
-                // XXX - handle arrays
+                else {
+                    if (typeof example[k][0] == "string") {
+                        let concatenated = "";
+                        for (var i = 0; i < example[k].length; i++) {
+                            if (i > 0)
+                                concatenated += ",";
+                            concatenated += example[k][i];
+                        }
+                        dict[(path == "") ? k : (path + k)] = concatenated;
+                    }
+                    // XXX - handle other types of array
+                }
             }
         }
     }

@@ -245,6 +245,7 @@ class CodeModelCli {
             }
             example.Parameters = new Map();
             example.Description = moduleExample.Name;
+            // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
             let exampleDict = pp.GetExampleAsDictionary(moduleExample);
             ctx.Parameters.forEach(element => {
                 let v = exampleDict[element.PathSwagger];
@@ -253,7 +254,7 @@ class CodeModelCli {
                 }
             });
             // this log is too large
-            //this._log("EXAMPLE: " + JSON.stringify(exampleDict));
+            // this._log("EXAMPLE AS DICT: " + JSON.stringify(exampleDict));
             examples.push(example);
         }
         return examples;

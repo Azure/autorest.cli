@@ -354,6 +354,8 @@ export class CodeModelCli
             example.Parameters = new Map<string,string>();
             example.Description = moduleExample.Name;
 
+            // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
+
             let exampleDict = pp.GetExampleAsDictionary(moduleExample);
 
             ctx.Parameters.forEach(element => {
@@ -365,7 +367,7 @@ export class CodeModelCli
             });
 
             // this log is too large
-            //this._log("EXAMPLE: " + JSON.stringify(exampleDict));
+            // this._log("EXAMPLE AS DICT: " + JSON.stringify(exampleDict));
             examples.push(example);
         }
         
