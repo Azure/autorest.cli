@@ -150,6 +150,9 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             folderExamplesCli = "intermediate/examples_cli/";
             folderExamplesPythonRest = "intermediate/examples_python/";
         }
+        if (yield autoRestApi.GetValue("intermediate")) {
+            writeIntermediate = true;
+        }
         for (var iif in inputFiles) {
             debug = false;
             autoRestApi.Message({

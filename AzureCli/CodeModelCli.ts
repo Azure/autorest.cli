@@ -1018,6 +1018,11 @@ export class CodeModelCli
         return this.Map.MgmtClientName;
     }
 
+    public get ServiceNameX(): string
+    {
+        return this.Map.MgmtClientName.split("ManagementClient").join();
+    }
+
     public get ServiceName(): string
     {
         return this.Map.ServiceName;

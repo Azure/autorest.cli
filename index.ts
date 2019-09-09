@@ -41,6 +41,7 @@ import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
 import { GenerateSwaggerIntegrationTest } from "./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest"
 
 import { Adjustments } from "./Common/Adjustments"; 
+import { write } from "fs";
 
 export type LogCallback = (message: string) => void;
 
@@ -171,6 +172,11 @@ extension.Add("cli", async autoRestApi => {
       folderSwaggerIntegrationTest = "swagger-integration-test/";
       folderExamplesCli = "intermediate/examples_cli/";
       folderExamplesPythonRest = "intermediate/examples_python/";
+    }
+
+    if (await autoRestApi.GetValue("intermediate"))
+    {
+      writeIntermediate = true;
     }
 
     for (var iif in inputFiles)
