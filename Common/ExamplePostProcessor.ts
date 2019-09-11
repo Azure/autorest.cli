@@ -15,15 +15,15 @@ export class ExamplePostProcessor
         this._module = module;
     }
 
-    public GetExampleAsDictionary(example: Example): any
+    public GetAzureCliOptionDictionary(example: Example): any
     {
         let dict = {};
 
-        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0, 0);
+        this.CreateDictionaryForAzureCli(dict, example.CloneExampleParameters(), "", 0, 0);
         return dict;
     }
 
-    public CreateDictionaryFromParameters(dict: any, example: any, path: string, level: number, arrayLevel: number)
+    private CreateDictionaryForAzureCli(dict: any, example: any, path: string, level: number, arrayLevel: number)
     {
         if (typeof example == "string" || typeof example == "number" || typeof example == "boolean")
         {
@@ -49,7 +49,7 @@ export class ExamplePostProcessor
             for (var i: number = 0; i < example.length; i++)
             {
                 // here could consider path + "*/"
-                this.CreateDictionaryFromParameters(dict, example[i], path, level, arrayLevel + 1);
+                this.CreateDictionaryForAzureCli(dict, example[i], path, level, arrayLevel + 1);
             }
             return;
         }
@@ -58,11 +58,11 @@ export class ExamplePostProcessor
         {
             if (level == 0)
             {
-                this.CreateDictionaryFromParameters(dict, example[k], k, level + 1, arrayLevel);
+                this.CreateDictionaryForAzureCli(dict, example[k], k, level + 1, arrayLevel);
             }
             else
             {
-                this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k, level + 1, arrayLevel);
+                this.CreateDictionaryForAzureCli(dict, example[k], path + "/" + k, level + 1, arrayLevel);
             }
         }
     }
