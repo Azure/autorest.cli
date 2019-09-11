@@ -19,48 +19,45 @@ export class ExamplePostProcessor
     {
         let dict = {};
 
-        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0);
+        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0, 0);
         return dict;
     }
 
-    public CreateDictionaryFromParameters(dict: any, example: any, path: string, level: number)
+    public CreateDictionaryFromParameters(dict: any, example: any, path: string, level: number, arrayLevel: number)
     {
-        for (let k in example) {
-            if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string")
+        if (typeof example == "string" || typeof example == "number" || typeof example == "boolean")
+        {
+            if (dict[path] == undefined)
             {
-                dict[(path == "") ? k : (path + k)] = example[k];
+                dict[path] = example;
             }
-            else if (typeof example[k] == "object")
+            else
             {
-                if (!(example[k] instanceof Array))
-                {
-                    if (level == 0)
-                    {
-                        // "parameters" shouldnt be included in the path
-                        this.CreateDictionaryFromParameters(dict, example[k], "/", level + 1);
-                    }
-                    else
-                    {
-                        this.CreateDictionaryFromParameters(dict, example[k], path + k + "/", level + 1);
-                    }
-                }
-                else
-                {
-                    if (typeof example[k][0] == "string")
-                    {
-                        let concatenated: string = "";
+                dict[path] = dict[path] + "," + example;
+            }
+            return;
+        }
 
-                        for (var i: number = 0; i < example[k].length; i++)
-                        {
-                            if (i > 0) concatenated += ",";
-                            concatenated += example[k][i];
-                        }
-
-                        dict[(path == "") ? k : (path + k)] = concatenated;
-                    }
-
-                    // XXX - handle other types of array
-                }
+        if (example instanceof Array)
+        {
+            for (var i: number = 0; i < example.length; i++)
+            {
+                // here could consider path + "*/"
+                this.CreateDictionaryFromParameters(dict, example[i], path, level, arrayLevel + 1);
+            }
+            return;
+        }
+        
+        for (let k in example)
+        {
+            if (level == 0)
+            {
+                // "parameters" shouldnt be included in the path
+                this.CreateDictionaryFromParameters(dict, example[k], "", level + 1, arrayLevel);
+            }
+            else
+            {
+                this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k, level + 1, arrayLevel);
             }
         }
     }
@@ -75,7 +72,7 @@ export class ExamplePostProcessor
         return e;
     }
 
-    public GetExampleProperties(example: Example, type: ExampleType, useVars: boolean)
+    public GetExampleProperties(example: Example, type: ExampleType, useVars: boolean): any
     {
         //let compare: string[] = [];
 

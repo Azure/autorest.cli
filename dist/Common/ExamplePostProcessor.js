@@ -12,36 +12,33 @@ class ExamplePostProcessor {
     }
     GetExampleAsDictionary(example) {
         let dict = {};
-        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0);
+        this.CreateDictionaryFromParameters(dict, example.CloneExampleParameters(), "", 0, 0);
         return dict;
     }
-    CreateDictionaryFromParameters(dict, example, path, level) {
-        for (let k in example) {
-            if (typeof example[k] == "string" || typeof example[k] == "boolean" || typeof example[k] == "string") {
-                dict[(path == "") ? k : (path + k)] = example[k];
+    CreateDictionaryFromParameters(dict, example, path, level, arrayLevel) {
+        if (typeof example == "string" || typeof example == "number" || typeof example == "boolean") {
+            if (dict[path] == undefined) {
+                dict[path] = example;
             }
-            else if (typeof example[k] == "object") {
-                if (!(example[k] instanceof Array)) {
-                    if (level == 0) {
-                        // "parameters" shouldnt be included in the path
-                        this.CreateDictionaryFromParameters(dict, example[k], "/", level + 1);
-                    }
-                    else {
-                        this.CreateDictionaryFromParameters(dict, example[k], path + k + "/", level + 1);
-                    }
-                }
-                else {
-                    if (typeof example[k][0] == "string") {
-                        let concatenated = "";
-                        for (var i = 0; i < example[k].length; i++) {
-                            if (i > 0)
-                                concatenated += ",";
-                            concatenated += example[k][i];
-                        }
-                        dict[(path == "") ? k : (path + k)] = concatenated;
-                    }
-                    // XXX - handle other types of array
-                }
+            else {
+                dict[path] = dict[path] + "," + example;
+            }
+            return;
+        }
+        if (example instanceof Array) {
+            for (var i = 0; i < example.length; i++) {
+                // here could consider path + "*/"
+                this.CreateDictionaryFromParameters(dict, example[i], path, level, arrayLevel + 1);
+            }
+            return;
+        }
+        for (let k in example) {
+            if (level == 0) {
+                // "parameters" shouldnt be included in the path
+                this.CreateDictionaryFromParameters(dict, example[k], "", level + 1, arrayLevel);
+            }
+            else {
+                this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k, level + 1, arrayLevel);
             }
         }
     }

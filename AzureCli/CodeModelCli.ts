@@ -364,6 +364,11 @@ export class CodeModelCli
                 {
                     example.Parameters["--" + element.Name] = v;
                 }
+                else
+                {
+                    this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
+                    this._log("DICTIONARY: " + JSON.stringify(exampleDict));
+                }
             });
 
             // this log is too large
