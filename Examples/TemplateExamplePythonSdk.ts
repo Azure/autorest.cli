@@ -24,7 +24,7 @@ export function GenerateExamplePythonSdk(namespace: string, mgmtClient: string, 
     output.push("from msrestazure.polling.arm_polling import ARMPolling");
     output.push("from msrest.pipeline import ClientRawResponse");
 
-    output.push("    from " + namespace + " import " + mgmtClient + "");
+    output.push("from " + namespace + " import " + mgmtClient);
 
 
     output.push("import uuid");
@@ -84,30 +84,9 @@ export function GenerateExamplePythonSdk(namespace: string, mgmtClient: string, 
     output.push("");
     output.push("def run_example():");
     output.push("    credentials = get_credentials()");
-    output.push("");
-    output.push("    config = AzureConfiguration('https://management.azure.com')");
-    output.push("    service_client = ServiceClient(credentials, config)");
-    output.push("");
-    output.push("    query_parameters = {}");
-    output.push("    query_parameters['api-version'] = API_VERSION");
-    output.push("");
-    output.push("    header_parameters = {}");
-    if (example.ExampleHasBody())
-    {
-        output.push("    header_parameters['Content-Type'] = 'application/json; charset=utf-8'");
-    }
-    if (example.IsExampleLongRunning())
-    {
-        output.push("    header_parameters['x-ms-client-request-id'] = str(uuid.uuid1())");
-    }
-    output.push("");
-    output.push("    operation_config = {}");
-    //output.push("    request = service_client." + body.Method + "(" + ConvertUrl(body.Url) + ", query_parameters)");
-    //output.push("    response = service_client.send(request, header_parameters, BODY, **operation_config)");
+    output.push("    mgmt_client = " + mgmtClient + "(credentials, os.environ['AZURE_SUBSCRIPTION_ID'])");
 
-    output.push("    mgmt_client = " + mgmtClient + "(credentials, subscription_id)");
-
-    output.push("    mgmt_client." + example.OperationId + "." + example.Method + "(");
+    output.push("    response = mgmt_client." + example.OperationId + "." + example.Method + "(" + _UrlToParameters(example.Url) + ", BODY)");
 
     if (example.IsExampleLongRunning())
     {
@@ -197,10 +176,10 @@ function GetExampleBodyJson(body: any): string[]
     return lines;
 }
 
-function ConvertUrl(sourceUrl: string): string
+function _UrlToParameters(sourceUrl: string): string
 {
     var parts: string[] = sourceUrl.split("/");
-    var url = "\"";
+    var params = "";
 
     for (var i: number = 0; i < parts.length; i++)
     {
@@ -209,22 +188,15 @@ function ConvertUrl(sourceUrl: string): string
 
         if (part.startsWith("{{"))
         {
-            var varName: string = part.substring(3, part.length - 6).toUpperCase();
+            var varName: string = part.substring(2, part.length - 3).trim().toUpperCase();
 
-            //if (varName == "SUBSCRIPTION_ID")
-            //{
-            //    varName = varName.ToLower();
-            //}
+            if (varName == "SUBSCRIPTION_ID") continue;
 
             // close and reopen quotes, add add variable name in between
-            url += "\" + " + varName + (last ? "" : " + \"/");
-        }
-        else
-        {
-            url += part + (last ? "\"" : "/");
+            params += varName + (last ? "" : ", ");
         }
     }
-    return url;
+    return params;
 }
 
 function _PythonizeBody(body: any): any
