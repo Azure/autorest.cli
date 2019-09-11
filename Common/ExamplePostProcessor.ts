@@ -38,6 +38,12 @@ export class ExamplePostProcessor
             return;
         }
 
+        // that means we are processing body "paramemeters", and they should not be included in the path
+        if (level == 1)
+        {
+            path = "";
+        }
+
         if (example instanceof Array)
         {
             for (var i: number = 0; i < example.length; i++)
@@ -52,8 +58,7 @@ export class ExamplePostProcessor
         {
             if (level == 0)
             {
-                // "parameters" shouldnt be included in the path
-                this.CreateDictionaryFromParameters(dict, example[k], "", level + 1, arrayLevel);
+                this.CreateDictionaryFromParameters(dict, example[k], k, level + 1, arrayLevel);
             }
             else
             {

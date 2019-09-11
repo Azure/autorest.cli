@@ -25,6 +25,10 @@ class ExamplePostProcessor {
             }
             return;
         }
+        // that means we are processing body "paramemeters", and they should not be included in the path
+        if (level == 1) {
+            path = "";
+        }
         if (example instanceof Array) {
             for (var i = 0; i < example.length; i++) {
                 // here could consider path + "*/"
@@ -34,8 +38,7 @@ class ExamplePostProcessor {
         }
         for (let k in example) {
             if (level == 0) {
-                // "parameters" shouldnt be included in the path
-                this.CreateDictionaryFromParameters(dict, example[k], "", level + 1, arrayLevel);
+                this.CreateDictionaryFromParameters(dict, example[k], k, level + 1, arrayLevel);
             }
             else {
                 this.CreateDictionaryFromParameters(dict, example[k], path + "/" + k, level + 1, arrayLevel);
