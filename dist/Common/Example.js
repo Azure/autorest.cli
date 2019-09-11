@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 class Example {
-    constructor(example, url, method, name, filename, variables, references, operationId, methodId) {
+    constructor(example, url, method, name, filename, variables, references, operationId, methodId, operationName, methodName) {
         this.Example = example;
         this.Url = url;
         this.Method = method;
@@ -11,6 +11,8 @@ class Example {
         this.References = references;
         this.OperationId = operationId;
         this.MethodId = methodId;
+        this.OperationName = operationName;
+        this.MethodName = methodName;
     }
     GetExampleApiVersion() {
         return this.Example["parameters"]["api-version"];

@@ -41,8 +41,6 @@ function GenerateExamplePythonSdk(namespace, mgmtClient, example) {
         }
     }
     output.push("");
-    output.push("API_VERSION = '" + example.GetExampleApiVersion() + "'");
-    output.push("");
     output.push("def get_credentials():");
     output.push("    credentials = ServicePrincipalCredentials(");
     output.push("        client_id=os.environ['AZURE_CLIENT_ID'],");
@@ -72,12 +70,9 @@ function GenerateExamplePythonSdk(namespace, mgmtClient, example) {
     output.push("def run_example():");
     output.push("    credentials = get_credentials()");
     output.push("    mgmt_client = " + mgmtClient + "(credentials, os.environ['AZURE_SUBSCRIPTION_ID'])");
-    output.push("    response = mgmt_client." + example.OperationId + "." + example.Method + "(" + _UrlToParameters(example.Url) + ", BODY)");
-    if (example.IsExampleLongRunning()) {
-        output.push("");
-        output.push("    if response.status_code == 202:");
-        output.push("        response = wait_poller(service_client, operation_config, response)");
-    }
+    output.push("    response = mgmt_client." + Helpers_1.ToSnakeCase(example.OperationName) + "." + Helpers_1.ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
+    output.push("    if isinstance(response, LROPoller):");
+    output.push("        response = self.get_poller_result(response)");
     output.push("    print(response.text)");
     output.push("");
     output.push("");

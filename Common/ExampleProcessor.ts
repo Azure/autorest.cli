@@ -36,7 +36,9 @@ export class ExampleProcessor
                                               vars,
                                               refs,
                                               operation['$id'],
-                                              method['$id']);
+                                              method['$id'],
+                                              operation['name']['raw'],
+                                              method['name']['raw']);
                     this._examples.push(example);
                 }
             }

@@ -8,7 +8,9 @@
                         variables: ExampleVariable[],
                         references: string[],
                         operationId: string,
-                        methodId: string)
+                        methodId: string,
+                        operationName: string,
+                        methodName: string)
     {
         this.Example = example;
         this.Url = url;
@@ -19,12 +21,16 @@
         this.References = references;
         this.OperationId = operationId;
         this.MethodId = methodId;
+        this.OperationName = operationName;
+        this.MethodName = methodName;
     }
 
     public Method: string;
     public Filename: string;
     public OperationId: string;
     public MethodId: string;
+    public OperationName: string;
+    public MethodName: string;
     public Url: string;
     public Name: string;
     public Variables: ExampleVariable[]; 

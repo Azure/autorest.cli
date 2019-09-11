@@ -23,7 +23,7 @@ class ExampleProcessor {
                     var filename = this.GetExampleFilename(Helpers_1.NormalizeResourceId(method['url']), method['httpMethod']);
                     this.ProcessExample(body);
                     this.ScanExampleForRefsAndVars(method['httpMethod'], url, method['url'], filename, body, refs, vars);
-                    var example = new Example_1.Example(body, url, method['httpMethod'], k, filename, vars, refs, operation['$id'], method['$id']);
+                    var example = new Example_1.Example(body, url, method['httpMethod'], k, filename, vars, refs, operation['$id'], method['$id'], operation['name']['raw'], method['name']['raw']);
                     this._examples.push(example);
                 }
             }
