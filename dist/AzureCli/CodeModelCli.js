@@ -246,7 +246,7 @@ class CodeModelCli {
             example.Parameters = new Map();
             example.Description = moduleExample.Name;
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
-            let exampleDict = pp.GetExampleAsDictionary(moduleExample);
+            let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);
             ctx.Parameters.forEach(element => {
                 let v = exampleDict[element.PathSwagger];
                 if (v != undefined) {

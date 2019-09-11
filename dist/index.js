@@ -44,6 +44,7 @@ const TemplateMagicModulesAnsibleExample_1 = require("./MagicModules/TemplateMag
 const AnsibleExampleRest_1 = require("./Examples/AnsibleExampleRest");
 const AnsibleExample_1 = require("./Examples/AnsibleExample");
 const TemplateExamplePythonRest_1 = require("./Examples/TemplateExamplePythonRest");
+const TemplateExamplePythonSdk_1 = require("./Examples/TemplateExamplePythonSdk");
 const TemplateExampleAzureCLI_1 = require("./Examples/TemplateExampleAzureCLI");
 const TemplateSwaggerIntegrationTest_1 = require("./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest");
 const Adjustments_1 = require("./Common/Adjustments");
@@ -75,6 +76,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let folderSwaggerIntegrationTest = "";
         let folderExamplesCli = "";
         let folderExamplesPythonRest = "";
+        let folderExamplesPythonSdk = "";
         // get settings
         const isDebugFlagSet = yield autoRestApi.GetValue("debug");
         const namespace = yield autoRestApi.GetValue("namespace");
@@ -152,7 +154,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             folderAnsibleModulesCollection = "ansible-collection/";
             folderSwaggerIntegrationTest = "swagger-integration-test/";
             folderExamplesCli = "intermediate/examples_cli/";
-            folderExamplesPythonRest = "intermediate/examples_python/";
+            folderExamplesPythonRest = "intermediate/examples_python_rest/";
+            folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
         }
         if (yield autoRestApi.GetValue("intermediate")) {
             writeIntermediate = true;
@@ -229,6 +232,16 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     if (generateExamplesPythonRest) {
                         let p = folderExamplesPythonRest + filename + ".py";
                         autoRestApi.WriteFile(p, TemplateExamplePythonRest_1.GenerateExamplePythonRest(example).join('\r\n'));
+                        Info("EXAMPLE: " + p);
+                    }
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    //
+                    // PYTHON SDK EXAMPLES
+                    //
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    if (generateExamplesPythonSdk) {
+                        let p = folderExamplesPythonSdk + filename + ".py";
+                        autoRestApi.WriteFile(p, TemplateExamplePythonSdk_1.GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
                         Info("EXAMPLE: " + p);
                     }
                     //-------------------------------------------------------------------------------------------------------------------------

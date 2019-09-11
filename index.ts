@@ -40,6 +40,7 @@ import { GenerateMagicModulesAnsibleExample } from "./MagicModules/TemplateMagic
 import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
 import { GenerateExamplePythonRest } from "./Examples/TemplateExamplePythonRest"
+import { GenerateExamplePythonSdk } from "./Examples/TemplateExamplePythonSdk"
 import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
 
 import { GenerateSwaggerIntegrationTest } from "./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest"
@@ -80,6 +81,8 @@ extension.Add("cli", async autoRestApi => {
     let folderSwaggerIntegrationTest = "";
     let folderExamplesCli = "";
     let folderExamplesPythonRest = "";
+    let folderExamplesPythonSdk = "";
+
 
     // get settings
     const isDebugFlagSet = await autoRestApi.GetValue("debug");
@@ -175,7 +178,8 @@ extension.Add("cli", async autoRestApi => {
       folderAnsibleModulesCollection = "ansible-collection/";
       folderSwaggerIntegrationTest = "swagger-integration-test/";
       folderExamplesCli = "intermediate/examples_cli/";
-      folderExamplesPythonRest = "intermediate/examples_python/";
+      folderExamplesPythonRest = "intermediate/examples_python_rest/";
+      folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
     }
 
     if (await autoRestApi.GetValue("intermediate"))
@@ -272,6 +276,18 @@ extension.Add("cli", async autoRestApi => {
             {
               let p = folderExamplesPythonRest + filename + ".py";
               autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
+              Info("EXAMPLE: " + p);
+            }
+
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // PYTHON SDK EXAMPLES
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
+            if (generateExamplesPythonSdk)
+            {
+              let p = folderExamplesPythonSdk + filename + ".py";
+              autoRestApi.WriteFile(p, GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
               Info("EXAMPLE: " + p);
             }
 
