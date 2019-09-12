@@ -87,8 +87,11 @@ export function GenerateExamplePythonSdk(namespace: string, mgmtClient: string, 
     output.push("    response = mgmt_client." + ToSnakeCase(example.OperationName) + "." + ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
 
     output.push("    if isinstance(response, LROPoller):");
-    output.push("        response = self.get_poller_result(response)");
-    output.push("    print(response.text)");
+    output.push("        while not response.done():");
+    output.push("            response.wait(timeout=30)");
+    output.push("        response = response.result()");
+
+    output.push("    print(str(response))");
     output.push("");
     output.push("");
     output.push("if __name__ == \"__main__\":");

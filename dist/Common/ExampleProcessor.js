@@ -14,6 +14,9 @@ class ExampleProcessor {
             var operation = this._swagger.operations[operationIdx];
             for (var methodIdx = 0; methodIdx < operation.methods.length; methodIdx++) {
                 var method = operation.methods[methodIdx];
+                if (method['extensions'] == undefined || method['extensions']['x-ms-examples'] == undefined)
+                    // XXX - warning, no examples
+                    continue;
                 var examplesDictionary = method['extensions']['x-ms-examples'];
                 for (var k in examplesDictionary) {
                     var body = examplesDictionary[k];
