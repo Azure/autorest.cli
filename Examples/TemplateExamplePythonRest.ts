@@ -198,7 +198,7 @@ function ConvertUrl(sourceUrl: string): string
 
         if (part.startsWith("{{"))
         {
-            var varName: string = part.substring(3, part.length - 6).toUpperCase();
+            var varName: string = part.substring(2, part.length - 2).trim().toUpperCase();
 
             //if (varName == "SUBSCRIPTION_ID")
             //{
