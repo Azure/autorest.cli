@@ -90,7 +90,7 @@ extension.Add("cli", async autoRestApi => {
 
     let adjustments = await autoRestApi.GetValue("adjustments");
     let cliName = await autoRestApi.GetValue("cli-name");
-
+    let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
     if (adjustments == null) adjustments = {};
     let adjustmentsObject = new Adjustments(adjustments);
     let debug = await autoRestApi.GetValue("debug");
@@ -446,7 +446,7 @@ extension.Add("cli", async autoRestApi => {
           if (generateAzureCli)
           {
             debug = true;
-            let modelCli = new CodeModelCli(map, 0, function(msg: string) {
+            let modelCli = new CodeModelCli(map, 0, cliCommandOverrides, function(msg: string) {
               if (debug) {
                 autoRestApi.Message({
                   Channel: "warning",

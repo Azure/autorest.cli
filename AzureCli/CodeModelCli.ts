@@ -44,11 +44,12 @@ export class CommandContext
 
 export class CodeModelCli
 {
-    public constructor(map: MapModuleGroup, moduleIdx: number, cb: LogCallback)
+    public constructor(map: MapModuleGroup, moduleIdx: number, cliCommandOverrides: any, cb: LogCallback)
     {
         this.Map = map;
         this._selectedModule = moduleIdx;
         this._log = cb;
+        this._cmdOverrides = cliCommandOverrides;
     }
 
     public Reset()
@@ -106,6 +107,25 @@ export class CodeModelCli
         let command = "";
         let urlParts: string[] = url.split('/');
         let partIdx = 0;
+
+        // first check if we have overrides
+        if (this._cmdOverrides)
+        {
+            for (let regex in this._cmdOverrides)
+            {
+                let regexp = new RegExp(regex);
+
+                if (url.toLowerCase().match(regexp))
+                {
+                    this._log("XXXXXXXXXXXXXXXXXXXXXXXXXXX - MATCH!!!");
+                    this._log(" ... " + url);
+                    this._log(" ... " + regex);
+                    this._log(" ... " + url.toLowerCase().match(regexp));
+                    return this._cmdOverrides[regex];
+                }
+            }
+        }
+
         while (partIdx < urlParts.length)
         {
             let part: string = urlParts[partIdx];
@@ -1141,4 +1161,6 @@ export class CodeModelCli
     }
 
     private _log: LogCallback;
+
+    private _cmdOverrides: any;
 }

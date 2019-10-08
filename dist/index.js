@@ -82,6 +82,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         const namespace = yield autoRestApi.GetValue("namespace");
         let adjustments = yield autoRestApi.GetValue("adjustments");
         let cliName = yield autoRestApi.GetValue("cli-name");
+        let cliCommandOverrides = yield autoRestApi.GetValue("cmd-override");
         if (adjustments == null)
             adjustments = {};
         let adjustmentsObject = new Adjustments_1.Adjustments(adjustments);
@@ -361,7 +362,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generateAzureCli) {
                     debug = true;
-                    let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, function (msg) {
+                    let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, cliCommandOverrides, function (msg) {
                         if (debug) {
                             autoRestApi.Message({
                                 Channel: "warning",

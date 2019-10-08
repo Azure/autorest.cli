@@ -16,7 +16,7 @@ class CommandContext {
 }
 exports.CommandContext = CommandContext;
 class CodeModelCli {
-    constructor(map, moduleIdx, cb) {
+    constructor(map, moduleIdx, cliCommandOverrides, cb) {
         this._selectedModule = 0;
         this.ModuleResourceGroupName = "resource_group";
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -26,6 +26,7 @@ class CodeModelCli {
         this.Map = map;
         this._selectedModule = moduleIdx;
         this._log = cb;
+        this._cmdOverrides = cliCommandOverrides;
     }
     Reset() {
         this._selectedModule = 0;
@@ -65,6 +66,19 @@ class CodeModelCli {
         let command = "";
         let urlParts = url.split('/');
         let partIdx = 0;
+        // first check if we have overrides
+        if (this._cmdOverrides) {
+            for (let regex in this._cmdOverrides) {
+                let regexp = new RegExp(regex);
+                if (url.toLowerCase().match(regexp)) {
+                    this._log("XXXXXXXXXXXXXXXXXXXXXXXXXXX - MATCH!!!");
+                    this._log(" ... " + url);
+                    this._log(" ... " + regex);
+                    this._log(" ... " + url.toLowerCase().match(regexp));
+                    return this._cmdOverrides[regex];
+                }
+            }
+        }
         while (partIdx < urlParts.length) {
             let part = urlParts[partIdx];
             if (command == "") {
