@@ -61,6 +61,10 @@ class CodeModelCli {
     GetCliCommandDescriptionName(methodName = null) {
         return Helpers_1.ToDescriptiveName(this.Map.Modules[this._selectedModule].ObjectName);
     }
+    //-------------------------------------------------------------------
+    // This function creates command name from operation URL.
+    // It will also use overrides if available.
+    //-------------------------------------------------------------------
     GetCliCommandFromUrl(url) {
         // use URL of any method to create CLI command path
         let command = "";
@@ -71,10 +75,6 @@ class CodeModelCli {
             for (let regex in this._cmdOverrides) {
                 let regexp = new RegExp(regex);
                 if (url.toLowerCase().match(regexp)) {
-                    this._log("XXXXXXXXXXXXXXXXXXXXXXXXXXX - MATCH!!!");
-                    this._log(" ... " + url);
-                    this._log(" ... " + regex);
-                    this._log(" ... " + url.toLowerCase().match(regexp));
                     return this._cmdOverrides[regex];
                 }
             }
@@ -111,6 +111,9 @@ class CodeModelCli {
         let command = this.GetCliCommand();
         return command.split(" ").join("_").split("-").join("_");
     }
+    //-------------------------------------------------------------------
+    // This function creates list if CLI methods from REST API methods.
+    //-------------------------------------------------------------------
     GetCliCommandMethods() {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
         let methods = new Set();
@@ -146,13 +149,16 @@ class CodeModelCli {
         let url = this.ModuleUrl;
         ctx.Command = this.GetCliCommandFromUrl(url);
         ctx.Url = url;
+        // enumerate all swagger method names
         methods.forEach(mm => {
+            this._log("PROCESSING: " + mm);
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
             method.Name = Helpers_1.ToSnakeCase(mm);
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;
+                this._log(" ... option: " + o.NameAnsible);
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
@@ -654,6 +660,7 @@ class CodeModelCli {
         let moduleOptions = [];
         for (let optionNameIdx in methodOptionNames) {
             let optionName = methodOptionNames[optionNameIdx];
+            this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions) {
                 if (this.ModuleOptions[optionIdx].NameSwagger == optionName) {
@@ -662,7 +669,7 @@ class CodeModelCli {
                 }
             }
             if (option == null) {
-                if (optionName == "parameters") {
+                if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering") {
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];

@@ -215,7 +215,8 @@ function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: numb
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
-        if (optionName.endsWith("_parameters") || optionName == "parameters")
+        // XXXXXXXXXXX - ugly hack!!!!!!!
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering")
         {
             optionName = "body";
         }
@@ -244,7 +245,8 @@ function HasBody(model: CodeModelCli, ctx: CommandContext, methodIdx: number): b
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
-        if (optionName.endsWith("_parameters") || optionName == "parameters")
+        // XXXXXXXXX - UGLY!!!!!!!!!!
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering")
         {
             return true;
         }

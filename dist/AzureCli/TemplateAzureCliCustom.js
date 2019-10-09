@@ -160,7 +160,8 @@ function GetMethodCall(model, ctx, methodIdx) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
-        if (optionName.endsWith("_parameters") || optionName == "parameters") {
+        // XXXXXXXXXXX - ugly hack!!!!!!!
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering") {
             optionName = "body";
         }
         if (methodCall.endsWith("(")) {
@@ -180,7 +181,8 @@ function HasBody(model, ctx, methodIdx) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
-        if (optionName.endsWith("_parameters") || optionName == "parameters") {
+        // XXXXXXXXX - UGLY!!!!!!!!!!
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering") {
             return true;
         }
     }
