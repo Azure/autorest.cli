@@ -29,7 +29,16 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             output.push("");
             output.push("    from ._client_factory import cf_" + model.ModuleOperationName);
             output.push("    " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + " = CliCommandType(");
-            output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+            
+            if (true)
+            {
+                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".vendored_sdks." + model.GetCliCommandModuleName() + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+            }
+            else
+            {
+                // enable this if using package
+                output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+            }
             output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
             for (let mi in methods)
