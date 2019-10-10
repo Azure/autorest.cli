@@ -80,7 +80,15 @@ export class MapGenerator
         for (var idx = 0; idx < this.Operations.length; idx++)
         {
             this._index = idx;
+            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
 
+            for (var mi in this.GetModuleOperation().methods)
+            {
+                let m = this.GetModuleOperation().methods[mi];
+                this._log(" ... " + m.name.raw + "[" + m.serializedName + "]");
+                this._log(" ... " + (m.httpMethod as string).toUpperCase() + " " + m.url);
+            }
+        
             let methods: any[] = [];
             let fact_methods = this.GetModuleFactsMethods();
 
@@ -232,12 +240,12 @@ export class MapGenerator
 
     public get ModuleOperationName(): string
     {
-        return ToSnakeCase(this.ModuleOperation.name.raw);
+        return ToSnakeCase(this.GetModuleOperation().name.raw);
     }
 
     public get ModuleOperationNameSingular(): string
     {
-        let name: string = ToSnakeCase(this.ModuleOperation.name.raw);
+        let name: string = ToSnakeCase(this.GetModuleOperation().name.raw);
         if (name.endsWith("ies"))
         {
             name = name.substring(0, name.length - 3) + "y";
@@ -252,7 +260,7 @@ export class MapGenerator
 
     public get ModuleOperationNameUpper(): string
     {
-        return this.ModuleOperation.name.raw;
+        return this.GetModuleOperation().name.raw;
     }
 
     public get Operations(): any[]
@@ -266,7 +274,7 @@ export class MapGenerator
     }
 
 
-    public get ModuleOperation(): any //MethodGroup
+    public GetModuleOperation(): any
     {
         return this.Operations[this._index];
     }
@@ -506,9 +514,6 @@ export class MapGenerator
                         suboption.TypeName = this.Type_Name(submodel);
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
                         suboption.TypeNameGo = Capitalize(suboption.TypeNameGo);
-                        this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
-
-                        this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel))
 
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
@@ -728,9 +733,9 @@ export class MapGenerator
 
     private ModuleFindMethod(name: string): any
     {
-        for (var mi in this.ModuleOperation.methods)
+        for (var mi in this.GetModuleOperation().methods)
         {
-            let m = this.ModuleOperation.methods[mi];
+            let m = this.GetModuleOperation().methods[mi];
             if (m.name.raw == name)
                 return m;
         }
@@ -752,9 +757,9 @@ export class MapGenerator
     {
         var l: any[] = [];
 
-        for (var mi in this.ModuleOperation.methods)
+        for (var mi in this.GetModuleOperation().methods)
         {
-            let m = this.ModuleOperation.methods[mi];
+            let m = this.GetModuleOperation().methods[mi];
             if (m.httpMethod == "get")
             {
                 l.push(m);

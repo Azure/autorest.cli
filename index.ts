@@ -56,8 +56,25 @@ const extension = new AutoRestExtension();
 extension.Add("cli", async autoRestApi => {
 
   try {
+    // output function
+    function Info(s: string)
+    {
+      autoRestApi.Message({
+        Channel: "information",
+        Text: s
+      });
+    }
+
     // read files offered to this plugin
     const inputFileUris = await autoRestApi.ListInputs();
+
+    if (inputFileUris.length <= 0)
+    {
+      Info("INPUT FILE LIST IS EMPTY");
+      return;
+    }
+
+
     const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
     let generateAzureCli: boolean = false;
@@ -95,14 +112,7 @@ extension.Add("cli", async autoRestApi => {
     let adjustmentsObject = new Adjustments(adjustments);
     let debug = await autoRestApi.GetValue("debug");
 
-    function Info(s: string)
-    {
-      autoRestApi.Message({
-        Channel: "information",
-        Text: s
-      });
-    }
-
+    let debugMap = await autoRestApi.GetValue("debug-map");
     // Handle generation type parameter
     if (await autoRestApi.GetValue("cli-module"))
     {
@@ -189,17 +199,14 @@ extension.Add("cli", async autoRestApi => {
 
     for (var iif in inputFiles)
     {
-      debug = false;
-      autoRestApi.Message({
-        Channel: "warning",
-        Text: "URI: " + inputFileUris[iif]
-      });
-
+      //
+      // First Stage -- Map Generation
+      //
       let swagger = JSON.parse(inputFiles[iif]);
       let exampleProcessor = new ExampleProcessor(swagger);
       let examples: Example[] = exampleProcessor.GetExamples();
       let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
-        if (debug) {
+        if (debugMap) {
           autoRestApi.Message({
             Channel: "warning",
             Text: msg
@@ -225,10 +232,13 @@ extension.Add("cli", async autoRestApi => {
 
         // flatten the map using flattener
         let mapFlattener = new MapFlattener(map, adjustmentsObject, debug, function(msg: string) {
-          autoRestApi.Message({
-            Channel: "warning",
-            Text: msg
-          });
+          if (debug)
+          {
+            autoRestApi.Message({
+              Channel: "warning",
+              Text: msg
+            });
+          }
         });
         mapFlattener.Flatten();
 
@@ -355,10 +365,13 @@ extension.Add("cli", async autoRestApi => {
               let model = new CodeModel(map, index);
               try
               {
-                autoRestApi.Message({
-                  Channel: "information",
-                  Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
-                });
+                if (debug)
+                {
+                  autoRestApi.Message({
+                    Channel: "information",
+                    Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
+                  });
+                }
 
                 if (!model.ModuleName.endsWith('_info')) {
 
@@ -445,7 +458,6 @@ extension.Add("cli", async autoRestApi => {
           //-------------------------------------------------------------------------------------------------------------------------
           if (generateAzureCli)
           {
-            debug = true;
             let modelCli = new CodeModelCli(map, 0, cliCommandOverrides, function(msg: string) {
               if (debug) {
                 autoRestApi.Message({
