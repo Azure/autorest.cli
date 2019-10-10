@@ -462,8 +462,6 @@ export class MapGenerator
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1))
                 {
-                    this._map.Info.push("  ** FOUND OPTION " + p.name.raw);
-
                     let type: string = this.Type_MappedType(p.modelType);
 
                     if (type != "dict")

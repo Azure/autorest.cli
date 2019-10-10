@@ -317,7 +317,6 @@ class MapGenerator {
                     p.name.raw != "api-version" &&
                     (p.name.raw.indexOf('$') == -1) &&
                     (p.name.raw.indexOf('-') == -1)) {
-                    this._map.Info.push("  ** FOUND OPTION " + p.name.raw);
                     let type = this.Type_MappedType(p.modelType);
                     if (type != "dict") {
                         options[p.name.raw] = new ModuleMap_1.ModuleOption(p.name.raw, type, p.isRequired);

@@ -117,5 +117,4 @@ export class MapModuleGroup
     public MgmtClientName: string = null;
     public CliName: string = null;
     public Namespace: string = null;
-    public Info: string[] = [];
 }
