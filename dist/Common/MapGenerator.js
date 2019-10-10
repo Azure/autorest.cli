@@ -349,6 +349,7 @@ class MapGenerator {
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
+                        suboption.TypeNameGo = Helpers_1.Capitalize(suboption.TypeNameGo);
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel));
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
@@ -467,6 +468,7 @@ class MapGenerator {
                         option.IsList = this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                        option.TypeNameGo = Helpers_1.Capitalize(option.TypeNameGo);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
                         option.PathSwagger = pathSwagger + "/" + attrName;

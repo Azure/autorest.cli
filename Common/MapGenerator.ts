@@ -1,6 +1,6 @@
 ﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap";
 import { Example } from "../Common/Example";
-import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "../Common/Helpers";
+import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
 import { LogCallback } from "../index";
 import { Adjustments } from "./Adjustments";
 import { throws } from "assert";
@@ -507,6 +507,7 @@ export class MapGenerator
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
                         suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
+                        suboption.TypeNameGo = Capitalize(suboption.TypeNameGo);
                         this._log("TRIMMING A: " + suboption.TypeName + " >> " + suboption.TypeNameGo + " -- " + this.Namespace);
 
                         this._log("TOP LEVEL OPTIONS: " + ref + " -- " + JSON.stringify(submodel))
@@ -681,6 +682,7 @@ export class MapGenerator
                         option.IsList =  this.Type_IsList(attr.modelType);
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                        option.TypeNameGo = Capitalize(option.TypeNameGo);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
 
