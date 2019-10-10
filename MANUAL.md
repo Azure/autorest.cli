@@ -132,3 +132,10 @@ option should be placed in parameters variable / structure passed to the API fun
 
 For suboptions, **disposition** field may be left empty.
 In such case there will be no specific mapping done.
+
+# Debug Autorest.cli in Visual Studio Code
+1. Lauch the autorest with --cli.debugger
+e.g autorest-beta.cmd --cli --use=d:/project/autorest.cli --cli.debugger --python-sdks-folder=d:\generated --output-folder=d:\generated d:/project/autorest.cli/input/softwareUpdateConfiguration.md
+
+2. In Visual Studio Debug, selecet 'Attach' and press F5 to attach to the debugger
+3. debug 
