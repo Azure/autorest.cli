@@ -489,6 +489,9 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
                     // XXX - this is a hack!!!
                     output.push("            go_field_name: " + "ApplicationProperties");
                 }
+                else if (option.NameTerraform == "Properties") {
+                   output.push("            go_field_name: " + option.TypeNameGo); 
+                }
                 else
                 {
                     output.push("            go_field_name: " + option.NameTerraform);
