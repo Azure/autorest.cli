@@ -16,14 +16,16 @@ function GenerateAzureCliReport(model) {
         for (let mi = 0; mi < methods.length; mi++) {
             // create, delete, list, show, update
             let method = methods[mi];
+            // options
+            let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
             mo.push("### " + model.GetCliCommand() + " " + method);
             mo.push("");
             mo.push(method + " a " + model.GetCliCommand() + ".");
             mo.push("");
             mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
             mo.push("|------|----|-----------|----------|--------------|");
-            // options
-            let ctx = model.GetCliCommandContext(method);
             let params = ctx.Parameters;
             // first parameters that are required
             params.forEach(element => {

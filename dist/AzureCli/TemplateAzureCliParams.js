@@ -44,9 +44,11 @@ function GenerateAzureCliParams(model) {
         let methods = model.GetCliCommandMethods();
         for (let mi = 0; mi < methods.length; mi++) {
             let method = methods[mi];
+            let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
             output.push("");
             output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
-            let ctx = model.GetCliCommandContext(method);
             let params = ctx.Parameters;
             params.forEach(element => {
                 let parameterName = element.Name.split("-").join("_");

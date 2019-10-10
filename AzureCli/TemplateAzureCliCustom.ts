@@ -47,6 +47,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             let ctx = model.GetCliCommandContext(methodName);
 
+            if (ctx == null)
+                continue;
+
             output.push("");
             output.push("");
 

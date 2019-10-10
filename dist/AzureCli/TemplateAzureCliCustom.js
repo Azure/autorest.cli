@@ -33,6 +33,8 @@ function GenerateAzureCliCustom(model) {
             if (methodName == 'delete' || methodName == "show")
                 continue;
             let ctx = model.GetCliCommandContext(methodName);
+            if (ctx == null)
+                continue;
             output.push("");
             output.push("");
             //

@@ -34,7 +34,10 @@ function GenerateAzureCliTestScenario(model) {
         for (let mi = 0; mi < methods.length; mi++) {
             // create, delete, list, show, update
             let method = methods[mi];
+            // options
             let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
             ctx.Methods.forEach(element => {
                 output.push("# " + element.Name + " -- " + method);
                 let examples = ctx.Examples;

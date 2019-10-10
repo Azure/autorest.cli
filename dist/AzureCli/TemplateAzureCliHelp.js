@@ -26,6 +26,8 @@ function GenerateAzureCliHelp(model) {
             // create, delete, list, show, update
             let method = methods[mi];
             let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
             output.push("");
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");

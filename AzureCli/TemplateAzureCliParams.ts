@@ -52,10 +52,14 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
         for (let mi = 0; mi < methods.length; mi++)
         {
             let method: string = methods[mi];
-            output.push("");
-            output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
 
             let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
+
+            output.push("");
+            output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
+        
             let params: CommandParameter[] = ctx.Parameters;
 
             params.forEach(element => {

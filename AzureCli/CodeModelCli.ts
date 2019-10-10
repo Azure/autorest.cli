@@ -219,12 +219,18 @@ export class CodeModelCli
 
     public GetCliCommandContext(name: string): CommandContext
     {
+        let url: string = this.ModuleUrl;
+        let command = this.GetCliCommandFromUrl(url);
+
+        // don't try to create contetx if command was disabled
+        if (command == "-") return null;
+
         let ctx = new CommandContext();
         ctx.Methods = [];
         ctx.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
-        let url: string = this.ModuleUrl;
-        ctx.Command = this.GetCliCommandFromUrl(url);
+
+        ctx.Command = command;
         ctx.Url = url;
 
         // enumerate all swagger method names

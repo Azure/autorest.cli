@@ -41,7 +41,10 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
+            // options
             let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
 
             ctx.Methods.forEach(element => {
                 output.push ("# " + element.Name + " -- " + method);
