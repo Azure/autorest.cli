@@ -4,7 +4,8 @@
   "description": "Simple AutoRest extension",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js"
+    "start": "node dist/index.js",
+    "debug": "node --max_old_space_size=4096 --inspect-brk ./dist/index.js"
   },
   "repository": {
     "type": "git",
@@ -21,6 +22,8 @@
   },
   "dependencies": {
     "autorest-extension-base": "https://github.com/olydis/autorest-extension-base",
+    "net": "^1.0.2",
+    "node": "^12.11.0",
     "node-yaml": "^3.2.0"
   }
 }
