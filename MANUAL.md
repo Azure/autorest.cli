@@ -5,6 +5,21 @@ File should follow the format used by **readme.md** files from Azure REST API sp
 
 Note: **readme.md** files will be moved to **azure-rest-api-specs** repo.
 
+## Selecting Output Type
+
+Following options are valid:
+
+|Option|Description|
+|-----|-----------|
+|--cli-module|Azure CLI module, use **--extension** option to generate extension instead of core module|
+|--ansible|Ansible modules|
+|--swagger-integration-test|Generates Azure REST API Specs integration test based on examples|
+|--python-examples-rest|Converts examples to Python scripts using REST API directly|
+|--python-examples-sdk|Converts examples to Python scripts using Azure Python SDK|
+|--cli-examples-rest|Converts examples to convenient **az rest** commands|
+
+If no output type is specified, everything will be generated.
+
 ## Additional Parameters
 
 ### Debugging
