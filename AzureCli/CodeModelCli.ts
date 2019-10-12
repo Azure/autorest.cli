@@ -653,60 +653,6 @@ export class CodeModelCli
         return this.Map.Modules[this._selectedModule].ModuleName;
     }
 
-    public get NeedsDeleteBeforeUpdate(): boolean
-    {
-        return this.Map.Modules[this._selectedModule].NeedsDeleteBeforeUpdate;
-    }
-
-    public get NeedsForceUpdate(): boolean
-    {
-        return this.Map.Modules[this._selectedModule].NeedsForceUpdate;
-    }
-
-    public SupportsTags(): boolean
-    {
-        return this.SupportsTagsInternal(this.ModuleOptions);
-    }
-    
-    private SupportsTagsInternal(options: ModuleOption[]): boolean
-    {
-        for(let oi in options)
-        {
-            if (options[oi].NameSwagger == "tags")
-                return true;
-
-            if (options[oi].SubOptions && this.SupportsTagsInternal(options[oi].SubOptions))
-                return true;
-        }
-        return false;
-    }
-
-    public HasResourceGroup(): boolean
-    {
-        for(let oi in this.ModuleOptions)
-        {
-            if (this.ModuleOptions[oi].NameSwagger == "resourceGroupName")
-                return true;
-        }
-
-        return false;
-    }
-
-    public get LocationDisposition(): string
-    {
-        let options = this.ModuleOptions;
-
-        for (let oi in options)
-        {
-            if (options[oi].NameSwagger == "location")
-            {
-                return options[oi].DispositionSdk;
-            }
-        }
-
-        return "";
-    }
-
     private _selectedModule: number = 0;
 
     public get Module(): Module
@@ -760,122 +706,9 @@ export class CodeModelCli
         return null;
     }
 
-
-    public get ModuleResponseFields(): ModuleOption[]
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.ResponseFields;
-    }
-
-    public GetModuleResponseFieldsPaths(): string[]
-    {
-        let paths: string[] = [];
-
-        if (this.ModuleResponseFields != null)
-        {
-            paths.concat(this.AddModuleResponseFieldPaths("", this.ModuleResponseFields));
-        }
-
-        return paths;
-    }
-
-    private AddModuleResponseFieldPaths(prefix: string, fields: ModuleOption[]): string[]
-    {
-        let paths: string[] = [];
-        for (var i in fields)
-        {
-            let f = fields[i];
-            //if (f.Returned == "always")
-            //{
-                if (f.Type == "complex")
-                {
-                    paths.concat(this.AddModuleResponseFieldPaths(prefix + f.NameAnsible + ".", f.SubOptions));
-                }
-                else if (f.NameAnsible != "x")
-                {
-                    paths.push(prefix + f.NameAnsible);
-                }
-            //}
-        }
-
-        return paths;
-    }
-
-
     public get ModuleExamples(): Example[]
     {
         return this.Map.Modules[this._selectedModule].Examples;
-    }
-
-    public GetModuleTestCreate(isCheckMode: boolean = false): string[]
-    {
-        return this.GetModuleTest(0, "Create instance of", "", isCheckMode);
-    }
-
-    public get ModuleTestUpdate(): string[]
-    {
-        return this.GetModuleTest(0, "Create again instance of", "", false);
-    }
-
-    public get ModuleTestUpdateCheckMode(): string[]
-    {
-        return this.GetModuleTest(0, "Create again instance of", "", true);
-    }
-
-    public GetModuleTestDelete(isUnexistingInstance: boolean, isCheckMode: boolean): string[] 
-    {
-        let prefix: string = isUnexistingInstance ? "Delete unexisting instance of" : "Delete instance of";
-        return this.GetModuleTest(0, prefix, "delete", isCheckMode);
-    }
-
-    public GetModuleFactTestCount(): number
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods.length;
-    }
-
-    public GetModuleFactTest(idx: number, instanceNamePostfix: string = ""): string[]
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return this.GetModuleTest(0, "Gather facts", m.Methods[idx].Name, false, instanceNamePostfix);
-    }
-
-    public IsModuleFactsTestMulti(idx: number): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods[idx].Name != "get";
-    }
-
-    public get ModuleTestDelete(): string[]
-    {
-        return this.GetModuleTest(0, "Delete instance of", "delete", false);
-    }
-
-    public get ModuleTestDeleteCheckMode(): string[]
-    {
-        return this.GetModuleTest(0, "Delete instance of", "delete", true);
-    }
-
-    public get ModuleTestDeleteUnexisting(): string[]
-    {
-        return this.GetModuleTest(0, "Delete unexisting instance of", "delete", false);
-    }
-
-
-    private GetModuleTest(level: number, testType: string, methodType: string, isCheckMode: boolean, instanceNamePostfix: string = ""): string[]
-    {
-        let prePlaybook: string[] = [];
-        let postfix: string = isCheckMode ? " -- check mode" : "";
-
-        // XXX - this must be created in different way
-        //prePlaybook.concat(this.GetPlaybook(testType, ((methodType == "") ? this.ModuleOptions : this.GetMethodOptions(methodType)), "", "test:default", postfix, instanceNamePostfix));
-
-        if (methodType == "delete")
-            prePlaybook.push("    state: absent");
-
-        let arr: string[] = prePlaybook;
-
-        return arr;
     }
 
     public GetMethod(methodName: string): ModuleMethod
@@ -892,11 +725,6 @@ export class CodeModelCli
         return null;
     }
 
-    public HasCreateOrUpdate(): boolean
-    {
-        return this.GetMethod("CreateOrUpdate") != null;
-    }
-
     public GetMethodOptionNames(methodName: string): string[]
     {
         var m = this.Map.Modules[this._selectedModule];
@@ -909,27 +737,6 @@ export class CodeModelCli
         }
 
         return null;
-    }
-
-    public CanDelete(): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-
-        for (var mi in m.Methods)
-        {
-            let method = m.Methods[mi];
-            if (method.Name == "delete")
-                return true;
-        }
-
-        return false;
-    }
-
-    public CanTestUpdate(): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-
-        return m.CannotTestUpdate;
     }
 
     public GetMethodRequiredOptionNames(methodName: string): string[]
