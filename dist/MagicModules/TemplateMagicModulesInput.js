@@ -139,56 +139,55 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             dataType = "!ruby/object:Api::Type::Enum";
         }
         else {
-            switch (option.Type) {
-                case "str":
-                    if (option.NameSwagger == "resourceGroupName") {
-                        dataType = "!ruby/object:Api::Azure::Type::ResourceGroupName";
-                    }
-                    else if ((typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
-                        dataType = "!ruby/object:Api::Azure::Type::ResourceReference";
-                    }
-                    else if (option.NameSwagger == "location") {
-                        dataType = "!ruby/object:Api::Azure::Type::Location";
-                    }
-                    else {
-                        dataType = "!ruby/object:Api::Type::String";
-                    }
-                    break;
-                case "dict":
-                    if (option.IsList) {
-                        // for now it's the same
+            if (option.IsList) {
+                dataType = "!ruby/object:Api::Type::Array";
+            }
+            else {
+                switch (option.Type) {
+                    case "str":
+                        if (option.NameSwagger == "resourceGroupName") {
+                            dataType = "!ruby/object:Api::Azure::Type::ResourceGroupName";
+                        }
+                        else if ((typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
+                            dataType = "!ruby/object:Api::Azure::Type::ResourceReference";
+                        }
+                        else if (option.NameSwagger == "location") {
+                            dataType = "!ruby/object:Api::Azure::Type::Location";
+                        }
+                        else {
+                            dataType = "!ruby/object:Api::Type::String";
+                        }
+                        break;
+                    case "dict":
                         dataType = "!ruby/object:Api::Type::NestedObject";
-                    }
-                    else {
-                        dataType = "!ruby/object:Api::Type::NestedObject";
-                    }
-                    break;
-                case "boolean":
-                    dataType = "!ruby/object:Api::Type::Boolean";
-                    break;
-                case "datetime":
-                    dataType = "!ruby/object:Api::Azure::Type::ISO8601DateTime";
-                    break;
-                case "number":
-                    dataType = "!ruby/object:Api::Type::Integer";
-                    break;
-                default:
-                    // [TODO] this should be handled earlier
-                    if (option.NameSwagger == "tags") {
-                        dataType = "!ruby/object:Api::Azure::Type::Tags";
-                    }
-                    else if (option.Type.startsWith("unknown[DictionaryType")) {
-                        dataType = "!ruby/object:Api::Type::KeyValuePairs";
-                    }
-                    else if (option.Type == "unknown-primary[timeSpan]") {
-                        dataType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
-                    }
-                    else if (option.Type == "unknown-primary[uuid]") {
-                        dataType = "!ruby/object:Api::Type::String";
-                    }
-                    else {
-                        dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
-                    }
+                        break;
+                    case "boolean":
+                        dataType = "!ruby/object:Api::Type::Boolean";
+                        break;
+                    case "datetime":
+                        dataType = "!ruby/object:Api::Azure::Type::ISO8601DateTime";
+                        break;
+                    case "number":
+                        dataType = "!ruby/object:Api::Type::Integer";
+                        break;
+                    default:
+                        // [TODO] this should be handled earlier
+                        if (option.NameSwagger == "tags") {
+                            dataType = "!ruby/object:Api::Azure::Type::Tags";
+                        }
+                        else if (option.Type.startsWith("unknown[DictionaryType")) {
+                            dataType = "!ruby/object:Api::Type::KeyValuePairs";
+                        }
+                        else if (option.Type == "unknown-primary[timeSpan]") {
+                            dataType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
+                        }
+                        else if (option.Type == "unknown-primary[uuid]") {
+                            dataType = "!ruby/object:Api::Type::String";
+                        }
+                        else {
+                            dataType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
+                        }
+                }
             }
         }
         output.push(prefix + "- " + dataType);
@@ -254,11 +253,74 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             sdkReferences += ", '/name'";
         }
         output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
+        if (option.IsList) {
+            let itemtype = getItemTypeForList(option);
+            output.push(prefix + "  item_type: " + itemtype);
+        }
         if (option.SubOptions != null && option.SubOptions.length > 0) {
-            output.push(prefix + "  properties:");
-            appendUxOptions(output, option.SubOptions, prefix + "    ");
+            let subprefix = prefix;
+            if (option.IsList)
+                subprefix += "  ";
+            output.push(subprefix + "  properties:");
+            appendUxOptions(output, option.SubOptions, subprefix + "    ");
         }
     }
+}
+function getItemTypeForList(option) {
+    if (option.IsList == false)
+        return null;
+    let itemType = "";
+    switch (option.Type) {
+        case "str": {
+            if (option.NameSwagger == "resourceGroupName") {
+                itemType = "Api::Azure::Type::ResourceGroupName";
+            }
+            else if ((typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/')) {
+                itemType = "Api::Azure::Type::ResourceReference";
+            }
+            else if (option.NameSwagger == "location") {
+                itemType = "Api::Azure::Type::Location";
+            }
+            else {
+                itemType = "Api::Type::String";
+            }
+            break;
+        }
+        case "dict": {
+            itemType = "!ruby/object:Api::Type::NestedObject";
+            break;
+        }
+        case "boolean": {
+            itemType = "Api::Type::Boolean";
+            break;
+        }
+        case "datetime": {
+            itemType = "Api::Azure::Type::ISO8601DateTime";
+            break;
+        }
+        case "number": {
+            itemType = "Api::Type::Integer";
+            break;
+        }
+        default: {
+            if (option.NameSwagger == "tags") {
+                itemType = "!ruby/object:Api::Azure::Type::Tags";
+            }
+            else if (option.Type.startsWith("unknown[DictionaryType")) {
+                itemType = "!ruby/object:Api::Type::KeyValuePairs";
+            }
+            else if (option.Type == "unknown-primary[timeSpan]") {
+                itemType = "!ruby/object:Api::Azure::Type::ISO8601Duration";
+            }
+            else if (option.Type == "unknown-primary[uuid]") {
+                itemType = "Api::Type::String";
+            }
+            else {
+                itemType = "!ruby/object:Api::Azure::Type::[" + option.Type + "]";
+            }
+        }
+    }
+    return itemType;
 }
 function appendOption(output, option, isGo, isPython, isRead) {
     // read only options should be only included in "read"
@@ -275,6 +337,9 @@ function appendOption(output, option, isGo, isPython, isRead) {
         case "str":
             if (option.EnumValues != null && option.EnumValues.length > 0) {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::EnumObject";
+            }
+            else if (option.IsList) {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringArrayObject";
             }
             else {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringObject";
@@ -295,7 +360,12 @@ function appendOption(output, option, isGo, isPython, isRead) {
             dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::ISO8601DateTimeObject";
             break;
         case "number":
-            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerObject";
+            if (option.IsList) {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer32ArrayObject";
+            }
+            else {
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerObject";
+            }
             break;
         default:
             // XXX - this is a hack, should be solved earlier
