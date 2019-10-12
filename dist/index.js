@@ -99,6 +99,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let adjustmentsObject = new Adjustments_1.Adjustments(adjustments);
         let debug = yield autoRestApi.GetValue("debug");
         let debugMap = yield autoRestApi.GetValue("debug-map");
+        let debugCli = yield autoRestApi.GetValue("debug-cli");
         // Handle generation type parameter
         if (yield autoRestApi.GetValue("cli-module")) {
             Info("GENERATION: --cli-module");
@@ -369,8 +370,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generateAzureCli) {
-                    let modelCli = new CodeModelCli_1.CodeModelCli(map, 0, cliCommandOverrides, function (msg) {
-                        if (debug) {
+                    let modelCli = new CodeModelCli_1.CodeModelCli(map, cliCommandOverrides, function (msg) {
+                        if (debugCli) {
                             autoRestApi.Message({
                                 Channel: "warning",
                                 Text: msg

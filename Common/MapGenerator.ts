@@ -80,8 +80,9 @@ export class MapGenerator
         for (var idx = 0; idx < this.Operations.length; idx++)
         {
             this._index = idx;
-            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
 
+            // just for logging purposes
+            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
             for (var mi in this.GetModuleOperation().methods)
             {
                 let m = this.GetModuleOperation().methods[mi];
@@ -90,7 +91,7 @@ export class MapGenerator
             }
         
             let methods: any[] = [];
-            let fact_methods = this.GetModuleFactsMethods();
+            let methodsInfo = this.GetModuleFactsMethods();
 
             if ((this.ModuleCreateOrUpdateMethod != null) || (this.ModuleCreateMethod != null))
             {
@@ -100,17 +101,19 @@ export class MapGenerator
                 if (this.ModuleDeleteMethod != null) methods.push(this.ModuleDeleteMethod);
                 //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
 
-                methods = methods.concat(fact_methods);
+                methods = methods.concat(methodsInfo);
             }
 
+            // if any of the create/update methods were detected -- add main module
             if (methods.length > 0)
             {
                 this.AddModule(methods, false);
             }
 
-            if (fact_methods.length > 0)
+            // if any of info methods were detected add info module
+            if (methodsInfo.length > 0)
             {
-                this.AddModule(fact_methods, true);
+                this.AddModule(methodsInfo, true);
             }
         }
 
@@ -279,12 +282,12 @@ export class MapGenerator
         return this.Operations[this._index];
     }
 
-    public get ModuleCreateOrUpdateMethod(): any //Method
+    public get ModuleCreateOrUpdateMethod(): any
     {
         return this.ModuleFindMethod("CreateOrUpdate");
     }
 
-    public get ModuleCreateMethod(): any //Method
+    public get ModuleCreateMethod(): any
     {
         let method: any = this.ModuleFindMethod("Create");
 
@@ -296,7 +299,7 @@ export class MapGenerator
         return method;
     }
 
-    public get ModuleUpdateMethod(): any //Method
+    public get ModuleUpdateMethod(): any
     {
         return this.ModuleFindMethod("Update");
     }

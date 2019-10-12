@@ -44,10 +44,10 @@ export class CommandContext
 
 export class CodeModelCli
 {
-    public constructor(map: MapModuleGroup, moduleIdx: number, cliCommandOverrides: any, cb: LogCallback)
+    public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
     {
         this.Map = map;
-        this._selectedModule = moduleIdx;
+        this._selectedModule = 0;
         this._log = cb;
         this._cmdOverrides = cliCommandOverrides;
     }
@@ -61,6 +61,8 @@ export class CodeModelCli
         if (this._selectedModule < this.Map.Modules.length - 1)
         {
             this._selectedModule++;
+
+            this._log("******************************* NEXT MODULE: " + this.Map.Modules[this._selectedModule].ModuleName);
             return true;
         }
 

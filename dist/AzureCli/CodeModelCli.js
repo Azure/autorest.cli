@@ -16,7 +16,7 @@ class CommandContext {
 }
 exports.CommandContext = CommandContext;
 class CodeModelCli {
-    constructor(map, moduleIdx, cliCommandOverrides, cb) {
+    constructor(map, cliCommandOverrides, cb) {
         this._selectedModule = 0;
         this.ModuleResourceGroupName = "resource_group";
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -24,7 +24,7 @@ class CodeModelCli {
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
         this.Map = null;
         this.Map = map;
-        this._selectedModule = moduleIdx;
+        this._selectedModule = 0;
         this._log = cb;
         this._cmdOverrides = cliCommandOverrides;
     }
@@ -34,6 +34,7 @@ class CodeModelCli {
     NextModule() {
         if (this._selectedModule < this.Map.Modules.length - 1) {
             this._selectedModule++;
+            this._log("******************************* NEXT MODULE: " + this.Map.Modules[this._selectedModule].ModuleName);
             return true;
         }
         return false;
