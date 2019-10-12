@@ -17,11 +17,11 @@ class CommandContext {
 exports.CommandContext = CommandContext;
 class CodeModelCli {
     constructor(map, cliCommandOverrides, cb) {
-        this._selectedModule = 0;
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
         // MODULE MAP
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
         this.Map = null;
+        this._selectedModule = 0;
         this.Map = map;
         this._selectedModule = 0;
         this._log = cb;

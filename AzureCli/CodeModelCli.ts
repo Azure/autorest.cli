@@ -653,8 +653,6 @@ export class CodeModelCli
         return this.Map.Modules[this._selectedModule].ModuleName;
     }
 
-    private _selectedModule: number = 0;
-
     public get Module(): Module
     {
         return this.Map.Modules[this._selectedModule];
@@ -880,4 +878,5 @@ export class CodeModelCli
 
     private _log: LogCallback;
     private _cmdOverrides: any;
+    private _selectedModule: number = 0;
 }
