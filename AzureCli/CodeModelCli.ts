@@ -719,21 +719,11 @@ export class CodeModelCli
         return this.Map.Namespace.toLowerCase();
     }
 
-    public get GoNamespace(): string
-    {
-        return this.Map.Namespace.split('.').pop();
-    }
-
     public get PythonMgmtClient(): string
     {
         if (this.Map.MgmtClientName.endsWith("Client"))
             return this.Map.MgmtClientName;
         return this.Map.MgmtClientName + "Client";
-    }
-
-    public get GoMgmtClient(): string
-    {
-        return Uncapitalize(this.ModuleOperationNameUpper + "Client");
     }
 
     public get ModuleOptions(): ModuleOption[]
@@ -1076,107 +1066,11 @@ export class CodeModelCli
         return this.Map.Namespace;
     }
 
-    public get ModuleProvider(): string
-    {
-        return this.Map.Modules[this._selectedModule].Provider;
-    }
-
-    public ModuleResourceGroupName: string = "resource_group";
-
-    public get ModuleResourceName(): string
-    {
-        let name: string = "";
-
-        try
-        {
-            name = this.GetMethod("get").RequiredOptions[this.GetMethod("get").Options.length - 1];
-        }
-        catch (e)
-        {
-            try
-            {
-                name = this.GetMethod("delete").Options[this.GetMethod("delete").Options.length - 1];
-            }
-            catch (e) { }
-        }
-        // XXXX
-        //var o = Array.Find(ModuleOptions, e => (e.Name == name));
-        //name = (o != null) ? o.NameAlt : name;
-
-        return name;
-    }
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     // MODULE MAP
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     public Map: MapModuleGroup = null;
 
-    //---------------------------------------------------------------------------------------------------------------------------------
-    // DOCUMENTATION GENERATION FUNCTIONALITY
-    //---------------------------------------------------------------------------------------------------------------------------------
-    // Use it to generate module documentation
-    //---------------------------------------------------------------------------------------------------------------------------------
-
-    public get DeleteResponseNoLogFields(): string[]
-    {
-        return this.GetDeleteResponseNoLogFields(this.ModuleResponseFields, "response");
-    }
-
-    private GetDeleteResponseNoLogFields(fields: ModuleOption[], responseDict: string): string[]
-    {
-        let statements: string[] = [];
-
-        for (var fi in fields)
-        {
-            let field = fields[fi];
-            if (field.NameAnsible == "nl")
-            {
-                let statement: string = responseDict + ".pop('" + field.NamePythonSdk + "', None)";
-                statements.push(statement);
-            }
-            else
-            {
-                // XXX - not for now
-                //if (field.SubOptions != null)
-                //{
-                //    statements.concat(GetExcludedResponseFieldDeleteStatements(field.SubOptions, responseDict + "[" + field.Name + "]"));
-                //}
-            }
-        }
-
-        return statements;
-    }
-
-    public get ResponseFieldStatements(): string[]
-    {
-        return this.GetResponseFieldStatements(this.ModuleResponseFields, "self.results");
-    }
-
-    private GetResponseFieldStatements(fields: ModuleOption[], responseDict: string): string[]
-    {
-        let statements: string[] = [];
-
-        for (var fi in fields)
-        {
-            let field = fields[fi];
-            if (field.NameAnsible != "" && field.NameAnsible.toLowerCase() != "x" && field.NameAnsible.toLowerCase() != "nl")
-            {
-                let statement: string = responseDict + "[\"" + field.NameAnsible + "\"] = response[\"" + field.NamePythonSdk + "\"]";
-                statements.push(statement);
-            }
-            else
-            {
-                // XXX - no need now
-                //if (field.SubOptions != null)
-                //{
-                //    statements.concat(GetExcludedResponseFieldDeleteStatements(field.SubOptions, responseDict + "[" + field.Name + "]"));
-                //}
-            }
-        }
-
-        return statements;
-    }
-
     private _log: LogCallback;
-
     private _cmdOverrides: any;
 }

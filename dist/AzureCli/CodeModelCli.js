@@ -18,7 +18,6 @@ exports.CommandContext = CommandContext;
 class CodeModelCli {
     constructor(map, cliCommandOverrides, cb) {
         this._selectedModule = 0;
-        this.ModuleResourceGroupName = "resource_group";
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
         // MODULE MAP
         //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -508,16 +507,10 @@ class CodeModelCli {
     get PythonNamespace() {
         return this.Map.Namespace.toLowerCase();
     }
-    get GoNamespace() {
-        return this.Map.Namespace.split('.').pop();
-    }
     get PythonMgmtClient() {
         if (this.Map.MgmtClientName.endsWith("Client"))
             return this.Map.MgmtClientName;
         return this.Map.MgmtClientName + "Client";
-    }
-    get GoMgmtClient() {
-        return Helpers_1.Uncapitalize(this.ModuleOperationNameUpper + "Client");
     }
     get ModuleOptions() {
         let m = this.Map.Modules[this._selectedModule];
@@ -736,72 +729,6 @@ class CodeModelCli {
     }
     get PythonImportPath() {
         return this.Map.Namespace;
-    }
-    get ModuleProvider() {
-        return this.Map.Modules[this._selectedModule].Provider;
-    }
-    get ModuleResourceName() {
-        let name = "";
-        try {
-            name = this.GetMethod("get").RequiredOptions[this.GetMethod("get").Options.length - 1];
-        }
-        catch (e) {
-            try {
-                name = this.GetMethod("delete").Options[this.GetMethod("delete").Options.length - 1];
-            }
-            catch (e) { }
-        }
-        // XXXX
-        //var o = Array.Find(ModuleOptions, e => (e.Name == name));
-        //name = (o != null) ? o.NameAlt : name;
-        return name;
-    }
-    //---------------------------------------------------------------------------------------------------------------------------------
-    // DOCUMENTATION GENERATION FUNCTIONALITY
-    //---------------------------------------------------------------------------------------------------------------------------------
-    // Use it to generate module documentation
-    //---------------------------------------------------------------------------------------------------------------------------------
-    get DeleteResponseNoLogFields() {
-        return this.GetDeleteResponseNoLogFields(this.ModuleResponseFields, "response");
-    }
-    GetDeleteResponseNoLogFields(fields, responseDict) {
-        let statements = [];
-        for (var fi in fields) {
-            let field = fields[fi];
-            if (field.NameAnsible == "nl") {
-                let statement = responseDict + ".pop('" + field.NamePythonSdk + "', None)";
-                statements.push(statement);
-            }
-            else {
-                // XXX - not for now
-                //if (field.SubOptions != null)
-                //{
-                //    statements.concat(GetExcludedResponseFieldDeleteStatements(field.SubOptions, responseDict + "[" + field.Name + "]"));
-                //}
-            }
-        }
-        return statements;
-    }
-    get ResponseFieldStatements() {
-        return this.GetResponseFieldStatements(this.ModuleResponseFields, "self.results");
-    }
-    GetResponseFieldStatements(fields, responseDict) {
-        let statements = [];
-        for (var fi in fields) {
-            let field = fields[fi];
-            if (field.NameAnsible != "" && field.NameAnsible.toLowerCase() != "x" && field.NameAnsible.toLowerCase() != "nl") {
-                let statement = responseDict + "[\"" + field.NameAnsible + "\"] = response[\"" + field.NamePythonSdk + "\"]";
-                statements.push(statement);
-            }
-            else {
-                // XXX - no need now
-                //if (field.SubOptions != null)
-                //{
-                //    statements.concat(GetExcludedResponseFieldDeleteStatements(field.SubOptions, responseDict + "[" + field.Name + "]"));
-                //}
-            }
-        }
-        return statements;
     }
 }
 exports.CodeModelCli = CodeModelCli;
