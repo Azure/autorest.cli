@@ -13,6 +13,7 @@ Following options are valid:
 |-----|-----------|
 |--cli-module|Azure CLI module, use **--extension** option to generate extension instead of core module|
 |--ansible|Ansible modules|
+|--mm|Magic Modules input files|
 |--swagger-integration-test|Generates Azure REST API Specs integration test based on examples|
 |--python-examples-rest|Converts examples to Python scripts using REST API directly|
 |--python-examples-sdk|Converts examples to Python scripts using Azure Python SDK|
