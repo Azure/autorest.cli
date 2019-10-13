@@ -107,7 +107,7 @@ export class CodeModelCli
     // This function creates command name from operation URL.
     // It will also use overrides if available.
     //-------------------------------------------------------------------
-    public GetCliCommandFromUrl(url: string)
+    public GetCliCommandFromUrl(url: string): string
     {
         // use URL of any method to create CLI command path
         let command = "";
