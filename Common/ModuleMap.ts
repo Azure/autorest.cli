@@ -30,6 +30,7 @@ export class ModuleOption
         this.DocumentationMarkKeywords = true;
         this.PathSwagger = "";
         this.Flatten = false;
+        this.format = null;
 
         if (name == "location")
             this.Updatable = false;
@@ -80,6 +81,7 @@ export class ModuleOption
     public Flatten: boolean;
     public Hidden: boolean = false;
     public IncludeInResponse: boolean = false;
+    public format: string = null;
 }
 
 export class ModuleMethod

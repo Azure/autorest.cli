@@ -45,6 +45,7 @@ class ModuleOption {
         this.ExampleValue = null;
         this.Hidden = false;
         this.IncludeInResponse = false;
+        this.format = null;
         this.NameSwagger = name;
         this.NameAnsible = Helpers_1.ToSnakeCase(name);
         this.NamePythonSdk = this.NameAnsible;
@@ -63,6 +64,7 @@ class ModuleOption {
         this.DocumentationMarkKeywords = true;
         this.PathSwagger = "";
         this.Flatten = false;
+        this.format = null;
         if (name == "location")
             this.Updatable = false;
     }

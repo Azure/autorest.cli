@@ -169,6 +169,9 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
                         break;
                     case "number":
                         dataType = "!ruby/object:Api::Type::Integer";
+                        if (option.format != null && option.format.length > 0 && option.format == "double") {
+                            dataType = "!ruby/object:Api::Type::Double";
+                        }
                         break;
                     default:
                         // [TODO] this should be handled earlier
@@ -300,6 +303,9 @@ function getItemTypeForList(option) {
         }
         case "number": {
             itemType = "Api::Type::Integer";
+            if (option.format != null && option.format.length > 0 && option.format == "double") {
+                itemType = "Api::Type::Double";
+            }
             break;
         }
         default: {
@@ -361,10 +367,45 @@ function appendOption(output, option, isGo, isPython, isRead) {
             break;
         case "number":
             if (option.IsList) {
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer32ArrayObject";
+                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerArrayObject";
+                if (option.format != null && option.format.length > 0) {
+                    switch (option.format) {
+                        case "int32": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer32ArrayObject";
+                            break;
+                        }
+                        case "int64":
+                        case "long": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer64ArrayObject";
+                            break;
+                        }
+                        case "double": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::FloatArrayObject";
+                            break;
+                        }
+                        default:
+                    }
+                }
             }
             else {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::IntegerObject";
+                if (option.format != null && option.format.length > 0) {
+                    switch (option.format) {
+                        case "int32": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer32Object";
+                            break;
+                        }
+                        case "int64":
+                        case "long": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::Integer64Object";
+                            break;
+                        }
+                        case "double": {
+                            dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::FloatObject";
+                            break;
+                        }
+                    }
+                }
             }
             break;
         default:
