@@ -120,13 +120,17 @@ export class CodeModelCli
             for (let regex in this._cmdOverrides)
             {
                 let regexp = new RegExp(regex);
+                this._log("------------------ check: " + regex);
 
                 if (url.toLowerCase().match(regexp))
                 {
+                    this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
+
+        this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
 
         while (partIdx < urlParts.length)
         {

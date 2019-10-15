@@ -53,6 +53,11 @@ export function NormalizeResourceId(oldId: string): string
             //newId += "/";
             idx++;
         }
+        else if (idx == 1 && splitted[idx] == "{scope}" && splitted.length > 2 && splitted[idx + 1] == "providers")
+        {
+            newId += "{scope}";
+            idx += 1;
+        }
         else if (splitted[idx] == "subscriptions")
         {
             newId += "subscriptions/{{ subscription_id }}";
