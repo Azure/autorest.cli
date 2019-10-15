@@ -45,3 +45,30 @@ TBD
 TBD
 
 ### Flattening Parameters
+
+### Fixing Example Description / Name
+
+Initially example names won't look very good, just like below **ManagedNetworksPut** is not a very good name/description:
+
+    Examples
+        ManagedNetworksPut
+            az managednetwork create --resource-group "myResourceGroup" --name "myManagedNetwork" \
+            --location "eastus"
+
+In order to change this name, find name location in swagger specification:
+
+        "x-ms-examples": {
+          "ManagedNetworksPut": {
+            "$ref": "./examples/ManagedNetwork/ManagedNetworksPut.json"
+          }
+        }
+
+and change it to be more descriptive:
+
+        "x-ms-examples": {
+          "Create Managed Network": {
+            "$ref": "./examples/ManagedNetwork/ManagedNetworksPut.json"
+          }
+        }
+
+
