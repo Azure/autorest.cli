@@ -219,7 +219,7 @@ function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: numb
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
         // XXXXXXXXXXX - ugly hack!!!!!!!
-        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering")
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering" || optionName == "managed_network")
         {
             optionName = "body";
         }
@@ -249,7 +249,7 @@ function HasBody(model: CodeModelCli, ctx: CommandContext, methodIdx: number): b
         let optionName = PythonParameterName(p.Name);
         // XXX - this is a hack, can we unhack it?
         // XXXXXXXXX - UGLY!!!!!!!!!!
-        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering")
+        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering" || optionName == "managed_network")
         {
             return true;
         }

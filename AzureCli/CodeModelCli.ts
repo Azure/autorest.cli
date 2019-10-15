@@ -777,7 +777,7 @@ export class CodeModelCli
 
             if (option == null)
             {
-                if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering")
+                if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork")
                 {
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleOption(optionName, "dict", false);
