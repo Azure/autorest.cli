@@ -436,6 +436,21 @@ export class MapGenerator
         }
     }
 
+    private Type_number_format(type: any): string
+    {
+        type = this.Type_Get(type);
+        if (type['$type'] == "PrimaryType") {
+            switch(type['knownPrimaryType']) {
+                case 'int':
+                case 'long':
+                case 'double':
+                    return type['format'];
+                default:
+                    return "";
+            }
+        }
+    }
+
 
     private GetResponseFieldsForMethod(rawMethod: any, alwaysInclude: boolean, isInfo: boolean):  ModuleOption[]
     {
@@ -482,6 +497,7 @@ export class MapGenerator
 
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+                        options[p.name.raw].format = this.Type_number_format(p.modelType);
         
                         if (p.location == "path")
                         {
@@ -511,7 +527,7 @@ export class MapGenerator
                         
                         
                         let ref = p.modelType['$ref'];
-                        let submodel = this.FindModelTypeByRef(ref);
+                            let submodel = this.FindModelTypeByRef(ref);
                         
                         suboption.IsList = this.Type_IsList(p.modelType);
                         suboption.TypeName = this.Type_Name(submodel);
@@ -520,6 +536,8 @@ export class MapGenerator
 
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
+                        suboption.format = this.Type_number_format(p.modelType);
+
  
                         this._log("---------- " + p.documentation.raw)
 
@@ -689,6 +707,7 @@ export class MapGenerator
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
                         option.TypeNameGo = Capitalize(option.TypeNameGo);
+                        option.format = this.Type_number_format(attr.modelType);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
 

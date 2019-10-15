@@ -302,6 +302,19 @@ class MapGenerator {
             return 'unknown[' + type['$type'] + " " + JSON.stringify(type) + ']';
         }
     }
+    Type_number_format(type) {
+        type = this.Type_Get(type);
+        if (type['$type'] == "PrimaryType") {
+            switch (type['knownPrimaryType']) {
+                case 'int':
+                case 'long':
+                case 'double':
+                    return type['format'];
+                default:
+                    return "";
+            }
+        }
+    }
     GetResponseFieldsForMethod(rawMethod, alwaysInclude, isInfo) {
         if (rawMethod['returnType']['body'] == undefined) {
             this._log("NO RETURN TYPE: " + JSON.stringify(rawMethod['returnType']['body']));
@@ -332,6 +345,7 @@ class MapGenerator {
                         options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+                        options[p.name.raw].format = this.Type_number_format(p.modelType);
                         if (p.location == "path") {
                             let splittedId = m.url.split("/{" + p.name.raw + '}');
                             if (splittedId.length == 2) {
@@ -360,6 +374,7 @@ class MapGenerator {
                         suboption.TypeNameGo = Helpers_1.Capitalize(suboption.TypeNameGo);
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
+                        suboption.format = this.Type_number_format(p.modelType);
                         this._log("---------- " + p.documentation.raw);
                         options[p.name.raw] = suboption;
                         this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
@@ -475,6 +490,7 @@ class MapGenerator {
                         option.TypeName = this.Type_Name(attr.modelType);
                         option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
                         option.TypeNameGo = Helpers_1.Capitalize(option.TypeNameGo);
+                        option.format = this.Type_number_format(attr.modelType);
                         option.Flatten = flatten;
                         option.EnumValues = this.Type_EnumValues(attr.modelType);
                         option.PathSwagger = pathSwagger + "/" + attrName;
