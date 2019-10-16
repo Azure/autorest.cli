@@ -32,7 +32,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             
             if (true)
             {
-                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".vendored_sdks." + model.GetCliCommandModuleName() + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
             else
             {

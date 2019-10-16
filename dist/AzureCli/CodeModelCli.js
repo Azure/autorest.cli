@@ -484,6 +484,9 @@ class CodeModelCli {
     get PythonNamespace() {
         return this.Map.Namespace.toLowerCase();
     }
+    get PythonOperationsName() {
+        return this.Map.Namespace.toLowerCase().split('.').pop();
+    }
     get PythonMgmtClient() {
         if (this.Map.MgmtClientName.endsWith("Client"))
             return this.Map.MgmtClientName;

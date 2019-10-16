@@ -10,7 +10,7 @@ function GenerateAzureCliClientFactory(model) {
     output.push("");
     output.push("def cf_" + model.GetCliCommandModuleName() + "(cli_ctx, *_):");
     output.push("    from azure.cli.core.commands.client_factory import get_mgmt_service_client");
-    output.push("    from .vendored_sdks." + model.GetCliCommandModuleName() + " import " + model.MgmtClientName);
+    output.push("    from .vendored_sdks." + model.PythonOperationsName + " import " + model.MgmtClientName);
     output.push("    return get_mgmt_service_client(cli_ctx, " + model.MgmtClientName + ")");
     do {
         // this is a hack, as everything can be produced from main module now

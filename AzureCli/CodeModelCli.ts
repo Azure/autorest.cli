@@ -676,6 +676,11 @@ export class CodeModelCli
         return this.Map.Namespace.toLowerCase();
     }
 
+    public get PythonOperationsName(): string
+    {
+        return this.Map.Namespace.toLowerCase().split('.').pop();
+    }
+
     public get PythonMgmtClient(): string
     {
         if (this.Map.MgmtClientName.endsWith("Client"))
