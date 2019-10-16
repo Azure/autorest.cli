@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ModuleMap_1 = require("../Common/ModuleMap");
 const ExamplePostProcessor_1 = require("../Common/ExamplePostProcessor");
 const Helpers_1 = require("../Common/Helpers");
 const yaml = require("node-yaml");
@@ -367,19 +368,12 @@ function haveSuboptions(option) {
 }
 function ModuleTopLevelOptionsVariables(options) {
     var variables = [];
-    // XXXX
-    //IEnumerable<ModuleOption> options = from option
-    //                                    in m.Options
-    //                                    where option.Disposition == "dictionary" ||
-    //                                            option.Disposition.EndsWith(":dictionary") ||
-    //                                            option.Disposition == "default"
-    //                                    select option;
     for (var oi in options) {
         let option = options[oi];
         if (option.DispositionSdk == "*") {
             variables.push("self." + option.NameAnsible + " = None");
         }
-        else if (option.DispositionSdk == "dictionary") {
+        else if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
             variables.push("self." + option.NameAnsible + " = dict()");
         }
         else {
