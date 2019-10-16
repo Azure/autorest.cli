@@ -10,6 +10,9 @@ class CommandExample {
 }
 exports.CommandExample = CommandExample;
 class CommandMethod {
+    constructor() {
+        this.BodyParameterName = null;
+    }
 }
 exports.CommandMethod = CommandMethod;
 class CommandContext {
@@ -171,19 +174,24 @@ class CodeModelCli {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
-                if (parameter == null) {
-                    parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible.split("_").join("-");
-                    parameter.Help = o.Documentation;
-                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
-                    parameter.EnumValues = [];
-                    o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key); });
-                    parameter.PathSdk = o.DispositionSdk;
-                    parameter.PathSwagger = o.DispositionRest;
-                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
-                    parameter.IsList = o.IsList;
-                    ctx.Parameters.push(parameter);
+                if (o.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
+                    method.BodyParameterName = o.NameAnsible;
+                }
+                else {
+                    if (parameter == null) {
+                        parameter = new CommandParameter();
+                        parameter.Name = o.NameAnsible.split("_").join("-");
+                        parameter.Help = o.Documentation;
+                        parameter.Required = (o.IdPortion != null && o.IdPortion != "");
+                        parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
+                        parameter.EnumValues = [];
+                        o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key); });
+                        parameter.PathSdk = o.DispositionSdk;
+                        parameter.PathSwagger = o.DispositionRest;
+                        this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
+                        parameter.IsList = o.IsList;
+                        ctx.Parameters.push(parameter);
+                    }
                 }
                 method.Parameters.push(parameter);
             });
@@ -485,24 +493,20 @@ class CodeModelCli {
         let m = this.Map.Modules[this._selectedModule];
         let options = [];
         for (var oi in m.Options) {
-            if (!m.Options[oi].DispositionSdk.endsWith("dictionary")) {
+            if (!(m.Options[oi].Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)) {
                 options.push(m.Options[oi]);
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
         return options;
     }
     get ModuleParametersOption() {
         let m = this.Map.Modules[this._selectedModule];
         let options = [];
         for (var oi in m.Options) {
-            if (m.Options[oi].DispositionSdk.endsWith("dictionary")) {
+            if (m.Options[oi].Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
                 return m.Options[oi];
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
         return null;
     }
     get ModuleExamples() {

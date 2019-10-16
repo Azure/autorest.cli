@@ -60,7 +60,7 @@ function GenerateAzureCliSetupPy(model) {
     output.push("    classifiers=CLASSIFIERS,");
     output.push("    packages=find_packages(),");
     output.push("    install_requires=DEPENDENCIES,");
-    output.push("    package_data={'azext_" + model.GetCliCommand() + "': ['azext_metadata.json']},");
+    output.push("    package_data={'azext_" + model.GetCliCommandModuleName() + "': ['azext_metadata.json']},");
     output.push(")");
     return output;
 }

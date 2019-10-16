@@ -4,6 +4,12 @@ const Helpers_1 = require("./Helpers");
 class EnumValue {
 }
 exports.EnumValue = EnumValue;
+var ModuleOptionKind;
+(function (ModuleOptionKind) {
+    ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PATH"] = 0] = "MODULE_OPTION_PATH";
+    ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_BODY"] = 1] = "MODULE_OPTION_BODY";
+    ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PLACEHOLDER"] = 2] = "MODULE_OPTION_PLACEHOLDER";
+})(ModuleOptionKind = exports.ModuleOptionKind || (exports.ModuleOptionKind = {}));
 class ModuleOption {
     constructor(name, type, required) {
         // Original option name from swagger file
@@ -70,6 +76,27 @@ class ModuleOption {
     }
 }
 exports.ModuleOption = ModuleOption;
+class ModuleOptionPlaceholder extends ModuleOption {
+    constructor(name, type, required) {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_PLACEHOLDER;
+    }
+}
+exports.ModuleOptionPlaceholder = ModuleOptionPlaceholder;
+class ModuleOptionPath extends ModuleOption {
+    constructor(name, type, required) {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_PATH;
+    }
+}
+exports.ModuleOptionPath = ModuleOptionPath;
+class ModuleOptionBody extends ModuleOption {
+    constructor(name, type, required) {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
+    }
+}
+exports.ModuleOptionBody = ModuleOptionBody;
 class ModuleMethod {
     constructor() {
         this.Name = null;

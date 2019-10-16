@@ -1,4 +1,4 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap";
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody } from "./ModuleMap";
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
 import { LogCallback } from "../index";
@@ -492,7 +492,7 @@ export class MapGenerator
 
                     if (type != "dict")
                     {
-                        options[p.name.raw] = new ModuleOption(p.name.raw, type, p.isRequired);
+                        options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
                         options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
 
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
@@ -522,26 +522,24 @@ export class MapGenerator
                     }
                     else    
                     {
-                        var suboption = new ModuleOption(p.name.raw, type, p.IsRequired);
-                        suboption.DispositionSdk = "dictionary";
-                        
-                        
+                        var bodyPlaceholder = new ModuleOptionPlaceholder(p.name.raw, type, p.IsRequired);
+                                              
                         let ref = p.modelType['$ref'];
                             let submodel = this.FindModelTypeByRef(ref);
                         
-                        suboption.IsList = this.Type_IsList(p.modelType);
-                        suboption.TypeName = this.Type_Name(submodel);
-                        suboption.TypeNameGo = this.TrimPackageName(suboption.TypeName, this.Namespace.split('.').pop());
-                        suboption.TypeNameGo = Capitalize(suboption.TypeNameGo);
+                        bodyPlaceholder.IsList = this.Type_IsList(p.modelType);
+                        bodyPlaceholder.TypeName = this.Type_Name(submodel);
+                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(bodyPlaceholder.TypeName, this.Namespace.split('.').pop());
+                        bodyPlaceholder.TypeNameGo = Capitalize(bodyPlaceholder.TypeNameGo);
 
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
-                        suboption.Documentation = this.ProcessDocumentation(p.documentation.raw);
-                        suboption.format = this.Type_number_format(p.modelType);
+                        bodyPlaceholder.Documentation = this.ProcessDocumentation(p.documentation.raw);
+                        bodyPlaceholder.format = this.Type_number_format(p.modelType);
 
  
                         this._log("---------- " + p.documentation.raw)
 
-                        options[p.name.raw] = suboption;
+                        options[p.name.raw] = bodyPlaceholder;
                         this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
 
                         // these suboptions should all go to the body
@@ -700,7 +698,7 @@ export class MapGenerator
                         let type = this.Type_Get(attr.modelType);
                         let typeName: string = this.Type_MappedType(attr.modelType);
 
-                        var option = new ModuleOption(attrName, typeName, attr.isRequired);
+                        var option = new ModuleOptionBody(attrName, typeName, attr.isRequired);
                         option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
                         option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                         option.IsList =  this.Type_IsList(attr.modelType);
