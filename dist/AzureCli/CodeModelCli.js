@@ -174,7 +174,10 @@ class CodeModelCli {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
+                this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + o.NameAnsible + " " + o.Kind);
                 if (o.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
+                    this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ DETECTED PLACEHOLDER");
+                    this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ADDING BODY PARAMETER NAME: " + o.NameAnsible);
                     method.BodyParameterName = o.NameAnsible;
                 }
                 else {
@@ -192,8 +195,8 @@ class CodeModelCli {
                         parameter.IsList = o.IsList;
                         ctx.Parameters.push(parameter);
                     }
+                    method.Parameters.push(parameter);
                 }
-                method.Parameters.push(parameter);
             });
             ctx.Methods.push(method);
         });
@@ -553,19 +556,20 @@ class CodeModelCli {
                 }
             }
             if (option == null) {
-                if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork") {
-                    let hiddenParamatersOption = this.ModuleParametersOption;
-                    option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
-                    option.SubOptions = [];
-                    option.TypeName = hiddenParamatersOption.TypeName;
-                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
-                    // XXX - and because this stupid option has no suboptions
-                    for (let optionIdx in this.ModuleOptions) {
-                        if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/")) {
-                            option.SubOptions.push(this.ModuleOptions[optionIdx]);
-                        }
+                //if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork")
+                //{
+                let hiddenParamatersOption = this.ModuleParametersOption;
+                option = new ModuleMap_1.ModuleOptionPlaceholder(optionName, "dict", false);
+                option.SubOptions = [];
+                option.TypeName = hiddenParamatersOption.TypeName;
+                option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+                // XXX - and because this stupid option has no suboptions
+                for (let optionIdx in this.ModuleOptions) {
+                    if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/")) {
+                        option.SubOptions.push(this.ModuleOptions[optionIdx]);
                     }
                 }
+                //}
             }
             if (option != null) {
                 moduleOptions.push(option);

@@ -220,17 +220,8 @@ function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: numb
     {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
-        let parameterName = "";
-
-        if (optionName == bodyParameterName)
-        {
-            parameterName = bodyParameterName;
-            optionName = "body";
-        }
-        else
-        {
-            parameterName = p.PathSdk.split("/").pop();
-        }
+        let parameterName = p.PathSdk.split("/").pop();
+        
         if (methodCall.endsWith("("))
         {
             // XXX - split and pop is a hack
@@ -239,6 +230,19 @@ function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: numb
         else
         {
             methodCall += ", " + parameterName + "=" + optionName;
+        }
+    }
+
+    if (bodyParameterName != null)
+    {
+        if (methodCall.endsWith("("))
+        {
+            // XXX - split and pop is a hack
+            methodCall += bodyParameterName + "=body";
+        }
+        else
+        {
+            methodCall += ", " + bodyParameterName + "=body";
         }
     }
 

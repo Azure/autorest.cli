@@ -159,23 +159,26 @@ function GetMethodCall(model, ctx, methodIdx) {
     //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
     methodCall += "client." + ctx.Methods[methodIdx].Name + "(";
     let bodyParameterName = ctx.Methods[methodIdx].BodyParameterName;
+    model._log("PARAMETERS: " + JSON.stringify(ctx.Methods[methodIdx].Parameters));
     for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
-        let parameterName = "";
-        if (optionName == bodyParameterName) {
-            parameterName = bodyParameterName;
-            optionName = "body";
-        }
-        else {
-            parameterName = p.PathSdk.split("/").pop();
-        }
+        let parameterName = p.PathSdk.split("/").pop();
         if (methodCall.endsWith("(")) {
             // XXX - split and pop is a hack
             methodCall += parameterName + "=" + optionName;
         }
         else {
             methodCall += ", " + parameterName + "=" + optionName;
+        }
+    }
+    if (bodyParameterName != null) {
+        if (methodCall.endsWith("(")) {
+            // XXX - split and pop is a hack
+            methodCall += bodyParameterName + "=body";
+        }
+        else {
+            methodCall += ", " + bodyParameterName + "=body";
         }
     }
     methodCall += ")";

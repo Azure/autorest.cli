@@ -1,4 +1,4 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind } from "../Common/ModuleMap"
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
 import { Example } from "../Common/Example";
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
@@ -6,6 +6,7 @@ import { throws } from "assert";
 import { METHODS } from "http";
 import { LogCallback } from "../index";
 import { stringify } from "querystring";
+import { on } from "cluster";
 
 export class CommandParameter
 {
@@ -278,8 +279,8 @@ export class CodeModelCli
                         parameter.IsList = o.IsList;
                         ctx.Parameters.push(parameter);
                     }
+                    method.Parameters.push(parameter);        
                 }
-                method.Parameters.push(parameter);        
             });
 
             ctx.Methods.push(method);
@@ -781,10 +782,13 @@ export class CodeModelCli
 
             if (option == null)
             {
-                if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork")
-                {
+                //if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork")
+                //{
                     let hiddenParamatersOption = this.ModuleParametersOption;
-                    option = new ModuleOption(optionName, "dict", false);
+                    option = new ModuleOptionPlaceholder(optionName, "dict", false);
+
+                    
+
                     option.SubOptions = [];
                     option.TypeName =  hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
@@ -797,7 +801,7 @@ export class CodeModelCli
                             option.SubOptions.push(this.ModuleOptions[optionIdx]);
                         }
                     }
-                }
+                //}
             }
 
             if(option != null)
@@ -884,7 +888,7 @@ export class CodeModelCli
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     public Map: MapModuleGroup = null;
 
-    private _log: LogCallback;
+    public _log: LogCallback;
     private _cmdOverrides: any;
     private _selectedModule: number = 0;
 }
