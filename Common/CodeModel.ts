@@ -1,4 +1,4 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "./ModuleMap"
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind } from "./ModuleMap"
 import { Example } from "./Example";
 import { Uncapitalize, Indent } from "../Common/Helpers"
 import { throws } from "assert";
@@ -116,13 +116,11 @@ export class CodeModel
         let options: ModuleOption[] = [];
         for (var oi in m.Options)
         {
-            if (!m.Options[oi].DispositionSdk.endsWith("dictionary"))
+            if (!(m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
             {
                 options.push(m.Options[oi]);
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
 
         return options;
     }
@@ -133,13 +131,11 @@ export class CodeModel
         let options: ModuleOption[] = [];
         for (var oi in m.Options)
         {
-            if (m.Options[oi].DispositionSdk.endsWith("dictionary"))
+            if (m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
             {
                 return m.Options[oi];
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
 
         return null;
     }

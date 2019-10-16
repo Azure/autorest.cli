@@ -139,7 +139,7 @@ function GenerateAzureCliCustom(model) {
                 // call client & return value
                 // XXX - this is still a hack
                 let methodCall = prefix + "return " + GetMethodCall(model, ctx, methodIdx);
-                if (HasBody(model, ctx, methodIdx))
+                if (ctx.Methods[methodIdx].BodyParameterName != null)
                     hasBody = true;
                 output_method_call.push(methodCall);
             }
@@ -158,35 +158,28 @@ function GetMethodCall(model, ctx, methodIdx) {
     let methodCall = "";
     //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
     methodCall += "client." + ctx.Methods[methodIdx].Name + "(";
+    let bodyParameterName = ctx.Methods[methodIdx].BodyParameterName;
     for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
-        // XXX - this is a hack, can we unhack it?
-        // XXXXXXXXXXX - ugly hack!!!!!!!
-        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering" || optionName == "managed_network") {
-            optionName = "body";
-        }
+        let parameterName = p.PathSdk.split("/").pop();
         if (methodCall.endsWith("(")) {
             // XXX - split and pop is a hack
-            methodCall += p.PathSdk.split("/").pop() + "=" + optionName;
+            methodCall += parameterName + "=" + optionName;
         }
         else {
-            methodCall += ", " + p.PathSdk.split("/").pop() + "=" + optionName;
+            methodCall += ", " + parameterName + "=" + optionName;
+        }
+    }
+    if (bodyParameterName != null) {
+        if (methodCall.endsWith("(")) {
+            // XXX - split and pop is a hack
+            methodCall += bodyParameterName + "=body";
+        }
+        else {
+            methodCall += ", " + bodyParameterName + "=body";
         }
     }
     methodCall += ")";
     return methodCall;
-}
-function HasBody(model, ctx, methodIdx) {
-    let hasBody = false;
-    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
-        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
-        let optionName = PythonParameterName(p.Name);
-        // XXX - this is a hack, can we unhack it?
-        // XXXXXXXXX - UGLY!!!!!!!!!!
-        if (optionName.endsWith("_parameters") || optionName == "parameters" || optionName == "peer_asn" || optionName == "peering_service" || optionName == "peering_service_prefix" || optionName == "peering" || optionName == "managed_network") {
-            return true;
-        }
-    }
-    return false;
 }

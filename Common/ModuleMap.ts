@@ -8,6 +8,13 @@ export class EnumValue
     public Description: string;
 }
 
+export enum ModuleOptionKind
+{
+    MODULE_OPTION_PATH,
+    MODULE_OPTION_BODY,
+    MODULE_OPTION_PLACEHOLDER
+}
+
 export class ModuleOption
 {
     public constructor(name: string, type: string, required: boolean)
@@ -35,6 +42,8 @@ export class ModuleOption
         if (name == "location")
             this.Updatable = false;
     }
+
+    public Kind: ModuleOptionKind;
 
     // Original option name from swagger file
     public NameSwagger: string = null;
@@ -82,6 +91,33 @@ export class ModuleOption
     public Hidden: boolean = false;
     public IncludeInResponse: boolean = false;
     public format: string = null;
+}
+
+export class ModuleOptionPlaceholder extends ModuleOption
+{
+    public constructor(name: string, type: string, required: boolean)
+    {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_PLACEHOLDER;
+    }  
+}
+
+export class ModuleOptionPath extends ModuleOption
+{
+    public constructor(name: string, type: string, required: boolean)
+    {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_PATH;
+    }  
+}
+
+export class ModuleOptionBody extends ModuleOption
+{
+    public constructor(name: string, type: string, required: boolean)
+    {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_BODY;
+    }  
 }
 
 export class ModuleMethod

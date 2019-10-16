@@ -78,24 +78,20 @@ class CodeModel {
         let m = this.Map.Modules[this._selectedModule];
         let options = [];
         for (var oi in m.Options) {
-            if (!m.Options[oi].DispositionSdk.endsWith("dictionary")) {
+            if (!(m.Options[oi].Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)) {
                 options.push(m.Options[oi]);
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
         return options;
     }
     get ModuleParametersOption() {
         let m = this.Map.Modules[this._selectedModule];
         let options = [];
         for (var oi in m.Options) {
-            if (m.Options[oi].DispositionSdk.endsWith("dictionary")) {
+            if (m.Options[oi].Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
                 return m.Options[oi];
             }
         }
-        //IEnumerable<ModuleOption> options = from option in m.Options where !option.Disposition.EndsWith("dictionary") select option;
-        //return options;
         return null;
     }
     get ModuleResponseFields() {

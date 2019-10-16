@@ -1,5 +1,5 @@
 ﻿import { CodeModel } from "../Common/CodeModel"
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind } from "../Common/ModuleMap"
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Indent, ToSnakeCase } from "../Common/Helpers";
 import * as yaml from "node-yaml";
@@ -496,15 +496,6 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[
 {
     var variables: string[] = [];
 
-    // XXXX
-    //IEnumerable<ModuleOption> options = from option
-    //                                    in m.Options
-    //                                    where option.Disposition == "dictionary" ||
-    //                                            option.Disposition.EndsWith(":dictionary") ||
-    //                                            option.Disposition == "default"
-    //                                    select option;
-
-
     for (var oi in options)
     {
         let option = options[oi];
@@ -512,7 +503,7 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[
         {
             variables.push("self." + option.NameAnsible + " = None");
         }
-        else if (option.DispositionSdk == "dictionary")
+        else if (option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
         {
             variables.push("self." + option.NameAnsible + " = dict()");
         }
