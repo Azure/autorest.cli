@@ -17,7 +17,7 @@ function GenerateAzureCliHelp(model) {
         if (model.ModuleName.endsWith("_info"))
             continue;
         output.push("");
-        output.push("helps['" + model.GetCliCommandModuleName() + "'] = \"\"\"");
+        output.push("helps['" + model.GetCliCommand() + "'] = \"\"\"");
         output.push("    type: group");
         output.push("    short-summary: Commands to manage " + model.GetCliCommandDescriptionName() + ".");
         output.push("\"\"\"");

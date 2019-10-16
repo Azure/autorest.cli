@@ -174,10 +174,7 @@ class CodeModelCli {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
-                this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ " + o.NameAnsible + " " + o.Kind);
                 if (o.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PLACEHOLDER) {
-                    this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ DETECTED PLACEHOLDER");
-                    this._log("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@ ADDING BODY PARAMETER NAME: " + o.NameAnsible);
                     method.BodyParameterName = o.NameAnsible;
                 }
                 else {

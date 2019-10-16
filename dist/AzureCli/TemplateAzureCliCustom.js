@@ -159,7 +159,6 @@ function GetMethodCall(model, ctx, methodIdx) {
     //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
     methodCall += "client." + ctx.Methods[methodIdx].Name + "(";
     let bodyParameterName = ctx.Methods[methodIdx].BodyParameterName;
-    model._log("PARAMETERS: " + JSON.stringify(ctx.Methods[methodIdx].Parameters));
     for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++) {
         let p = ctx.Methods[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
