@@ -23,7 +23,7 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        " + model.GetCliCommandModuleName() + "_custom = CliCommandType(");
     output.push("            operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".custom#{}',");
     output.push("            client_factory=cf_" + model.GetCliCommandModuleName() + ")");
-    output.push("        super( " + model.ServiceNameX + "CommandsLoader, self).__init__(cli_ctx=cli_ctx,");
+    output.push("        super(" + model.ServiceNameX + "CommandsLoader, self).__init__(cli_ctx=cli_ctx,");
     output.push("                                                       custom_command_type=" + model.GetCliCommandModuleName() + "_custom)");
     output.push("");
     output.push("    def load_command_table(self, args):");
@@ -36,7 +36,7 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        load_arguments(self, command)");
     output.push("");
     output.push("");
-    output.push("COMMAND_LOADER_CLS =  " + model.ServiceNameX + "CommandsLoader");
+    output.push("COMMAND_LOADER_CLS = " + model.ServiceNameX + "CommandsLoader");
  
     return output;
 }
