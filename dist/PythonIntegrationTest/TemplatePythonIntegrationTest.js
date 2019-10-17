@@ -4,7 +4,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
-function GenerateSwaggerIntegrationTest(model, config) {
+function GeneratePythonIntegrationTest(model, config) {
     var output = [];
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
@@ -89,7 +89,7 @@ function GenerateSwaggerIntegrationTest(model, config) {
     //}
     return output;
 }
-exports.GenerateSwaggerIntegrationTest = GenerateSwaggerIntegrationTest;
+exports.GeneratePythonIntegrationTest = GeneratePythonIntegrationTest;
 function ToCamelCase(v) {
     v = v.toLowerCase().replace(/[^A-Za-z0-9]/g, ' ').split(' ')
         .reduce((result, word) => result + capitalize(word.toLowerCase()));

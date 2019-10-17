@@ -47,6 +47,7 @@ const TemplateExamplePythonRest_1 = require("./Examples/TemplateExamplePythonRes
 const TemplateExamplePythonSdk_1 = require("./Examples/TemplateExamplePythonSdk");
 const TemplateExampleAzureCLI_1 = require("./Examples/TemplateExampleAzureCLI");
 const TemplateSwaggerIntegrationTest_1 = require("./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest");
+const TemplatePythonIntegrationTest_1 = require("./PythonIntegrationTest/TemplatePythonIntegrationTest");
 const Adjustments_1 = require("./Common/Adjustments");
 //
 const extension = new autorest_extension_base_1.AutoRestExtension();
@@ -72,6 +73,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let generateAnsibleRest = false;
         let generateAnsibleCollection = false;
         let generateSwaggerIntegrationTest = false;
+        let generatePythonIntegrationTest = false;
         let generateExamplesAzureCliRest = false;
         let generateExamplesPythonRest = false;
         let generateExamplesPythonSdk = false;
@@ -85,6 +87,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let folderAnsibleModulesRest = "";
         let folderAnsibleModulesCollection = "";
         let folderSwaggerIntegrationTest = "";
+        let folderPythonIntegrationTest = "";
         let folderExamplesCli = "";
         let folderExamplesPythonRest = "";
         let folderExamplesPythonSdk = "";
@@ -128,6 +131,10 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             Info("GENERATION: --swagger-integration-test");
             generateSwaggerIntegrationTest = true;
         }
+        else if (yield autoRestApi.GetValue("python-integration-test")) {
+            Info("GENERATION: --python-integration-test");
+            generatePythonIntegrationTest = true;
+        }
         else if (yield autoRestApi.GetValue("python-examples-rest")) {
             Info("GENERATION: --python-examples-rest");
             generateExamplesPythonRest = true;
@@ -149,6 +156,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             generateAnsibleRest = true;
             generateAnsibleCollection = true;
             generateSwaggerIntegrationTest = true;
+            generatePythonIntegrationTest = true;
             generateExamplesAzureCliRest = true;
             generateExamplesPythonRest = true;
             generateExamplesPythonSdk = true;
@@ -161,6 +169,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
             folderAnsibleModulesCollection = "ansible-collection/";
             folderSwaggerIntegrationTest = "swagger-integration-test/";
+            folderPythonIntegrationTest = "python-integration-test/";
             folderExamplesCli = "intermediate/examples_cli/";
             folderExamplesPythonRest = "intermediate/examples_python_rest/";
             folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
@@ -288,6 +297,29 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }
                     let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, config);
+                    let p = folderSwaggerIntegrationTest + cliName + ".py";
+                    autoRestApi.WriteFile(p, code.join('\r\n'));
+                    Info("INTEGRATION TEST: " + p);
+                }
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // SWAGGER INTEGRATION TEST
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (generatePythonIntegrationTest) {
+                    let config = yield autoRestApi.GetValue("test-setup");
+                    // if test config is not specified
+                    if (!config) {
+                        Info("TEST SETUP WAS EMPTY");
+                        config = [];
+                        for (var i = 0; i < examples.length; i++) {
+                            var example = examples[i];
+                            //var filename = example.Filename;
+                            config.push({ name: example.Name });
+                        }
+                        Info("TEST SETUP IS: " + JSON.stringify(config));
+                    }
+                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, config);
                     let p = folderSwaggerIntegrationTest + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);

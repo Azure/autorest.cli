@@ -5,7 +5,7 @@
 
 import { Example } from "../Common/Example"
 
-export function GenerateSwaggerIntegrationTest(model: Example[], config: any) : string[] {
+export function GeneratePythonIntegrationTest(model: Example[], config: any) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");
