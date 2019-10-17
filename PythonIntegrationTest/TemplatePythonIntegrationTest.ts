@@ -40,24 +40,38 @@ export function GeneratePythonIntegrationTest(model: Example[], config: any) : s
     //output.push("        account_name = self.get_resource_name('pyarmcdn')");
     output.push("");
 
-    model.forEach(example => {
+    
+    for (var ci = 0; ci < config.length; ci++)
+    {
+        var example: Example = null;
+        for (var i = 0; i < model.length; i++)
+        {
+            if (model[i].Name == config[ci]['name'])
+            {
+                example = model[i];
+                break;
+            }
+        }
+        if (example == null)
+            continue;
+
         var json: string[] = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
         for (var lidx in json)
         {
             var line: string = json[lidx]; 
             if (line.startsWith("{"))
             {
-                output.push("BODY = " + line);
+                output.push("        BODY = " + line);
             }
             else
             {
-                output.push(line);
+                output.push("        " + line);
             }
         }
     
         output.push("        output = mgmt_client." + ToSnakeCase(example.OperationName) + "." + ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
-    });
-
+    }
+    
     output.push("");
     output.push("");
     output.push("#------------------------------------------------------------------------------");

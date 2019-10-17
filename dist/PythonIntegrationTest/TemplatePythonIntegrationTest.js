@@ -36,19 +36,28 @@ function GeneratePythonIntegrationTest(model, config) {
     output.push("    def " + testName + "(self):");
     //output.push("        account_name = self.get_resource_name('pyarmcdn')");
     output.push("");
-    model.forEach(example => {
+    for (var ci = 0; ci < config.length; ci++) {
+        var example = null;
+        for (var i = 0; i < model.length; i++) {
+            if (model[i].Name == config[ci]['name']) {
+                example = model[i];
+                break;
+            }
+        }
+        if (example == null)
+            continue;
         var json = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
         for (var lidx in json) {
             var line = json[lidx];
             if (line.startsWith("{")) {
-                output.push("BODY = " + line);
+                output.push("        BODY = " + line);
             }
             else {
-                output.push(line);
+                output.push("        " + line);
             }
         }
         output.push("        output = mgmt_client." + Helpers_1.ToSnakeCase(example.OperationName) + "." + Helpers_1.ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
-    });
+    }
     output.push("");
     output.push("");
     output.push("#------------------------------------------------------------------------------");
