@@ -82,10 +82,12 @@ class MapGenerator {
             if (methods.length > 0) {
                 this.AddModule(methods, false);
             }
+            // [ZIM] no more separate _info modules in the map
             // if any of info methods were detected add info module
-            if (methodsInfo.length > 0) {
-                this.AddModule(methodsInfo, true);
-            }
+            //if (methodsInfo.length > 0)
+            //{
+            //    this.AddModule(methodsInfo, true);
+            //}
         }
         return this._map;
     }
