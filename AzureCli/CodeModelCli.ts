@@ -1,4 +1,9 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
 import { Example } from "../Common/Example";
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
@@ -674,6 +679,11 @@ export class CodeModelCli
     public get PythonNamespace(): string
     {
         return this.Map.Namespace.toLowerCase();
+    }
+
+    public get PythonOperationsName(): string
+    {
+        return this.Map.Namespace.toLowerCase().split('.').pop();
     }
 
     public get PythonMgmtClient(): string

@@ -1,4 +1,9 @@
-﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModelCli, CommandParameter } from "./CodeModelCli"
 import { Indent, ToSnakeCase } from "../Common/Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
@@ -13,7 +18,7 @@ export function GenerateAzureCliClientFactory(model: CodeModelCli) : string[] {
     output.push("");
     output.push("def cf_" + model.GetCliCommandModuleName() + "(cli_ctx, *_):");
     output.push("    from azure.cli.core.commands.client_factory import get_mgmt_service_client");
-    output.push("    from .vendored_sdks." + model.GetCliCommandModuleName() + " import " + model.MgmtClientName);
+    output.push("    from .vendored_sdks." + model.PythonOperationsName + " import " + model.MgmtClientName);
     output.push("    return get_mgmt_service_client(cli_ctx, " + model.MgmtClientName + ")");
 
     do

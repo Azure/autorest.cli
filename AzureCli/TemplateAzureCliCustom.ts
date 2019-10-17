@@ -1,4 +1,9 @@
-﻿import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
 import { Indent, ToSnakeCase, ToCamelCase } from "../Common/Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
@@ -25,9 +30,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-locals");
     output.push("# pylint: disable=unused-argument");
-    output.push("");
+    //output.push("");
     //output.push("from knack.util import CLIError");
-    output.push("import json");
+    //output.push("import json");
     
     do
     {

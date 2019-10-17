@@ -1,4 +1,8 @@
 "use strict";
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 function PythonParameterName(name) {
     let newName = name.split("-").join("_");
@@ -18,9 +22,9 @@ function GenerateAzureCliCustom(model) {
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-locals");
     output.push("# pylint: disable=unused-argument");
-    output.push("");
+    //output.push("");
     //output.push("from knack.util import CLIError");
-    output.push("import json");
+    //output.push("import json");
     do {
         // this is a hack, as everything can be produced from main module now
         if (model.ModuleName.endsWith("_info"))

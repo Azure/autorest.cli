@@ -1,4 +1,9 @@
-﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModelCli, CommandParameter } from "./CodeModelCli"
 import { Indent, ToSnakeCase } from "../Common/Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
@@ -23,8 +28,9 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        " + model.GetCliCommandModuleName() + "_custom = CliCommandType(");
     output.push("            operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".custom#{}',");
     output.push("            client_factory=cf_" + model.GetCliCommandModuleName() + ")");
-    output.push("        super( " + model.ServiceNameX + "CommandsLoader, self).__init__(cli_ctx=cli_ctx,");
-    output.push("                                                       custom_command_type=" + model.GetCliCommandModuleName() + "_custom)");
+    let pfx = "        super(" + model.ServiceNameX + "CommandsLoader, self).__init__(";
+    output.push(pfx + "cli_ctx=cli_ctx,");
+    output.push(" ".repeat(pfx.length) + "custom_command_type=" + model.GetCliCommandModuleName() + "_custom)");
     output.push("");
     output.push("    def load_command_table(self, args):");
     output.push("        from azext_" + model.GetCliCommandModuleName() + ".commands import load_command_table");
@@ -36,7 +42,8 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        load_arguments(self, command)");
     output.push("");
     output.push("");
-    output.push("COMMAND_LOADER_CLS =  " + model.ServiceNameX + "CommandsLoader");
+    output.push("COMMAND_LOADER_CLS = " + model.ServiceNameX + "CommandsLoader");
+    output.push("");
  
     return output;
 }

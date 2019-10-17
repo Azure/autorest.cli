@@ -1,4 +1,9 @@
-﻿import { CodeModelCli, CommandParameter } from "./CodeModelCli"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModelCli, CommandParameter } from "./CodeModelCli"
 import { Indent, ToSnakeCase } from "../Common/Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
@@ -50,7 +55,7 @@ export function GenerateAzureCliSetupPy(model: CodeModelCli) : string[] {
     output.push("    HISTORY = f.read()");
     output.push("");
     output.push("setup(");
-    output.push("    name='" + model.GetCliCommand() + "',");
+    output.push("    name='" + model.GetCliCommandModuleName() + "',");
     output.push("    version=VERSION,");
     output.push("    description='Microsoft Azure Command-Line Tools " + model.ServiceNameX + " Extension',");
     output.push("   # TODO: Update author and email, if applicable");

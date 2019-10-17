@@ -44,6 +44,7 @@ import { GenerateExamplePythonSdk } from "./Examples/TemplateExamplePythonSdk"
 import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
 
 import { GenerateSwaggerIntegrationTest } from "./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest"
+import { GeneratePythonIntegrationTest } from "./PythonIntegrationTest/TemplatePythonIntegrationTest"
 
 import { Adjustments } from "./Common/Adjustments"; 
 import { write } from "fs";
@@ -83,6 +84,7 @@ extension.Add("cli", async autoRestApi => {
     let generateAnsibleRest: boolean = false;
     let generateAnsibleCollection: boolean = false;
     let generateSwaggerIntegrationTest: boolean = false;
+    let generatePythonIntegrationTest: boolean = false;
     let generateExamplesAzureCliRest: boolean = false;
     let generateExamplesPythonRest: boolean = false;
     let generateExamplesPythonSdk: boolean = false;
@@ -96,6 +98,7 @@ extension.Add("cli", async autoRestApi => {
     let folderAnsibleModulesRest = "";
     let folderAnsibleModulesCollection = "";
     let folderSwaggerIntegrationTest = "";
+    let folderPythonIntegrationTest = "";
     let folderExamplesCli = "";
     let folderExamplesPythonRest = "";
     let folderExamplesPythonSdk = "";
@@ -151,6 +154,11 @@ extension.Add("cli", async autoRestApi => {
       Info("GENERATION: --swagger-integration-test");
       generateSwaggerIntegrationTest = true;
     }
+    else if (await autoRestApi.GetValue("python-integration-test"))
+    {
+      Info("GENERATION: --python-integration-test");
+      generatePythonIntegrationTest = true;
+    }
     else if (await autoRestApi.GetValue("python-examples-rest"))
     {
       Info("GENERATION: --python-examples-rest");
@@ -176,6 +184,7 @@ extension.Add("cli", async autoRestApi => {
       generateAnsibleRest = true;
       generateAnsibleCollection = true;
       generateSwaggerIntegrationTest = true;
+      generatePythonIntegrationTest = true;
       generateExamplesAzureCliRest = true;
       generateExamplesPythonRest = true;
       generateExamplesPythonSdk = true;
@@ -190,6 +199,7 @@ extension.Add("cli", async autoRestApi => {
       folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
       folderAnsibleModulesCollection = "ansible-collection/";
       folderSwaggerIntegrationTest = "swagger-integration-test/";
+      folderPythonIntegrationTest = "python-integration-test/";
       folderExamplesCli = "intermediate/examples_cli/";
       folderExamplesPythonRest = "intermediate/examples_python_rest/";
       folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
@@ -350,6 +360,36 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GenerateSwaggerIntegrationTest(examples, config);
+            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            autoRestApi.WriteFile(p, code.join('\r\n'));
+            Info("INTEGRATION TEST: " + p)
+          }
+
+          //-------------------------------------------------------------------------------------------------------------------------
+          //
+          // SWAGGER INTEGRATION TEST
+          //
+          //-------------------------------------------------------------------------------------------------------------------------
+          if (generatePythonIntegrationTest)
+          {
+            let config: any[] = await autoRestApi.GetValue("test-setup");
+
+            // if test config is not specified
+            if (!config)
+            {
+              Info("TEST SETUP WAS EMPTY");
+              config = [];
+              for (var i = 0; i < examples.length; i++)
+              {
+                var example: Example = examples[i];
+                //var filename = example.Filename;
+
+                config.push( { name: example.Name });
+              }
+              Info("TEST SETUP IS: " + JSON.stringify(config));
+            }
+
+            let code = GeneratePythonIntegrationTest(examples, config);
             let p = folderSwaggerIntegrationTest + cliName + ".py";
             autoRestApi.WriteFile(p, code.join('\r\n'));
             Info("INTEGRATION TEST: " + p)
