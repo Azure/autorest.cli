@@ -225,8 +225,8 @@ class CodeModel {
             }
             if (option == null) {
                 // this is a hack, how to solve it properly?
-                if (optionName.toLowerCase().endsWith("parameters")) {
-                    let hiddenParamatersOption = this.ModuleParametersOption;
+                let hiddenParamatersOption = this.ModuleParametersOption;
+                if (hiddenParamatersOption.NameSwagger == optionName) {
                     option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
                     option.TypeName = hiddenParamatersOption.TypeName;
