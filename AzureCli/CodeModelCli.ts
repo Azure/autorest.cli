@@ -1,4 +1,9 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
 import { Example } from "../Common/Example";
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"

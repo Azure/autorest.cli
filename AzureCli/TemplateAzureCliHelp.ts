@@ -1,4 +1,9 @@
-﻿import { CodeModelCli, CommandExample } from "./CodeModelCli"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModelCli, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../Common/ModuleMap";
 
 export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
