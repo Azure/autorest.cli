@@ -319,7 +319,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         }
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }
-                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, config);
+                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, config, map.Namespace, cliName, map.MgmtClientName);
                     let p = folderSwaggerIntegrationTest + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);

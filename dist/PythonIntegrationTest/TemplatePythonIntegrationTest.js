@@ -5,12 +5,10 @@
  *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Common/Helpers");
-function GeneratePythonIntegrationTest(model, config) {
+function GeneratePythonIntegrationTest(model, config, namespace, cliCommandName, mgmtClientName) {
     var output = [];
-    let namespace = "azure.mgmt.xxxx";
-    let className = "MgmtXxxTest";
-    let mgmtClientName = "XxxMgmtClient";
-    let testName = "test_xxx";
+    let className = "Mgmt" + mgmtClientName.split("ManagementClient")[0] + "Test";
+    let testName = "test_" + cliCommandName;
     output.push("# coding: utf-8");
     output.push("");
     output.push("#-------------------------------------------------------------------------");
@@ -25,6 +23,8 @@ function GeneratePythonIntegrationTest(model, config) {
     output.push("import " + namespace);
     output.push("from devtools_testutils import AzureMgmtTestCase, ResourceGroupPreparer");
     output.push("");
+    output.push("AZURE_LOCATION = 'eastus'");
+    output.push("");
     output.push("class " + className + "(AzureMgmtTestCase):");
     output.push("");
     output.push("    def setUp(self):");
@@ -33,9 +33,12 @@ function GeneratePythonIntegrationTest(model, config) {
     output.push("            " + namespace + "." + mgmtClientName);
     output.push("        )");
     output.push("    ");
-    output.push("    def " + testName + "(self):");
+    output.push("    @ResourceGroupPreparer(location=AZURE_LOCATION)");
+    output.push("    def " + testName + "(self, resource_group):");
     //output.push("        account_name = self.get_resource_name('pyarmcdn')");
     output.push("");
+    // XXX - this is service specific and should be fixed
+    output.push("SERVICE_NAME = \"myapimrndxyz\"");
     for (var ci = 0; ci < config.length; ci++) {
         var example = null;
         for (var i = 0; i < model.length; i++) {
@@ -56,7 +59,9 @@ function GeneratePythonIntegrationTest(model, config) {
                 output.push("        " + line);
             }
         }
-        output.push("        output = mgmt_client." + Helpers_1.ToSnakeCase(example.OperationName) + "." + Helpers_1.ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
+        // XXX - support for non-long-running-operations
+        output.push("        azure_operation_poller = self.mgmt_client." + Helpers_1.ToSnakeCase(example.OperationName) + "." + Helpers_1.ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
+        output.push("        result_create = azure_operation_poller.result()");
     }
     output.push("");
     output.push("");
@@ -120,8 +125,13 @@ function _UrlToParameters(sourceUrl) {
             var varName = part.substring(2, part.length - 3).trim().toUpperCase();
             if (varName == "SUBSCRIPTION_ID")
                 continue;
-            // close and reopen quotes, add add variable name in between
-            params += varName + (last ? "" : ", ");
+            if (varName == "RESOURCE_GROUP") {
+                params += "resource_group.name" + (last ? "" : ", ");
+            }
+            else {
+                // close and reopen quotes, add add variable name in between
+                params += varName + (last ? "" : ", ");
+            }
         }
     }
     return params;
