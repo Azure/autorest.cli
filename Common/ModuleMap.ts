@@ -12,7 +12,8 @@ export enum ModuleOptionKind
 {
     MODULE_OPTION_PATH,
     MODULE_OPTION_BODY,
-    MODULE_OPTION_PLACEHOLDER
+    MODULE_OPTION_PLACEHOLDER,
+    MODULE_OPTION_HEADER
 }
 
 export class ModuleOption
@@ -108,6 +109,15 @@ export class ModuleOptionPath extends ModuleOption
     {
         super(name, type, required);
         this.Kind = ModuleOptionKind.MODULE_OPTION_PATH;
+    }  
+}
+
+export class ModuleOptionHeader extends ModuleOption
+{
+    public constructor(name: string, type: string, required: boolean)
+    {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_HEADER;
     }  
 }
 

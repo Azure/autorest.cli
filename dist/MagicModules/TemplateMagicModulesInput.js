@@ -88,6 +88,7 @@ function appendMethod(output, model, method, operationName) {
     output.push("        python_func_name: " + method.Name.replace(/([a-z](?=[A-Z]))/g, '$1 ').split(' ').join('_').toLowerCase());
     output.push("        request:");
     let methodOptions = model.GetMethodOptions(method.Name, false);
+    methodOptions.sort((n1, n2) => n1.Kind - n2.Kind);
     for (let optionIndex in methodOptions) {
         let option = methodOptions[optionIndex];
         if (option.PathGo == option.PathPython) {
@@ -248,9 +249,10 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             sdkReferences = "'tags', " + sdkReferences;
         }
         // [TODO] this is another hack which has to be resolved earlier
-        if (option.NameAnsible == "name" && (sdkReferences.indexOf("'/name'") < 0)) {
-            sdkReferences += ", '/name'";
-        }
+        // if (option.NameAnsible == "name" && (sdkReferences.indexOf("'/name'") < 0))
+        // {
+        //     sdkReferences += ", '/name'";
+        // }
         output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
         if (option.IsList) {
             let itemtype = getItemTypeForList(option);
