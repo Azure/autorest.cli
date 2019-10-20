@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody } from "./ModuleMap";
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
 import { LogCallback } from "../index";
@@ -498,7 +498,14 @@ export class MapGenerator
 
                     if (type != "dict")
                     {
-                        options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
+                        if (p.location == "header") {
+                            options[p.name.raw] = new ModuleOptionHeader(p.name.raw, type, p.isRequired);
+                        }
+                        else
+                        {
+                            options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
+                        }
+                        
                         options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
 
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);

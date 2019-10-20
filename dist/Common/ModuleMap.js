@@ -9,6 +9,7 @@ var ModuleOptionKind;
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PATH"] = 0] = "MODULE_OPTION_PATH";
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_BODY"] = 1] = "MODULE_OPTION_BODY";
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PLACEHOLDER"] = 2] = "MODULE_OPTION_PLACEHOLDER";
+    ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_HEADER"] = 3] = "MODULE_OPTION_HEADER";
 })(ModuleOptionKind = exports.ModuleOptionKind || (exports.ModuleOptionKind = {}));
 class ModuleOption {
     constructor(name, type, required) {
@@ -90,6 +91,13 @@ class ModuleOptionPath extends ModuleOption {
     }
 }
 exports.ModuleOptionPath = ModuleOptionPath;
+class ModuleOptionHeader extends ModuleOption {
+    constructor(name, type, required) {
+        super(name, type, required);
+        this.Kind = ModuleOptionKind.MODULE_OPTION_HEADER;
+    }
+}
+exports.ModuleOptionHeader = ModuleOptionHeader;
 class ModuleOptionBody extends ModuleOption {
     constructor(name, type, required) {
         super(name, type, required);

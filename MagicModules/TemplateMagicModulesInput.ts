@@ -109,6 +109,7 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
     output.push("        request:");
 
     let methodOptions = model.GetMethodOptions(method.Name, false);
+    methodOptions.sort((n1, n2) => n1.Kind - n2.Kind);
     for (let optionIndex in methodOptions)
     {
         let option = methodOptions[optionIndex];
@@ -179,14 +180,13 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
 
         let dataType = "";
 
-        if (option.EnumValues != null && option.EnumValues.length > 0)
-        {
-            dataType = "!ruby/object:Api::Type::Enum";
+        if (option.IsList) {
+            dataType = "!ruby/object:Api::Type::Array";
         }
         else
         {
-            if (option.IsList) {
-                dataType = "!ruby/object:Api::Type::Array";
+            if (option.EnumValues != null && option.EnumValues.length > 0) {
+                dataType = "!ruby/object:Api::Type::Enum";
             } else {
                 switch (option.Type)
                 {
@@ -258,24 +258,19 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
             output.push(prefix + "  required: " + (option.Required ? "true" : "false"));
         }
 
-        if (!option.Updatable)
-        {
-            output.push(prefix + "  input: true");
-        }
-        
-        if (appendReadOnly)
-        {
-            if (option.IncludeInResponse && !option.IncludeInArgSpec)
-                output.push(prefix + "  output: true");
-        }
+        let isOutput = false;
 
-        if (option.EnumValues != null && option.EnumValues.length > 0)
+        if (appendReadOnly && option.IncludeInResponse && !option.IncludeInArgSpec)
         {
-            output.push(prefix + "  values:");
-            option.EnumValues.forEach(element => {
-                output.push(prefix + "    - :" + element.Key);
-            });
-            output.push(prefix + "  default_value: :" + option.EnumValues[0].Key);
+            output.push(prefix + "  output: true");
+            isOutput = true;
+        }
+        else
+        {
+            if (!option.Updatable)
+            {
+                output.push(prefix + "  input: true");
+            }
         }
 
         if (option.ExampleValue && (typeof option.ExampleValue == "string") && option.ExampleValue.startsWith('/subscriptions/'))
@@ -334,15 +329,32 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
 
         // [TODO] this is another hack which has to be resolved earlier
-        if (option.NameAnsible == "name" && (sdkReferences.indexOf("'/name'") < 0))
-        {
-            sdkReferences += ", '/name'";
-        }
+        // if (option.NameAnsible == "name" && (sdkReferences.indexOf("'/name'") < 0))
+        // {
+        //     sdkReferences += ", '/name'";
+        // }
 
         output.push(prefix + "  azure_sdk_references: [" + sdkReferences + "]");
         if (option.IsList) {
             let itemtype = getItemTypeForList(option);
             output.push(prefix + "  item_type: " + itemtype);
+        }
+        if (option.EnumValues != null && option.EnumValues.length > 0)
+        {
+            let valuesprefix = prefix;
+            if (option.IsList) valuesprefix += "  ";
+            if (option.IsList) {
+                output.push(valuesprefix + "  name: '" + "TBD" + "'");
+                output.push(valuesprefix + "  description: '" + "TBD" + "'");
+            }
+            
+            output.push(valuesprefix + "  values:");
+            option.EnumValues.forEach(element => {
+                output.push(valuesprefix + "    - :" + element.Key);
+            });
+            if (option.Required == false && isOutput == false) {
+                output.push(valuesprefix + "  default_value: :" + option.EnumValues[0].Key);
+            }
         }
 
         if (option.SubOptions != null && option.SubOptions.length > 0) {
@@ -357,6 +369,9 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
 function getItemTypeForList(option: ModuleOption): string
 {
     if (option.IsList == false) return null;
+    if (option.EnumValues != null && option.EnumValues.length > 0) {
+        return "!ruby/object:Api::Type::Enum";
+    }
     let itemType = "";
     switch(option.Type) {
         case "str": {
@@ -441,7 +456,11 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
         case "str":
             if (option.EnumValues != null && option.EnumValues.length > 0)
             {
-                dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::EnumObject";
+                if (option.IsList) {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::EnumArrayObject";
+                } else {
+                    dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::EnumObject";
+                }
             }
             else if (option.IsList) {
                 dataType = "!ruby/object:Api::Azure::SDKTypeDefinition::StringArrayObject";
@@ -618,7 +637,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
             output.push("            go_type_name: " + option.TypeNameGo);
         }
 
-        if (option.EnumValues != null && option.EnumValues.length > 0)
+        if (option.IsList == false && option.EnumValues != null && option.EnumValues.length > 0)
         {
             output.push("            go_enum_type_name: " + option.TypeNameGo);
         }

@@ -360,6 +360,7 @@ export class CodeModel
                     option.SubOptions = [];
                     option.TypeName =  hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+                    option.Kind = hiddenParamatersOption.Kind;
 
                     // XXX - and because this stupid option has no suboptions
                     for (let optionIdx in this.ModuleOptions)

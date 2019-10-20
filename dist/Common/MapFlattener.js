@@ -1,5 +1,6 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
+const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("../Common/Helpers");
 class MapFlattener {
     constructor(map, flatten, debug, log) {
@@ -20,7 +21,7 @@ class MapFlattener {
     ProcessTopLevelOptions(options) {
         for (let i = options.length - 1; i >= 0; i--) {
             let option = options[i];
-            if (option.NameAnsible.endsWith('_name')) {
+            if (option.Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;

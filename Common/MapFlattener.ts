@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
+﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionKind } from "./ModuleMap"
 import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
 import { ToSnakeCase, Capitalize, Uncapitalize } from "../Common/Helpers";
@@ -36,7 +36,7 @@ export class MapFlattener
         {
             let option = options[i];
 
-            if (option.NameAnsible.endsWith('_name'))
+            if (option.Kind != ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name'))
             {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";

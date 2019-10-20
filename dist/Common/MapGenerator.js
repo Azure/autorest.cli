@@ -343,7 +343,12 @@ class MapGenerator {
                     (p.name.raw.indexOf('-') == -1)) {
                     let type = this.Type_MappedType(p.modelType);
                     if (type != "dict") {
-                        options[p.name.raw] = new ModuleMap_1.ModuleOptionPath(p.name.raw, type, p.isRequired);
+                        if (p.location == "header") {
+                            options[p.name.raw] = new ModuleMap_1.ModuleOptionHeader(p.name.raw, type, p.isRequired);
+                        }
+                        else {
+                            options[p.name.raw] = new ModuleMap_1.ModuleOptionPath(p.name.raw, type, p.isRequired);
+                        }
                         options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
                         options[p.name.raw].IsList = this.Type_IsList(p.modelType);
                         options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
