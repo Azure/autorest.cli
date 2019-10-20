@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
 import { LogCallback } from "../index";
