@@ -1,4 +1,9 @@
-﻿import { Example } from "../Common/Example"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Example } from "../Common/Example"
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 import * as yaml from "node-yaml";
