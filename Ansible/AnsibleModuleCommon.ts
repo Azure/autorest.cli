@@ -1,4 +1,9 @@
-﻿import { CodeModel } from "../Common/CodeModel"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { CodeModel } from "../Common/CodeModel"
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind } from "../Common/ModuleMap"
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Indent, ToSnakeCase } from "../Common/Helpers";

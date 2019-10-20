@@ -1,4 +1,9 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody } from "./ModuleMap";
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody } from "./ModuleMap";
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
 import { LogCallback } from "../index";

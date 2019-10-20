@@ -1,4 +1,9 @@
-﻿import { Example } from "./Example"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Example } from "./Example"
 import { ToSnakeCase, ToGoCase } from "./Helpers";
 
 export class EnumValue

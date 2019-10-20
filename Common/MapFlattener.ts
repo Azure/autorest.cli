@@ -1,4 +1,9 @@
-﻿import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue } from "./ModuleMap"
 import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
 import { ToSnakeCase, Capitalize, Uncapitalize } from "../Common/Helpers";

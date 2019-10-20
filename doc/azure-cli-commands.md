@@ -2,14 +2,24 @@
 
 ## Prerequisites
 
-You need to clone following directories locally:
+The best way of using **autorest.cli** is Docker container.
+
+You need to clone following directories locally. I have added Python SDK here as well, it's not necessary, but may be useful.
 
     git clone https://github.com/Azure/azure-rest-api-specs
     git clone https://github.com/Azure/azure-cli-extensions.git
+    git clone https://github.com/Azure/azure-sdk-for-python.git
+    git clone https://github.com/Azure/autorest.cli.git
+
+For simplicity let's assume they are cloned under **c:\dev** directory on Windows machine.
 
 The easiest way to use **autorest.cli** is the container:
 
-    docker run -it --rm zikalino/azure-sdk-tools ....
+    docker run -it --rm -v c:\dev:dev zikalino/azure-sdk-tools
+
+## Generate Extension
+
+    autorest --cli --use=/autorest.cli --cli-module --extension --output-folder=/dev/azure-cli-extensions /dev/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
 
 ## Steps to Generate Azure CLI Command from Scratch
 
