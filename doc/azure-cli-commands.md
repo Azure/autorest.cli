@@ -15,11 +15,11 @@ For simplicity let's assume they are cloned under **c:\dev** directory on Window
 
 The easiest way to use **autorest.cli** is the container:
 
-    docker run -it --rm -v c:\dev:dev zikalino/azure-sdk-tools
+    docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools
 
 ## Generate Extension
 
-    autorest --cli --use=/autorest.cli --cli-module --extension --output-folder=/dev/azure-cli-extensions /dev/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
+    autorest --cli --use=/_/autorest.cli --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
 
 ## Steps to Generate Azure CLI Command from Scratch
 
