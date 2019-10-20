@@ -10,10 +10,11 @@ import { ToSnakeCase, Capitalize, Uncapitalize } from "../Common/Helpers";
 
 export class MapFlattener
 {
-    public constructor (map: MapModuleGroup, flatten: Adjustments, debug: boolean, log: LogCallback)
+    public constructor (map: MapModuleGroup, flatten: Adjustments, flattenAll: boolean, debug: boolean, log: LogCallback)
     {
         this._map = map;
         this._flatten = flatten;
+        this._flattenAll = flattenAll;
         this._log = log;
         this._debug = debug;
     }
@@ -76,6 +77,12 @@ export class MapFlattener
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
 
                 let flatten: any = this._flatten.GetFlatten(optionPath);
+
+                if (flatten == "" && this._flattenAll)
+                {
+                    flatten = "*/*";
+                }
+
                 if (flatten != "")
                 {
                     // all the suboptions of current option will be attached at the end
@@ -86,6 +93,24 @@ export class MapFlattener
                         // just completely remove this option....
                         options = [].concat(options.slice(0, i), options.slice(i + 1));
                     }
+                    else if (flatten == "*/*")
+                    {
+                        for (let si in suboptions)
+                        {
+                            suboptions[si].DispositionRest = option.NameSwagger + "/" + suboptions[si].DispositionRest;
+                            suboptions[si].DispositionSdk = option.NamePythonSdk + "/" + suboptions[si].DispositionSdk;
+
+                            suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                            suboptions[si].NameSwagger = option.NameSwagger + Capitalize(suboptions[si].NameSwagger);
+                            suboptions[si].NameGoSdk = option.NameGoSdk + Capitalize(suboptions[si].NameGoSdk);
+                            suboptions[si].NamePythonSdk = option.NamePythonSdk + "_" + suboptions[si].NamePythonSdk;
+                            suboptions[si].NameTerraform = option.NameTerraform + Capitalize(suboptions[si].NameTerraform);
+                        }
+                    }
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    // Everything below is going to be obsolete
+                    //
+                    //
                     else
                     {
                         for (let si in suboptions)
@@ -145,11 +170,13 @@ export class MapFlattener
                             suboptions[si].DispositionRest = dispositionRest;
                             suboptions[si].DispositionSdk = dispositionSdk;
                         }
+
                         options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
                         options[i].SubOptions = [];
                         options[i].Hidden = true;
                         //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
                     }
+                    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 }
                 else if (option.NameSwagger == "properties")
                 {
@@ -188,6 +215,7 @@ export class MapFlattener
 
     private _map: MapModuleGroup = null;
     private _flatten: Adjustments;
+    private _flattenAll: boolean;
     private _log: LogCallback;
     private _debug: boolean;
 }

@@ -1,12 +1,17 @@
 "use strict";
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("../Common/Helpers");
 class MapFlattener {
-    constructor(map, flatten, debug, log) {
+    constructor(map, flatten, flattenAll, debug, log) {
         this._map = null;
         this._map = map;
         this._flatten = flatten;
+        this._flattenAll = flattenAll;
         this._log = log;
         this._debug = debug;
     }
@@ -50,6 +55,9 @@ class MapFlattener {
                     this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
                 let flatten = this._flatten.GetFlatten(optionPath);
+                if (flatten == "" && this._flattenAll) {
+                    flatten = "*/*";
+                }
                 if (flatten != "") {
                     // all the suboptions of current option will be attached at the end
                     if (this._debug)
@@ -58,6 +66,21 @@ class MapFlattener {
                         // just completely remove this option....
                         options = [].concat(options.slice(0, i), options.slice(i + 1));
                     }
+                    else if (flatten == "*/*") {
+                        for (let si in suboptions) {
+                            suboptions[si].DispositionRest = option.NameSwagger + "/" + suboptions[si].DispositionRest;
+                            suboptions[si].DispositionSdk = option.NamePythonSdk + "/" + suboptions[si].DispositionSdk;
+                            suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                            suboptions[si].NameSwagger = option.NameSwagger + Helpers_1.Capitalize(suboptions[si].NameSwagger);
+                            suboptions[si].NameGoSdk = option.NameGoSdk + Helpers_1.Capitalize(suboptions[si].NameGoSdk);
+                            suboptions[si].NamePythonSdk = option.NamePythonSdk + "_" + suboptions[si].NamePythonSdk;
+                            suboptions[si].NameTerraform = option.NameTerraform + Helpers_1.Capitalize(suboptions[si].NameTerraform);
+                        }
+                    }
+                    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
+                    // Everything below is going to be obsolete
+                    //
+                    //
                     else {
                         for (let si in suboptions) {
                             let dispositionRest = suboptions[si].DispositionRest;
@@ -110,6 +133,7 @@ class MapFlattener {
                         options[i].Hidden = true;
                         //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
                     }
+                    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 }
                 else if (option.NameSwagger == "properties") {
                     if (this._debug)

@@ -103,6 +103,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let debug = yield autoRestApi.GetValue("debug");
         let debugMap = yield autoRestApi.GetValue("debug-map");
         let debugCli = yield autoRestApi.GetValue("debug-cli");
+        let flattenAll = yield autoRestApi.GetValue("flatten-all");
         // Handle generation type parameter
         if (yield autoRestApi.GetValue("cli-module")) {
             Info("GENERATION: --cli-module");
@@ -206,7 +207,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
             // flatten the map using flattener
-            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, debug, function (msg) {
+            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, debug, function (msg) {
                 if (debug) {
                     autoRestApi.Message({
                         Channel: "warning",

@@ -117,6 +117,7 @@ extension.Add("cli", async autoRestApi => {
     let debug = await autoRestApi.GetValue("debug");
     let debugMap = await autoRestApi.GetValue("debug-map");
     let debugCli = await autoRestApi.GetValue("debug-cli");
+    let flattenAll = await autoRestApi.GetValue("flatten-all");
 
 
     // Handle generation type parameter
@@ -244,7 +245,7 @@ extension.Add("cli", async autoRestApi => {
         }
 
         // flatten the map using flattener
-        let mapFlattener = new MapFlattener(map, adjustmentsObject, debug, function(msg: string) {
+        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, debug, function(msg: string) {
           if (debug)
           {
             autoRestApi.Message({
