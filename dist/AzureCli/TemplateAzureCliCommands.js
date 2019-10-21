@@ -27,16 +27,16 @@ function GenerateAzureCliCommands(model) {
         if (methods.length > 0) {
             output.push("");
             output.push("    from ._client_factory import cf_" + model.ModuleOperationName);
-            output.push("    " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + " = CliCommandType(");
+            output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + " = CliCommandType(");
             if (true) {
-                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleNameUnderscored() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
             else {
                 // enable this if using package
                 output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
             output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
-            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
             for (let mi in methods) {
                 // create, delete, list, show, update
                 let method = methods[mi];

@@ -81,6 +81,11 @@ export class CodeModelCli
         return this.Map.CliName;
     }
 
+    public GetCliCommandModuleNameUnderscored()
+    {
+        return this.Map.CliName.replace("-", "_");
+    }
+
     public GetCliCommand(methodName: string = null): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -850,7 +855,7 @@ export class CodeModelCli
 
     public get ModuleOperationName(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
 
     public get ObjectName(): string

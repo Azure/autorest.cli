@@ -108,7 +108,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         if (yield autoRestApi.GetValue("cli-module")) {
             Info("GENERATION: --cli-module");
             if ((yield autoRestApi.GetValue("extension"))) {
-                folderAzureCliMain = "src/" + cliName + "/azext_" + cliName + "/";
+                folderAzureCliMain = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
                 folderAzureCliExt = "src/" + cliName + "/";
             }
             else {

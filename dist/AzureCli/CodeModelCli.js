@@ -48,6 +48,9 @@ class CodeModelCli {
     GetCliCommandModuleName() {
         return this.Map.CliName;
     }
+    GetCliCommandModuleNameUnderscored() {
+        return this.Map.CliName.replace("-", "_");
+    }
     GetCliCommand(methodName = null) {
         let options = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -598,7 +601,7 @@ class CodeModelCli {
         return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
     }
     get ModuleOperationName() {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
     get ObjectName() {
         return this.Map.Modules[this._selectedModule].ObjectName;

@@ -127,7 +127,7 @@ extension.Add("cli", async autoRestApi => {
 
       if ((await autoRestApi.GetValue("extension")))
       {
-        folderAzureCliMain = "src/" + cliName + "/azext_" + cliName + "/";
+        folderAzureCliMain = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
         folderAzureCliExt = "src/" + cliName + "/";
       }
       else
