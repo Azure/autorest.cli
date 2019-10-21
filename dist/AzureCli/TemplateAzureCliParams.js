@@ -53,41 +53,46 @@ function GenerateAzureCliParams(model) {
                 continue;
             output.push("");
             output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
-            let params = ctx.Parameters;
-            params.forEach(element => {
-                let parameterName = element.Name.split("-").join("_");
-                let argument = "        c.argument('" + parameterName + "'";
-                // this is to handle names like "format", "type", etc
-                if (parameterName == "type" || parameterName == "format") {
-                    argument = "        c.argument('_" + parameterName + "'";
-                    argument += ", options_list=['--" + parameterName + "']";
-                }
-                if (element.Type == "boolean") {
-                    argument += ", arg_type=get_three_state_flag()";
-                }
-                else if ((element.EnumValues.length > 0) && !element.IsList) {
-                    argument += ", arg_type=get_enum_type([";
-                    element.EnumValues.forEach(element => {
-                        if (!argument.endsWith("["))
-                            argument += ", ";
-                        argument += "'" + element + "'";
-                    });
-                    argument += "])";
-                }
-                if (parameterName == "resource_group") {
-                    argument += ", resource_group_name_type)";
-                }
-                else if (parameterName == "tags") {
-                    argument += ", tags_type)";
-                }
-                else if (parameterName == "location") {
-                    argument += ", arg_type=get_location_type(self.cli_ctx))";
-                }
-                else {
-                    argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')";
-                }
-                output.push(argument);
-            });
+            if (ctx.Parameters.length == 0) {
+                output.push("        pass");
+            }
+            else {
+                let params = ctx.Parameters;
+                params.forEach(element => {
+                    let parameterName = element.Name.split("-").join("_");
+                    let argument = "        c.argument('" + parameterName + "'";
+                    // this is to handle names like "format", "type", etc
+                    if (parameterName == "type" || parameterName == "format") {
+                        argument = "        c.argument('_" + parameterName + "'";
+                        argument += ", options_list=['--" + parameterName + "']";
+                    }
+                    if (element.Type == "boolean") {
+                        argument += ", arg_type=get_three_state_flag()";
+                    }
+                    else if ((element.EnumValues.length > 0) && !element.IsList) {
+                        argument += ", arg_type=get_enum_type([";
+                        element.EnumValues.forEach(element => {
+                            if (!argument.endsWith("["))
+                                argument += ", ";
+                            argument += "'" + element + "'";
+                        });
+                        argument += "])";
+                    }
+                    if (parameterName == "resource_group") {
+                        argument += ", resource_group_name_type)";
+                    }
+                    else if (parameterName == "tags") {
+                        argument += ", tags_type)";
+                    }
+                    else if (parameterName == "location") {
+                        argument += ", arg_type=get_location_type(self.cli_ctx))";
+                    }
+                    else {
+                        argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')";
+                    }
+                    output.push(argument);
+                });
+            }
         }
     } while (model.NextModule());
     ;
