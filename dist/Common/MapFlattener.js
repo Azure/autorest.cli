@@ -26,7 +26,7 @@ class MapFlattener {
     ProcessTopLevelOptions(options) {
         for (let i = options.length - 1; i >= 0; i--) {
             let option = options[i];
-            if (option.Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
+            if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
@@ -55,7 +55,7 @@ class MapFlattener {
                     this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
                 let flatten = this._flatten.GetFlatten(optionPath);
-                if (flatten == "" && this._flattenAll) {
+                if (flatten == "" && this._flattenAll && !option.IsList) {
                     flatten = "*/*";
                 }
                 if (flatten != "") {
@@ -68,14 +68,27 @@ class MapFlattener {
                     }
                     else if (flatten == "*/*") {
                         for (let si in suboptions) {
-                            suboptions[si].DispositionRest = option.NameSwagger + "/" + suboptions[si].DispositionRest;
-                            suboptions[si].DispositionSdk = option.NamePythonSdk + "/" + suboptions[si].DispositionSdk;
-                            suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                            suboptions[si].NameSwagger = option.NameSwagger + Helpers_1.Capitalize(suboptions[si].NameSwagger);
-                            suboptions[si].NameGoSdk = option.NameGoSdk + Helpers_1.Capitalize(suboptions[si].NameGoSdk);
-                            suboptions[si].NamePythonSdk = option.NamePythonSdk + "_" + suboptions[si].NamePythonSdk;
-                            suboptions[si].NameTerraform = option.NameTerraform + Helpers_1.Capitalize(suboptions[si].NameTerraform);
+                            let dispositionRest = option.DispositionRest.replace("*", option.NameSwagger) + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
+                            let dispositionSdk = option.DispositionSdk.replace("*", option.NamePythonSdk) + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            //if (path == "/")
+                            //{
+                            //    dispositionRest = "/properties/" + dispositionRest;
+                            //    dispositionSdk = "/" + dispositionSdk;
+                            //}
+                            //else
+                            //{
+                            //    dispositionRest = "properties/" + dispositionRest;
+                            //}
+                            suboptions[si].DispositionRest = dispositionRest;
+                            suboptions[si].DispositionSdk = dispositionSdk;
+                            if (path != "/") {
+                                suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                                suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                            }
                         }
+                        options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
+                        options[i].SubOptions = [];
+                        options[i].Hidden = true;
                     }
                     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     // Everything below is going to be obsolete
