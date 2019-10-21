@@ -105,9 +105,9 @@ export class MapGenerator
                 if (this.ModuleUpdateMethod != null) methods.push(this.ModuleUpdateMethod);
                 if (this.ModuleDeleteMethod != null) methods.push(this.ModuleDeleteMethod);
                 //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
-
-                methods = methods.concat(methodsInfo);
             }
+
+            methods = methods.concat(methodsInfo);
 
             // if any of the create/update methods were detected -- add main module
             if (methods.length > 0)
