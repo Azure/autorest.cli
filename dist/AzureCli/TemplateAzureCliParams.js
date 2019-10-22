@@ -90,7 +90,7 @@ function GenerateAzureCliParams(model) {
         }
     } while (model.NextModule());
     if (hasActions) {
-        output.push("import azext_peering.action");
+        output.push("import azext_" + model.GetCliCommandModuleNameUnderscored() + ".action");
     }
     output = output.concat(output_args);
     output.push("");
