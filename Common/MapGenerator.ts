@@ -46,7 +46,7 @@ export class MapGenerator
             name = name.substring(0, name.length - 2);
         }
         else if (name.endsWith('s'))
-        1{
+        {
             name = name.substring(0, name.length - 1);
         }
 

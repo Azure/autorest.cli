@@ -557,7 +557,7 @@ class CodeModelCli {
             this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions) {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName) {
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_BODY) {
                     option = this.ModuleOptions[optionIdx];
                     break;
                 }

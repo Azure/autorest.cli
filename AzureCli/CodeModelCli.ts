@@ -788,7 +788,7 @@ export class CodeModelCli
             let option = null;
             for (let optionIdx in this.ModuleOptions)
             {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName)
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleOptionKind.MODULE_OPTION_BODY)
                 {
                     option = this.ModuleOptions[optionIdx];
                     break;
@@ -801,8 +801,6 @@ export class CodeModelCli
                 //{
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleOptionPlaceholder(optionName, "dict", false);
-
-                    
 
                     option.SubOptions = [];
                     option.TypeName =  hiddenParamatersOption.TypeName;

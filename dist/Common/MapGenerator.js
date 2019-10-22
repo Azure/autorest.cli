@@ -34,9 +34,7 @@ class MapGenerator {
         else if (name.toLowerCase().endsWith("xes")) {
             name = name.substring(0, name.length - 2);
         }
-        else if (name.endsWith('s'))
-            1;
-        {
+        else if (name.endsWith('s')) {
             name = name.substring(0, name.length - 1);
         }
         return name;

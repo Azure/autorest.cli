@@ -99,15 +99,13 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 
             let output_body: string[] = []
             // create body transformation for methods that support it
+
             if (methodName != "show" && methodName != "list" && methodName != "delete")
             {
                 // body transformation
                 if (!isUpdate)
                 {
-                    if (!isUpdate)
-                    {
-                        output_body.push("    body = {}");
-                    }
+                    output_body.push("    body = {}");
                 }
                 else
                 {
@@ -150,7 +148,20 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                             access += "." + last + " = ";
                         }
 
-                        if (element.Type != "dict" && !element.IsList)
+                        if (element.IsList)
+                        {
+                            if (element.Type != "dict")
+                            {
+                                // a comma separated list
+                                access += "None if " + PythonParameterName(element.Name) + " is None else " + PythonParameterName(element.Name) + ".split(',')";
+                            }
+                            else
+                            {
+                                // already preprocessed by actions
+                                access += PythonParameterName(element.Name)
+                            }
+                        }
+                        else if (element.Type != "dict")
                         {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }
