@@ -5,10 +5,11 @@
 
 import { CodeModelCli, CommandParameter } from "./CodeModelCli"
 import { ModuleOption } from "../Common/ModuleMap";
-import { EscapeString } from "../Common/Helpers";
+import { EscapeString, ToCamelCase, Capitalize } from "../Common/Helpers";
 
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
-    var output: string[] = [];
+    let output: string[] = [];
+    let hasActions: boolean = false;
 
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
@@ -29,9 +30,13 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     output.push("    get_location_type");
     output.push(")");
     //output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
-    output.push("");
-    output.push("");
-    output.push("def load_arguments(self, _):");
+    
+    
+    var output_args: string[] = [];
+
+    output_args.push("");
+    output_args.push("");
+    output_args.push("def load_arguments(self, _):");
     //output.push("    name_arg_type = CLIArgumentType(options_list=('--name', '-n'), metavar='NAME')");
 
     do
@@ -46,12 +51,12 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             if (ctx == null)
                 continue;
 
-            output.push("");
-            output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
+            output_args.push("");
+            output_args.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
 
             if (ctx.Parameters.length == 0)
             {
-                output.push("        pass");
+                output_args.push("        pass");
             }
             else
             {
@@ -82,27 +87,44 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         });
                         argument += "])";
                     }
+
                     if (parameterName == "resource_group")
                     {
-                        argument += ", resource_group_name_type)";
+                        argument += ", resource_group_name_type";
                     }
                     else if (parameterName == "tags")
                     {
-                        argument += ", tags_type)";
+                        argument += ", tags_type";
                     }
                     else if (parameterName == "location")
                     {
-                        argument += ", arg_type=get_location_type(self.cli_ctx))";
+                        argument += ", arg_type=get_location_type(self.cli_ctx)";
                     }
                     else
                     {
-                        argument += ", id_part=None, help='" + EscapeString(element.Help) + "')"; 
+                        argument += ", id_part=None, help='" + EscapeString(element.Help) + "'"; 
                     }
-                    output.push(argument);
+
+                    if (element.IsList && element.Type == "dict")
+                    {
+                        argument += ", action=PeeringAdd" + Capitalize(ToCamelCase(element.Name)) + ", nargs='+'";
+                        hasActions = true;
+                    }
+
+                    argument += ")";
+
+                    output_args.push(argument);
                 });
             }
         }
-    } while (model.NextModule());;
+    } while (model.NextModule());
+
+    if (hasActions)
+    {
+        output.push("import azext_peering.action")
+    }
+
+    output = output.concat(output_args);
 
     output.push("");
     return output;

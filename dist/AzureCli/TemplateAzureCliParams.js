@@ -6,7 +6,8 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Common/Helpers");
 function GenerateAzureCliParams(model) {
-    var output = [];
+    let output = [];
+    let hasActions = false;
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
@@ -26,9 +27,10 @@ function GenerateAzureCliParams(model) {
     output.push("    get_location_type");
     output.push(")");
     //output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
-    output.push("");
-    output.push("");
-    output.push("def load_arguments(self, _):");
+    var output_args = [];
+    output_args.push("");
+    output_args.push("");
+    output_args.push("def load_arguments(self, _):");
     //output.push("    name_arg_type = CLIArgumentType(options_list=('--name', '-n'), metavar='NAME')");
     do {
         let options = model.ModuleOptions;
@@ -38,10 +40,10 @@ function GenerateAzureCliParams(model) {
             let ctx = model.GetCliCommandContext(method);
             if (ctx == null)
                 continue;
-            output.push("");
-            output.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
+            output_args.push("");
+            output_args.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
             if (ctx.Parameters.length == 0) {
-                output.push("        pass");
+                output_args.push("        pass");
             }
             else {
                 let params = ctx.Parameters;
@@ -66,23 +68,31 @@ function GenerateAzureCliParams(model) {
                         argument += "])";
                     }
                     if (parameterName == "resource_group") {
-                        argument += ", resource_group_name_type)";
+                        argument += ", resource_group_name_type";
                     }
                     else if (parameterName == "tags") {
-                        argument += ", tags_type)";
+                        argument += ", tags_type";
                     }
                     else if (parameterName == "location") {
-                        argument += ", arg_type=get_location_type(self.cli_ctx))";
+                        argument += ", arg_type=get_location_type(self.cli_ctx)";
                     }
                     else {
-                        argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "')";
+                        argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "'";
                     }
-                    output.push(argument);
+                    if (element.IsList && element.Type == "dict") {
+                        argument += ", action=PeeringAdd" + Helpers_1.Capitalize(Helpers_1.ToCamelCase(element.Name)) + ", nargs='+'";
+                        hasActions = true;
+                    }
+                    argument += ")";
+                    output_args.push(argument);
                 });
             }
         }
     } while (model.NextModule());
-    ;
+    if (hasActions) {
+        output.push("import azext_peering.action");
+    }
+    output = output.concat(output_args);
     output.push("");
     return output;
 }

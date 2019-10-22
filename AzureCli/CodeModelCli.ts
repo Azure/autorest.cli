@@ -349,11 +349,11 @@ export class CodeModelCli
     private GetCliTypeFromOption(o: ModuleOption): string
     {
         let type: string = "";
-        if (o.IsList)
+        /*if (o.IsList)
         {
-            return "list";
+            type="list[" + o.Type + "]";
         }
-        else if (o.Type.startsWith("unknown["))
+        else*/ if (o.Type.startsWith("unknown["))
         {
             if (o.Type.startsWith("unknown[DictionaryType"))
             {
