@@ -15,7 +15,7 @@ For simplicity let's assume they are cloned under **c:\dev** directory on Window
 
 The easiest way to use **autorest.cli** is the container:
 
-    docker run -it --rm -v c:\dev:/_/azure-sdk-tools
+    docker run -it --rm -v c:\dev:/_/azure-sdk-tools zikalino/azure-sdk-tools
 
 ## Generate Extension
 
