@@ -403,6 +403,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generateAzureCli) {
+                    let config = yield autoRestApi.GetValue("test-setup");
                     let modelCli = new CodeModelCli_1.CodeModelCli(map, cliCommandOverrides, function (msg) {
                         if (debugCli) {
                             autoRestApi.Message({
@@ -421,7 +422,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     modelCli.Reset();
                     autoRestApi.WriteFile(folderAzureCliMain + "_client_factory.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(modelCli).join('\r\n'));
                     modelCli.Reset();
-                    autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", TemplateAzureCliTestScenario_1.GenerateAzureCliTestScenario(modelCli).join('\r\n'));
+                    autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", TemplateAzureCliTestScenario_1.GenerateAzureCliTestScenario(modelCli, config).join('\r\n'));
                     modelCli.Reset();
                     autoRestApi.WriteFile(folderAzureCliMain + "report.md", TemplateAzureCliReport_1.GenerateAzureCliReport(modelCli).join('\r\n'));
                     modelCli.Reset();

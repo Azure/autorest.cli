@@ -6,7 +6,7 @@
 import { CodeModelCli, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../Common/ModuleMap";
 
-export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
+export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");
@@ -34,45 +34,25 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
     output.push("        })");
     output.push("");
 
-
-    do
+    // walk through test config
+    for (var ci = 0; ci < config.length; ci++)
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
+        // find example by name
+        let exampleCmd: string = findExampleByName(model, config[ci].name);
 
-        let methods: string[] = model.GetCliCommandMethods();
-        for (let mi = 0; mi < methods.length; mi++)
+        if (exampleCmd != null)
         {
-            // create, delete, list, show, update
-            let method: string = methods[mi];
-            // options
-            let ctx = model.GetCliCommandContext(method);
-            if (ctx == null)
-                continue;
-
-            ctx.Methods.forEach(element => {
-                output.push ("# " + element.Name + " -- " + method);
-                let examples: CommandExample[] = ctx.Examples;
-                examples.forEach(example => {
-                    let parameters: string = "";
-                    for (let k in example.Parameters)
-                    {
-                        let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                        parameters += " " + k + " " + slp;
-                    }
-
-                    output.push("        self.cmd('" + model.GetCliCommand() + " " + method + " " + parameters + "', checks=[");
-                    //output.push("            self.check('tags.foo', 'doo'),");
-                    //output.push("            self.check('name', '{name}')");
-                    output.push("        ])");
-                    output.push("");
-                });        
-            });
+            output.push("        self.cmd('" + exampleCmd + "', checks=[");
+            //output.push("            self.check('tags.foo', 'doo'),");
+            //output.push("            self.check('name', '{name}')");
+            output.push("        ])");
+            output.push("");
         }
-    } while (model.NextModule());;
-
-
+        else
+        {
+            output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
+        }
+    }
 
     //output.push("        self.cmd('apimgmt create -g {rg} -n {name} --tags foo=doo', checks=[");
     //output.push("            self.check('tags.foo', 'doo'),");
@@ -93,4 +73,41 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
     //output.push("");
 
     return output;
+}
+
+function findExampleByName(model: CodeModelCli, name: string): string
+{
+    do
+    {
+        let methods: string[] = model.GetCliCommandMethods();
+        for (let mi = 0; mi < methods.length; mi++)
+        {
+            // create, delete, list, show, update
+            let method: string = methods[mi];
+            // options
+            let ctx = model.GetCliCommandContext(method);
+            if (ctx == null)
+                continue;
+
+            ctx.Methods.forEach(element => {
+                let examples: CommandExample[] = ctx.Examples;
+                examples.forEach(example => {
+
+                    if (example.Description == name)
+                    {
+                        let parameters: string = "";
+                        for (let k in example.Parameters)
+                        {
+                            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+                            parameters += " " + k + " " + slp;
+                        }
+
+                        return model.GetCliCommand() + " " + method + " " + parameters;
+                    }
+                });        
+            });
+        }
+    } while (model.NextModule());
+
+    return null;
 }
