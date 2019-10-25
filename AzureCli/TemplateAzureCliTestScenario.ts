@@ -38,7 +38,7 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     for (var ci = 0; ci < config.length; ci++)
     {
         // find example by name
-        let exampleCmd: string = findExampleByName(model, config[ci].name);
+        let exampleCmd: string = findExampleByName(model, config[ci].name, output);
 
         if (exampleCmd != null)
         {
@@ -75,8 +75,10 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     return output;
 }
 
-function findExampleByName(model: CodeModelCli, name: string): string
+function findExampleByName(model: CodeModelCli, name: string, output: string[]): string
 {
+    let cmd = null;
+    model.Reset();
     do
     {
         let methods: string[] = model.GetCliCommandMethods();
@@ -93,21 +95,15 @@ function findExampleByName(model: CodeModelCli, name: string): string
                 let examples: CommandExample[] = ctx.Examples;
                 examples.forEach(example => {
 
+                    //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name)
                     {
-                        let parameters: string = "";
-                        for (let k in example.Parameters)
-                        {
-                            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                            parameters += " " + k + " " + slp;
-                        }
-
-                        return model.GetCliCommand() + " " + method + " " + parameters;
+                        cmd = model.GetExampleString(example);
                     }
                 });        
             });
         }
     } while (model.NextModule());
 
-    return null;
+    return cmd;
 }

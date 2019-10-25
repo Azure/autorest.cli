@@ -33,7 +33,7 @@ function GenerateAzureCliTestScenario(model, config) {
     // walk through test config
     for (var ci = 0; ci < config.length; ci++) {
         // find example by name
-        let exampleCmd = findExampleByName(model, config[ci].name);
+        let exampleCmd = findExampleByName(model, config[ci].name, output);
         if (exampleCmd != null) {
             output.push("        self.cmd('" + exampleCmd + "', checks=[");
             //output.push("            self.check('tags.foo', 'doo'),");
@@ -65,7 +65,9 @@ function GenerateAzureCliTestScenario(model, config) {
     return output;
 }
 exports.GenerateAzureCliTestScenario = GenerateAzureCliTestScenario;
-function findExampleByName(model, name) {
+function findExampleByName(model, name, output) {
+    let cmd = null;
+    model.Reset();
     do {
         let methods = model.GetCliCommandMethods();
         for (let mi = 0; mi < methods.length; mi++) {
@@ -78,17 +80,13 @@ function findExampleByName(model, name) {
             ctx.Methods.forEach(element => {
                 let examples = ctx.Examples;
                 examples.forEach(example => {
+                    //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name) {
-                        let parameters = "";
-                        for (let k in example.Parameters) {
-                            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                            parameters += " " + k + " " + slp;
-                        }
-                        return model.GetCliCommand() + " " + method + " " + parameters;
+                        cmd = model.GetExampleString(example);
                     }
                 });
             });
         }
     } while (model.NextModule());
-    return null;
+    return cmd;
 }

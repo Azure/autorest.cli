@@ -346,6 +346,25 @@ export class CodeModelCli
         return ctx;
     }
 
+    public GetExampleString(example: CommandExample): string
+    {
+        let parameters: string[] = [];
+
+        parameters.push("az");
+        parameters = parameters.concat(this.GetCliCommand().split(" "));
+        parameters.push(example.Method);
+
+        for (let k in example.Parameters)
+        {
+            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+            //parameters += " " + k + " " + slp;
+            parameters.push(k);
+            parameters.push(slp);
+        }
+
+        return parameters.join(" ");
+    }
+
     private GetCliTypeFromOption(o: ModuleOption): string
     {
         let type: string = "";
