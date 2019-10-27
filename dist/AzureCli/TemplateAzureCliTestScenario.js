@@ -82,7 +82,7 @@ function findExampleByName(model, name, output) {
                 examples.forEach(example => {
                     //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name) {
-                        cmd = model.GetExampleString(example);
+                        cmd = model.GetExampleString(example, true);
                     }
                 });
             });

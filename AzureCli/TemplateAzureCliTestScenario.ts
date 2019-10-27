@@ -98,7 +98,7 @@ function findExampleByName(model: CodeModelCli, name: string, output: string[]):
                     //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name)
                     {
-                        cmd = model.GetExampleString(example);
+                        cmd = model.GetExampleString(example, true);
                     }
                 });        
             });

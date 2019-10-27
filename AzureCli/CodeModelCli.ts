@@ -346,7 +346,7 @@ export class CodeModelCli
         return ctx;
     }
 
-    public GetExampleString(example: CommandExample): string
+    public GetExampleString(example: CommandExample, isTest: boolean): string
     {
         let parameters: string[] = [];
 
@@ -359,7 +359,22 @@ export class CodeModelCli
             let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
             //parameters += " " + k + " " + slp;
             parameters.push(k);
-            parameters.push(slp);
+
+            if (isTest)
+            {
+                if (k != "--resource-group")
+                {
+                    parameters.push(slp);
+                }
+                else
+                {
+                    parameters.push("{rg}");
+                }
+            }
+            else
+            {
+                parameters.push(slp);
+            }
         }
 
         return parameters.join(" ");

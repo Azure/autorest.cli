@@ -243,7 +243,7 @@ class CodeModelCli {
         ctx.Examples = examples;
         return ctx;
     }
-    GetExampleString(example) {
+    GetExampleString(example, isTest) {
         let parameters = [];
         parameters.push("az");
         parameters = parameters.concat(this.GetCliCommand().split(" "));
@@ -252,7 +252,17 @@ class CodeModelCli {
             let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
             //parameters += " " + k + " " + slp;
             parameters.push(k);
-            parameters.push(slp);
+            if (isTest) {
+                if (k != "--resource-group") {
+                    parameters.push(slp);
+                }
+                else {
+                    parameters.push("{rg}");
+                }
+            }
+            else {
+                parameters.push(slp);
+            }
         }
         return parameters.join(" ");
     }
