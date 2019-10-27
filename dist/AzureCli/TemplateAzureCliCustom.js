@@ -57,20 +57,32 @@ function GenerateAzureCliCustom(model) {
             //}
             let params = ctx.Parameters;
             // first parameters that are required
-            params.forEach(element => {
-                if (element.Type != "placeholder" && element.Required) {
+            for (let idx in params) {
+                let element = params[idx];
+                let required = element.Required;
+                if (element.Type == "placeholder")
+                    continue;
+                if (isUpdate && element.PathSwagger.startsWith("/"))
+                    required = false;
+                if (required) {
                     let name = PythonParameterName(element.Name);
                     output[output.length - 1] += ",";
                     output.push(indent + PythonParameterName(element.Name));
                 }
-            });
+            }
             // following by required parameters
-            params.forEach(element => {
-                if (element.Type != "placeholder" && !element.Required) {
+            for (let idx in params) {
+                let element = params[idx];
+                let required = element.Required;
+                if (element.Type == "placeholder")
+                    continue;
+                if (isUpdate && element.PathSwagger.startsWith("/"))
+                    required = false;
+                if (!required) {
                     output[output.length - 1] += ",";
                     output.push(indent + PythonParameterName(element.Name) + "=None");
                 }
-            });
+            }
             output[output.length - 1] += "):";
             let output_body = [];
             // create body transformation for methods that support it
