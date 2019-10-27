@@ -54,7 +54,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
 
                 if (method == 'delete')
                 {
-                    output.push("        g.command('delete', 'delete')");
+                    output.push("        g.custom_command('delete', 'delete_" +  model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'show')
                 {
@@ -63,7 +63,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 }
                 else if (method == 'update')
                 {
-                    output.push("        g.generic_update_command('update', custom_func_name='update_" + model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('update', 'update_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else
                 {
