@@ -10,6 +10,7 @@ import { EscapeString, ToCamelCase, Capitalize } from "../Common/Helpers";
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     let output: string[] = [];
     let hasActions: boolean = false;
+    let actions: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
@@ -107,8 +108,14 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
                     if (element.IsList && element.Type == "dict")
                     {
-                        argument += ", action=PeeringAdd" + Capitalize(ToCamelCase(element.Name)) + ", nargs='+'";
+                        let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(element.Name));
+                        argument += ", action=" + actionName + ", nargs='+'";
                         hasActions = true;
+
+                        if (actions.indexOf(actionName) < 0)
+                        {
+                            actions.push(actionName);
+                        }
                     }
 
                     argument += ")";
@@ -121,7 +128,14 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     if (hasActions)
     {
-        output.push("import azext_" + model.GetCliCommandModuleNameUnderscored() + ".action")
+        output.push("from azext_" + model.GetCliCommandModuleNameUnderscored() + ".action import (")
+
+        for (let idx: number = 0; idx < actions.length; idx++)
+        {
+            let action = actions[idx];
+            output.push("    " + action + (idx < actions.length - 1 ? "," : ""));
+        }
+        output.push(")")
     }
 
     output = output.concat(output_args);

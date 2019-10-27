@@ -8,6 +8,7 @@ const Helpers_1 = require("../Common/Helpers");
 function GenerateAzureCliParams(model) {
     let output = [];
     let hasActions = false;
+    let actions = [];
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
@@ -80,8 +81,12 @@ function GenerateAzureCliParams(model) {
                         argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "'";
                     }
                     if (element.IsList && element.Type == "dict") {
-                        argument += ", action=PeeringAdd" + Helpers_1.Capitalize(Helpers_1.ToCamelCase(element.Name)) + ", nargs='+'";
+                        let actionName = "PeeringAdd" + Helpers_1.Capitalize(Helpers_1.ToCamelCase(element.Name));
+                        argument += ", action=" + actionName + ", nargs='+'";
                         hasActions = true;
+                        if (actions.indexOf(actionName) < 0) {
+                            actions.push(actionName);
+                        }
                     }
                     argument += ")";
                     output_args.push(argument);
@@ -90,7 +95,12 @@ function GenerateAzureCliParams(model) {
         }
     } while (model.NextModule());
     if (hasActions) {
-        output.push("import azext_" + model.GetCliCommandModuleNameUnderscored() + ".action");
+        output.push("from azext_" + model.GetCliCommandModuleNameUnderscored() + ".action import (");
+        for (let idx = 0; idx < actions.length; idx++) {
+            let action = actions[idx];
+            output.push("    " + action + (idx < actions.length - 1 ? "," : ""));
+        }
+        output.push(")");
     }
     output = output.concat(output_args);
     output.push("");
