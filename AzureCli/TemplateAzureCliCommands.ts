@@ -23,13 +23,14 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     output.push("def load_command_table(self, _):");
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
+        // if disabled
+        if (model.GetCliCommand() == "-")
             continue;
 
         let methods: string[] = model.GetCliCommandMethods();
         if (methods.length > 0)
         {
+
 
             output.push("");
             output.push("    from ._client_factory import cf_" + model.ModuleOperationName);

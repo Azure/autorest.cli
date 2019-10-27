@@ -20,8 +20,8 @@ function GenerateAzureCliCommands(model) {
     output.push("");
     output.push("def load_command_table(self, _):");
     do {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
+        // if disabled
+        if (model.GetCliCommand() == "-")
             continue;
         let methods = model.GetCliCommandMethods();
         if (methods.length > 0) {

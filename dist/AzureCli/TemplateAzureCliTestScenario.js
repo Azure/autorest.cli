@@ -21,10 +21,10 @@ function GenerateAzureCliTestScenario(model, config) {
     output.push("TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))");
     output.push("");
     output.push("");
-    output.push("class ApimgmtScenarioTest(ScenarioTest):");
+    output.push("class " + model.ServiceNameX + "ScenarioTest(ScenarioTest):");
     output.push("");
-    output.push("    @ResourceGroupPreparer(name_prefix='cli_test_apimgmt')");
-    output.push("    def test_apimgmt(self, resource_group):");
+    output.push("    @ResourceGroupPreparer(name_prefix='cli_test_" + model.GetCliCommandModuleNameUnderscored() + "')");
+    output.push("    def test_" + model.GetCliCommandModuleNameUnderscored() + "(self, resource_group):");
     output.push("");
     output.push("        self.kwargs.update({");
     output.push("            'name': 'test1'");
