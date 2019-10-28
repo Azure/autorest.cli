@@ -149,6 +149,7 @@ extension.Add("cli", async autoRestApi => {
     {
       Info("GENERATION: --magic-modules");
       generateMagicModules = true;
+      folderMagicModules = "magic-modules-input/";
     }
     else if (await autoRestApi.GetValue("swagger-integration-test"))
     {
