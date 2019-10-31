@@ -105,6 +105,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(void 0, void 0, void 0, function
         let debugMap = yield autoRestApi.GetValue("debug-map");
         let debugCli = yield autoRestApi.GetValue("debug-cli");
         let flattenAll = yield autoRestApi.GetValue("flatten-all");
+        let tag = yield autoRestApi.GetValue("tag");
+        Info(tag);
         // Handle generation type parameter
         if (yield autoRestApi.GetValue("cli-module")) {
             Info("GENERATION: --cli-module");
@@ -358,9 +360,9 @@ extension.Add("cli", (autoRestApi) => __awaiter(void 0, void 0, void 0, function
                                 //if (mn == 'batchaccount') mn = "batchaccountxx";
                                 //if (mn != "batchaccount")
                                 if (generateMagicModules) {
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                                 }
                             }
                             else {

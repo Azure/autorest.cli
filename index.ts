@@ -119,6 +119,9 @@ extension.Add("cli", async autoRestApi => {
     let debugCli = await autoRestApi.GetValue("debug-cli");
     let flattenAll = await autoRestApi.GetValue("flatten-all");
 
+    let tag = await autoRestApi.GetValue("tag");
+    Info(tag);
+
 
     // Handle generation type parameter
     if (await autoRestApi.GetValue("cli-module"))
@@ -441,9 +444,9 @@ extension.Add("cli", async autoRestApi => {
                   //if (mn != "batchaccount")
                   if (generateMagicModules)
                   {
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                   }
                 } else {
 
