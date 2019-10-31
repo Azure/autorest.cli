@@ -6,15 +6,21 @@
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionKind } from "./ModuleMap"
 import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
-import { ToSnakeCase, Capitalize, Uncapitalize } from "../Common/Helpers";
+import { ToSnakeCase, Capitalize, Uncapitalize, ToGoCase } from "../Common/Helpers";
 
 export class MapFlattener
 {
-    public constructor (map: MapModuleGroup, flatten: Adjustments, flattenAll: boolean, debug: boolean, log: LogCallback)
+    public constructor (map: MapModuleGroup,
+                        flatten: Adjustments,
+                        flattenAll: boolean,
+                        optionOverride: any,
+                        debug: boolean,
+                        log: LogCallback)
     {
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
+        this._optionOverride = optionOverride;
         this._log = log;
         this._debug = debug;
     }
@@ -115,6 +121,7 @@ export class MapFlattener
                             {
                                 suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
                                 suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                                this.ApplyOptionOverride(suboptions[si]);
                             }
                         }
     
@@ -212,6 +219,7 @@ export class MapFlattener
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
+                        this.ApplyOptionOverride(suboptions[si]);
                     }
 
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
@@ -228,9 +236,29 @@ export class MapFlattener
         return options;
     }
 
+    private ApplyOptionOverride(option: ModuleOption)
+    {
+        if (this._optionOverride == null)
+            return;
+        
+        let override: any = this._optionOverride[option.NameAnsible];
+
+        if (override == undefined)
+            return;
+
+        let name = override['name'];
+
+        if (name != undefined)
+        {
+            option.NameAnsible = name;
+            option.NameTerraform = ToGoCase(name);
+        }
+    }
+
     private _map: MapModuleGroup = null;
     private _flatten: Adjustments;
     private _flattenAll: boolean;
     private _log: LogCallback;
     private _debug: boolean;
+    private _optionOverride: any;
 }

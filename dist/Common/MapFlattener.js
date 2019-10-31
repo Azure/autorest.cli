@@ -7,11 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("../Common/Helpers");
 class MapFlattener {
-    constructor(map, flatten, flattenAll, debug, log) {
+    constructor(map, flatten, flattenAll, optionOverride, debug, log) {
         this._map = null;
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
+        this._optionOverride = optionOverride;
         this._log = log;
         this._debug = debug;
     }
@@ -84,6 +85,7 @@ class MapFlattener {
                             if (path != "/") {
                                 suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
                                 suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                                this.ApplyOptionOverride(suboptions[si]);
                             }
                         }
                         options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
@@ -164,6 +166,7 @@ class MapFlattener {
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
+                        this.ApplyOptionOverride(suboptions[si]);
                     }
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
                     options[i].SubOptions = [];
@@ -175,6 +178,18 @@ class MapFlattener {
             }
         }
         return options;
+    }
+    ApplyOptionOverride(option) {
+        if (this._optionOverride == null)
+            return;
+        let override = this._optionOverride[option.NameAnsible];
+        if (override == undefined)
+            return;
+        let name = override['name'];
+        if (name != undefined) {
+            option.NameAnsible = name;
+            option.NameTerraform = Helpers_1.ToGoCase(name);
+        }
     }
 }
 exports.MapFlattener = MapFlattener;

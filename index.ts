@@ -111,9 +111,12 @@ extension.Add("cli", async autoRestApi => {
     let adjustments = await autoRestApi.GetValue("adjustments");
     let cliName = await autoRestApi.GetValue("cli-name");
     let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
+    let optionOverrides = await autoRestApi.GetValue("option-override");
+    
+    /* THIS IS TO BE OBSOLETED ---------------------------*/
     if (adjustments == null) adjustments = {};
     let adjustmentsObject = new Adjustments(adjustments);
-
+    /*----------------------------------------------------*/
     let debug = await autoRestApi.GetValue("debug");
     let debugMap = await autoRestApi.GetValue("debug-map");
     let debugCli = await autoRestApi.GetValue("debug-cli");
@@ -245,7 +248,7 @@ extension.Add("cli", async autoRestApi => {
         }
 
         // flatten the map using flattener
-        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, debug, function(msg: string) {
+        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, debug, function(msg: string) {
           if (debug)
           {
             autoRestApi.Message({

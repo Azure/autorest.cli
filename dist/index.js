@@ -97,9 +97,12 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let adjustments = yield autoRestApi.GetValue("adjustments");
         let cliName = yield autoRestApi.GetValue("cli-name");
         let cliCommandOverrides = yield autoRestApi.GetValue("cmd-override");
+        let optionOverrides = yield autoRestApi.GetValue("option-override");
+        /* THIS IS TO BE OBSOLETED ---------------------------*/
         if (adjustments == null)
             adjustments = {};
         let adjustmentsObject = new Adjustments_1.Adjustments(adjustments);
+        /*----------------------------------------------------*/
         let debug = yield autoRestApi.GetValue("debug");
         let debugMap = yield autoRestApi.GetValue("debug-map");
         let debugCli = yield autoRestApi.GetValue("debug-cli");
@@ -207,7 +210,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
             // flatten the map using flattener
-            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, debug, function (msg) {
+            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, debug, function (msg) {
                 if (debug) {
                     autoRestApi.Message({
                         Channel: "warning",
