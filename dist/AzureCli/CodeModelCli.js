@@ -233,6 +233,7 @@ class CodeModelCli {
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
+                            // [TODO] support subparame
                         }
                     }
                 }
