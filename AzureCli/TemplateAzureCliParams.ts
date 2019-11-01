@@ -106,16 +106,20 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         argument += ", id_part=None, help='" + EscapeString(element.Help) + "'"; 
                     }
 
-                    if (element.IsList && element.Type == "dict")
+                    if (element.IsList)
                     {
-                        let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(element.Name));
-                        argument += ", action=" + actionName + ", nargs='+'";
-                        hasActions = true;
-
-                        if (actions.indexOf(actionName) < 0)
+                        if (element.Type == "dict")
                         {
-                            actions.push(actionName);
+                            let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(element.Name));
+                            argument += ", action=" + actionName;
+                            hasActions = true;
+
+                            if (actions.indexOf(actionName) < 0)
+                            {
+                                actions.push(actionName);
+                            }
                         }
+                        argument += ", nargs='+'";
                     }
 
                     argument += ")";

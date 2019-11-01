@@ -87,17 +87,22 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let folderAnsibleModulesRest = "";
         let folderAnsibleModulesCollection = "";
         let folderSwaggerIntegrationTest = "";
-        let folderPythonIntegrationTest = "";
         let folderExamplesCli = "";
         let folderExamplesPythonRest = "";
         let folderExamplesPythonSdk = "";
         // get settings
         const isDebugFlagSet = yield autoRestApi.GetValue("debug");
         const namespace = yield autoRestApi.GetValue("namespace");
+        // package name -- can be guessed from namespace
+        let packageName = yield autoRestApi.GetValue("package-name");
+        if (!packageName) {
+            packageName = namespace.replace('.', '-');
+        }
         let adjustments = yield autoRestApi.GetValue("adjustments");
         let cliName = yield autoRestApi.GetValue("cli-name");
         let cliCommandOverrides = yield autoRestApi.GetValue("cmd-override");
         let optionOverrides = yield autoRestApi.GetValue("option-override");
+        let folderPythonIntegrationTest = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
         /* THIS IS TO BE OBSOLETED ---------------------------*/
         if (adjustments == null)
             adjustments = {};
@@ -301,7 +306,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }
                     let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, config);
-                    let p = folderSwaggerIntegrationTest + cliName + ".py";
+                    let p = folderSwaggerIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);
                 }
@@ -324,7 +329,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }
                     let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, config, map.Namespace, cliName, map.MgmtClientName);
-                    let p = folderSwaggerIntegrationTest + cliName + ".py";
+                    let p = folderPythonIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);
                 }

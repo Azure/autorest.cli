@@ -84,9 +84,12 @@ export class MapFlattener
 
                 let flatten: any = this._flatten.GetFlatten(optionPath);
 
-                if (flatten == "" && this._flattenAll && !option.IsList)
+                if (flatten == "" && this._flattenAll)
                 {
-                    flatten = "*/*";
+                    if (!(option.IsList && option.SubOptions.length > 1))
+                    {
+                        flatten = "*/*";
+                    }
                 }
 
                 if (flatten != "")
@@ -122,6 +125,15 @@ export class MapFlattener
                                 suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
                                 suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
                                 this.ApplyOptionOverride(suboptions[si]);
+                            }
+
+                            // this happens only when parent is list of dictionaries containing single element
+                            // so the element becomes a list itself
+                            // we also inherit documentation from parent as it's usually more relevant
+                            if (option.IsList)
+                            {
+                                suboptions[si].IsList = option.IsList;
+                                suboptions[si].Documentation = option.Documentation;
                             }
                         }
     

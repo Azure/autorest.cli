@@ -98,7 +98,6 @@ extension.Add("cli", async autoRestApi => {
     let folderAnsibleModulesRest = "";
     let folderAnsibleModulesCollection = "";
     let folderSwaggerIntegrationTest = "";
-    let folderPythonIntegrationTest = "";
     let folderExamplesCli = "";
     let folderExamplesPythonRest = "";
     let folderExamplesPythonSdk = "";
@@ -108,11 +107,20 @@ extension.Add("cli", async autoRestApi => {
     const isDebugFlagSet = await autoRestApi.GetValue("debug");
     const namespace = await autoRestApi.GetValue("namespace");
 
+    // package name -- can be guessed from namespace
+    let packageName = await autoRestApi.GetValue("package-name");
+    if (!packageName)
+    {
+      packageName = namespace.replace('.', '-');
+    }
+
     let adjustments = await autoRestApi.GetValue("adjustments");
     let cliName = await autoRestApi.GetValue("cli-name");
     let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
     let optionOverrides = await autoRestApi.GetValue("option-override");
-    
+
+    let folderPythonIntegrationTest = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
+
     /* THIS IS TO BE OBSOLETED ---------------------------*/
     if (adjustments == null) adjustments = {};
     let adjustmentsObject = new Adjustments(adjustments);
@@ -364,7 +372,7 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GenerateSwaggerIntegrationTest(examples, config);
-            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            let p = folderSwaggerIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
             autoRestApi.WriteFile(p, code.join('\r\n'));
             Info("INTEGRATION TEST: " + p)
           }
@@ -394,7 +402,7 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GeneratePythonIntegrationTest(examples, config, map.Namespace, cliName, map.MgmtClientName);
-            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            let p = folderPythonIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
             autoRestApi.WriteFile(p, code.join('\r\n'));
             Info("INTEGRATION TEST: " + p)
           }

@@ -80,13 +80,16 @@ function GenerateAzureCliParams(model) {
                     else {
                         argument += ", id_part=None, help='" + Helpers_1.EscapeString(element.Help) + "'";
                     }
-                    if (element.IsList && element.Type == "dict") {
-                        let actionName = "PeeringAdd" + Helpers_1.Capitalize(Helpers_1.ToCamelCase(element.Name));
-                        argument += ", action=" + actionName + ", nargs='+'";
-                        hasActions = true;
-                        if (actions.indexOf(actionName) < 0) {
-                            actions.push(actionName);
+                    if (element.IsList) {
+                        if (element.Type == "dict") {
+                            let actionName = "PeeringAdd" + Helpers_1.Capitalize(Helpers_1.ToCamelCase(element.Name));
+                            argument += ", action=" + actionName;
+                            hasActions = true;
+                            if (actions.indexOf(actionName) < 0) {
+                                actions.push(actionName);
+                            }
                         }
+                        argument += ", nargs='+'";
                     }
                     argument += ")";
                     output_args.push(argument);
