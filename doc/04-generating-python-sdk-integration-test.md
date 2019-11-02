@@ -19,7 +19,7 @@ The easiest way to use **autorest.cli** is the container:
 
 ## Configuration in **readme.cli.md** File
 
-NOTE: The same configuration will be used to generate Azure CLI commands tests.
+>NOTE: The same configuration will be used to generate Azure CLI commands tests.
 
 In order to generate Python integration test you will need to create **readme.cli.md** file next to **readme.md** file in Azure REST API specification repository:
 
@@ -31,8 +31,6 @@ The file should have following format:
 
     ``` yaml $(cli)
     cli:
-        cli-name: appservice
-        package-name: azure-mgmt-web
         namespace: azure.mgmt.web
         test-setup:
             - name: "Create Or Update App Service plan"

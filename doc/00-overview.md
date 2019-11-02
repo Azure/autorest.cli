@@ -1,5 +1,10 @@
 # Autorest.CLI Overview
 
+## Goals
+
+
+
+
 ## Phases of Operation
 
 ### Scan input and generate unflattened map
