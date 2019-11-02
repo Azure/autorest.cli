@@ -23,12 +23,14 @@ Minimal **readme.cli.md** file should look as follows:
     ``` yaml $(cli)
     cli:
       namespace: azure.mgmt.healthcareapis
+      flatten-all: true
     ```
 
 ## Other Important Top Level Parameters
 
 |Parameter|Example|Description|
 |---------|-------|-----------|
+|flatten-all|true|Flatten all structures automaticaly. This option will be default in the future, as any custom flattening will be disabled.|
 |package-name|azure-mgmt-healthcareapis|This is Python package name. Normally it will be derived from **namespace**, so only needs to be defined if package name differs from default|
 |root-name|healthcareapis|This is Azure CLI command module name, or first part of the name of downstream Ansible/Terraform modules. By default it will be taken from namespace. Define it explicitly if default name is not desired.|
 
@@ -39,9 +41,80 @@ Minimal **readme.cli.md** file should look as follows:
 |cmd-override|This is a dictionary mapping Azure REST API resource URL into Azure CLI commands. Keys in the dictionary are regular exppressions that should match URL, values are commands groups|
 |option-override|This is a dictionary where keys are option names (with underscores) and values are dictionaries of overrides|
 
+Command override option can look like this:
+
+    cli:
+      ...
+      cmd-override:
+        "^.*[/]microsoft.managednetwork/scopeassignments([/][^/]*)?$": "* scope-assignment"
+        "^.*[/]managednetworkgroups([/][^/]*)?$": "* group"
+        "^.*[/]managednetworkpeeringpolicies([/][^/]*)?$": "* peering-policy"
+
+Note that * represents **root-name** for simplicity.
+
+It's also possible to disable entire command group if necessary by using "-". In following example entire Scope Assignments operation group is disabled:
+
+    cli:
+      ...
+      cmd-override:
+        ...
+        "^.*[/]managednetworkpeeringpolicies([/][^/]*)?$": "-"
+        ...
+
+
+>NOTE: It should be also considered using Operation ID instead of URL. Possibly both could be supported.
+
+## Renaming and Changing Options Behaviour
+
+Add **option-override** section to rename or change other behaviour of options.
+It should be a dictionary with default names of options as keys, and values are subdictionaries of properties to be applied to default options.
+
+Example below shows how to rename long option names generated as a result of flattening:
+
+    cli:
+      ...
+      option-override:
+        "scope_management_groups_id":
+          name: scope_management_groups
+        "scope_subscriptions_id":
+          name: scope_subscriptions
+
+>NOTE: Different scheme could be considered to apply overrides, for instance regular expressions, etc.
+
+Other properties that could be applied to options:
+
+|Parameter|Description|
+|---------|-----------|
+|updatable|Set to false if option can be only applied to **create** but not **update** command|
+|doc|Alternative documentation if the one coming from Azure REST API specs is not accurate|
+|doc-replace|Regular expression to do text replacement in documentation|
+|validation|Regular expression to validate value, if not defined in swagger|
+
+>NOTE: We can add properties here as necessary
+
 ## Modelling Integration Tests
 
 |Parameter|Description|
 |---------|-----------|
 |test-setup|This is a list of integration test steps including prerequisites and references to examples|
 
+Integration test setup if a list of:
+- prerequisites
+- examples from Azure REST API specification
+- other directives 
+
+This section is used to:
+- generate integration tests for Python SDK
+- generate integration tests for Azure CLI command module
+- possibly generate end to end examples
+
+It could look as follows:
+    
+    cli:
+      ...
+      test-setup:
+        - prerequisite: ResourceGroup
+        - prerequisite: VirtualNetwork
+        - example: Create or Update a service with all parameters
+
+Code above creates integration test including creation of default Resource Group and Virtual Network and includes example from Azure REST API Specs identified as **Create or Update a service with all parameters**
