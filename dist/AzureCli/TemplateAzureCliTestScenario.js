@@ -34,7 +34,7 @@ function GenerateAzureCliTestScenario(model, config) {
     for (var ci = 0; ci < config.length; ci++) {
         // find example by name
         let exampleCmd = findExampleByName(model, config[ci].name, output);
-        if (exampleCmd != null && exampleCmd != []) {
+        if (exampleCmd != null && exampleCmd.length > 0) {
             let prefix = "        self.cmd(";
             for (let idx = 0; idx < exampleCmd.length; idx++) {
                 let prefix = (idx == 0) ? "        self.cmd('" : "                 '";

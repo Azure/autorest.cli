@@ -40,7 +40,7 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
         // find example by name
         let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
 
-        if (exampleCmd != null && exampleCmd != [])
+        if (exampleCmd != null && exampleCmd.length > 0)
         {
             let prefix: string = "        self.cmd(";
 

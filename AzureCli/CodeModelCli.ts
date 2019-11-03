@@ -352,7 +352,7 @@ export class CodeModelCli
     {
         let parameters: string[] = [];
 
-        parameters.push("az " + parameters.concat(this.GetCliCommand().split(" ")) + " " + example.Method)
+        parameters.push("az " + this.GetCliCommand() + " " + example.Method)
 
         for (let k in example.Parameters)
         {

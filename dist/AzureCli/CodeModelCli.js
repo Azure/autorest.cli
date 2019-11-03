@@ -246,7 +246,7 @@ class CodeModelCli {
     }
     GetExampleItems(example, isTest) {
         let parameters = [];
-        parameters.push("az " + parameters.concat(this.GetCliCommand().split(" ")) + " " + example.Method);
+        parameters.push("az " + this.GetCliCommand() + " " + example.Method);
         for (let k in example.Parameters) {
             let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
             if (isTest) {
