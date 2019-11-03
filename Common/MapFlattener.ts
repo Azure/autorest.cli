@@ -6,15 +6,21 @@
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionKind } from "./ModuleMap"
 import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
-import { ToSnakeCase, Capitalize, Uncapitalize } from "../Common/Helpers";
+import { ToSnakeCase, Capitalize, Uncapitalize, ToGoCase } from "../Common/Helpers";
 
 export class MapFlattener
 {
-    public constructor (map: MapModuleGroup, flatten: Adjustments, flattenAll: boolean, debug: boolean, log: LogCallback)
+    public constructor (map: MapModuleGroup,
+                        flatten: Adjustments,
+                        flattenAll: boolean,
+                        optionOverride: any,
+                        debug: boolean,
+                        log: LogCallback)
     {
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
+        this._optionOverride = optionOverride;
         this._log = log;
         this._debug = debug;
     }
@@ -37,7 +43,7 @@ export class MapFlattener
         {
             let option = options[i];
 
-            if (option.Kind != ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name'))
+            if (option.Kind == ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name'))
             {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
@@ -80,7 +86,10 @@ export class MapFlattener
 
                 if (flatten == "" && this._flattenAll)
                 {
-                    flatten = "*/*";
+                    if (!(option.IsList && option.SubOptions.length > 1))
+                    {
+                        flatten = "*/*";
+                    }
                 }
 
                 if (flatten != "")
@@ -97,15 +106,40 @@ export class MapFlattener
                     {
                         for (let si in suboptions)
                         {
-                            suboptions[si].DispositionRest = option.NameSwagger + "/" + suboptions[si].DispositionRest;
-                            suboptions[si].DispositionSdk = option.NamePythonSdk + "/" + suboptions[si].DispositionSdk;
+                            let dispositionRest = option.DispositionRest.replace("*", option.NameSwagger) + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
+                            let dispositionSdk = option.DispositionSdk.replace("*", option.NamePythonSdk) + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            //if (path == "/")
+                            //{
+                            //    dispositionRest = "/properties/" + dispositionRest;
+                            //    dispositionSdk = "/" + dispositionSdk;
+                            //}
+                            //else
+                            //{
+                            //    dispositionRest = "properties/" + dispositionRest;
+                            //}
+                            suboptions[si].DispositionRest = dispositionRest;
+                            suboptions[si].DispositionSdk = dispositionSdk;
 
-                            suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                            suboptions[si].NameSwagger = option.NameSwagger + Capitalize(suboptions[si].NameSwagger);
-                            suboptions[si].NameGoSdk = option.NameGoSdk + Capitalize(suboptions[si].NameGoSdk);
-                            suboptions[si].NamePythonSdk = option.NamePythonSdk + "_" + suboptions[si].NamePythonSdk;
-                            suboptions[si].NameTerraform = option.NameTerraform + Capitalize(suboptions[si].NameTerraform);
+                            if (path != "/")
+                            {
+                                suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                                suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                                this.ApplyOptionOverride(suboptions[si]);
+                            }
+
+                            // this happens only when parent is list of dictionaries containing single element
+                            // so the element becomes a list itself
+                            // we also inherit documentation from parent as it's usually more relevant
+                            if (option.IsList)
+                            {
+                                suboptions[si].IsList = option.IsList;
+                                suboptions[si].Documentation = option.Documentation;
+                            }
                         }
+    
+                        options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
+                        options[i].SubOptions = [];
+                        options[i].Hidden = true;
                     }
                     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     // Everything below is going to be obsolete
@@ -197,6 +231,7 @@ export class MapFlattener
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
+                        this.ApplyOptionOverride(suboptions[si]);
                     }
 
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
@@ -213,9 +248,29 @@ export class MapFlattener
         return options;
     }
 
+    private ApplyOptionOverride(option: ModuleOption)
+    {
+        if (this._optionOverride == null)
+            return;
+        
+        let override: any = this._optionOverride[option.NameAnsible];
+
+        if (override == undefined)
+            return;
+
+        let name = override['name'];
+
+        if (name != undefined)
+        {
+            option.NameAnsible = name;
+            option.NameTerraform = ToGoCase(name);
+        }
+    }
+
     private _map: MapModuleGroup = null;
     private _flatten: Adjustments;
     private _flattenAll: boolean;
     private _log: LogCallback;
     private _debug: boolean;
+    private _optionOverride: any;
 }

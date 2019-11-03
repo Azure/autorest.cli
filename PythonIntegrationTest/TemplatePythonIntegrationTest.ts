@@ -45,7 +45,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
     //output.push("        account_name = self.get_resource_name('pyarmcdn')");
     output.push("");
     // XXX - this is service specific and should be fixed
-    output.push("SERVICE_NAME = \"myapimrndxyz\"");
+    output.push("        SERVICE_NAME = \"myapimrndxyz\"");
 
     
     for (var ci = 0; ci < config.length; ci++)

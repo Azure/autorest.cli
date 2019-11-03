@@ -7,11 +7,12 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("../Common/Helpers");
 class MapFlattener {
-    constructor(map, flatten, flattenAll, debug, log) {
+    constructor(map, flatten, flattenAll, optionOverride, debug, log) {
         this._map = null;
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
+        this._optionOverride = optionOverride;
         this._log = log;
         this._debug = debug;
     }
@@ -26,7 +27,7 @@ class MapFlattener {
     ProcessTopLevelOptions(options) {
         for (let i = options.length - 1; i >= 0; i--) {
             let option = options[i];
-            if (option.Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
+            if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
@@ -56,7 +57,9 @@ class MapFlattener {
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
                 let flatten = this._flatten.GetFlatten(optionPath);
                 if (flatten == "" && this._flattenAll) {
-                    flatten = "*/*";
+                    if (!(option.IsList && option.SubOptions.length > 1)) {
+                        flatten = "*/*";
+                    }
                 }
                 if (flatten != "") {
                     // all the suboptions of current option will be attached at the end
@@ -68,14 +71,35 @@ class MapFlattener {
                     }
                     else if (flatten == "*/*") {
                         for (let si in suboptions) {
-                            suboptions[si].DispositionRest = option.NameSwagger + "/" + suboptions[si].DispositionRest;
-                            suboptions[si].DispositionSdk = option.NamePythonSdk + "/" + suboptions[si].DispositionSdk;
-                            suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                            suboptions[si].NameSwagger = option.NameSwagger + Helpers_1.Capitalize(suboptions[si].NameSwagger);
-                            suboptions[si].NameGoSdk = option.NameGoSdk + Helpers_1.Capitalize(suboptions[si].NameGoSdk);
-                            suboptions[si].NamePythonSdk = option.NamePythonSdk + "_" + suboptions[si].NamePythonSdk;
-                            suboptions[si].NameTerraform = option.NameTerraform + Helpers_1.Capitalize(suboptions[si].NameTerraform);
+                            let dispositionRest = option.DispositionRest.replace("*", option.NameSwagger) + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
+                            let dispositionSdk = option.DispositionSdk.replace("*", option.NamePythonSdk) + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            //if (path == "/")
+                            //{
+                            //    dispositionRest = "/properties/" + dispositionRest;
+                            //    dispositionSdk = "/" + dispositionSdk;
+                            //}
+                            //else
+                            //{
+                            //    dispositionRest = "properties/" + dispositionRest;
+                            //}
+                            suboptions[si].DispositionRest = dispositionRest;
+                            suboptions[si].DispositionSdk = dispositionSdk;
+                            if (path != "/") {
+                                suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                                suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                                this.ApplyOptionOverride(suboptions[si]);
+                            }
+                            // this happens only when parent is list of dictionaries containing single element
+                            // so the element becomes a list itself
+                            // we also inherit documentation from parent as it's usually more relevant
+                            if (option.IsList) {
+                                suboptions[si].IsList = option.IsList;
+                                suboptions[si].Documentation = option.Documentation;
+                            }
                         }
+                        options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
+                        options[i].SubOptions = [];
+                        options[i].Hidden = true;
                     }
                     // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
                     // Everything below is going to be obsolete
@@ -151,6 +175,7 @@ class MapFlattener {
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
+                        this.ApplyOptionOverride(suboptions[si]);
                     }
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
                     options[i].SubOptions = [];
@@ -162,6 +187,18 @@ class MapFlattener {
             }
         }
         return options;
+    }
+    ApplyOptionOverride(option) {
+        if (this._optionOverride == null)
+            return;
+        let override = this._optionOverride[option.NameAnsible];
+        if (override == undefined)
+            return;
+        let name = override['name'];
+        if (name != undefined) {
+            option.NameAnsible = name;
+            option.NameTerraform = Helpers_1.ToGoCase(name);
+        }
     }
 }
 exports.MapFlattener = MapFlattener;

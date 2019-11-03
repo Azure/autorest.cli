@@ -22,8 +22,8 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
+        // if disabled
+        if (model.GetCliCommand() == "-")
             continue;
 
         output.push("");

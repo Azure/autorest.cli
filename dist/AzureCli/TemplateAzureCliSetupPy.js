@@ -51,7 +51,7 @@ function GenerateAzureCliSetupPy(model) {
     output.push("    HISTORY = f.read()");
     output.push("");
     output.push("setup(");
-    output.push("    name='" + model.GetCliCommandModuleName() + "',");
+    output.push("    name='" + model.GetCliCommandModuleNameUnderscored() + "',");
     output.push("    version=VERSION,");
     output.push("    description='Microsoft Azure Command-Line Tools " + model.ServiceNameX + " Extension',");
     output.push("   # TODO: Update author and email, if applicable");
@@ -64,7 +64,7 @@ function GenerateAzureCliSetupPy(model) {
     output.push("    classifiers=CLASSIFIERS,");
     output.push("    packages=find_packages(),");
     output.push("    install_requires=DEPENDENCIES,");
-    output.push("    package_data={'azext_" + model.GetCliCommandModuleName() + "': ['azext_metadata.json']},");
+    output.push("    package_data={'azext_" + model.GetCliCommandModuleNameUnderscored() + "': ['azext_metadata.json']},");
     output.push(")");
     return output;
 }

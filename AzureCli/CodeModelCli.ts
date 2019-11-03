@@ -81,6 +81,11 @@ export class CodeModelCli
         return this.Map.CliName;
     }
 
+    public GetCliCommandModuleNameUnderscored()
+    {
+        return this.Map.CliName.replace("-", "_");
+    }
+
     public GetCliCommand(methodName: string = null): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -328,6 +333,8 @@ export class CodeModelCli
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
+
+                            // [TODO] support subparameters
                         }
                     }
                 }
@@ -341,14 +348,48 @@ export class CodeModelCli
         return ctx;
     }
 
+    public GetExampleString(example: CommandExample, isTest: boolean): string
+    {
+        let parameters: string[] = [];
+
+        parameters.push("az");
+        parameters = parameters.concat(this.GetCliCommand().split(" "));
+        parameters.push(example.Method);
+
+        for (let k in example.Parameters)
+        {
+            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+            //parameters += " " + k + " " + slp;
+            parameters.push(k);
+
+            if (isTest)
+            {
+                if (k != "--resource-group")
+                {
+                    parameters.push(slp);
+                }
+                else
+                {
+                    parameters.push("{rg}");
+                }
+            }
+            else
+            {
+                parameters.push(slp);
+            }
+        }
+
+        return parameters.join(" ");
+    }
+
     private GetCliTypeFromOption(o: ModuleOption): string
     {
         let type: string = "";
-        if (o.IsList)
+        /*if (o.IsList)
         {
-            return "list";
+            type="list[" + o.Type + "]";
         }
-        else if (o.Type.startsWith("unknown["))
+        else*/ if (o.Type.startsWith("unknown["))
         {
             if (o.Type.startsWith("unknown[DictionaryType"))
             {
@@ -783,7 +824,7 @@ export class CodeModelCli
             let option = null;
             for (let optionIdx in this.ModuleOptions)
             {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName)
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleOptionKind.MODULE_OPTION_BODY)
                 {
                     option = this.ModuleOptions[optionIdx];
                     break;
@@ -796,8 +837,6 @@ export class CodeModelCli
                 //{
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleOptionPlaceholder(optionName, "dict", false);
-
-                    
 
                     option.SubOptions = [];
                     option.TypeName =  hiddenParamatersOption.TypeName;
@@ -850,7 +889,7 @@ export class CodeModelCli
 
     public get ModuleOperationName(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
 
     public get ObjectName(): string

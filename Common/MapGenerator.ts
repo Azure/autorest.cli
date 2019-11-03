@@ -41,6 +41,10 @@ export class MapGenerator
         {
             name = name.substring(0, name.length - 3) + "y";
         }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
+        }
         else if (name.endsWith('s'))
         {
             name = name.substring(0, name.length - 1);
@@ -61,6 +65,10 @@ export class MapGenerator
         if (name.endsWith("ies"))
         {
             name = name.substring(0, name.length - 3) + "y";
+        }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
         }
         else if (name.endsWith('s'))
         {
@@ -105,9 +113,9 @@ export class MapGenerator
                 if (this.ModuleUpdateMethod != null) methods.push(this.ModuleUpdateMethod);
                 if (this.ModuleDeleteMethod != null) methods.push(this.ModuleDeleteMethod);
                 //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
-
-                methods = methods.concat(methodsInfo);
             }
+
+            methods = methods.concat(methodsInfo);
 
             // if any of the create/update methods were detected -- add main module
             if (methods.length > 0)
@@ -258,6 +266,10 @@ export class MapGenerator
         if (name.endsWith("ies"))
         {
             name = name.substring(0, name.length - 3) + "y";
+        }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
         }
         else if (name.endsWith('s'))
         {

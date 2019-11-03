@@ -46,8 +46,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             // create, delete, list, show, update
             let methodName = methods[mi];
 
-            // just use generic delete
-            if (methodName == 'delete' || methodName == "show")
+            // exclude some methods from generation, as they are generic
+            if (methodName == "show")
                 continue;
 
             let ctx = model.GetCliCommandContext(methodName);
@@ -65,49 +65,67 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
 
-            if (!isUpdate)
-            {
+            //if (!isUpdate)
+            //{
                 output.push(call + "cmd, client");
-            }
-            else
-            {
-                output.push(call + "cmd, client, body");
-            }
+            //}
+            //else
+            //{
+            //    output.push(call + "cmd, client, body");
+            //}
 
             let params: CommandParameter[] = ctx.Parameters;
  
             // first parameters that are required
-            params.forEach(element => {
-                if (element.Type != "placeholder" && element.Required)
+            for (let idx in params)
+            {
+                let element = params[idx];
+                let required = element.Required;
+
+                if (element.Type == "placeholder")
+                    continue;
+
+                if (isUpdate && element.PathSwagger.startsWith("/"))
+                    required = false;
+
+                if (required)
                 {
                     let name = PythonParameterName(element.Name);
                     output[output.length - 1] += ",";  
                     output.push(indent + PythonParameterName(element.Name));
                 }
-            });
+            }
 
             // following by required parameters
-            params.forEach(element => {
-                if (element.Type != "placeholder" && !element.Required)
+            for (let idx in params)
+            {
+                let element = params[idx];
+                let required = element.Required;
+
+                if (element.Type == "placeholder")
+                    continue;
+
+                if (isUpdate && element.PathSwagger.startsWith("/"))
+                    required = false;
+
+                if (!required)
                 {
                     output[output.length - 1] += ",";  
                     output.push(indent + PythonParameterName(element.Name) + "=None");
                 }
-            });
+            }
 
             output[output.length - 1] += "):";  
 
             let output_body: string[] = []
             // create body transformation for methods that support it
+
             if (methodName != "show" && methodName != "list" && methodName != "delete")
             {
                 // body transformation
                 if (!isUpdate)
                 {
-                    if (!isUpdate)
-                    {
-                        output_body.push("    body = {}");
-                    }
+                    output_body.push("    body = {}");
                 }
                 else
                 {
@@ -150,7 +168,20 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                             access += "." + last + " = ";
                         }
 
-                        if (element.Type != "dict" && !element.IsList)
+                        if (element.IsList)
+                        {
+                            if (element.Type != "dict")
+                            {
+                                // a comma separated list
+                                access += "None if " + PythonParameterName(element.Name) + " is None else " + PythonParameterName(element.Name) + ".split(',')";
+                            }
+                            else
+                            {
+                                // already preprocessed by actions
+                                access += PythonParameterName(element.Name)
+                            }
+                        }
+                        else if (element.Type != "dict")
                         {
                             access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
                         }

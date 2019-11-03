@@ -48,6 +48,9 @@ class CodeModelCli {
     GetCliCommandModuleName() {
         return this.Map.CliName;
     }
+    GetCliCommandModuleNameUnderscored() {
+        return this.Map.CliName.replace("-", "_");
+    }
     GetCliCommand(methodName = null) {
         let options = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -230,6 +233,7 @@ class CodeModelCli {
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
+                            // [TODO] support subparameters
                         }
                     }
                 }
@@ -240,12 +244,36 @@ class CodeModelCli {
         ctx.Examples = examples;
         return ctx;
     }
+    GetExampleString(example, isTest) {
+        let parameters = [];
+        parameters.push("az");
+        parameters = parameters.concat(this.GetCliCommand().split(" "));
+        parameters.push(example.Method);
+        for (let k in example.Parameters) {
+            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+            //parameters += " " + k + " " + slp;
+            parameters.push(k);
+            if (isTest) {
+                if (k != "--resource-group") {
+                    parameters.push(slp);
+                }
+                else {
+                    parameters.push("{rg}");
+                }
+            }
+            else {
+                parameters.push(slp);
+            }
+        }
+        return parameters.join(" ");
+    }
     GetCliTypeFromOption(o) {
         let type = "";
-        if (o.IsList) {
-            return "list";
+        /*if (o.IsList)
+        {
+            type="list[" + o.Type + "]";
         }
-        else if (o.Type.startsWith("unknown[")) {
+        else*/ if (o.Type.startsWith("unknown[")) {
             if (o.Type.startsWith("unknown[DictionaryType")) {
                 return "dictionary";
             }
@@ -554,7 +582,7 @@ class CodeModelCli {
             this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions) {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName) {
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_BODY) {
                     option = this.ModuleOptions[optionIdx];
                     break;
                 }
@@ -598,7 +626,7 @@ class CodeModelCli {
         return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
     }
     get ModuleOperationName() {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
     get ObjectName() {
         return this.Map.Modules[this._selectedModule].ObjectName;

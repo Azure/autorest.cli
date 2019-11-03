@@ -98,7 +98,6 @@ extension.Add("cli", async autoRestApi => {
     let folderAnsibleModulesRest = "";
     let folderAnsibleModulesCollection = "";
     let folderSwaggerIntegrationTest = "";
-    let folderPythonIntegrationTest = "";
     let folderExamplesCli = "";
     let folderExamplesPythonRest = "";
     let folderExamplesPythonSdk = "";
@@ -108,12 +107,24 @@ extension.Add("cli", async autoRestApi => {
     const isDebugFlagSet = await autoRestApi.GetValue("debug");
     const namespace = await autoRestApi.GetValue("namespace");
 
+    // package name -- can be guessed from namespace
+    let packageName = await autoRestApi.GetValue("package-name");
+    if (!packageName)
+    {
+      packageName = namespace.replace('.', '-');
+    }
+
     let adjustments = await autoRestApi.GetValue("adjustments");
     let cliName = await autoRestApi.GetValue("cli-name");
     let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
+    let optionOverrides = await autoRestApi.GetValue("option-override");
+
+    let folderPythonIntegrationTest = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
+
+    /* THIS IS TO BE OBSOLETED ---------------------------*/
     if (adjustments == null) adjustments = {};
     let adjustmentsObject = new Adjustments(adjustments);
-
+    /*----------------------------------------------------*/
     let debug = await autoRestApi.GetValue("debug");
     let debugMap = await autoRestApi.GetValue("debug-map");
     let debugCli = await autoRestApi.GetValue("debug-cli");
@@ -127,7 +138,7 @@ extension.Add("cli", async autoRestApi => {
 
       if ((await autoRestApi.GetValue("extension")))
       {
-        folderAzureCliMain = "src/" + cliName + "/azext_" + cliName + "/";
+        folderAzureCliMain = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
         folderAzureCliExt = "src/" + cliName + "/";
       }
       else
@@ -245,7 +256,7 @@ extension.Add("cli", async autoRestApi => {
         }
 
         // flatten the map using flattener
-        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, debug, function(msg: string) {
+        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, debug, function(msg: string) {
           if (debug)
           {
             autoRestApi.Message({
@@ -361,7 +372,7 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GenerateSwaggerIntegrationTest(examples, config);
-            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            let p = folderSwaggerIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
             autoRestApi.WriteFile(p, code.join('\r\n'));
             Info("INTEGRATION TEST: " + p)
           }
@@ -391,7 +402,7 @@ extension.Add("cli", async autoRestApi => {
             }
 
             let code = GeneratePythonIntegrationTest(examples, config, map.Namespace, cliName, map.MgmtClientName);
-            let p = folderSwaggerIntegrationTest + cliName + ".py";
+            let p = folderPythonIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
             autoRestApi.WriteFile(p, code.join('\r\n'));
             Info("INTEGRATION TEST: " + p)
           }
@@ -502,6 +513,8 @@ extension.Add("cli", async autoRestApi => {
           //-------------------------------------------------------------------------------------------------------------------------
           if (generateAzureCli)
           {
+            let config: any[] = await autoRestApi.GetValue("test-setup");
+
             let modelCli = new CodeModelCli(map, cliCommandOverrides, function(msg: string) {
               if (debugCli) {
                 autoRestApi.Message({
@@ -521,7 +534,7 @@ extension.Add("cli", async autoRestApi => {
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
             modelCli.Reset();
-            autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli).join('\r\n'));
+            autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli, config).join('\r\n'));
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
             modelCli.Reset();
