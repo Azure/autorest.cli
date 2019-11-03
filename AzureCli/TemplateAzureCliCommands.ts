@@ -58,8 +58,8 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 }
                 else if (method == 'show')
                 {
-                    // XXX - is this correct support for show?
-                    output.push("        g.show_command('show', 'get')");
+                    // [TODO] get -> show
+                    output.push("        g.custom_command('show', 'get_" +  model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'update')
                 {

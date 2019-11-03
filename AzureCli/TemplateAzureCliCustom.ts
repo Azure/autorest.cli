@@ -46,9 +46,10 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             // create, delete, list, show, update
             let methodName = methods[mi];
 
-            // exclude some methods from generation, as they are generic
-            if (methodName == "show")
-                continue;
+
+            // all methods are custom now for simplicity
+            //if (methodName == "show")
+            //    continue;
 
             let ctx = model.GetCliCommandContext(methodName);
 
@@ -61,7 +62,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             //
             // method
             //
-            let call = "def " + methodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
+
+            let updatedMethodName = (methodName != "show") ? methodName : "get";
+            let call = "def " + updatedMethodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
 

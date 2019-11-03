@@ -44,8 +44,8 @@ function GenerateAzureCliCommands(model) {
                     output.push("        g.custom_command('delete', 'delete_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'show') {
-                    // XXX - is this correct support for show?
-                    output.push("        g.show_command('show', 'get')");
+                    // [TODO] get -> show
+                    output.push("        g.custom_command('show', 'get_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'update') {
                     output.push("        g.custom_command('update', 'update_" + model.GetCliCommandUnderscored() + "')");

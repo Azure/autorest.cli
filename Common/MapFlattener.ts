@@ -259,11 +259,17 @@ export class MapFlattener
             return;
 
         let name = override['name'];
+        let readonly = override['readonly']
 
         if (name != undefined)
         {
             option.NameAnsible = name;
             option.NameTerraform = ToGoCase(name);
+        }
+
+        if (readonly != undefined)
+        {
+            option.IncludeInArgSpec = !readonly;
         }
     }
 

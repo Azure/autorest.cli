@@ -195,9 +195,13 @@ class MapFlattener {
         if (override == undefined)
             return;
         let name = override['name'];
+        let readonly = override['readonly'];
         if (name != undefined) {
             option.NameAnsible = name;
             option.NameTerraform = Helpers_1.ToGoCase(name);
+        }
+        if (readonly != undefined) {
+            option.IncludeInArgSpec = !readonly;
         }
     }
 }

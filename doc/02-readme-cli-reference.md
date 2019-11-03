@@ -85,7 +85,8 @@ Other properties that could be applied to options:
 
 |Parameter|Description|
 |---------|-----------|
-|updatable|Set to false if option can be only applied to **create** but not **update** command|
+|readonly|Set to **false** if not defined in readonly in the specification, but the fix should be propagated to the specification.|
+|updatable|Set to **false** if option can be only applied to **create** but not **update** command|
 |doc|Alternative documentation if the one coming from Azure REST API specs is not accurate|
 |doc-replace|Regular expression to do text replacement in documentation|
 |validation|Regular expression to validate value, if not defined in swagger|
