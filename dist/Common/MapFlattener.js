@@ -32,6 +32,9 @@ class MapFlattener {
                 option.NameTerraform = "name";
                 break;
             }
+            else {
+                this.ApplyOptionOverride(option);
+            }
             // if the option is already part of the resource URL and doesn't end with name, don't rename
             if (option.IdPortion != null && option.IdPortion != "")
                 break;
@@ -196,12 +199,16 @@ class MapFlattener {
             return;
         let name = override['name'];
         let readonly = override['readonly'];
+        let doc = override['doc'];
         if (name != undefined) {
             option.NameAnsible = name;
             option.NameTerraform = Helpers_1.ToGoCase(name);
         }
         if (readonly != undefined) {
             option.IncludeInArgSpec = !readonly;
+        }
+        if (doc != undefined) {
+            option.Documentation = doc;
         }
     }
 }
