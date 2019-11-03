@@ -38,15 +38,20 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     for (var ci = 0; ci < config.length; ci++)
     {
         // find example by name
-        let exampleCmd: string = findExampleByName(model, config[ci].name, output);
+        let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
 
-        if (exampleCmd != null)
+        if (exampleCmd != null && exampleCmd != [])
         {
-            output.push("        self.cmd('" + exampleCmd + "', checks=[");
-            //output.push("            self.check('tags.foo', 'doo'),");
-            //output.push("            self.check('name', '{name}')");
-            output.push("        ])");
-            output.push("");
+            let prefix: string = "        self.cmd(";
+
+            for (let idx = 0; idx < exampleCmd.length; idx++)
+            {
+                let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
+                let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
+
+                output.push(prefix + exampleCmd[idx] + postfix);
+            }
+            output.push("                 checks=[])");
         }
         else
         {
@@ -54,30 +59,12 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
         }
     }
 
-    //output.push("        self.cmd('apimgmt create -g {rg} -n {name} --tags foo=doo', checks=[");
-    //output.push("            self.check('tags.foo', 'doo'),");
-    //output.push("            self.check('name', '{name}')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt update -g {rg} -n {name} --tags foo=boo', checks=[");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.cmd('apimgmt show - {rg} -n {name}', checks=[");
-    //output.push("            self.check('name', '{name}'),");
-    //output.push("            self.check('resourceGroup', '{rg}'),");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt delete -g {rg} -n {name}')");
-    //output.push("        final_count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.assertTrue(final_count, count - 1)");
-    //output.push("");
-
     return output;
 }
 
-function findExampleByName(model: CodeModelCli, name: string, output: string[]): string
+function findExampleByName(model: CodeModelCli, name: string, output: string[]): string[]
 {
-    let cmd = null;
+    let cmd: string[] = [];
     model.Reset();
     do
     {
@@ -98,7 +85,7 @@ function findExampleByName(model: CodeModelCli, name: string, output: string[]):
                     //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name)
                     {
-                        cmd = model.GetExampleString(example, true);
+                        cmd = model.GetExampleItems(example, true);
                     }
                 });        
             });

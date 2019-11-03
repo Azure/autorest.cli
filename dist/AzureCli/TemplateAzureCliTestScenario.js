@@ -34,39 +34,24 @@ function GenerateAzureCliTestScenario(model, config) {
     for (var ci = 0; ci < config.length; ci++) {
         // find example by name
         let exampleCmd = findExampleByName(model, config[ci].name, output);
-        if (exampleCmd != null) {
-            output.push("        self.cmd('" + exampleCmd + "', checks=[");
-            //output.push("            self.check('tags.foo', 'doo'),");
-            //output.push("            self.check('name', '{name}')");
-            output.push("        ])");
-            output.push("");
+        if (exampleCmd != null && exampleCmd != []) {
+            let prefix = "        self.cmd(";
+            for (let idx = 0; idx < exampleCmd.length; idx++) {
+                let prefix = (idx == 0) ? "        self.cmd('" : "                 '";
+                let postfix = (idx < exampleCmd.length - 1) ? " '" : "',";
+                output.push(prefix + exampleCmd[idx] + postfix);
+            }
+            output.push("                 checks=[])");
         }
         else {
             output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
         }
     }
-    //output.push("        self.cmd('apimgmt create -g {rg} -n {name} --tags foo=doo', checks=[");
-    //output.push("            self.check('tags.foo', 'doo'),");
-    //output.push("            self.check('name', '{name}')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt update -g {rg} -n {name} --tags foo=boo', checks=[");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.cmd('apimgmt show - {rg} -n {name}', checks=[");
-    //output.push("            self.check('name', '{name}'),");
-    //output.push("            self.check('resourceGroup', '{rg}'),");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt delete -g {rg} -n {name}')");
-    //output.push("        final_count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.assertTrue(final_count, count - 1)");
-    //output.push("");
     return output;
 }
 exports.GenerateAzureCliTestScenario = GenerateAzureCliTestScenario;
 function findExampleByName(model, name, output) {
-    let cmd = null;
+    let cmd = [];
     model.Reset();
     do {
         let methods = model.GetCliCommandMethods();
@@ -82,7 +67,7 @@ function findExampleByName(model, name, output) {
                 examples.forEach(example => {
                     //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name) {
-                        cmd = model.GetExampleString(example, true);
+                        cmd = model.GetExampleItems(example, true);
                     }
                 });
             });

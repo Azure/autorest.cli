@@ -244,28 +244,27 @@ class CodeModelCli {
         ctx.Examples = examples;
         return ctx;
     }
-    GetExampleString(example, isTest) {
+    GetExampleItems(example, isTest) {
         let parameters = [];
-        parameters.push("az");
-        parameters = parameters.concat(this.GetCliCommand().split(" "));
-        parameters.push(example.Method);
+        parameters.push("az " + parameters.concat(this.GetCliCommand().split(" ")) + " " + example.Method);
         for (let k in example.Parameters) {
             let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-            //parameters += " " + k + " " + slp;
-            parameters.push(k);
             if (isTest) {
                 if (k != "--resource-group") {
-                    parameters.push(slp);
+                    parameters.push(k + " " + slp);
                 }
                 else {
-                    parameters.push("{rg}");
+                    parameters.push(k + " {rg}");
                 }
             }
             else {
-                parameters.push(slp);
+                parameters.push(k + " " + slp);
             }
         }
-        return parameters.join(" ");
+        return parameters;
+    }
+    GetExampleString(example, isTest) {
+        return this.GetExampleItems(example, isTest).join(" ");
     }
     GetCliTypeFromOption(o) {
         let type = "";
