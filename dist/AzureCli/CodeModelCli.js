@@ -299,8 +299,14 @@ class CodeModelCli {
                 example.Method = "update";
             }
             else if (moduleExample.Method == "get") {
-                // XXX - could be list
-                example.Method = "show";
+                // maybe this should be done in a different way, but if url ends with
+                // variable it means we are looking for specific resource instance
+                if (moduleExample.Url.endsWith("}")) {
+                    example.Method = "show";
+                }
+                else {
+                    example.Method = "list";
+                }
             }
             else if (moduleExample.Method == "delete") {
                 example.Method = "delete";

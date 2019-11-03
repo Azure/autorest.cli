@@ -108,20 +108,10 @@ function GenerateAzureCliCustom(model) {
                         let last = parts.pop();
                         parts.forEach(part => {
                             if (part != "" && part != "*") {
-                                if (!isUpdate) {
-                                    access += ".setdefault('" + part + "', {})";
-                                }
-                                else {
-                                    access += "." + part;
-                                }
+                                access += ".setdefault('" + part + "', {})";
                             }
                         });
-                        if (!isUpdate) {
-                            access += "['" + last + "'] = ";
-                        }
-                        else {
-                            access += "." + last + " = ";
-                        }
+                        access += "['" + last + "'] = ";
                         if (element.IsList) {
                             if (element.Type != "dict") {
                                 // a comma separated list
@@ -138,7 +128,13 @@ function GenerateAzureCliCustom(model) {
                         else {
                             access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name);
                         }
-                        output_body.push(access);
+                        if (isUpdate) {
+                            output_body.push("    if " + PythonParameterName(element.Name) + " is not None:");
+                            output_body.push("    " + access);
+                        }
+                        else {
+                            output_body.push(access);
+                        }
                     }
                 });
             }
