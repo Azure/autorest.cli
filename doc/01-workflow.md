@@ -4,6 +4,8 @@
 
 ### Step 1 - Swagger
 
+Service specification must be merged into Azure REST API specification repositiory.
+
 ### Step 2 - Python SDK
 
 Once specification is merged into Azure REST API specs, SDK releases are requested via OpenAPI Portal https://aka.ms/openapiportal.
