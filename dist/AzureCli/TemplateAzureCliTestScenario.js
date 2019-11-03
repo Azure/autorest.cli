@@ -42,6 +42,7 @@ function GenerateAzureCliTestScenario(model, config) {
                 output.push(prefix + exampleCmd[idx] + postfix);
             }
             output.push("                 checks=[])");
+            output.push("");
         }
         else {
             output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
@@ -58,19 +59,14 @@ function findExampleByName(model, name, output) {
         for (let mi = 0; mi < methods.length; mi++) {
             // create, delete, list, show, update
             let method = methods[mi];
-            model._log(".... GETTING CONTEXT FOR METHOD: " + method);
             let ctx = model.GetCliCommandContext(method);
             if (ctx == null) {
-                model._log("................... NOT FOUND");
                 continue;
             }
             ctx.Methods.forEach(element => {
                 let examples = ctx.Examples;
                 examples.forEach(example => {
-                    model._log("........... CHECKING EXAMPLE: " + name + " == " + example.Description);
-                    //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name) {
-                        model._log("........... FOUND EXAMPLE: " + name + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         cmd = model.GetExampleItems(example, true);
                     }
                 });

@@ -52,6 +52,7 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
                 output.push(prefix + exampleCmd[idx] + postfix);
             }
             output.push("                 checks=[])");
+            output.push("");
         }
         else
         {
@@ -74,24 +75,17 @@ function findExampleByName(model: CodeModelCli, name: string, output: string[]):
             // create, delete, list, show, update
             let method: string = methods[mi];
 
-            model._log(".... GETTING CONTEXT FOR METHOD: " + method);
-
             let ctx = model.GetCliCommandContext(method);
             if (ctx == null)
             {
-                model._log("................... NOT FOUND");
                 continue;
             }
 
             ctx.Methods.forEach(element => {
                 let examples: CommandExample[] = ctx.Examples;
                 examples.forEach(example => {
-                    model._log("........... CHECKING EXAMPLE: " + name + " == " + example.Description);
-
-                    //output.push("CHECKING: " + name + " == " + example.Description)
                     if (example.Description == name)
                     {
-                        model._log("........... FOUND EXAMPLE: " + name + " !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!");
                         cmd = model.GetExampleItems(example, true);
                     }
                 });        

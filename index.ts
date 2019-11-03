@@ -129,7 +129,7 @@ extension.Add("cli", async autoRestApi => {
     let debugMap = await autoRestApi.GetValue("debug-map");
     let debugCli = await autoRestApi.GetValue("debug-cli");
     let flattenAll = await autoRestApi.GetValue("flatten-all");
-
+    let generateReport = await autoRestApi.GetValue("report");
 
     // Handle generation type parameter
     if (await autoRestApi.GetValue("cli-module"))
@@ -534,9 +534,12 @@ extension.Add("cli", async autoRestApi => {
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "_client_factory.py", GenerateAzureCliClientFactory(modelCli).join('\r\n'));
             modelCli.Reset();
-            autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli, config).join('\r\n'));
-            modelCli.Reset();
-            autoRestApi.WriteFile(folderAzureCliMain + "report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
+            autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli, config).join('\r\n'));   
+            if (generateReport)
+            {
+              modelCli.Reset();
+              autoRestApi.WriteFile(folderAzureCliMain + "report.md", GenerateAzureCliReport(modelCli).join('\r\n'));
+            }
             modelCli.Reset();
             autoRestApi.WriteFile(folderAzureCliMain + "__init__.py", GenerateAzureCliInit(modelCli).join('\r\n'));
             modelCli.Reset();
