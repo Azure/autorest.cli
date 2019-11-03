@@ -17,6 +17,8 @@ The easiest way to use **autorest.cli** is the container:
 
     docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools
 
+>NOTE: The docker image **zikalino/azure-sdk-tools** will be migrated to **mcr.microsoft.com/azure-sdk-tools**
+
 ## Configuration in **readme.cli.md** File
 
 >NOTE: The same configuration will be used to generate Azure CLI commands tests.

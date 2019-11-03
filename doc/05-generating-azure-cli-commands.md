@@ -17,6 +17,8 @@ The easiest way to use **autorest.cli** is the container:
 
     docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools
 
+>NOTE: The docker image **zikalino/azure-sdk-tools** will be migrated to **mcr.microsoft.com/azure-sdk-tools**
+
 ## Generate Extension
 
     autorest --cli --use=/_/autorest.cli --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
