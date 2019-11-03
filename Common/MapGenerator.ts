@@ -183,8 +183,8 @@ export class MapGenerator
 
             // don't add get samples to main module, just to info module
             // XXX - how about terraform?
-            if (!isInfo && m.httpMethod.toLowerCase() == "get")
-                continue;
+            //if (!isInfo && m.httpMethod.toLowerCase() == "get")
+            //    continue;
 
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'] , m['$id']));
 

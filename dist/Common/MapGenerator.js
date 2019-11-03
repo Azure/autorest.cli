@@ -135,8 +135,8 @@ class MapGenerator {
             let m = rawMethods[mi];
             // don't add get samples to main module, just to info module
             // XXX - how about terraform?
-            if (!isInfo && m.httpMethod.toLowerCase() == "get")
-                continue;
+            //if (!isInfo && m.httpMethod.toLowerCase() == "get")
+            //    continue;
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'], m['$id']));
             if (module.Examples.length == 0) {
                 this._log("Missing example: " + module.ModuleName + " " + operation['name']['raw'] + " " + m['name']['raw']);

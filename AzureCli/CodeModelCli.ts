@@ -132,17 +132,17 @@ export class CodeModelCli
             for (let regex in this._cmdOverrides)
             {
                 let regexp = new RegExp(regex);
-                this._log("------------------ check: " + regex);
+                // this._log("------------------ check: " + regex);
 
                 if (url.toLowerCase().match(regexp))
                 {
-                    this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
+                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
 
-        this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
+        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
 
         while (partIdx < urlParts.length)
         {
@@ -260,7 +260,7 @@ export class CodeModelCli
             method.Parameters = [];
             options.forEach(o => {
                 let parameter: CommandParameter = null;
-                this._log(" ... option: " + o.NameAnsible);
+                // this._log(" ... option: " + o.NameAnsible);
 
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
@@ -460,8 +460,8 @@ export class CodeModelCli
                 }
                 else
                 {
-                    this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
-                    this._log("DICTIONARY: " + JSON.stringify(exampleDict));
+                    // this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
+                    // this._log("DICTIONARY: " + JSON.stringify(exampleDict));
                 }
             });
 
@@ -821,7 +821,7 @@ export class CodeModelCli
         {
             let optionName = methodOptionNames[optionNameIdx];
 
-            this._log("   ---- CHECKING: " + optionName);
+            // this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions)
             {

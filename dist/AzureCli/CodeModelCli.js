@@ -84,14 +84,14 @@ class CodeModelCli {
         if (this._cmdOverrides) {
             for (let regex in this._cmdOverrides) {
                 let regexp = new RegExp(regex);
-                this._log("------------------ check: " + regex);
+                // this._log("------------------ check: " + regex);
                 if (url.toLowerCase().match(regexp)) {
-                    this._log("-------------- " + url.toLowerCase() + " ------- " + this._cmdOverrides[regex]);
+                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
-        this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
+        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
         while (partIdx < urlParts.length) {
             let part = urlParts[partIdx];
             if (command == "") {
@@ -175,7 +175,7 @@ class CodeModelCli {
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;
-                this._log(" ... option: " + o.NameAnsible);
+                // this._log(" ... option: " + o.NameAnsible);
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
@@ -319,8 +319,8 @@ class CodeModelCli {
                     example.Parameters["--" + element.Name] = v;
                 }
                 else {
-                    this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
-                    this._log("DICTIONARY: " + JSON.stringify(exampleDict));
+                    // this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
+                    // this._log("DICTIONARY: " + JSON.stringify(exampleDict));
                 }
             });
             // this log is too large
@@ -578,7 +578,7 @@ class CodeModelCli {
         let moduleOptions = [];
         for (let optionNameIdx in methodOptionNames) {
             let optionName = methodOptionNames[optionNameIdx];
-            this._log("   ---- CHECKING: " + optionName);
+            // this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions) {
                 if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_BODY) {
