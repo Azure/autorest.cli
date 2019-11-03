@@ -821,6 +821,8 @@ export class CodeModelCli
         {
             let optionName = methodOptionNames[optionNameIdx];
 
+            this._log("OPTION NAME: " + optionName);
+
             // this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions)

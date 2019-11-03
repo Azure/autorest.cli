@@ -43,7 +43,9 @@ export class MapFlattener
         {
             let option = options[i];
 
-            if (option.Kind == ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name'))
+            // OPTIONS ARE NOT SORTED CORRECTLY
+            // SO THERE'S option.NameAnsible != "resource_group_name" hack here
+            if (option.Kind == ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name'))
             {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
@@ -55,8 +57,8 @@ export class MapFlattener
             }
 
             // if the option is already part of the resource URL and doesn't end with name, don't rename
-            if (option.IdPortion != null && option.IdPortion != "")
-                break;
+            //if (option.IdPortion != null && option.IdPortion != "")
+            //    break;
         }
 
         for (let oi in options)

@@ -27,7 +27,9 @@ class MapFlattener {
     ProcessTopLevelOptions(options) {
         for (let i = options.length - 1; i >= 0; i--) {
             let option = options[i];
-            if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible.endsWith('_name')) {
+            // OPTIONS ARE NOT SORTED CORRECTLY
+            // SO THERE'S option.NameAnsible != "resource_group_name" hack here
+            if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name')) {
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
@@ -36,8 +38,8 @@ class MapFlattener {
                 this.ApplyOptionOverride(option);
             }
             // if the option is already part of the resource URL and doesn't end with name, don't rename
-            if (option.IdPortion != null && option.IdPortion != "")
-                break;
+            //if (option.IdPortion != null && option.IdPortion != "")
+            //    break;
         }
         for (let oi in options) {
             if (options[oi].NameAnsible == "resource_group_name") {
