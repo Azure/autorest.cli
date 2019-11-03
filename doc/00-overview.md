@@ -17,9 +17,19 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 
 ### Phase 1 - Generate Internal Map / Model
 
+This step is fully automatic.
+Unprocessed internal map is created.
+
 ### Phase 2 - Flatten Map and Add Adjustments
 
+During this phase:
+- fully automatic flattening of options is done
+- all adjustments provided in **readme.cli.md** file are applied
+
 ### Phase 3 - Generate Azure CLI Extension
+
+This is the final step of autogeneration.
+Internal map is converted into actual Azure CLI extension source code.
 
 ## Outputs
 
