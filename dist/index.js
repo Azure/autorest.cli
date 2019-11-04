@@ -360,9 +360,13 @@ extension.Add("cli", (autoRestApi) => __awaiter(void 0, void 0, void 0, function
                                 //if (mn == 'batchaccount') mn = "batchaccountxx";
                                 //if (mn != "batchaccount")
                                 if (generateMagicModules) {
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                                    let tagfolder = "";
+                                    if (tag != null) {
+                                        tagfolder = "/" + tag;
+                                    }
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                                 }
                             }
                             else {

@@ -444,9 +444,13 @@ extension.Add("cli", async autoRestApi => {
                   //if (mn != "batchaccount")
                   if (generateMagicModules)
                   {
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/" + tag + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                    let tagfolder = "";
+                    if (tag != null) {
+                      tagfolder = "/" + tag;
+                    }
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                   }
                 } else {
 
