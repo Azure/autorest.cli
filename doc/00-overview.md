@@ -47,7 +47,7 @@ Internal map is converted into actual Azure CLI extension source code.
 ## Outputs
 
 - fully functional Azure CLI Extension
-- examples generated from examples included in Azurr REST API specification
+- examples generated from examples included in Azure REST API specification
 - integration test generated from examples included in Azure REST API specification and supplementary metadata
 
 ## Additional Outputs (byproducts)
