@@ -15,7 +15,8 @@ export class Example
                         operationId: string,
                         methodId: string,
                         operationName: string,
-                        methodName: string)
+                        methodName: string,
+                        longRunning: boolean)
     {
         this.Example = example;
         this.Url = url;
@@ -28,6 +29,7 @@ export class Example
         this.MethodId = methodId;
         this.OperationName = operationName;
         this.MethodName = methodName;
+        this.LongRunning = longRunning;
     }
 
     public Method: string;
@@ -41,6 +43,7 @@ export class Example
     public Variables: ExampleVariable[]; 
     public Example: any;
     public References: string[];
+    public LongRunning: boolean = false;
 
     public GetExampleApiVersion(): string
     {
