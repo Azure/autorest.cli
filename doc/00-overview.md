@@ -6,6 +6,7 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 
 - Default Azure CLI Extension can be generated from pure Swagger
 - Common structure, option names, documentation and behaviour can be adjusted via **readme.cli.md** file
+- Users of **autorest.cli** should be able to model their extension within hours - no ramp-up process should be required
 - Examples from Azure REST API specs reused in other SDKs, integration tests and finally Azure CLI integration test
 - Amount of metadata in **readme.cli.md** should be miminal
 - Automatic generation / release pipeline aligned with other SDKs
