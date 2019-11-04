@@ -12,7 +12,8 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 - Automatic generation / release pipeline aligned with other SDKs
 - Output of **autorest.cli** can be reused by other downstream tools, like Ansible or Terraform
 
-Benefits:
+## Benefits
+
 - Improve quality of Azure REST API specification's Examples (we are testing and normalizing examples for the same time)
 - Improve quality of the services by introducing E2E testing befoe SDKs and Azure CLI is released
 - No need to write examples manually for every SDK/tool separately
