@@ -2,7 +2,13 @@
 
 ## Goals
 
-Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Commands / Extensions with minimall effort.
+Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Commands / Extensions with minimal effort and additional metadata suppied:
+
+- Default Azure CLI Extension can be generated from pure Swagger
+- Common structure, option names, documentation and behaviour can be adjusted via **readme.cli.md** file
+- Examples from Azure REST API specs reused in other SDKs, integration tests and finally Azure CLI integration test
+- Amount of metadata in **readme.cli.md** should be miminal
+- Output of **autorest.cli** can be reused by other downstream tools, like Ansible or Terraform
 
 >NOTE: Historically Autorest.CLI was developed to generate Ansible modules
 
