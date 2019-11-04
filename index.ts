@@ -103,12 +103,25 @@ extension.Add("cli", async autoRestApi => {
     let folderExamplesPythonSdk = "";
 
 
+    // namespace is the only obligatory option
+    // we will derive default "package-name" and "root-name" from it
+    const namespace = await autoRestApi.GetValue("namespace");
+
+    if (!namespace)
+    {
+      autoRestApi.Message({
+        Channel: "error",
+        Text: "\"namespace\" is not defined, please add readme.cli.md file to the specification."
+      });
+      return;
+    }
+
     // get settings
     const isDebugFlagSet = await autoRestApi.GetValue("debug");
-    const namespace = await autoRestApi.GetValue("namespace");
 
     // package name -- can be guessed from namespace
     let packageName = await autoRestApi.GetValue("package-name");
+
     if (!packageName)
     {
       packageName = namespace.replace('.', '-');
