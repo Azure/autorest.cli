@@ -8,8 +8,15 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 - Common structure, option names, documentation and behaviour can be adjusted via **readme.cli.md** file
 - Examples from Azure REST API specs reused in other SDKs, integration tests and finally Azure CLI integration test
 - Amount of metadata in **readme.cli.md** should be miminal
+- Automatic generation / release pipeline aligned with other SDKs
 - Output of **autorest.cli** can be reused by other downstream tools, like Ansible or Terraform
 
+Benefits:
+- Improve quality of Azure REST API specification's Examples (we are testing and normalizing examples for the same time)
+- Improve quality of the services by introducing E2E testing befoe SDKs and Azure CLI is released
+- No need to write examples manually for every SDK/tool separately
+- No need to write integration tests manually for every SDK/tool separately
+- Extremely high level of consistency between all supported tools (Azure CLI / Ansible / Terraform, etc.) as they will share the same naming conventions, structure of options and behaviour. Users can "convert" Azure CLI command into Ansible playbook without even reading documentation.
 >NOTE: Historically Autorest.CLI was developed to generate Ansible modules
 
 ## Inputs
