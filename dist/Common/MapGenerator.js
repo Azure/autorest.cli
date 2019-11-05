@@ -678,10 +678,20 @@ class MapGenerator {
             this._log("ADDING READONLY OPTION - ONLY IN RESPONSE: " + oo.NameSwagger);
             // if we are merging read options, new option should be included in response
             if (readOnly) {
-                oo.IncludeInResponse = true;
-                oo.IncludeInArgSpec = false;
+                this.SetInArgaAndInResponseFlag(oo, readOnly);
             }
             main.push(oo);
+        }
+    }
+    SetInArgaAndInResponseFlag(option, readOnly) {
+        if (readOnly) {
+            option.IncludeInResponse = true;
+            option.IncludeInArgSpec = false;
+        }
+        if (option.SubOptions != null) {
+            for (let oi = 0; oi < option.SubOptions.length; oi++) {
+                this.SetInArgaAndInResponseFlag(option.SubOptions[oi], readOnly);
+            }
         }
     }
 }
