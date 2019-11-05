@@ -20,35 +20,35 @@ function GenerateAzureCliCommands(model) {
     output.push("");
     output.push("def load_command_table(self, _):");
     do {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
+        // if disabled
+        if (model.GetCliCommand() == "-")
             continue;
         let methods = model.GetCliCommandMethods();
         if (methods.length > 0) {
             output.push("");
             output.push("    from ._client_factory import cf_" + model.ModuleOperationName);
-            output.push("    " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + " = CliCommandType(");
+            output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + " = CliCommandType(");
             if (true) {
-                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleName() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleNameUnderscored() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
             else {
                 // enable this if using package
                 output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
             output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
-            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleName() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
             for (let mi in methods) {
                 // create, delete, list, show, update
                 let method = methods[mi];
                 if (method == 'delete') {
-                    output.push("        g.command('delete', 'delete')");
+                    output.push("        g.custom_command('delete', 'delete_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'show') {
-                    // XXX - is this correct support for show?
-                    output.push("        g.show_command('show', 'get')");
+                    // [TODO] get -> show
+                    output.push("        g.custom_command('show', 'get_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else if (method == 'update') {
-                    output.push("        g.generic_update_command('update', custom_func_name='update_" + model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('update', 'update_" + model.GetCliCommandUnderscored() + "')");
                 }
                 else {
                     output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");

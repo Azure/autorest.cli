@@ -34,6 +34,12 @@ export class ExampleProcessor
                     var refs: string[] = [];
                     var vars: ExampleVariable[] = [];
                     var filename: string = this.GetExampleFilename(NormalizeResourceId(method['url']), method['httpMethod']);
+                    var longRunning: boolean = false;
+
+                    if (method['extensions']['x-ms-long-running-operation'])
+                    {
+                        longRunning = true;
+                    }
 
                     this.ProcessExample(body);
                     this.ScanExampleForRefsAndVars(method['httpMethod'], url, method['url'], filename, body, refs, vars);
@@ -48,7 +54,8 @@ export class ExampleProcessor
                                               operation['$id'],
                                               method['$id'],
                                               operation['name']['raw'],
-                                              method['name']['raw']);
+                                              method['name']['raw'],
+                                              longRunning);
                     this._examples.push(example);
                 }
             }

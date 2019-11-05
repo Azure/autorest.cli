@@ -28,9 +28,13 @@ class ExampleProcessor {
                     var refs = [];
                     var vars = [];
                     var filename = this.GetExampleFilename(Helpers_1.NormalizeResourceId(method['url']), method['httpMethod']);
+                    var longRunning = false;
+                    if (method['extensions']['x-ms-long-running-operation']) {
+                        longRunning = true;
+                    }
                     this.ProcessExample(body);
                     this.ScanExampleForRefsAndVars(method['httpMethod'], url, method['url'], filename, body, refs, vars);
-                    var example = new Example_1.Example(body, url, method['httpMethod'], k, filename, vars, refs, operation['$id'], method['$id'], operation['name']['raw'], method['name']['raw']);
+                    var example = new Example_1.Example(body, url, method['httpMethod'], k, filename, vars, refs, operation['$id'], method['$id'], operation['name']['raw'], method['name']['raw'], longRunning);
                     this._examples.push(example);
                 }
             }

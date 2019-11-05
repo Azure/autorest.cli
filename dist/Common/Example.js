@@ -5,7 +5,8 @@
  *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 class Example {
-    constructor(example, url, method, name, filename, variables, references, operationId, methodId, operationName, methodName) {
+    constructor(example, url, method, name, filename, variables, references, operationId, methodId, operationName, methodName, longRunning) {
+        this.LongRunning = false;
         this.Example = example;
         this.Url = url;
         this.Method = method;
@@ -17,6 +18,7 @@ class Example {
         this.MethodId = methodId;
         this.OperationName = operationName;
         this.MethodName = methodName;
+        this.LongRunning = longRunning;
     }
     GetExampleApiVersion() {
         return this.Example["parameters"]["api-version"];

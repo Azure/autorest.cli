@@ -2,6 +2,14 @@
 
 ## Prerequisites
 
+- Python SDK is already generated
+- Integration Tests for Python SDK are generated and validated
+- Minimal **readme.cli.md** file is already in place
+
+## Manual Generation
+
+### Prepare Your Environment
+
 The best way of using **autorest.cli** is Docker container.
 
 You need to clone following directories locally. I have added Python SDK here as well, it's not necessary, but may be useful.
@@ -17,36 +25,24 @@ The easiest way to use **autorest.cli** is the container:
 
     docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools
 
-## Generate Extension
+>NOTE: The docker image **zikalino/azure-sdk-tools** will be migrated to **mcr.microsoft.com/azure-sdk-tools**
+
+>NOTE: In final solution it won't be necessary to clone Autorest CLI repository
+
+### Generate Extension
+
+Following command will generate default Azure CLI extension considering all ther prerequisites are in place
 
     autorest --cli --use=/_/autorest.cli --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
 
-## Steps to Generate Azure CLI Command from Scratch
 
-There are several steps suggested to generate Azure CLI extension.
+## Next Steps
 
-### Try all examples from Azure REST API Specs
-
-These examples will be used in Azure CLI extension / Command Module, so it's a good idea to try them, identify all the issues and fix all detected problems.
-
-You can try examples in one of three possible ways:
-- Using Python and Azure REST API
-- Using Python SDK
-- Using Azure CLI and **az rest** command
-
-**autorest.cli** provides a way of converting examples to appropriate format.
-
-### Prepare Python SDK Integration Test
-
-### Generate Command
-
-## Adjusting Command
-
-### Command Name
+### Changing Root Command Name
 
 TBD
 
-### Command Group Naming
+### Modelling Command Groups
 
 TBD
 
@@ -54,7 +50,21 @@ TBD
 
 TBD
 
-### Flattening Parameters
+### Renaming Parameters
+
+TBD
+
+### Adjusting Documentation
+
+TBD
+
+### Disabling Paramaters
+
+TBD
+
+### Marking Options Non-Updatable
+
+TBD
 
 ### Fixing Example Description / Name
 

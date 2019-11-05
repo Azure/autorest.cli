@@ -41,6 +41,10 @@ export class MapGenerator
         {
             name = name.substring(0, name.length - 3) + "y";
         }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
+        }
         else if (name.endsWith('s'))
         {
             name = name.substring(0, name.length - 1);
@@ -61,6 +65,10 @@ export class MapGenerator
         if (name.endsWith("ies"))
         {
             name = name.substring(0, name.length - 3) + "y";
+        }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
         }
         else if (name.endsWith('s'))
         {
@@ -105,9 +113,9 @@ export class MapGenerator
                 if (this.ModuleUpdateMethod != null) methods.push(this.ModuleUpdateMethod);
                 if (this.ModuleDeleteMethod != null) methods.push(this.ModuleDeleteMethod);
                 //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
-
-                methods = methods.concat(methodsInfo);
             }
+
+            methods = methods.concat(methodsInfo);
 
             // if any of the create/update methods were detected -- add main module
             if (methods.length > 0)
@@ -175,8 +183,8 @@ export class MapGenerator
 
             // don't add get samples to main module, just to info module
             // XXX - how about terraform?
-            if (!isInfo && m.httpMethod.toLowerCase() == "get")
-                continue;
+            //if (!isInfo && m.httpMethod.toLowerCase() == "get")
+            //    continue;
 
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'] , m['$id']));
 
@@ -213,6 +221,7 @@ export class MapGenerator
         method.Url = NormalizeResourceId(rawMethod.url);
         method.HttpMethod = rawMethod.httpMethod.toLowerCase();
         method.IsAsync = (rawMethod['extensions'] != undefined && rawMethod['extensions']['x-ms-long-running-operation'] != undefined) ? rawMethod['extensions']['x-ms-long-running-operation'] : false;
+
         methods.push(method);
     }
 
@@ -258,6 +267,10 @@ export class MapGenerator
         if (name.endsWith("ies"))
         {
             name = name.substring(0, name.length - 3) + "y";
+        }
+        else if (name.toLowerCase().endsWith("xes"))
+        {
+            name = name.substring(0, name.length - 2);
         }
         else if (name.endsWith('s'))
         {
@@ -744,11 +757,32 @@ export class MapGenerator
         this._log(" MODULE: " + this.ModuleName + ", METHOD: " + methodName);
         this._log( " ... " + method.url);
 
+        // first just take option names from URL, as they need to be in that exact sequence
+        // and in the swagger definition they may be not
+        let parts: string[] = method.url.split("/");
+        let position = 0;
+        parts.forEach(element => {
+            if (element.startsWith('{'))
+            {
+                let name: string = element.substr(1, element.length - 2);
+                if (name != "subscriptionId")
+                {
+                    options.push(name);
+                }
+            }
+        });
+
+
         if (method != null)
         {
             for (var pi in method.parameters)
             {
                 let p = method.parameters[pi];
+
+                // path parameters are already added in first loop
+                if (p.location == "path")
+                    continue;
+
                 if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && p.name.raw != "If-Match" && (p.isRequired == true || !required))
                 {
                     this._log(" ... parameter: " + p.name.raw + " - INCLUDED");

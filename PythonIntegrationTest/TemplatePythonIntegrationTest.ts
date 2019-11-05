@@ -45,7 +45,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
     //output.push("        account_name = self.get_resource_name('pyarmcdn')");
     output.push("");
     // XXX - this is service specific and should be fixed
-    output.push("SERVICE_NAME = \"myapimrndxyz\"");
+    output.push("        SERVICE_NAME = \"myapimrndxyz\"");
 
     
     for (var ci = 0; ci < config.length; ci++)
@@ -62,23 +62,34 @@ export function GeneratePythonIntegrationTest(model: Example[],
         if (example == null)
             continue;
 
-        var json: string[] = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
-        for (var lidx in json)
+        let hasBody: boolean = (example.Method == "put" || example.Method == "post" || example.Method == "patch");
+
+        output.push("");
+        output.push("        # " + example.Name + "[" + example.Method + "]");
+
+        if (hasBody)
         {
-            var line: string = json[lidx]; 
-            if (line.startsWith("{"))
+            var json: string[] = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
+            for (var lidx in json)
             {
-                output.push("        BODY = " + line);
-            }
-            else
-            {
-                output.push("        " + line);
+                var line: string = json[lidx]; 
+                if (line.startsWith("{"))
+                {
+                    output.push("        BODY = " + line);
+                }
+                else
+                {
+                    output.push("        " + line);
+                }
             }
         }
-    
-        // XXX - support for non-long-running-operations
-        output.push("        azure_operation_poller = self.mgmt_client." + ToSnakeCase(example.OperationName) + "." + ToSnakeCase(example.MethodName) + "(" + _UrlToParameters(example.Url) + ", BODY)");
-        output.push("        result_create = azure_operation_poller.result()");
+
+        output.push("        result = self.mgmt_client." + ToSnakeCase(example.OperationName) + "." + ToSnakeCase(example.MethodName) +
+                                         "(" + _UrlToParameters(example.Url) + (hasBody ? ", BODY" : "") + ")");
+        if (example.LongRunning)
+        {
+            output.push("        result = result.result()");
+        }
     }
 
     output.push("");
