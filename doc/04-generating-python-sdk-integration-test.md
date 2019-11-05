@@ -52,6 +52,6 @@ Under **test-setup** section you need to include example IDs from the specificat
 
 Run:
 
-    autorest --cli --use=/_/autorest.cli --python-integration-test --output-folder=/_/generated /_/azure-rest-api-specs/specification/web/resource-manager/readme.md
+    autorest --cli --use=/_/autorest.cli --python-integration-test --output-folder=/_/azure-sdk-for-python /_/azure-rest-api-specs/specification/web/resource-manager/readme.md
 
 
