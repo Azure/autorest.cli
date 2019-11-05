@@ -2,6 +2,8 @@
 
 ## Authoring Azure CLI Extension Using **autorest.cli**
 
+![Top Level](images/workflow.png)
+
 ### Step 1 - Swagger
 
 Service specification must be merged into Azure REST API specification repositiory.
