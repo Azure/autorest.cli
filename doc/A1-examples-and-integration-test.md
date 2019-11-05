@@ -146,20 +146,19 @@
         - 5b307da8-43d4-492b-8b66-b0294ade872f
       cosmos_db_offer_throughput: 1000 
       authentication_authority: https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
-
       authentication_audience: https://azurehealthcareapis.com"
       authentication_smart_proxy_enabled: yes
       cors_origins:
         - *
       cors_headers:
-        - *"
+        - *
       cors_methods:
-        - DELETE
-        - GET
-        - OPTIONS
-        - PATCH
-        - POST
-        - PUT
+        - delete
+        - get
+        - options
+        - patch
+        - post
+        - put
       cors_max_age: 1440
       cors_allow_credentials: no
 
