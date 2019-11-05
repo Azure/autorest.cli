@@ -81,6 +81,11 @@ export class CodeModelCli
         return this.Map.CliName;
     }
 
+    public GetCliCommandModuleNameUnderscored()
+    {
+        return this.Map.CliName.replace("-", "_");
+    }
+
     public GetCliCommand(methodName: string = null): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -127,17 +132,17 @@ export class CodeModelCli
             for (let regex in this._cmdOverrides)
             {
                 let regexp = new RegExp(regex);
-                this._log("------------------ check: " + regex);
+                // this._log("------------------ check: " + regex);
 
                 if (url.toLowerCase().match(regexp))
                 {
-                    this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
+                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
 
-        this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
+        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
 
         while (partIdx < urlParts.length)
         {
@@ -255,7 +260,7 @@ export class CodeModelCli
             method.Parameters = [];
             options.forEach(o => {
                 let parameter: CommandParameter = null;
-                this._log(" ... option: " + o.NameAnsible);
+                // this._log(" ... option: " + o.NameAnsible);
 
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
@@ -328,6 +333,8 @@ export class CodeModelCli
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
+
+                            // [TODO] support subparameters
                         }
                     }
                 }
@@ -341,14 +348,49 @@ export class CodeModelCli
         return ctx;
     }
 
+    public GetExampleItems(example: CommandExample, isTest: boolean): string[]
+    {
+        let parameters: string[] = [];
+
+        parameters.push("az " + this.GetCliCommand() + " " + example.Method)
+
+        for (let k in example.Parameters)
+        {
+            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+
+            if (isTest)
+            {
+                if (k != "--resource-group")
+                {
+                    parameters.push(k + " " + slp);
+                }
+                else
+                {
+                    parameters.push(k + " {rg}");
+                }
+            }
+            else
+            {
+                parameters.push(k + " " + slp);
+            }
+        }
+
+        return parameters;
+    }
+
+    public GetExampleString(example: CommandExample, isTest: boolean): string
+    {
+        return this.GetExampleItems(example, isTest).join(" ")
+    }
+
     private GetCliTypeFromOption(o: ModuleOption): string
     {
         let type: string = "";
-        if (o.IsList)
+        /*if (o.IsList)
         {
-            return "list";
+            type="list[" + o.Type + "]";
         }
-        else if (o.Type.startsWith("unknown["))
+        else*/ if (o.Type.startsWith("unknown["))
         {
             if (o.Type.startsWith("unknown[DictionaryType"))
             {
@@ -389,8 +431,16 @@ export class CodeModelCli
             }
             else if (moduleExample.Method == "get")
             {
-                // XXX - could be list
-                example.Method = "show";
+                // maybe this should be done in a different way, but if url ends with
+                // variable it means we are looking for specific resource instance
+                if (moduleExample.Url.endsWith("}"))
+                {
+                    example.Method = "show";
+                }
+                else
+                {
+                    example.Method = "list";
+                }
             }
             else if (moduleExample.Method == "delete")
             {
@@ -418,8 +468,8 @@ export class CodeModelCli
                 }
                 else
                 {
-                    this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
-                    this._log("DICTIONARY: " + JSON.stringify(exampleDict));
+                    // this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
+                    // this._log("DICTIONARY: " + JSON.stringify(exampleDict));
                 }
             });
 
@@ -779,11 +829,13 @@ export class CodeModelCli
         {
             let optionName = methodOptionNames[optionNameIdx];
 
-            this._log("   ---- CHECKING: " + optionName);
+            this._log("OPTION NAME: " + optionName);
+
+            // this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions)
             {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName)
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleOptionKind.MODULE_OPTION_BODY)
                 {
                     option = this.ModuleOptions[optionIdx];
                     break;
@@ -796,8 +848,6 @@ export class CodeModelCli
                 //{
                     let hiddenParamatersOption = this.ModuleParametersOption;
                     option = new ModuleOptionPlaceholder(optionName, "dict", false);
-
-                    
 
                     option.SubOptions = [];
                     option.TypeName =  hiddenParamatersOption.TypeName;
@@ -850,7 +900,7 @@ export class CodeModelCli
 
     public get ModuleOperationName(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
 
     public get ObjectName(): string

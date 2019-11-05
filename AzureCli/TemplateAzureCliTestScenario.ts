@@ -6,7 +6,7 @@
 import { CodeModelCli, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../Common/ModuleMap";
 
-export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
+export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");
@@ -24,73 +24,80 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli) : string[] {
     output.push("TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))");
     output.push("");
     output.push("");
-    output.push("class ApimgmtScenarioTest(ScenarioTest):");
+    output.push("class " + model.ServiceNameX + "ScenarioTest(ScenarioTest):");
     output.push("");
-    output.push("    @ResourceGroupPreparer(name_prefix='cli_test_apimgmt')");
-    output.push("    def test_apimgmt(self, resource_group):");
+    output.push("    @ResourceGroupPreparer(name_prefix='cli_test_" + model.GetCliCommandModuleNameUnderscored() + "')");
+    output.push("    def test_" + model.GetCliCommandModuleNameUnderscored() + "(self, resource_group):");
     output.push("");
     output.push("        self.kwargs.update({");
     output.push("            'name': 'test1'");
     output.push("        })");
     output.push("");
 
+    // walk through test config
+    for (var ci = 0; ci < config.length; ci++)
+    {
+        // find example by name
+        let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
 
+        if (exampleCmd != null && exampleCmd.length > 0)
+        {
+            let prefix: string = "        self.cmd(";
+
+            for (let idx = 0; idx < exampleCmd.length; idx++)
+            {
+                let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
+                let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
+
+                output.push(prefix + exampleCmd[idx] + postfix);
+            }
+            output.push("                 checks=[])");
+            output.push("");
+        }
+        else
+        {
+            output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
+        }
+    }
+
+    return output;
+}
+
+function findExampleByName(model: CodeModelCli, name: string, output: string[]): string[]
+{
+    let cmd: string[] = [];
+    model.Reset();
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
-
         let methods: string[] = model.GetCliCommandMethods();
         for (let mi = 0; mi < methods.length; mi++)
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
-            // options
+
             let ctx = model.GetCliCommandContext(method);
             if (ctx == null)
+            {
                 continue;
+            }
 
             ctx.Methods.forEach(element => {
-                output.push ("# " + element.Name + " -- " + method);
                 let examples: CommandExample[] = ctx.Examples;
                 examples.forEach(example => {
-                    let parameters: string = "";
-                    for (let k in example.Parameters)
+                    if (example.Description == name)
                     {
-                        let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                        parameters += " " + k + " " + slp;
+                        cmd = model.GetExampleItems(example, true);
                     }
-
-                    output.push("        self.cmd('" + model.GetCliCommand() + " " + method + " " + parameters + "', checks=[");
-                    //output.push("            self.check('tags.foo', 'doo'),");
-                    //output.push("            self.check('name', '{name}')");
-                    output.push("        ])");
-                    output.push("");
                 });        
             });
+
+            if (cmd.length > 0)
+                break;
         }
-    } while (model.NextModule());;
 
+        if (cmd.length > 0)
+            break;
+    } while (model.NextModule());
 
-
-    //output.push("        self.cmd('apimgmt create -g {rg} -n {name} --tags foo=doo', checks=[");
-    //output.push("            self.check('tags.foo', 'doo'),");
-    //output.push("            self.check('name', '{name}')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt update -g {rg} -n {name} --tags foo=boo', checks=[");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.cmd('apimgmt show - {rg} -n {name}', checks=[");
-    //output.push("            self.check('name', '{name}'),");
-    //output.push("            self.check('resourceGroup', '{rg}'),");
-    //output.push("            self.check('tags.foo', 'boo')");
-    //output.push("        ])");
-    //output.push("        self.cmd('apimgmt delete -g {rg} -n {name}')");
-    //output.push("        final_count = len(self.cmd('apimgmt list').get_output_in_json())");
-    //output.push("        self.assertTrue(final_count, count - 1)");
-    //output.push("");
-
-    return output;
+    return cmd;
 }

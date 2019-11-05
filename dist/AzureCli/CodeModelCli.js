@@ -48,6 +48,9 @@ class CodeModelCli {
     GetCliCommandModuleName() {
         return this.Map.CliName;
     }
+    GetCliCommandModuleNameUnderscored() {
+        return this.Map.CliName.replace("-", "_");
+    }
     GetCliCommand(methodName = null) {
         let options = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -81,14 +84,14 @@ class CodeModelCli {
         if (this._cmdOverrides) {
             for (let regex in this._cmdOverrides) {
                 let regexp = new RegExp(regex);
-                this._log("------------------ check: " + regex);
+                // this._log("------------------ check: " + regex);
                 if (url.toLowerCase().match(regexp)) {
-                    this._log("-------------- " + url.toLowerCase() + " ------- " + this._cmdOverrides[regex]);
+                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
-        this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
+        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
         while (partIdx < urlParts.length) {
             let part = urlParts[partIdx];
             if (command == "") {
@@ -172,7 +175,7 @@ class CodeModelCli {
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;
-                this._log(" ... option: " + o.NameAnsible);
+                // this._log(" ... option: " + o.NameAnsible);
                 // first find if parameter was already added
                 ctx.Parameters.forEach(p => {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
@@ -230,6 +233,7 @@ class CodeModelCli {
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                             ctx.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
+                            // [TODO] support subparameters
                         }
                     }
                 }
@@ -240,12 +244,35 @@ class CodeModelCli {
         ctx.Examples = examples;
         return ctx;
     }
+    GetExampleItems(example, isTest) {
+        let parameters = [];
+        parameters.push("az " + this.GetCliCommand() + " " + example.Method);
+        for (let k in example.Parameters) {
+            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+            if (isTest) {
+                if (k != "--resource-group") {
+                    parameters.push(k + " " + slp);
+                }
+                else {
+                    parameters.push(k + " {rg}");
+                }
+            }
+            else {
+                parameters.push(k + " " + slp);
+            }
+        }
+        return parameters;
+    }
+    GetExampleString(example, isTest) {
+        return this.GetExampleItems(example, isTest).join(" ");
+    }
     GetCliTypeFromOption(o) {
         let type = "";
-        if (o.IsList) {
-            return "list";
+        /*if (o.IsList)
+        {
+            type="list[" + o.Type + "]";
         }
-        else if (o.Type.startsWith("unknown[")) {
+        else*/ if (o.Type.startsWith("unknown[")) {
             if (o.Type.startsWith("unknown[DictionaryType")) {
                 return "dictionary";
             }
@@ -272,8 +299,14 @@ class CodeModelCli {
                 example.Method = "update";
             }
             else if (moduleExample.Method == "get") {
-                // XXX - could be list
-                example.Method = "show";
+                // maybe this should be done in a different way, but if url ends with
+                // variable it means we are looking for specific resource instance
+                if (moduleExample.Url.endsWith("}")) {
+                    example.Method = "show";
+                }
+                else {
+                    example.Method = "list";
+                }
             }
             else if (moduleExample.Method == "delete") {
                 example.Method = "delete";
@@ -292,8 +325,8 @@ class CodeModelCli {
                     example.Parameters["--" + element.Name] = v;
                 }
                 else {
-                    this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
-                    this._log("DICTIONARY: " + JSON.stringify(exampleDict));
+                    // this._log("MISSING PATH: " + element.Name + " " + element.PathSwagger);
+                    // this._log("DICTIONARY: " + JSON.stringify(exampleDict));
                 }
             });
             // this log is too large
@@ -551,10 +584,11 @@ class CodeModelCli {
         let moduleOptions = [];
         for (let optionNameIdx in methodOptionNames) {
             let optionName = methodOptionNames[optionNameIdx];
-            this._log("   ---- CHECKING: " + optionName);
+            this._log("OPTION NAME: " + optionName);
+            // this._log("   ---- CHECKING: " + optionName);
             let option = null;
             for (let optionIdx in this.ModuleOptions) {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName) {
+                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleMap_1.ModuleOptionKind.MODULE_OPTION_BODY) {
                     option = this.ModuleOptions[optionIdx];
                     break;
                 }
@@ -598,7 +632,7 @@ class CodeModelCli {
         return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
     }
     get ModuleOperationName() {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName;
+        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
     get ObjectName() {
         return this.Map.Modules[this._selectedModule].ObjectName;
