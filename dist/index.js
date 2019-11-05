@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -51,7 +52,7 @@ const TemplatePythonIntegrationTest_1 = require("./PythonIntegrationTest/Templat
 const Adjustments_1 = require("./Common/Adjustments");
 //
 const extension = new autorest_extension_base_1.AutoRestExtension();
-extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
+extension.Add("cli", (autoRestApi) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // output function
         function Info(s) {
@@ -121,6 +122,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let debugMap = yield autoRestApi.GetValue("debug-map");
         let debugCli = yield autoRestApi.GetValue("debug-cli");
         let flattenAll = yield autoRestApi.GetValue("flatten-all");
+        let tag = yield autoRestApi.GetValue("tag");
+        Info(tag);
         let generateReport = yield autoRestApi.GetValue("report");
         // Handle generation type parameter
         if (yield autoRestApi.GetValue("cli-module")) {
@@ -145,6 +148,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         else if (yield autoRestApi.GetValue("mm")) {
             Info("GENERATION: --magic-modules");
             generateMagicModules = true;
+            folderMagicModules = "magic-modules-input/";
         }
         else if (yield autoRestApi.GetValue("swagger-integration-test")) {
             Info("GENERATION: --swagger-integration-test");
@@ -374,9 +378,13 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                                 //if (mn == 'batchaccount') mn = "batchaccountxx";
                                 //if (mn != "batchaccount")
                                 if (generateMagicModules) {
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                                    autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                                    let tagfolder = "";
+                                    if (tag != null) {
+                                        tagfolder = "/" + tag;
+                                    }
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                                 }
                             }
                             else {

@@ -142,6 +142,8 @@ extension.Add("cli", async autoRestApi => {
     let debugMap = await autoRestApi.GetValue("debug-map");
     let debugCli = await autoRestApi.GetValue("debug-cli");
     let flattenAll = await autoRestApi.GetValue("flatten-all");
+    let tag = await autoRestApi.GetValue("tag");
+    Info(tag);
     let generateReport = await autoRestApi.GetValue("report");
 
     // Handle generation type parameter
@@ -173,6 +175,7 @@ extension.Add("cli", async autoRestApi => {
     {
       Info("GENERATION: --magic-modules");
       generateMagicModules = true;
+      folderMagicModules = "magic-modules-input/";
     }
     else if (await autoRestApi.GetValue("swagger-integration-test"))
     {
@@ -464,9 +467,13 @@ extension.Add("cli", async autoRestApi => {
                   //if (mn != "batchaccount")
                   if (generateMagicModules)
                   {
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
-                    autoRestApi.WriteFile(folderMagicModules + mn + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
+                    let tagfolder = "";
+                    if (tag != null) {
+                      tagfolder = "/" + tag;
+                    }
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/api.yaml", GenerateMagicModulesInput(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + tagfolder + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model).join('\r\n'));
                   }
                 } else {
 
