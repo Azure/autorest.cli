@@ -1,4 +1,4 @@
-# Appendix A: Examples and Integration Test Samples
+# Appendix A1: Examples and Integration Test Samples
 
 ## Original Example in Azure REST API specification
 
