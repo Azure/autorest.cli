@@ -85,7 +85,7 @@ export class MapFlattener
             if (suboptions != null)
             {
                 let optionPath = (((path != "/") ? path : "") + "/" + option.NameSwagger).toLowerCase();
-                if (this._debug) this._log("flattener: checking path - " + optionPath);
+                //if (this._debug) this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
 
                 let flatten: any = this._flatten.GetFlatten(optionPath);
