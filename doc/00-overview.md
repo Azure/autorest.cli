@@ -62,3 +62,31 @@ Internal map is converted into actual Azure CLI extension source code.
 - Azure CLI Extension generation report
 - Python Examples
 - Rest examples for Azure CLI (**az rest** command)
+
+## Sharing Implementation
+
+||Azure CLI|Ansible|Terraform|
+|-|-|-|-|
+|Programming Language|Python|Python|Go|
+|UX Structure|YES|YES|YES|
+|Option Names|YES*|YES*|YES*|
+|Common Code|YES**|YES**|-|
+|Integration Test|YES|YES|YES|
+|Examples|YES|YES|YES|
+
+
+
+\* differences are minimal
+
+\** Currently Azure CLI and Ansible have no common code as these tools were developed independently, however sharing implemenation can be considered as both use Python / Azure Python SDK
+
+### Sharing Implementation between Azure CLI and Ansible
+
+What can be shared?
+- UX -> Azure Python SDK transformation
+- Validators
+- Authentication
+
+
+
+
