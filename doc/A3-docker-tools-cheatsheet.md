@@ -15,3 +15,15 @@ TBD
 ## Generating Python SDK Integration Test
 
 TBD
+
+## Generating Azure CLI Extension
+
+TBD
+
+## Recording Azure CLI Extension Tests
+
+TBD
+
+## Publishing Azure CLI Extension
+
+TBD
