@@ -76,7 +76,7 @@ Internal map is converted into actual Azure CLI extension source code.
 
 
 
-\* differences are minimal
+\* differences are minimal, for instance: **--resource-group** / **resource_group** / **resourceGroup**
 
 \** Currently Azure CLI and Ansible have no common code as these tools were developed independently, however sharing implemenation can be considered as both use Python / Azure Python SDK
 
