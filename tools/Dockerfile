@@ -1,13 +1,8 @@
-FROM ubuntu:xenial
+FROM ubuntu
 MAINTAINER zikalino
 
 RUN apt-get update
-RUN apt-get install -y software-properties-common
-RUN add-apt-repository ppa:jonathonf/python-3.6
-RUN apt-get update
-RUN apt-get install -y python3.6 python3-pip git curl gnupg
-
-RUN pip3 install wheel
+RUN apt-get install -y python3 python3-pip python3-venv git curl gnupg
 
 RUN apt-get install -y software-properties-common
 RUN apt-get install -y apt-transport-https
@@ -20,7 +15,7 @@ RUN dpkg -i packages-microsoft-prod.deb
 RUN add-apt-repository universe
 RUN apt-get update
 RUN apt-get install -y dotnet-sdk-2.2
-RUN apt-get install -y python3-venv
+RUN apt-get install -y
 
 RUN apt-get install -y nodejs
 RUN apt-get install -y npm
@@ -39,16 +34,14 @@ RUN git clone https://github.com/Azure/azure-rest-api-specs.git
 RUN git clone https://github.com/Azure/azure-cli.git
 RUN git clone https://github.com/Azure/azure-cli-extensions.git
 
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
-RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
-
-RUN python3 -m venv env
+RUN python3 -m venv /env
 ENV VIRTUAL_ENV /env
 ENV PATH /env/bin:$PATH
-RUN pip install azdev
 
+RUN pip3 install wheel
+RUN pip3 install azdev
+RUN pip3 install six==1.12
 
-RUN pip install six==1.12
 RUN azdev setup -r /_/azure-cli-extensions -c /_/azure-cli
 
 RUN cd autorest.cli; npm install
