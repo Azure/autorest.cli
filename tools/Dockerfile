@@ -42,13 +42,15 @@ RUN pip3 install wheel
 RUN pip3 install azdev
 RUN pip3 install six==1.12
 
-RUN azdev setup -r /_/azure-cli-extensions -c /_/azure-cli
-
 RUN cd autorest.cli; npm install
 
-# RUN cd /_/azure-sdk-for-python; python ./scripts/dev_setup.py
+# this is just to trigger setup of basic packages
+RUN cd /_/azure-sdk-for-python; python ./scripts/dev_setup.py -p azure-mgmt-healthcareapis
+
+RUN azdev setup -r /_/azure-cli-extensions -c /_/azure-cli
 
 ADD scripts /scripts
 RUN sed -i 's/\r//g' /scripts/*
+ENV PATH /scripts:$PATH
 
 # ENTRYPOINT ["bash", "/scripts/run.sh"]
