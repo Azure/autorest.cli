@@ -1,0 +1,61 @@
+FROM ubuntu:xenial
+MAINTAINER zikalino
+
+RUN apt-get update
+RUN apt-get install -y software-properties-common
+RUN add-apt-repository ppa:jonathonf/python-3.6
+RUN apt-get update
+RUN apt-get install -y python3.6 python3-pip git curl gnupg
+
+RUN pip3 install wheel
+
+RUN apt-get install -y software-properties-common
+RUN apt-get install -y apt-transport-https
+RUN add-apt-repository "deb http://security.ubuntu.com/ubuntu xenial-security main"
+RUN apt-get update
+RUN apt-get install -y libicu55
+RUN apt-get install -y wget
+RUN wget -q https://packages.microsoft.com/config/ubuntu/18.04/packages-microsoft-prod.deb -O packages-microsoft-prod.deb
+RUN dpkg -i packages-microsoft-prod.deb
+RUN add-apt-repository universe
+RUN apt-get update
+RUN apt-get install -y dotnet-sdk-2.2
+RUN apt-get install -y python3-venv
+
+RUN apt-get install -y nodejs
+RUN apt-get install -y npm
+
+RUN apt-get install -y libunwind-dev
+RUN npm install -g autorest
+RUN npm install -g n
+RUN n 10.15.0
+RUN apt-get -y install vim
+
+# clone repos locally
+WORKDIR /_
+RUN git clone https://github.com/Azure/autorest.cli.git
+RUN git clone https://github.com/Azure/azure-sdk-for-python.git
+RUN git clone https://github.com/Azure/azure-rest-api-specs.git
+RUN git clone https://github.com/Azure/azure-cli.git
+RUN git clone https://github.com/Azure/azure-cli-extensions.git
+
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.5 1
+RUN update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.6 2
+
+RUN python3 -m venv env
+ENV VIRTUAL_ENV /env
+ENV PATH /env/bin:$PATH
+RUN pip install azdev
+
+
+RUN pip install six==1.12
+RUN azdev setup -r /_/azure-cli-extensions -c /_/azure-cli
+
+RUN cd autorest.cli; npm install
+
+# RUN cd /_/azure-sdk-for-python; python ./scripts/dev_setup.py
+
+ADD scripts /scripts
+RUN sed -i 's/\r//g' /scripts/*
+
+# ENTRYPOINT ["bash", "/scripts/run.sh"]
