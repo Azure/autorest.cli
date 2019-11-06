@@ -128,7 +128,7 @@ extension.Add("cli", async autoRestApi => {
     }
 
     let adjustments = await autoRestApi.GetValue("adjustments");
-    let cliName = await autoRestApi.GetValue("cli-name");
+    let cliName = await autoRestApi.GetValue("group-name") || await autoRestApi.GetValue("cli-name");
     let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
     let optionOverrides = await autoRestApi.GetValue("option-override");
 

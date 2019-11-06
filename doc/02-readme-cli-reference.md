@@ -32,7 +32,7 @@ Minimal **readme.cli.md** file should look as follows:
 |---------|-------|-----------|
 |flatten-all|true|Flatten all structures automaticaly. This option will be default in the future, as any custom flattening will be disabled.|
 |package-name|azure-mgmt-healthcareapis|This is Python package name. Normally it will be derived from **namespace**, so only needs to be defined if package name differs from default|
-|root-name|healthcareapis|This is Azure CLI command module name, or first part of the name of downstream Ansible/Terraform modules. By default it will be taken from namespace. Define it explicitly if default name is not desired.|
+|group-name|healthcareapis|This is Azure CLI command module name, or first part of the name of downstream Ansible/Terraform modules. By default it will be taken from namespace. Define it explicitly if default name is not desired.|
 
 ## Adjusting Command Structure
 
