@@ -28,7 +28,8 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 
 ## Phases of Operation
 
-[DIAGRAM WILL GO HERE]
+
+![Top Level](images/diagram.png)
 
 ### Phase 1 - Generate Internal Map / Model
 
