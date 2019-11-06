@@ -9,6 +9,7 @@ import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Com
 import { LogCallback } from "../index";
 import { Adjustments } from "./Adjustments";
 import { throws } from "assert";
+import { GenerateAzureCliReadme } from '../AzureCli/TemplateAzureCliReadme';
 
 export class MapGenerator
 {
@@ -1005,10 +1006,24 @@ export class MapGenerator
             // if we are merging read options, new option should be included in response
             if (readOnly)
             {
-                oo.IncludeInResponse = true;
-                oo.IncludeInArgSpec = false;
+                this.SetInArgaAndInResponseFlag(oo, readOnly);
             }
             main.push(oo);
+        }
+    }
+
+    private SetInArgaAndInResponseFlag(option: ModuleOption, readOnly: boolean)
+    {
+        if (readOnly) {
+            option.IncludeInResponse = true;
+            option.IncludeInArgSpec = false;
+        }
+        if (option.SubOptions != null)
+        {
+            for (let oi : number = 0; oi < option.SubOptions.length; oi++)
+            {
+                this.SetInArgaAndInResponseFlag(option.SubOptions[oi], readOnly);
+            }
         }
     }
 
