@@ -1,9 +1,10 @@
 "use strict";
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
+    function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
         function fulfilled(value) { try { step(generator.next(value)); } catch (e) { reject(e); } }
         function rejected(value) { try { step(generator["throw"](value)); } catch (e) { reject(e); } }
-        function step(result) { result.done ? resolve(result.value) : new P(function (resolve) { resolve(result.value); }).then(fulfilled, rejected); }
+        function step(result) { result.done ? resolve(result.value) : adopt(result.value).then(fulfilled, rejected); }
         step((generator = generator.apply(thisArg, _arguments || [])).next());
     });
 };
@@ -41,6 +42,8 @@ const TemplateMagicModulesInput_1 = require("./MagicModules/TemplateMagicModules
 const TemplateMagicModulesAnsibleYaml_1 = require("./MagicModules/TemplateMagicModulesAnsibleYaml");
 const TemplateMagicModulesTerraformYaml_1 = require("./MagicModules/TemplateMagicModulesTerraformYaml");
 const TemplateMagicModulesAnsibleExample_1 = require("./MagicModules/TemplateMagicModulesAnsibleExample");
+const TemplateMagicModulesTerraformExample_1 = require("./MagicModules/TemplateMagicModulesTerraformExample");
+const TemplateMagicModulesTerraformExample_2 = require("./MagicModules/TemplateMagicModulesTerraformExample");
 const AnsibleExampleRest_1 = require("./Examples/AnsibleExampleRest");
 const AnsibleExample_1 = require("./Examples/AnsibleExample");
 const TemplateExamplePythonRest_1 = require("./Examples/TemplateExamplePythonRest");
@@ -51,7 +54,7 @@ const TemplatePythonIntegrationTest_1 = require("./PythonIntegrationTest/Templat
 const Adjustments_1 = require("./Common/Adjustments");
 //
 const extension = new autorest_extension_base_1.AutoRestExtension();
-extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
+extension.Add("cli", (autoRestApi) => __awaiter(void 0, void 0, void 0, function* () {
     try {
         // output function
         function Info(s) {
@@ -62,6 +65,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         }
         // read files offered to this plugin
         const inputFileUris = yield autoRestApi.ListInputs();
+        console.warn(inputFileUris);
         if (inputFileUris.length <= 0) {
             Info("INPUT FILE LIST IS EMPTY");
             return;
@@ -403,6 +407,17 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                                     if (generateMagicModules) {
                                         autoRestApi.WriteFile(folderMagicModules + mn + "/examples/ansible/" + filename + ".yml", TemplateMagicModulesAnsibleExample_1.GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
                                     }
+                                }
+                            }
+                            // terraform exmaples
+                            for (let exampleIdx in moduleExamples) {
+                                var example = moduleExamples[exampleIdx];
+                                let mn = model.ModuleName.split("azure_rm_")[1];
+                                if (example.Method == "put") {
+                                    console.warn(example.Name);
+                                    autoRestApi.WriteFile(folderMagicModules + mn + "/examples/terraform/basic.yaml", TemplateMagicModulesTerraformExample_1.GenerateMagicModulesTerraformExampleBasic(example, model.Module).join('\r\n'));
+                                    autoRestApi.WriteFile(folderMagicModules + mn + "/examples/terraform/complete.yaml", TemplateMagicModulesTerraformExample_2.GenerateMagicModulesTerraformExampleComplete(example, model.Module).join('\r\n'));
+                                    break;
                                 }
                             }
                         }

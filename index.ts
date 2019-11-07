@@ -36,6 +36,8 @@ import { GenerateMagicModulesInput } from "./MagicModules/TemplateMagicModulesIn
 import { GenerateMagicModulesAnsibleYaml } from "./MagicModules/TemplateMagicModulesAnsibleYaml"
 import { GenerateMagicModulesTerraformYaml } from "./MagicModules/TemplateMagicModulesTerraformYaml"
 import { GenerateMagicModulesAnsibleExample } from "./MagicModules/TemplateMagicModulesAnsibleExample"
+import { GenerateMagicModulesTerraformExampleBasic} from "./MagicModules/TemplateMagicModulesTerraformExample"
+import { GenerateMagicModulesTerraformExampleComplete} from "./MagicModules/TemplateMagicModulesTerraformExample"
 
 import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
@@ -504,6 +506,21 @@ extension.Add("cli", async autoRestApi => {
                     {
                       autoRestApi.WriteFile(folderMagicModules + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module).join('\r\n'));
                     }
+                  }
+                }
+
+                // terraform exmaples
+                for (let exampleIdx in moduleExamples)
+                {
+                  var example = moduleExamples[exampleIdx];
+                  let mn = model.ModuleName.split("azure_rm_")[1];
+                  if (example.Method == "put")
+                  {
+                    // [to be update] carefully choose which create example to use
+
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/examples/terraform/basic.yaml", GenerateMagicModulesTerraformExampleBasic(example, model.Module).join('\r\n'));
+                    autoRestApi.WriteFile(folderMagicModules + mn + "/examples/terraform/complete.yaml", GenerateMagicModulesTerraformExampleComplete(example, model.Module).join('\r\n'));
+                    break;
                   }
                 }
 

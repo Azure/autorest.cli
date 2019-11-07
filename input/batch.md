@@ -32,7 +32,7 @@ openapi-type: arm
 
 ``` yaml
 input-file:
-  - /azure-rest-api-specs/specification/batch/resource-manager/Microsoft.Batch/stable/2018-12-01/BatchManagement.json
+  - ../../azure-rest-api-specs/specification/batch/resource-manager/Microsoft.Batch/stable/2018-12-01/BatchManagement.json
 ```
 
 ---

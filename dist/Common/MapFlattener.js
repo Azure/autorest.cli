@@ -57,8 +57,7 @@ class MapFlattener {
             let suboptions = option.SubOptions;
             if (suboptions != null) {
                 let optionPath = (((path != "/") ? path : "") + "/" + option.NameSwagger).toLowerCase();
-                if (this._debug)
-                    this._log("flattener: checking path - " + optionPath);
+                // if (this._debug) this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
                 let flatten = this._flatten.GetFlatten(optionPath);
                 if (flatten == "" && this._flattenAll) {
@@ -68,8 +67,7 @@ class MapFlattener {
                 }
                 if (flatten != "") {
                     // all the suboptions of current option will be attached at the end
-                    if (this._debug)
-                        this._log("flattener: found path - " + optionPath);
+                    // if (this._debug) this._log("flattener: found path - " + optionPath);
                     if (flatten == "hide") {
                         // just completely remove this option....
                         options = [].concat(options.slice(0, i), options.slice(i + 1));
@@ -165,8 +163,7 @@ class MapFlattener {
                     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 }
                 else if (option.NameSwagger == "properties") {
-                    if (this._debug)
-                        this._log("flattener: detected 'properties'");
+                    // if (this._debug) this._log("flattener: detected 'properties'");
                     // XXX - this si a hack for current implementation
                     for (let si in suboptions) {
                         let dispositionRest = suboptions[si].DispositionRest;
