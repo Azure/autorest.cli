@@ -21,6 +21,35 @@ Goal of Autorest.CLI is to generate fully functional, high quality Azure CLI Com
 - Extremely high level of consistency between all supported tools (Azure CLI / Ansible / Terraform, etc.) as they will share the same naming conventions, structure of options and behaviour. Users can "convert" Azure CLI command into Ansible playbook without even reading documentation.
 >NOTE: Historically Autorest.CLI was developed to generate Ansible modules
 
+## Autorest CLI Design Rules
+
+### Focus on UX / Mapping to underlying API
+
+- Modelling right UX and mapping into underlying API is the most critical
+- Any changes to underlying implementaion are trivial when proper validation/testing is in place
+
+### Minimize Additional Metadata
+
+- initial working module module with tests and examples shall be generated (almost) without additional metadata
+- additional metadata should be minimal 
+
+### Generated Implementation as Simple as Possible
+
+- move whatever possible to common implementation layer
+- don't try to follow human written code
+- use SDK versus SDK?
+
+### Time Spent on Prerequisites is around 75%
+
+- make sure prerequisites are right
+- actual Azure CLI extension authoring will be easy
+
+### Strong E2E Integration Testing from Day One
+
+- reusing examples from Azure REST API specification is critical
+- all the examples included in the generated code should be tested
+- automatically generated integration test for SDK / Azure CLI Command is required
+
 ## Inputs
 
 - Generic Azure REST API Specification (https://github.com/Azure/azure-rest-api-specs)
@@ -70,6 +99,7 @@ Internal map is converted into actual Azure CLI extension source code.
 |Programming Language|Python|Python|Go|
 |UX Structure|YES|YES|YES|
 |Option Names|YES*|YES*|YES*|
+|Common Logic|YES|YES|YES|
 |Common Code|YES**|YES**|-|
 |Integration Test|YES|YES|YES|
 |Examples|YES|YES|YES|
