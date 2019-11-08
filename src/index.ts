@@ -2,51 +2,51 @@ import { AutoRestExtension } from "autorest-extension-base";
 import * as yaml from "node-yaml";
 
 // Generic
-import { MapGenerator } from "./src/Common/MapGenerator"
-import { MapFlattener } from "./src/Common/MapFlattener"
-import { CodeModel } from "./src/Common/CodeModel"
-import { ExampleProcessor } from "./src/Common/ExampleProcessor"; 
-import { Example } from "./src/Common/Example";
+import { MapGenerator } from "./Common/MapGenerator"
+import { MapFlattener } from "./Common/MapFlattener"
+import { CodeModel } from "./Common/CodeModel"
+import { ExampleProcessor } from "./Common/ExampleProcessor"; 
+import { Example } from "./Common/Example";
 
 // Azure CLI
-import { CodeModelCli } from "./src/AzureCli/CodeModelCli"
-import { GenerateAzureCliCommands } from "./src/AzureCli/TemplateAzureCliCommands"
-import { GenerateAzureCliCustom } from "./src/AzureCli/TemplateAzureCliCustom"
-import { GenerateAzureCliHelp } from "./src/AzureCli/TemplateAzureCliHelp"
-import { GenerateAzureCliParams} from "./src/AzureCli/TemplateAzureCliParams"
-import { GenerateAzureCliClientFactory } from "./src/AzureCli/TemplateAzureCliClientFactory"
-import { GenerateAzureCliTestScenario } from "./src/AzureCli/TemplateAzureCliTestScenario"
-import { GenerateAzureCliReport } from "./src/AzureCli/TemplateAzureCliReport"
-import { GenerateAzureCliInit } from "./src/AzureCli/TemplateAzureCliInit"
-import { GenerateAzureCliAzextMetadata } from "./src/AzureCli/TemplateAzureCliAzextMetadata"
-import { GenerateAzureCliValidators } from "./src/AzureCli/TemplateAzureCliValidators"
-import { GenerateAzureCliHistory } from "./src/AzureCli/TemplateAzureCliHistory"
-import { GenerateAzureCliReadme } from "./src/AzureCli/TemplateAzureCliReadme"
-import { GenerateAzureCliSetupCfg } from "./src/AzureCli/TemplateAzureCliSetupCfg"
-import { GenerateAzureCliSetupPy } from "./src/AzureCli/TemplateAzureCliSetupPy"
+import { CodeModelCli } from "./AzureCli/CodeModelCli"
+import { GenerateAzureCliCommands } from "./AzureCli/TemplateAzureCliCommands"
+import { GenerateAzureCliCustom } from "./AzureCli/TemplateAzureCliCustom"
+import { GenerateAzureCliHelp } from "./AzureCli/TemplateAzureCliHelp"
+import { GenerateAzureCliParams} from "./AzureCli/TemplateAzureCliParams"
+import { GenerateAzureCliClientFactory } from "./AzureCli/TemplateAzureCliClientFactory"
+import { GenerateAzureCliTestScenario } from "./AzureCli/TemplateAzureCliTestScenario"
+import { GenerateAzureCliReport } from "./AzureCli/TemplateAzureCliReport"
+import { GenerateAzureCliInit } from "./AzureCli/TemplateAzureCliInit"
+import { GenerateAzureCliAzextMetadata } from "./AzureCli/TemplateAzureCliAzextMetadata"
+import { GenerateAzureCliValidators } from "./AzureCli/TemplateAzureCliValidators"
+import { GenerateAzureCliHistory } from "./AzureCli/TemplateAzureCliHistory"
+import { GenerateAzureCliReadme } from "./AzureCli/TemplateAzureCliReadme"
+import { GenerateAzureCliSetupCfg } from "./AzureCli/TemplateAzureCliSetupCfg"
+import { GenerateAzureCliSetupPy } from "./AzureCli/TemplateAzureCliSetupPy"
 
 // Ansible
-import { GenerateModuleSdk } from "./src/Ansible/AnsibleModuleSdk"
-import { GenerateModuleSdkInfo } from "./src/Ansible/AnsibleModuleSdkInfo"
-import { GenerateModuleRest } from "./src/Ansible/AnsibleModuleRest"
-import { GenerateModuleRestInfo } from "./src/Ansible/AnsibleModuleRestInfo"
+import { GenerateModuleSdk } from "./Ansible/AnsibleModuleSdk"
+import { GenerateModuleSdkInfo } from "./Ansible/AnsibleModuleSdkInfo"
+import { GenerateModuleRest } from "./Ansible/AnsibleModuleRest"
+import { GenerateModuleRestInfo } from "./Ansible/AnsibleModuleRestInfo"
 
 // Magic Modules
-import { GenerateMagicModulesInput } from "./src/MagicModules/TemplateMagicModulesInput"
-import { GenerateMagicModulesAnsibleYaml } from "./src/MagicModules/TemplateMagicModulesAnsibleYaml"
-import { GenerateMagicModulesTerraformYaml } from "./src/MagicModules/TemplateMagicModulesTerraformYaml"
-import { GenerateMagicModulesAnsibleExample } from "./src/MagicModules/TemplateMagicModulesAnsibleExample"
+import { GenerateMagicModulesInput } from "./MagicModules/TemplateMagicModulesInput"
+import { GenerateMagicModulesAnsibleYaml } from "./MagicModules/TemplateMagicModulesAnsibleYaml"
+import { GenerateMagicModulesTerraformYaml } from "./MagicModules/TemplateMagicModulesTerraformYaml"
+import { GenerateMagicModulesAnsibleExample } from "./MagicModules/TemplateMagicModulesAnsibleExample"
 
-import { GenerateExampleAnsibleRest } from "./src/Examples/AnsibleExampleRest"
-import { GenerateExampleAnsibleRrm } from "./src/Examples/AnsibleExample"
-import { GenerateExamplePythonRest } from "./src/Examples/TemplateExamplePythonRest"
-import { GenerateExamplePythonSdk } from "./src/Examples/TemplateExamplePythonSdk"
-import { GenerateExampleAzureCLI } from "./src/Examples/TemplateExampleAzureCLI"
+import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
+import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
+import { GenerateExamplePythonRest } from "./Examples/TemplateExamplePythonRest"
+import { GenerateExamplePythonSdk } from "./Examples/TemplateExamplePythonSdk"
+import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
 
-import { GenerateSwaggerIntegrationTest } from "./src/SwaggerIntegrationTest/TemplateSwaggerIntegrationTest"
-import { GeneratePythonIntegrationTest } from "./src/PythonIntegrationTest/TemplatePythonIntegrationTest"
+import { GenerateSwaggerIntegrationTest } from "./SwaggerIntegrationTest/TemplateSwaggerIntegrationTest"
+import { GeneratePythonIntegrationTest } from "./PythonIntegrationTest/TemplatePythonIntegrationTest"
 
-import { Adjustments } from "./src/Common/Adjustments"; 
+import { Adjustments } from "./Common/Adjustments"; 
 import { write } from "fs";
 
 export type LogCallback = (message: string) => void;

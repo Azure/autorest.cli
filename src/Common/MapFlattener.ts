@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionKind } from "./ModuleMap"
-import { LogCallback } from "../../index"
+import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
 import { ToSnakeCase, Capitalize, Uncapitalize, ToGoCase } from "../Common/Helpers";
 
