@@ -2,19 +2,23 @@
 
 ## Working with Local Repositories
 
-TBD
+Run following command:
+
+    docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools-v2
 
 ## Working with Embedded Repositories
 
-TBD
+    docker run -it --rm zikalino/azure-sdk-tools-v2
 
 ## Generating Python SDK
 
-TBD
+In simplest case you can just type:
+
+    gen-python-package healthcareapis
 
 ## Generating Python SDK Integration Test
 
-TBD
+    gen-python-integration-test healthcareapis
 
 ## Generating Azure CLI Extension
 
