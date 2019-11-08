@@ -9,7 +9,7 @@ import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcesso
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
 import { throws } from "assert";
 import { METHODS } from "http";
-import { LogCallback } from "../index";
+import { LogCallback } from "../../index";
 import { stringify } from "querystring";
 import { on } from "cluster";
 

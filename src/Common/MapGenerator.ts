@@ -6,7 +6,7 @@
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
-import { LogCallback } from "../index";
+import { LogCallback } from "../../index";
 import { Adjustments } from "./Adjustments";
 import { throws } from "assert";
 import { GenerateAzureCliReadme } from '../AzureCli/TemplateAzureCliReadme';
