@@ -1,10 +1,10 @@
 {
-  "name": "autorest.cli",
+  "name": "@autorest/cli",
   "version": "0.1.9",
-  "description": "Simple AutoRest extension",
+  "description": "Autorest Azure CLI extension",
   "main": "dist/index.js",
   "scripts": {
-    "start": "node dist/index.js",
+    "start": "node dist/src/index.js",
     "debug": "node --max_old_space_size=4096 --inspect-brk ./dist/index.js"
   },
   "repository": {
