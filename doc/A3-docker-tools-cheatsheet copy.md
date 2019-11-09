@@ -22,12 +22,18 @@ In simplest case you can just type:
 
 ## Generating Azure CLI Extension
 
-TBD
+    gen-azure-cli <service-name>
 
-## Recording Azure CLI Extension Tests
+## Working with Azure CLI Extensions
 
-TBD
+### Installing Extension
 
-## Publishing Azure CLI Extension
+    azdev extension add <extension-name>
 
-TBD
+    az <extension-name> --help
+
+### Recording Tests
+
+
+### Publishing Azure CLI Extension
+
