@@ -34,7 +34,6 @@ class ModuleOption {
         this.IsList = false;
         this.Required = false;
         this.Documentation = null;
-        this.DocumentationMarkKeywords = false;
         this.DefaultValue = null;
         this.IncludeInDocumentation = false;
         this.IncludeInArgSpec = false;
@@ -72,7 +71,6 @@ class ModuleOption {
         this.NoLog = false;
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
-        this.DocumentationMarkKeywords = true;
         this.PathSwagger = "";
         this.Flatten = false;
         this.format = null;

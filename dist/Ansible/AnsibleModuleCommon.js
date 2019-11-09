@@ -167,23 +167,6 @@ function GetHelpFromOptions(model, options, padding) {
         if (option.NameSwagger == "tags")
             continue;
         let doc = option.Documentation ? option.Documentation : "undefined";
-        if (option.DocumentationMarkKeywords) {
-            // try to replace all mentioned option names with I()
-            for (var ooi in options) {
-                let oo = options[ooi];
-                let name = oo.NameSwagger;
-                if (oo.NameSwagger == "name" || oo.NameSwagger == "location" || oo.NameSwagger == "id" || oo.NameSwagger == "edition" || oo.NameSwagger == option.NameSwagger)
-                    continue;
-                // XXXX
-                //doc = Regex.Replace(doc, "\\b" + name + "\\b", "I(" + oo.NameAlt + ")", RegexOptions.IgnoreCase);
-            }
-            // XXXX
-            // replace all mentioned option names with C()
-            //for (var choice in allChoices)
-            //{
-            //    doc = Regex.Replace(doc, "\\b" + choice.Value + "\\b", "C(" + choice.Key + ")", RegexOptions.IgnoreCase);
-            //}
-        }
         help[option.NameAnsible] = option_doc;
         option_doc['description'] = doc.split("\n");
         // write only if true

@@ -40,7 +40,6 @@ export class ModuleOption
         this.NoLog = false;
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
-        this.DocumentationMarkKeywords = true;
         this.PathSwagger = "";
         this.Flatten = false;
         this.format = null;
@@ -72,7 +71,6 @@ export class ModuleOption
     public IsList: boolean = false;
     public Required: boolean = false;
     public Documentation: string = null;
-    public DocumentationMarkKeywords: boolean = false;
     public DefaultValue: string = null;
     public IncludeInDocumentation: boolean = false;
     public IncludeInArgSpec: boolean = false;
