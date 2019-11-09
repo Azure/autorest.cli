@@ -100,8 +100,6 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             });
             return;
         }
-        // get settings
-        const isDebugFlagSet = yield autoRestApi.GetValue("debug");
         // package name -- can be guessed from namespace
         let packageName = yield autoRestApi.GetValue("package-name");
         if (!packageName) {
@@ -228,7 +226,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
             // flatten the map using flattener
-            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, debug, function (msg) {
+            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, function (msg) {
                 if (debug) {
                     autoRestApi.Message({
                         Channel: "warning",

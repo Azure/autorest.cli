@@ -7,14 +7,13 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const ModuleMap_1 = require("./ModuleMap");
 const Helpers_1 = require("../Common/Helpers");
 class MapFlattener {
-    constructor(map, flatten, flattenAll, optionOverride, debug, log) {
+    constructor(map, flatten, flattenAll, optionOverride, log) {
         this._map = null;
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
         this._optionOverride = optionOverride;
         this._log = log;
-        this._debug = debug;
     }
     Flatten() {
         for (let mi in this._map.Modules) {
@@ -30,6 +29,7 @@ class MapFlattener {
             // OPTIONS ARE NOT SORTED CORRECTLY
             // SO THERE'S option.NameAnsible != "resource_group_name" hack here
             if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name')) {
+                this.ApplyOptionOverride(option);
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
@@ -67,8 +67,7 @@ class MapFlattener {
                 }
                 if (flatten != "") {
                     // all the suboptions of current option will be attached at the end
-                    if (this._debug)
-                        this._log("flattener: found path - " + optionPath);
+                    this._log("flattener: found path - " + optionPath);
                     if (flatten == "hide") {
                         // just completely remove this option....
                         options = [].concat(options.slice(0, i), options.slice(i + 1));
@@ -164,8 +163,7 @@ class MapFlattener {
                     // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
                 }
                 else if (option.NameSwagger == "properties") {
-                    if (this._debug)
-                        this._log("flattener: detected 'properties'");
+                    this._log("flattener: detected 'properties'");
                     // XXX - this si a hack for current implementation
                     for (let si in suboptions) {
                         let dispositionRest = suboptions[si].DispositionRest;
@@ -193,23 +191,37 @@ class MapFlattener {
         return options;
     }
     ApplyOptionOverride(option) {
+        this._log("APPLYING OVERRIDE");
         if (this._optionOverride == null)
             return;
-        let override = this._optionOverride[option.NameAnsible];
-        if (override == undefined)
-            return;
-        let name = override['name'];
-        let readonly = override['readonly'];
-        let doc = override['doc'];
-        if (name != undefined) {
-            option.NameAnsible = name;
-            option.NameTerraform = Helpers_1.ToGoCase(name);
-        }
-        if (readonly != undefined) {
-            option.IncludeInArgSpec = !readonly;
-        }
-        if (doc != undefined) {
-            option.Documentation = doc;
+        for (let k in this._optionOverride) {
+            let regexp = new RegExp(k);
+            this._log("MATCHING: " + k + " -- " + option.NameAnsible);
+            if (!option.NameAnsible.match(regexp)) {
+                this._log("----------- NO MATCH");
+                continue;
+            }
+            let override = this._optionOverride[k];
+            let name = override['name'];
+            let readonly = override['readonly'];
+            let doc = override['doc'];
+            let docReplace = override['doc-replace'];
+            if (name != undefined) {
+                option.NameAnsible = name;
+                option.NameTerraform = Helpers_1.ToGoCase(name);
+            }
+            if (readonly != undefined) {
+                option.IncludeInArgSpec = !readonly;
+            }
+            if (doc != undefined) {
+                option.Documentation = doc;
+            }
+            if (docReplace != undefined) {
+                for (let rex in docReplace) {
+                    let regexp = new RegExp(rex);
+                    option.Documentation = option.Documentation.replace(regexp, docReplace[rex]);
+                }
+            }
         }
     }
 }

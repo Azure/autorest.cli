@@ -14,7 +14,6 @@ export class MapFlattener
                         flatten: Adjustments,
                         flattenAll: boolean,
                         optionOverride: any,
-                        debug: boolean,
                         log: LogCallback)
     {
         this._map = map;
@@ -22,7 +21,6 @@ export class MapFlattener
         this._flattenAll = flattenAll;
         this._optionOverride = optionOverride;
         this._log = log;
-        this._debug = debug;
     }
 
     public Flatten(): void
@@ -47,6 +45,7 @@ export class MapFlattener
             // SO THERE'S option.NameAnsible != "resource_group_name" hack here
             if (option.Kind == ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name'))
             {
+                this.ApplyOptionOverride(option);
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
@@ -101,7 +100,7 @@ export class MapFlattener
                 if (flatten != "")
                 {
                     // all the suboptions of current option will be attached at the end
-                    if (this._debug) this._log("flattener: found path - " + optionPath);
+                    this._log("flattener: found path - " + optionPath);
 
                     if (flatten == "hide")
                     {
@@ -220,7 +219,7 @@ export class MapFlattener
                 }
                 else if (option.NameSwagger == "properties")
                 {
-                    if (this._debug) this._log("flattener: detected 'properties'");
+                    this._log("flattener: detected 'properties'");
                     // XXX - this si a hack for current implementation
                     for (let si in suboptions)
                     {
@@ -256,32 +255,51 @@ export class MapFlattener
 
     private ApplyOptionOverride(option: ModuleOption)
     {
+        this._log("APPLYING OVERRIDE");
         if (this._optionOverride == null)
             return;
         
-        let override: any = this._optionOverride[option.NameAnsible];
-
-        if (override == undefined)
-            return;
-
-        let name = override['name'];
-        let readonly = override['readonly'];
-        let doc = override['doc'];
-
-        if (name != undefined)
+        for (let k in this._optionOverride)
         {
-            option.NameAnsible = name;
-            option.NameTerraform = ToGoCase(name);
-        }
+            let regexp = new RegExp(k);
 
-        if (readonly != undefined)
-        {
-            option.IncludeInArgSpec = !readonly;
-        }
+            this._log("MATCHING: " + k + " -- " + option.NameAnsible);
+            if (!option.NameAnsible.match(regexp))
+            {
+                this._log("----------- NO MATCH")
+                continue;
+            }
+            
+            let override: any = this._optionOverride[k];
 
-        if (doc != undefined)
-        {
-            option.Documentation = doc;
+            let name = override['name'];
+            let readonly = override['readonly'];
+            let doc = override['doc'];
+            let docReplace = override['doc-replace'];
+            if (name != undefined)
+            {
+                option.NameAnsible = name;
+                option.NameTerraform = ToGoCase(name);
+            }
+
+            if (readonly != undefined)
+            {
+                option.IncludeInArgSpec = !readonly;
+            }
+
+            if (doc != undefined)
+            {
+                option.Documentation = doc;
+            }
+
+            if (docReplace != undefined)
+            {
+                for (let rex in docReplace)
+                {
+                    let regexp = new RegExp(rex);
+                    option.Documentation = option.Documentation.replace(regexp, docReplace[rex]);
+                }
+            }
         }
     }
 
@@ -289,6 +307,5 @@ export class MapFlattener
     private _flatten: Adjustments;
     private _flattenAll: boolean;
     private _log: LogCallback;
-    private _debug: boolean;
     private _optionOverride: any;
 }

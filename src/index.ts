@@ -116,9 +116,6 @@ extension.Add("cli", async autoRestApi => {
       return;
     }
 
-    // get settings
-    const isDebugFlagSet = await autoRestApi.GetValue("debug");
-
     // package name -- can be guessed from namespace
     let packageName = await autoRestApi.GetValue("package-name");
 
@@ -272,7 +269,7 @@ extension.Add("cli", async autoRestApi => {
         }
 
         // flatten the map using flattener
-        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, debug, function(msg: string) {
+        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, function(msg: string) {
           if (debug)
           {
             autoRestApi.Message({
