@@ -72,7 +72,6 @@ class ModuleOption {
         this.IncludeInDocumentation = true;
         this.IncludeInArgSpec = true;
         this.PathSwagger = "";
-        this.Flatten = false;
         this.format = null;
         if (name == "location")
             this.Updatable = false;

@@ -509,7 +509,6 @@ class MapGenerator {
                     option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
                     option.TypeNameGo = Helpers_1.Capitalize(option.TypeNameGo);
                     option.format = this.Type_number_format(attr.modelType);
-                    option.Flatten = flatten;
                     option.EnumValues = this.Type_EnumValues(attr.modelType);
                     option.PathSwagger = pathSwagger + "/" + attrName;
                     option.PathPython = pathPython + ((attrName != "properties") ? ("/" + attrName) : "");
