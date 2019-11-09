@@ -96,7 +96,7 @@
   "projects": [
     {
       "packageName": "@autorest/cli",
-      "projectFolder": "src",
+      "projectFolder": ".",
       "reviewCategory": "production",
       "shouldPublish": true
     }
