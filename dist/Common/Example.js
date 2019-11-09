@@ -10,7 +10,8 @@ class Example {
         this.Example = example;
         this.Url = url;
         this.Method = method;
-        this.Name = name;
+        this.Id = name;
+        this.Title = name;
         this.Filename = filename;
         this.Variables = variables;
         this.References = references;

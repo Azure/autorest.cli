@@ -8,7 +8,7 @@ import { Example } from "../Common/Example"
 export function GenerateExamplePythonRest(model: Example) : string[] {
     var output: string[] = [];
 
-    output.push("# " + model.Name);
+    output.push("# " + model.Id);
     output.push("#");
     output.push("# This script expects that the following environment vars are set:");
     output.push("#");

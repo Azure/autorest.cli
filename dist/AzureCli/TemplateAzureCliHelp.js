@@ -59,7 +59,7 @@ function GenerateAzureCliHelp(model) {
                             parameters.push(k);
                             parameters.push(slp);
                         }
-                        output.push("      - name: " + example.Description);
+                        output.push("      - name: " + example.Title);
                         output.push("        text: |-");
                         let line = "";
                         parameters.forEach(element => {

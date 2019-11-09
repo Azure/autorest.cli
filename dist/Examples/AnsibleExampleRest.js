@@ -29,7 +29,7 @@ function GenerateExampleAnsibleRest(model) {
     }
     var tasks = [];
     var task = {};
-    task['name'] = model.Name;
+    task['name'] = model.Id;
     var body = {};
     // add method and use appropriate module
     if (model.Method == "get") {

@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function GenerateExampleAzureCLI(model) {
     var output = [];
-    output.push("# " + model.Name);
+    output.push("# " + model.Id);
     var vars = model.Variables;
     for (var v in vars) {
         output.push(vars[v].name.toUpperCase() + "=\"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");

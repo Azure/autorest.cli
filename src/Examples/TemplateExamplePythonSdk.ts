@@ -10,7 +10,7 @@ import { Indent, ToSnakeCase } from "../Common/Helpers";
 export function GenerateExamplePythonSdk(namespace: string, mgmtClient: string, example: Example) : string[] {
     var output: string[] = [];
 
-    output.push("# " + example.Name);
+    output.push("# " + example.Id);
     output.push("#");
     output.push("# This script expects that the following environment vars are set:");
     output.push("#");

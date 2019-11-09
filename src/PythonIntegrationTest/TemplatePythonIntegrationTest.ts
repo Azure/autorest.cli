@@ -53,7 +53,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
         var example: Example = null;
         for (var i = 0; i < model.length; i++)
         {
-            if (model[i].Name == config[ci]['name'])
+            if (model[i].Id == config[ci]['name'])
             {
                 example = model[i];
                 break;
@@ -65,7 +65,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
         let hasBody: boolean = (example.Method == "put" || example.Method == "post" || example.Method == "patch");
 
         output.push("");
-        output.push("        # " + example.Name + "[" + example.Method + "]");
+        output.push("        # " + example.Id + "[" + example.Method + "]");
 
         if (hasBody)
         {

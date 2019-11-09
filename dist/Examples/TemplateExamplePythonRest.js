@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 function GenerateExamplePythonRest(model) {
     var output = [];
-    output.push("# " + model.Name);
+    output.push("# " + model.Id);
     output.push("#");
     output.push("# This script expects that the following environment vars are set:");
     output.push("#");

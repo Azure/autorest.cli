@@ -51,7 +51,7 @@ class ExamplePostProcessor {
     }
     ProcessExample(example, type, useVars) {
         let e = {};
-        e['name'] = example.Name;
+        e['name'] = example.Id;
         e[(type == ExampleType.AnsibleCollection) ? this._module.ModuleName.split("_").join(".") : this._module.ModuleName] = this.GetExampleProperties(example, type, useVars);
         return e;
     }

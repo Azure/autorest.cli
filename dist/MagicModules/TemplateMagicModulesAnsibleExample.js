@@ -13,7 +13,7 @@ function GenerateMagicModulesAnsibleExample(model, module) {
     output.push("--- !ruby/object:Provider::Ansible::Example");
     output.push("task: !ruby/object:Provider::Ansible::Task");
     body['name'] = module.ModuleName;
-    body['description'] = model.Name;
+    body['description'] = model.Id;
     body['code'] = pp.GetExampleProperties(model, ExamplePostProcessor_1.ExampleType.Ansible, false);
     var body_yaml = yaml.dump(body).split(/\r?\n/);
     for (let i in body_yaml) {

@@ -29,7 +29,8 @@ export class CommandExample
 {
     // this should be "create", "update", "list", "show"
     public Method: string;
-    public Description: string;
+    public Id: string;
+    public Title: string;
     public Parameters: Map<string, string>;
 }
 
@@ -452,9 +453,9 @@ export class CodeModelCli
                 continue;
             }
 
-
             example.Parameters = new Map<string,string>();
-            example.Description = moduleExample.Name;
+            example.Id = moduleExample.Id;
+            example.Title = moduleExample.Id;
 
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
 

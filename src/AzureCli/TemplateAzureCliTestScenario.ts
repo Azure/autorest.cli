@@ -84,7 +84,7 @@ function findExampleByName(model: CodeModelCli, name: string, output: string[]):
             ctx.Methods.forEach(element => {
                 let examples: CommandExample[] = ctx.Examples;
                 examples.forEach(example => {
-                    if (example.Description == name)
+                    if (example.Title == name)
                     {
                         cmd = model.GetExampleItems(example, true);
                     }

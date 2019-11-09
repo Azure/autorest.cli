@@ -17,7 +17,7 @@ export function GenerateMagicModulesAnsibleExample(model: Example, module: Modul
     output.push("task: !ruby/object:Provider::Ansible::Task");
 
     body['name'] = module.ModuleName;
-    body['description'] = model.Name;
+    body['description'] = model.Id;
     body['code'] = pp.GetExampleProperties(model, ExampleType.Ansible, false)
 
     var body_yaml: string[] = yaml.dump(body).split(/\r?\n/);

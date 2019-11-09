@@ -316,7 +316,8 @@ class CodeModelCli {
                 continue;
             }
             example.Parameters = new Map();
-            example.Description = moduleExample.Name;
+            example.Id = moduleExample.Id;
+            example.Title = moduleExample.Id;
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
             let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);
             ctx.Parameters.forEach(element => {

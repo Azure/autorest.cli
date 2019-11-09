@@ -43,7 +43,7 @@ export function GenerateSwaggerIntegrationTest(model: Example[], config: any) : 
         var example: Example = null;
         for (var i = 0; i < model.length; i++)
         {
-            if (model[i].Name == config[ci]['name'])
+            if (model[i].Id == config[ci]['name'])
             {
                 example = model[i];
                 break;
@@ -52,7 +52,7 @@ export function GenerateSwaggerIntegrationTest(model: Example[], config: any) : 
         if (example == null)
             continue;
         output.push("");
-        output.push("        # " + example.Name);
+        output.push("        # " + example.Id);
 
         if (example.Method.toLowerCase() == 'put' || example.Method.toLowerCase() == 'post')
         {

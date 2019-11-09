@@ -7,7 +7,7 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Common/Helpers");
 function GenerateExamplePythonSdk(namespace, mgmtClient, example) {
     var output = [];
-    output.push("# " + example.Name);
+    output.push("# " + example.Id);
     output.push("#");
     output.push("# This script expects that the following environment vars are set:");
     output.push("#");

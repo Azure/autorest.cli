@@ -312,7 +312,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         for (var i = 0; i < examples.length; i++) {
                             var example = examples[i];
                             //var filename = example.Filename;
-                            config.push({ name: example.Name });
+                            config.push({ name: example.Id });
                         }
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }
@@ -335,7 +335,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         for (var i = 0; i < examples.length; i++) {
                             var example = examples[i];
                             //var filename = example.Filename;
-                            config.push({ name: example.Name });
+                            config.push({ name: example.Id });
                         }
                         Info("TEST SETUP IS: " + JSON.stringify(config));
                     }

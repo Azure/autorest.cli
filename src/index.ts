@@ -379,7 +379,7 @@ extension.Add("cli", async autoRestApi => {
                 var example: Example = examples[i];
                 //var filename = example.Filename;
 
-                config.push( { name: example.Name });
+                config.push( { name: example.Id });
               }
               Info("TEST SETUP IS: " + JSON.stringify(config));
             }
@@ -409,7 +409,7 @@ extension.Add("cli", async autoRestApi => {
                 var example: Example = examples[i];
                 //var filename = example.Filename;
 
-                config.push( { name: example.Name });
+                config.push( { name: example.Id });
               }
               Info("TEST SETUP IS: " + JSON.stringify(config));
             }

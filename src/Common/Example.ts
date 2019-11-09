@@ -21,7 +21,8 @@ export class Example
         this.Example = example;
         this.Url = url;
         this.Method = method;
-        this.Name = name;
+        this.Id = name;
+        this.Title = name;
         this.Filename = filename;
         this.Variables = variables;
         this.References = references;
@@ -39,7 +40,8 @@ export class Example
     public OperationName: string;
     public MethodName: string;
     public Url: string;
-    public Name: string;
+    public Id: string;
+    public Title: string;
     public Variables: ExampleVariable[]; 
     public Example: any;
     public References: string[];

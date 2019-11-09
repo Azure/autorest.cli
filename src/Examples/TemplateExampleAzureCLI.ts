@@ -8,7 +8,7 @@ import { Example } from "../Common/Example"
 export function GenerateExampleAzureCLI(model: Example) : string[] {
     var output: string[] = [];
 
-    output.push("# " + model.Name);
+    output.push("# " + model.Id);
 
     var vars =  model.Variables;
     for (var v in vars)

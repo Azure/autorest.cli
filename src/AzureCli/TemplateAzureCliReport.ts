@@ -67,7 +67,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                 if (method == example.Method)
                 {
                     mo.push("");
-                    mo.push ("**Example: " + example.Description + "**");
+                    mo.push ("**Example: " + example.Title + "**");
                     mo.push("");
                     mo.push("```");
 
