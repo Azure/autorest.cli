@@ -69,7 +69,7 @@ class CodeModelCli {
         return this.GetCliCommandFromUrl(url);
     }
     GetCliCommandDescriptionName(methodName = null) {
-        return Helpers_1.ToDescriptiveName(this.Map.Modules[this._selectedModule].ObjectName);
+        return Helpers_1.ToDescriptiveName(this.GetCliCommand());
     }
     //-------------------------------------------------------------------
     // This function creates command name from operation URL.

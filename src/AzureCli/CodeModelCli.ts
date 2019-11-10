@@ -113,7 +113,7 @@ export class CodeModelCli
 
     public GetCliCommandDescriptionName(methodName: string = null): string
     {
-        return ToDescriptiveName(this.Map.Modules[this._selectedModule].ObjectName);
+        return ToDescriptiveName(this.GetCliCommand());
     }
 
     //-------------------------------------------------------------------

@@ -17,8 +17,7 @@ export function ToSnakeCase(v: string)
 
 export function ToDescriptiveName(v: string)
 {
-    let name: string = PluralToSingular(ToSnakeCase(v).split("_").join(" ").trim());
-    return name;
+    return PluralToSingular(ToSnakeCase(v).replace(/[_-]/g, " ").trim());
 }
 
 export function Capitalize(v: string) {

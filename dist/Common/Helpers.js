@@ -12,8 +12,7 @@ function ToSnakeCase(v) {
 }
 exports.ToSnakeCase = ToSnakeCase;
 function ToDescriptiveName(v) {
-    let name = PluralToSingular(ToSnakeCase(v).split("_").join(" ").trim());
-    return name;
+    return PluralToSingular(ToSnakeCase(v).replace(/[_-]/g, " ").trim());
 }
 exports.ToDescriptiveName = ToDescriptiveName;
 function Capitalize(v) {
