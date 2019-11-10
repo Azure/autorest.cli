@@ -4,7 +4,7 @@
  *--------------------------------------------------------------------------------------------*/
 
 import { Example } from "./Example"
-import { ToSnakeCase, ToGoCase } from "./Helpers";
+import { ToSnakeCase, ToGoCase, PluralToSingular } from "./Helpers";
 
 export class EnumValue
 {
@@ -144,6 +144,7 @@ export class ModuleMethod
 
 export class Module
 {
+    public CommandGroup: string = null;
     public ModuleName: string = null;
     public Options: ModuleOption[] = null;
     public Methods: ModuleMethod[] = null;

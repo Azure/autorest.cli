@@ -94,6 +94,9 @@ function NormalizeResourceId(oldId) {
 exports.NormalizeResourceId = NormalizeResourceId;
 function PluralToSingular(name) {
     // let's try to be smart here, as all operation names are plural so let's try to make it singular
+    if (name.endsWith("series")) {
+        return name;
+    }
     if (name.endsWith("ies")) {
         name = name.substring(0, name.length - 3) + "y";
     }

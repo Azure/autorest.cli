@@ -119,6 +119,7 @@ class ModuleMethod {
 exports.ModuleMethod = ModuleMethod;
 class Module {
     constructor() {
+        this.CommandGroup = null;
         this.ModuleName = null;
         this.Options = null;
         this.Methods = null;

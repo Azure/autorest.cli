@@ -103,6 +103,7 @@ class MapGenerator {
     }
     AddModule(rawMethods, isInfo) {
         var module = new ModuleMap_1.Module();
+        module.CommandGroup = this.GetCliCommandFromUrl(rawMethods[0].url);
         module.ModuleName = this.ModuleName + (isInfo ? "_info" : "");
         module.ApiVersion = this._swagger.apiVersion;
         module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
@@ -712,6 +713,39 @@ class MapGenerator {
                 this.SetInArgaAndInResponseFlag(option.SubOptions[oi], readOnly);
             }
         }
+    }
+    GetCliCommandFromUrl(url) {
+        // use URL of any method to create CLI command path
+        let command = "";
+        let urlParts = url.split('/');
+        let partIdx = 0;
+        while (partIdx < urlParts.length) {
+            let part = urlParts[partIdx];
+            if (command == "") {
+                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups") {
+                    partIdx += 2;
+                    continue;
+                }
+            }
+            if (urlParts[partIdx] == "providers") {
+                partIdx += 2;
+                continue;
+            }
+            if (part == "" || part.startsWith("{")) {
+                partIdx++;
+                continue;
+            }
+            if (command != "") {
+                command += " ";
+                command += Helpers_1.PluralToSingular(Helpers_1.ToSnakeCase(part).split("_").join("-"));
+            }
+            else {
+                // don't override first part with CLI Name, for instance "service" -> "apimgmt"
+                command += Helpers_1.PluralToSingular(Helpers_1.ToSnakeCase(part).split("_").join("-"));
+            }
+            partIdx++;
+        }
+        return command;
     }
 }
 exports.MapGenerator = MapGenerator;

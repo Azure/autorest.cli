@@ -5,7 +5,7 @@
 
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
 import { Example } from "../Common/Example";
-import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize} from "../Common/Helpers";
+import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize, PluralToSingular } from "../Common/Helpers";
 import { LogCallback } from "../index";
 import { Adjustments } from "./Adjustments";
 import { throws } from "assert";
@@ -138,6 +138,7 @@ export class MapGenerator
     private AddModule(rawMethods: any[], isInfo: boolean)
     {
         var module = new Module();
+        module.CommandGroup = this.GetCliCommandFromUrl(rawMethods[0].url);
         module.ModuleName = this.ModuleName + (isInfo ? "_info" : "");
         module.ApiVersion =  this._swagger.apiVersion;
         module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
@@ -1020,6 +1021,54 @@ export class MapGenerator
         }
     }
 
+    private GetCliCommandFromUrl(url: string): string
+    {
+        // use URL of any method to create CLI command path
+        let command = "";
+        let urlParts: string[] = url.split('/');
+        let partIdx = 0;
+
+        while (partIdx < urlParts.length)
+        {
+            let part: string = urlParts[partIdx];
+            
+            if (command == "")
+            {
+                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups")
+                {
+                    partIdx += 2;
+                    continue;
+                }
+            }
+            
+            if (urlParts[partIdx] == "providers")
+            {
+                partIdx += 2;
+                continue;
+            }
+
+            if (part == "" || part.startsWith("{"))
+            {
+                partIdx++;
+                continue;
+            }
+
+            if (command != "")
+            {
+                command += " ";
+                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
+            }
+            else
+            {
+                // don't override first part with CLI Name, for instance "service" -> "apimgmt"
+                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
+            }
+
+            partIdx++;
+        }
+
+        return command;
+    }
 
     private _map: MapModuleGroup = null;
     private _swagger: any = null;
