@@ -458,7 +458,7 @@ export class CodeModelCli
 
             example.Parameters = new Map<string,string>();
             example.Id = moduleExample.Id;
-            example.Title = moduleExample.Id;
+            example.Title = moduleExample.Title;
 
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
 
