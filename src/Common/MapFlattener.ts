@@ -111,8 +111,26 @@ export class MapFlattener
                     {
                         for (let si in suboptions)
                         {
-                            let dispositionRest = option.DispositionRest.replace("*", option.NameSwagger) + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
-                            let dispositionSdk = option.DispositionSdk.replace("*", option.NamePythonSdk) + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
+                            let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            
+                            if (path == "/")
+                            {
+                                dispositionRest += option.NameSwagger;
+
+                                if (option.NamePythonSdk != "properties")
+                                {
+                                    dispositionSdk += option.NamePythonSdk;
+                                }
+                                else
+                                {
+                                    dispositionSdk = "";
+                                }
+                            }
+
+                            dispositionRest += "/" + suboptions[si].DispositionRest;
+                            dispositionSdk +=  "/" + suboptions[si].DispositionSdk;
+                            
                             //if (path == "/")
                             //{
                             //    dispositionRest = "/properties/" + dispositionRest;
