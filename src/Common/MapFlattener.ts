@@ -14,19 +14,31 @@ export class MapFlattener
                         flatten: Adjustments,
                         flattenAll: boolean,
                         optionOverride: any,
+                        cmdOverride: any,
                         log: LogCallback)
     {
         this._map = map;
         this._flatten = flatten;
         this._flattenAll = flattenAll;
         this._optionOverride = optionOverride;
+        this._cmdOverride = cmdOverride;
         this._log = log;
     }
 
-    public Flatten(): void
+    public Transform(): void
     {
         for (let mi in this._map.Modules)
         {
+            for (let regex in this._cmdOverride)
+            {
+                let regexp = new RegExp(regex);
+
+                if (this._map.Modules[mi].CommandGroup.match(regexp))
+                {
+                    this._map.Modules[mi].CommandGroup = this._cmdOverride[regex].replace("*", this._map.CliName);
+                }
+            }
+
             // process top level options, right now it will rename xxx_name -> name
             this.ProcessTopLevelOptions(this._map.Modules[mi].Options);
 
@@ -326,4 +338,5 @@ export class MapFlattener
     private _flattenAll: boolean;
     private _log: LogCallback;
     private _optionOverride: any;
+    private _cmdOverride: any;
 }

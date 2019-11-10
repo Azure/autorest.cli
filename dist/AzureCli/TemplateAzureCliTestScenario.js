@@ -66,7 +66,7 @@ function findExampleByName(model, name, output) {
             ctx.Methods.forEach(element => {
                 let examples = ctx.Examples;
                 examples.forEach(example => {
-                    if (example.Title == name) {
+                    if (example.Id == name) {
                         cmd = model.GetExampleItems(example, true);
                     }
                 });

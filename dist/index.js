@@ -109,7 +109,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         let cliName = (yield autoRestApi.GetValue("group-name")) || (yield autoRestApi.GetValue("cli-name"));
         let cliCommandOverrides = yield autoRestApi.GetValue("cmd-override");
         let optionOverrides = yield autoRestApi.GetValue("option-override");
-        let testSetup = yield autoRestApi.GetValue("test-setup");
+        let testScenario = (yield autoRestApi.GetValue("test-setup")) || (yield autoRestApi.GetValue("test-scenario"));
         let folderPythonIntegrationTest = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
         /* THIS IS TO BE OBSOLETED ---------------------------*/
         if (adjustments == null)
@@ -227,7 +227,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
             // flatten the map using flattener
-            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, function (msg) {
+            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function (msg) {
                 if (debug) {
                     autoRestApi.Message({
                         Channel: "warning",
@@ -235,14 +235,14 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     });
                 }
             });
-            mapFlattener.Flatten();
+            mapFlattener.Transform();
             //-------------------------------------------------------------------------------------------------------------------------
             //
             // UPDATE TEST DESCRIPTIONS USING TEST SETUP
             //
             //-------------------------------------------------------------------------------------------------------------------------
-            if (testSetup) {
-                testSetup.forEach(element => {
+            if (testScenario) {
+                testScenario.forEach(element => {
                     if (element['title'] != undefined) {
                         map.Modules.forEach(m => {
                             m.Examples.forEach(e => {
@@ -329,17 +329,17 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generateSwaggerIntegrationTest) {
                     // if test config is not specified
-                    if (!testSetup) {
+                    if (!testScenario) {
                         Info("TEST SETUP WAS EMPTY");
-                        testSetup = [];
+                        testScenario = [];
                         for (var i = 0; i < examples.length; i++) {
                             var example = examples[i];
                             //var filename = example.Filename;
-                            testSetup.push({ name: example.Id });
+                            testScenario.push({ name: example.Id });
                         }
-                        Info("TEST SETUP IS: " + JSON.stringify(testSetup));
+                        Info("TEST SETUP IS: " + JSON.stringify(testScenario));
                     }
-                    let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, testSetup);
+                    let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, testScenario);
                     let p = folderSwaggerIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);
@@ -350,19 +350,18 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generatePythonIntegrationTest) {
-                    let testSetup = yield autoRestApi.GetValue("test-setup");
                     // if test config is not specified
-                    if (!testSetup) {
+                    if (!testScenario) {
                         Info("TEST SETUP WAS EMPTY");
-                        testSetup = [];
+                        testScenario = [];
                         for (var i = 0; i < examples.length; i++) {
                             var example = examples[i];
                             //var filename = example.Filename;
-                            testSetup.push({ name: example.Id });
+                            testScenario.push({ name: example.Id });
                         }
-                        Info("TEST SETUP IS: " + JSON.stringify(testSetup));
+                        Info("TEST SETUP IS: " + JSON.stringify(testScenario));
                     }
-                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testSetup, map.Namespace, cliName, map.MgmtClientName);
+                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testScenario, map.Namespace, cliName, map.MgmtClientName);
                     let p = folderPythonIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);
@@ -467,7 +466,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     modelCli.Reset();
                     autoRestApi.WriteFile(folderAzureCliMain + "_client_factory.py", TemplateAzureCliClientFactory_1.GenerateAzureCliClientFactory(modelCli).join('\r\n'));
                     modelCli.Reset();
-                    autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", TemplateAzureCliTestScenario_1.GenerateAzureCliTestScenario(modelCli, testSetup).join('\r\n'));
+                    autoRestApi.WriteFile(folderAzureCliMain + "tests/latest/test_" + cliName + "_scenario.py", TemplateAzureCliTestScenario_1.GenerateAzureCliTestScenario(modelCli, testScenario).join('\r\n'));
                     if (generateReport) {
                         modelCli.Reset();
                         autoRestApi.WriteFile(folderAzureCliMain + "report.md", TemplateAzureCliReport_1.GenerateAzureCliReport(modelCli).join('\r\n'));
