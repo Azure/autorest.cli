@@ -37,66 +37,60 @@ function GenerateAzureCliHelp(model) {
             output.push("    type: command");
             output.push("    short-summary: " + method + " " + model.GetCliCommandDescriptionName() + ".");
             let examplesStarted = false;
-            ctx.Methods.forEach(element => {
-                //output.push ("# " + element.Name + " -- " + method);
-                //if (element.Name == method)
-                //{
-                let examples = ctx.Examples;
-                examples.forEach(example => {
-                    if (example.Method == method) {
-                        if (!examplesStarted) {
-                            output.push("    examples:");
-                            examplesStarted = true;
+            let examples = ctx.Examples;
+            examples.forEach(example => {
+                if (example.Method == method) {
+                    if (!examplesStarted) {
+                        output.push("    examples:");
+                        examplesStarted = true;
+                    }
+                    //output.push ("# " + example.Method);
+                    let parameters = [];
+                    parameters.push("az");
+                    parameters = parameters.concat(model.GetCliCommand().split(" "));
+                    parameters.push(method);
+                    for (let k in example.Parameters) {
+                        let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+                        //parameters += " " + k + " " + slp;
+                        parameters.push(k);
+                        parameters.push(slp);
+                    }
+                    output.push("      - name: " + example.Title);
+                    output.push("        text: |-");
+                    let line = "";
+                    parameters.forEach(element => {
+                        if (line.length + element.length + 1 < 90) {
+                            line += ((line != "") ? " " : "") + element;
                         }
-                        //output.push ("# " + example.Method);
-                        let parameters = [];
-                        parameters.push("az");
-                        parameters = parameters.concat(model.GetCliCommand().split(" "));
-                        parameters.push(method);
-                        for (let k in example.Parameters) {
-                            let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
-                            //parameters += " " + k + " " + slp;
-                            parameters.push(k);
-                            parameters.push(slp);
-                        }
-                        output.push("      - name: " + example.Title);
-                        output.push("        text: |-");
-                        let line = "";
-                        parameters.forEach(element => {
-                            if (line.length + element.length + 1 < 90) {
-                                line += ((line != "") ? " " : "") + element;
-                            }
-                            else if (element.length < 90) {
-                                line += " \\";
-                                line = line.split("\\").join("\\\\");
-                                output.push("               " + line);
-                                line = element;
-                            }
-                            else {
-                                // longer than 90
-                                let quoted = (element.startsWith('\"') || element.startsWith("'"));
-                                line += ((line != "") ? " " : "");
-                                while (element.length > 0) {
-                                    let amount = (90 - line.length);
-                                    amount = (amount > element.length) ? element.length : amount;
-                                    line += element.substr(0, amount);
-                                    element = (amount < element.length) ? element.substr(amount) : "";
-                                    if (element != "") {
-                                        line += (quoted ? "" : "\\");
-                                        line = line.split("\\").join("\\\\");
-                                        output.push("               " + line);
-                                        line = "";
-                                    }
-                                }
-                            }
-                        });
-                        if (line != "") {
+                        else if (element.length < 90) {
+                            line += " \\";
                             line = line.split("\\").join("\\\\");
                             output.push("               " + line);
+                            line = element;
                         }
+                        else {
+                            // longer than 90
+                            let quoted = (element.startsWith('\"') || element.startsWith("'"));
+                            line += ((line != "") ? " " : "");
+                            while (element.length > 0) {
+                                let amount = (90 - line.length);
+                                amount = (amount > element.length) ? element.length : amount;
+                                line += element.substr(0, amount);
+                                element = (amount < element.length) ? element.substr(amount) : "";
+                                if (element != "") {
+                                    line += (quoted ? "" : "\\");
+                                    line = line.split("\\").join("\\\\");
+                                    output.push("               " + line);
+                                    line = "";
+                                }
+                            }
+                        }
+                    });
+                    if (line != "") {
+                        line = line.split("\\").join("\\\\");
+                        output.push("               " + line);
                     }
-                });
-                //}
+                }
             });
             output.push("\"\"\"");
         }

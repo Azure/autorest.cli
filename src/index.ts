@@ -75,7 +75,6 @@ extension.Add("cli", async autoRestApi => {
       return;
     }
 
-
     const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
     let generateAzureCli: boolean = false;
@@ -101,7 +100,6 @@ extension.Add("cli", async autoRestApi => {
     let folderExamplesCli = "";
     let folderExamplesPythonRest = "";
     let folderExamplesPythonSdk = "";
-
 
     // namespace is the only obligatory option
     // we will derive default "package-name" and "root-name" from it

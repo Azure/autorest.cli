@@ -285,6 +285,7 @@ class CodeModelCli {
         }
     }
     GetExamples(ctx) {
+        this._log("########################## GETTING MODULE EXAMPLES");
         let pp = new ExamplePostProcessor_1.ExamplePostProcessor(this.Module);
         let moduleExamples = this.ModuleExamples;
         let examples = [];
@@ -315,6 +316,7 @@ class CodeModelCli {
                 // XXX - need warning
                 continue;
             }
+            this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);
             example.Parameters = new Map();
             example.Id = moduleExample.Id;
             example.Title = moduleExample.Id;

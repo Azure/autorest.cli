@@ -182,11 +182,6 @@ export class MapGenerator
         {
             let m = rawMethods[mi];
 
-            // don't add get samples to main module, just to info module
-            // XXX - how about terraform?
-            //if (!isInfo && m.httpMethod.toLowerCase() == "get")
-            //    continue;
-
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'] , m['$id']));
 
             if (module.Examples.length == 0)
@@ -228,6 +223,8 @@ export class MapGenerator
 
     private CreateExamples(operationId: string, methodId: string)
     {
+
+        this._log("================================= OPERATION: " + operationId + "/" + methodId);
         let examplesList: Example[] = [];
 
         for (let i in this._examples)
@@ -236,6 +233,7 @@ export class MapGenerator
 
             if (this._examples[i].OperationId == operationId && this._examples[i].MethodId == methodId)
             {
+                this._log("--- ADDING: " + this._examples[i].OperationName + " / " + this._examples[i].MethodName + " / " + this._examples[i].Id);
                 examplesList.push(this._examples[i]);
             }
         }

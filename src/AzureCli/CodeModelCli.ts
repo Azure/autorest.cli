@@ -410,6 +410,7 @@ export class CodeModelCli
 
     private GetExamples(ctx: CommandContext): CommandExample[]
     {
+        this._log("########################## GETTING MODULE EXAMPLES");
 
         let pp = new ExamplePostProcessor(this.Module);
 
@@ -452,6 +453,8 @@ export class CodeModelCli
                 // XXX - need warning
                 continue;
             }
+
+            this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);
 
             example.Parameters = new Map<string,string>();
             example.Id = moduleExample.Id;
