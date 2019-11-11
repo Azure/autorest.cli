@@ -207,6 +207,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             Info("Methods Covered : " + exampleProcessor.MethodsCovered);
             Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
             Info("Examples Tested : " + exampleProcessor.ExamplesTested);
+            Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
             Info("----------------------");
             Info("");
             if (writeIntermediate) {
@@ -346,7 +347,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                         }
                         Info("TEST SETUP IS: " + JSON.stringify(testScenario));
                     }
-                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testScenario, map.Namespace, cliName, map.MgmtClientName);
+                    let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testScenario, map.Namespace, cliName, map.MgmtClientName, exampleProcessor.MethodsTotal, exampleProcessor.MethodsCovered, exampleProcessor.ExamplesTotal, exampleProcessor.ExamplesTested);
                     let p = folderPythonIntegrationTest + "test_cli_mgmt_" + cliName + ".py";
                     autoRestApi.WriteFile(p, code.join('\r\n'));
                     Info("INTEGRATION TEST: " + p);

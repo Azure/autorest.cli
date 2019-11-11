@@ -1,11 +1,11 @@
 "use strict";
 /*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *  Licensed under the MIT License. See License.txt in the project root for license output.pushrmation.
  *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Common/Helpers");
-function GeneratePythonIntegrationTest(model, config, namespace, cliCommandName, mgmtClientName) {
+function GeneratePythonIntegrationTest(model, config, namespace, cliCommandName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested) {
     var output = [];
     let className = "Mgmt" + mgmtClientName.split("ManagementClient")[0] + "Test";
     let testName = "test_" + cliCommandName;
@@ -14,8 +14,18 @@ function GeneratePythonIntegrationTest(model, config, namespace, cliCommandName,
     output.push("#-------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for");
-    output.push("# license information.");
+    output.push("# license output.pushrmation.");
     output.push("#--------------------------------------------------------------------------");
+    output.push("");
+    output.push("");
+    output.push("TEST SCENARIO COVERAGE");
+    output.push("----------------------");
+    output.push("Methods Total   : " + methodsTotal);
+    output.push("Methods Covered : " + methodsCovered);
+    output.push("Examples Total  : " + examplesTotal);
+    output.push("Examples Tested : " + examplesTested);
+    output.push("Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
+    output.push("----------------------");
     output.push("");
     output.push("import unittest");
     output.push("");

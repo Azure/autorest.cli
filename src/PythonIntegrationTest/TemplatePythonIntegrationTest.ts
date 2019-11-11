@@ -1,6 +1,6 @@
 ﻿/*---------------------------------------------------------------------------------------------
  *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *  Licensed under the MIT License. See License.txt in the project root for license output.pushrmation.
  *--------------------------------------------------------------------------------------------*/
 
 import { Example } from "../Common/Example"
@@ -10,7 +10,11 @@ export function GeneratePythonIntegrationTest(model: Example[],
                                               config: any,
                                               namespace: string,
                                               cliCommandName: string,
-                                              mgmtClientName: string) : string[] {
+                                              mgmtClientName: string,
+                                              methodsTotal: number,
+                                              methodsCovered: number,
+                                              examplesTotal: number,
+                                              examplesTested: number) : string[] {
     var output: string[] = [];
 
     let className: string = "Mgmt" + mgmtClientName.split("ManagementClient")[0] + "Test";
@@ -21,9 +25,21 @@ export function GeneratePythonIntegrationTest(model: Example[],
     output.push("#-------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
     output.push("# Licensed under the MIT License. See License.txt in the project root for");
-    output.push("# license information.");
+    output.push("# license output.pushrmation.");
     output.push("#--------------------------------------------------------------------------");
     output.push("");
+
+    output.push("");
+    output.push("TEST SCENARIO COVERAGE");
+    output.push("----------------------");
+    output.push("Methods Total   : " + methodsTotal);
+    output.push("Methods Covered : " + methodsCovered);
+    output.push("Examples Total  : " + examplesTotal);
+    output.push("Examples Tested : " + examplesTested);
+    output.push("Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
+    output.push("----------------------");
+    output.push("");
+
     output.push("import unittest");
     output.push("");
     // XXX - proper namespace
