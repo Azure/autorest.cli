@@ -20,6 +20,43 @@ class MapGenerator {
         this._adjustments = adjustments;
         this._cliName = cliName;
     }
+    CreateMap() {
+        this._map = new ModuleMap_1.MapModuleGroup();
+        this._map.Modules = [];
+        this._map.ServiceName = this._swagger['name'];
+        this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.CliName = this._cliName;
+        this._map.Namespace = this._swagger['namespace'].toLowerCase();
+        for (var idx = 0; idx < this.Operations.length; idx++) {
+            this._index = idx;
+            // just for logging purposes
+            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
+            for (var mi in this.GetModuleOperation().methods) {
+                let m = this.GetModuleOperation().methods[mi];
+                this._log(" ... " + m.name.raw + "[" + m.serializedName + "]");
+                this._log(" ... " + m.httpMethod.toUpperCase() + " " + m.url);
+            }
+            let methods = [];
+            let methodsInfo = this.GetModuleInfoMethods();
+            if ((this.ModuleCreateOrUpdateMethod != null) || (this.ModuleCreateMethod != null)) {
+                if (this.ModuleCreateOrUpdateMethod != null)
+                    methods.push(this.ModuleCreateOrUpdateMethod);
+                if (this.ModuleCreateMethod != null)
+                    methods.push(this.ModuleCreateMethod);
+                if (this.ModuleUpdateMethod != null)
+                    methods.push(this.ModuleUpdateMethod);
+                if (this.ModuleDeleteMethod != null)
+                    methods.push(this.ModuleDeleteMethod);
+                //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
+            }
+            methods = methods.concat(methodsInfo);
+            // if any of the create/update methods were detected -- add main module
+            if (methods.length > 0) {
+                this.AddModule(methods, false);
+            }
+        }
+        return this._map;
+    }
     get ModuleName() {
         let multi = (this.Operations.length > 1) ? this.Namespace : "";
         multi = multi.split('.').pop();
@@ -57,49 +94,6 @@ class MapGenerator {
         // XXXX - regex
         //name = System.Text.RegularExpressions.Regex.replace(name, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
         return name;
-    }
-    CreateMap() {
-        this._map = new ModuleMap_1.MapModuleGroup();
-        this._map.Modules = [];
-        this._map.ServiceName = this._swagger['name'];
-        this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
-        this._map.CliName = this._cliName;
-        this._map.Namespace = this._swagger['namespace'].toLowerCase();
-        for (var idx = 0; idx < this.Operations.length; idx++) {
-            this._index = idx;
-            // just for logging purposes
-            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
-            for (var mi in this.GetModuleOperation().methods) {
-                let m = this.GetModuleOperation().methods[mi];
-                this._log(" ... " + m.name.raw + "[" + m.serializedName + "]");
-                this._log(" ... " + m.httpMethod.toUpperCase() + " " + m.url);
-            }
-            let methods = [];
-            let methodsInfo = this.GetModuleFactsMethods();
-            if ((this.ModuleCreateOrUpdateMethod != null) || (this.ModuleCreateMethod != null)) {
-                if (this.ModuleCreateOrUpdateMethod != null)
-                    methods.push(this.ModuleCreateOrUpdateMethod);
-                if (this.ModuleCreateMethod != null)
-                    methods.push(this.ModuleCreateMethod);
-                if (this.ModuleUpdateMethod != null)
-                    methods.push(this.ModuleUpdateMethod);
-                if (this.ModuleDeleteMethod != null)
-                    methods.push(this.ModuleDeleteMethod);
-                //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
-            }
-            methods = methods.concat(methodsInfo);
-            // if any of the create/update methods were detected -- add main module
-            if (methods.length > 0) {
-                this.AddModule(methods, false);
-            }
-            // [ZIM] no more separate _info modules in the map
-            // if any of info methods were detected add info module
-            //if (methodsInfo.length > 0)
-            //{
-            //    this.AddModule(methodsInfo, true);
-            //}
-        }
-        return this._map;
     }
     AddModule(rawMethods, isInfo) {
         var module = new ModuleMap_1.Module();
@@ -567,7 +561,7 @@ class MapGenerator {
     get ModuleDeleteMethod() {
         return this.ModuleFindMethod("Delete");
     }
-    GetModuleFactsMethods() {
+    GetModuleInfoMethods() {
         var l = [];
         for (var mi in this.GetModuleOperation().methods) {
             let m = this.GetModuleOperation().methods[mi];

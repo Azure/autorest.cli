@@ -180,7 +180,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             // First Stage -- Map Generation
             //
             let swagger = JSON.parse(inputFiles[iif]);
-            let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger);
+            let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger, testScenario);
             let examples = exampleProcessor.GetExamples();
             let mapGenerator = new MapGenerator_1.MapGenerator(swagger, adjustmentsObject, cliName, examples, function (msg) {
                 if (debugMap) {
@@ -200,6 +200,15 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     Text: "ERROR " + e.stack,
                 });
             }
+            Info("");
+            Info("TEST SCENARIO COVERAGE");
+            Info("----------------------");
+            Info("Methods Total   : " + exampleProcessor.MethodsTotal);
+            Info("Methods Covered : " + exampleProcessor.MethodsCovered);
+            Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
+            Info("Examples Tested : " + exampleProcessor.ExamplesTested);
+            Info("----------------------");
+            Info("");
             if (writeIntermediate) {
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
@@ -240,7 +249,6 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
             }
             if (map != null) {
-                Info("NUMBER OF EXAMPLES: " + examples.length);
                 if (writeIntermediate) {
                     autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
                 }

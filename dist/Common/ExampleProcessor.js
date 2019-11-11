@@ -7,13 +7,15 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Example_1 = require("./Example");
 const Helpers_1 = require("../Common/Helpers");
 class ExampleProcessor {
-    constructor(swagger) {
+    constructor(swagger, testScenario) {
         this._examples = null;
         this._map = null;
         this._swagger = null;
+        this._testScenario = null;
         this._filenames = {};
         this._examples = [];
         this._swagger = swagger;
+        this._testScenario = testScenario;
         for (var operationIdx = 0; operationIdx < this._swagger.operations.length; operationIdx++) {
             var operation = this._swagger.operations[operationIdx];
             for (var methodIdx = 0; methodIdx < operation.methods.length; methodIdx++) {
@@ -39,9 +41,35 @@ class ExampleProcessor {
                 }
             }
         }
+        this.CountCoverage();
     }
     GetExamples() {
         return this._examples;
+    }
+    CountCoverage() {
+        this.MethodsTotal = 0;
+        this.MethodsCovered = 0;
+        this.ExamplesTotal = 0;
+        this.ExamplesTested = 0;
+        for (var idx = 0; idx < this._swagger.operations.length; idx++) {
+            for (var mi = 0; mi < this._swagger.operations[idx].methods.length; mi++) {
+                let method = this._swagger.operations[idx].methods[mi];
+                this.MethodsTotal++;
+                if (method['extensions'] != undefined && method['extensions']['x-ms-examples'] != undefined) {
+                    this.MethodsCovered++;
+                    for (let example in method['extensions']['x-ms-examples']) {
+                        this.ExamplesTotal++;
+                        // check if example is in test scenario
+                        for (let item in this._testScenario) {
+                            if (this._testScenario[item]['name'] == example) {
+                                this.ExamplesTested++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
     }
     ProcessExample(body) {
         if (body instanceof Array) {

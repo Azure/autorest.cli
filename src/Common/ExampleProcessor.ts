@@ -10,10 +10,11 @@ import { ToSnakeCase, ToCamelCase, NormalizeResourceId } from "../Common/Helpers
 
 export class ExampleProcessor
 {
-    public constructor (swagger: any)
+    public constructor (swagger: any, testScenario: any)
     {
         this._examples = [];
         this._swagger = swagger;
+        this._testScenario = testScenario;
 
         for (var operationIdx = 0; operationIdx < this._swagger.operations.length; operationIdx++)
         {
@@ -60,12 +61,15 @@ export class ExampleProcessor
                 }
             }
         }
+
+        this.CountCoverage();
     }
 
     private _examples: Example[] = null;
     private _map: MapModuleGroup = null;
 
     private _swagger: any = null;
+    private _testScenario: any = null;
 
     private _currentOperation: number;
     private _filenames = {};
@@ -74,6 +78,43 @@ export class ExampleProcessor
     {
         return this._examples;
     }
+
+    private CountCoverage()
+    {
+        this.MethodsTotal = 0;
+        this.MethodsCovered = 0;
+        this.ExamplesTotal = 0;
+        this.ExamplesTested = 0;
+        for (var idx = 0; idx < this._swagger.operations.length; idx++)
+        {
+            for (var mi = 0; mi < this._swagger.operations[idx].methods.length; mi++)
+            {
+                let method = this._swagger.operations[idx].methods[mi];
+                this.MethodsTotal++;
+
+                if (method['extensions'] != undefined && method['extensions']['x-ms-examples'] != undefined)
+                {
+                    this.MethodsCovered++;
+
+                    for (let example in method['extensions']['x-ms-examples'])
+                    {
+                        this.ExamplesTotal++;
+
+                        // check if example is in test scenario
+                        for (let item in this._testScenario)
+                        {
+                            if (this._testScenario[item]['name'] == example)
+                            {
+                                this.ExamplesTested++;
+                                break;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+    }
+
 
     private ProcessExample(body: any)
     {
@@ -301,4 +342,9 @@ export class ExampleProcessor
             }
         }
     }
+
+    public MethodsTotal: number;
+    public MethodsCovered: number;
+    public ExamplesTotal: number;
+    public ExamplesTested: number;
 }

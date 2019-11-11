@@ -217,7 +217,7 @@ extension.Add("cli", async autoRestApi => {
       // First Stage -- Map Generation
       //
       let swagger = JSON.parse(inputFiles[iif]);
-      let exampleProcessor = new ExampleProcessor(swagger);
+      let exampleProcessor = new ExampleProcessor(swagger, testScenario);
       let examples: Example[] = exampleProcessor.GetExamples();
       let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
         if (debugMap) {
@@ -238,6 +238,16 @@ extension.Add("cli", async autoRestApi => {
             Text: "ERROR " + e.stack,
           });
         }
+
+        Info("");
+        Info("TEST SCENARIO COVERAGE");
+        Info("----------------------");
+        Info("Methods Total   : " + exampleProcessor.MethodsTotal);
+        Info("Methods Covered : " + exampleProcessor.MethodsCovered);
+        Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
+        Info("Examples Tested : " + exampleProcessor.ExamplesTested);
+        Info("----------------------");
+        Info("");
 
         if (writeIntermediate)
         {
@@ -290,7 +300,6 @@ extension.Add("cli", async autoRestApi => {
     
         if (map != null)
         {
-          Info("NUMBER OF EXAMPLES: " + examples.length);
           if (writeIntermediate)
           {
             autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
