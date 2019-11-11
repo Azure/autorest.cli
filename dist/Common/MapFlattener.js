@@ -28,6 +28,8 @@ class MapFlattener {
             this.ProcessTopLevelOptions(this._map.Modules[mi].Options);
             // here we perform flattening of the option according to current rules
             this._map.Modules[mi].Options = this.FlattenOptions(this._map.Modules[mi].Options, "/");
+            // apply options override as a final step
+            this.ApplyOptionOverride(this._map.Modules[mi].Options);
         }
     }
     ProcessTopLevelOptions(options) {
@@ -36,13 +38,11 @@ class MapFlattener {
             // OPTIONS ARE NOT SORTED CORRECTLY
             // SO THERE'S option.NameAnsible != "resource_group_name" hack here
             if (option.Kind == ModuleMap_1.ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name')) {
-                this.ApplyOptionOverride(option);
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
             }
             else {
-                this.ApplyOptionOverride(option);
             }
             // if the option is already part of the resource URL and doesn't end with name, don't rename
             //if (option.IdPortion != null && option.IdPortion != "")
@@ -108,7 +108,6 @@ class MapFlattener {
                             if (path != "/") {
                                 suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
                                 suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
-                                this.ApplyOptionOverride(suboptions[si]);
                             }
                             // this happens only when parent is list of dictionaries containing single element
                             // so the element becomes a list itself
@@ -195,7 +194,6 @@ class MapFlattener {
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
-                        this.ApplyOptionOverride(suboptions[si]);
                     }
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
                     options[i].SubOptions = [];
@@ -208,17 +206,20 @@ class MapFlattener {
         }
         return options;
     }
-    ApplyOptionOverride(option) {
-        this._log("APPLYING OVERRIDE");
+    ApplyOptionOverride(options) {
         if (this._optionOverride == null)
             return;
+        options.forEach(option => {
+            this.ApplyOptionOverrideToSingleOption(option);
+            if (option.SubOptions != null)
+                this.ApplyOptionOverride(option.SubOptions);
+        });
+    }
+    ApplyOptionOverrideToSingleOption(option) {
         for (let k in this._optionOverride) {
             let regexp = new RegExp(k);
-            this._log("MATCHING: " + k + " -- " + option.NameAnsible);
-            if (!option.NameAnsible.match(regexp)) {
-                this._log("----------- NO MATCH");
+            if (!option.NameAnsible.match(regexp))
                 continue;
-            }
             let override = this._optionOverride[k];
             let name = override['name'];
             let readonly = override['readonly'];

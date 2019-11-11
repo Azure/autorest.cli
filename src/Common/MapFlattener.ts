@@ -44,6 +44,9 @@ export class MapFlattener
 
             // here we perform flattening of the option according to current rules
             this._map.Modules[mi].Options = this.FlattenOptions(this._map.Modules[mi].Options, "/");
+
+            // apply options override as a final step
+            this.ApplyOptionOverride(this._map.Modules[mi].Options);
         }
     }
 
@@ -57,14 +60,12 @@ export class MapFlattener
             // SO THERE'S option.NameAnsible != "resource_group_name" hack here
             if (option.Kind == ModuleOptionKind.MODULE_OPTION_PATH && option.NameAnsible != "resource_group_name" && option.NameAnsible.endsWith('_name'))
             {
-                this.ApplyOptionOverride(option);
                 option.NameAnsible = "name";
                 option.NameTerraform = "name";
                 break;
             }
             else
             {
-                this.ApplyOptionOverride(option);
             }
 
             // if the option is already part of the resource URL and doesn't end with name, don't rename
@@ -159,7 +160,6 @@ export class MapFlattener
                             {
                                 suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
                                 suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
-                                this.ApplyOptionOverride(suboptions[si]);
                             }
 
                             // this happens only when parent is list of dictionaries containing single element
@@ -266,7 +266,6 @@ export class MapFlattener
                         }
                         suboptions[si].DispositionRest = dispositionRest;
                         suboptions[si].DispositionSdk = dispositionSdk;
-                        this.ApplyOptionOverride(suboptions[si]);
                     }
 
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
@@ -283,22 +282,26 @@ export class MapFlattener
         return options;
     }
 
-    private ApplyOptionOverride(option: ModuleOption)
+    private ApplyOptionOverride(options: ModuleOption[])
     {
-        this._log("APPLYING OVERRIDE");
         if (this._optionOverride == null)
             return;
-        
+
+        options.forEach(option => {
+            this.ApplyOptionOverrideToSingleOption(option);
+
+            if (option.SubOptions != null) this.ApplyOptionOverride(option.SubOptions);
+        });
+    }
+
+    private ApplyOptionOverrideToSingleOption(option: ModuleOption)
+    {
         for (let k in this._optionOverride)
         {
             let regexp = new RegExp(k);
 
-            this._log("MATCHING: " + k + " -- " + option.NameAnsible);
             if (!option.NameAnsible.match(regexp))
-            {
-                this._log("----------- NO MATCH")
                 continue;
-            }
             
             let override: any = this._optionOverride[k];
 
