@@ -67,14 +67,16 @@ extension.Add("cli", async autoRestApi => {
       });
     }
 
+    function Error(s: string)
+    {
+      autoRestApi.Message({
+        Channel: "error",
+        Text: s
+      });
+    }
+
     // read files offered to this plugin
     const inputFileUris = await autoRestApi.ListInputs();
-
-    if (inputFileUris.length <= 0)
-    {
-      Info("INPUT FILE LIST IS EMPTY");
-      return;
-    }
 
     const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
@@ -108,10 +110,7 @@ extension.Add("cli", async autoRestApi => {
 
     if (!namespace)
     {
-      autoRestApi.Message({
-        Channel: "error",
-        Text: "\"namespace\" is not defined, please add readme.cli.md file to the specification."
-      });
+      Error("\"namespace\" is not defined, please add readme.cli.md file to the specification.");
       return;
     }
 
@@ -203,32 +202,8 @@ extension.Add("cli", async autoRestApi => {
     }
     else
     {
-      Info("GENERATION: --all");
-      generateAzureCli = !await autoRestApi.GetValue("disable-azure-cli");
-      generateMagicModules = !await autoRestApi.GetValue("disable-mm");
-      generateAnsibleSdk = true;
-      generateAnsibleRest = true;
-      generateAnsibleCollection = true;
-      generateSwaggerIntegrationTest = true;
-      generatePythonIntegrationTest = true;
-      generateExamplesAzureCliRest = true;
-      generateExamplesPythonRest = true;
-      generateExamplesPythonSdk = true;
-      generateExamplesAnsibleRest = true;
-      generateExamplesAnsibleModule = true;
-      writeIntermediate = true;
-
-      folderAzureCliMain = "azure-cli/";
-      folderMagicModules = "magic-modules-input/";
-
-      folderAnsibleModulesSdk = "intermediate/ansible-module-sdk/";
-      folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
-      folderAnsibleModulesCollection = "ansible-collection/";
-      folderSwaggerIntegrationTest = "swagger-integration-test/";
-      folderPythonIntegrationTest = "python-integration-test/";
-      folderExamplesCli = "intermediate/examples_cli/";
-      folderExamplesPythonRest = "intermediate/examples_python_rest/";
-      folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
+      Error("Output type not selected.");
+      return;
     }
 
     if (await autoRestApi.GetValue("intermediate"))

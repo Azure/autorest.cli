@@ -60,12 +60,14 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 Text: s
             });
         }
+        function Error(s) {
+            autoRestApi.Message({
+                Channel: "error",
+                Text: s
+            });
+        }
         // read files offered to this plugin
         const inputFileUris = yield autoRestApi.ListInputs();
-        if (inputFileUris.length <= 0) {
-            Info("INPUT FILE LIST IS EMPTY");
-            return;
-        }
         const inputFiles = yield Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
         let generateAzureCli = false;
         let generateMagicModules = false;
@@ -94,10 +96,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         // we will derive default "package-name" and "root-name" from it
         const namespace = yield autoRestApi.GetValue("namespace");
         if (!namespace) {
-            autoRestApi.Message({
-                Channel: "error",
-                Text: "\"namespace\" is not defined, please add readme.cli.md file to the specification."
-            });
+            Error("\"namespace\" is not defined, please add readme.cli.md file to the specification.");
             return;
         }
         // package name -- can be guessed from namespace
@@ -170,30 +169,8 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             folderExamplesCli = "examples-cli/";
         }
         else {
-            Info("GENERATION: --all");
-            generateAzureCli = !(yield autoRestApi.GetValue("disable-azure-cli"));
-            generateMagicModules = !(yield autoRestApi.GetValue("disable-mm"));
-            generateAnsibleSdk = true;
-            generateAnsibleRest = true;
-            generateAnsibleCollection = true;
-            generateSwaggerIntegrationTest = true;
-            generatePythonIntegrationTest = true;
-            generateExamplesAzureCliRest = true;
-            generateExamplesPythonRest = true;
-            generateExamplesPythonSdk = true;
-            generateExamplesAnsibleRest = true;
-            generateExamplesAnsibleModule = true;
-            writeIntermediate = true;
-            folderAzureCliMain = "azure-cli/";
-            folderMagicModules = "magic-modules-input/";
-            folderAnsibleModulesSdk = "intermediate/ansible-module-sdk/";
-            folderAnsibleModulesRest = "intermediate/ansible-module-rest/";
-            folderAnsibleModulesCollection = "ansible-collection/";
-            folderSwaggerIntegrationTest = "swagger-integration-test/";
-            folderPythonIntegrationTest = "python-integration-test/";
-            folderExamplesCli = "intermediate/examples_cli/";
-            folderExamplesPythonRest = "intermediate/examples_python_rest/";
-            folderExamplesPythonSdk = "intermediate/examples_python_sdk/";
+            Error("Output type not selected.");
+            return;
         }
         if (yield autoRestApi.GetValue("intermediate")) {
             writeIntermediate = true;
