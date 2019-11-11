@@ -97,7 +97,7 @@ Other properties that could be applied to options:
 
 |Parameter|Description|
 |---------|-----------|
-|test-setup|This is a list of integration test steps including prerequisites and references to examples|
+|test-scenario|This is a list of integration test steps including prerequisites and references to examples|
 
 Integration test setup if a list of:
 - prerequisites
