@@ -58,13 +58,21 @@ const extension = new AutoRestExtension();
 extension.Add("cli", async autoRestApi => {
 
   try {
+
+    let debug = await autoRestApi.GetValue("debug");
+    let debugMap = await autoRestApi.GetValue("debug-map");
+    let debugCli = await autoRestApi.GetValue("debug-cli");
+
     // output function
     function Info(s: string)
     {
-      autoRestApi.Message({
-        Channel: "information",
-        Text: s
-      });
+      if (debug || debugMap || debugCli)
+      {
+        autoRestApi.Message({
+          Channel: "information",
+          Text: s
+        });
+      }
     }
 
     function Error(s: string)
@@ -135,9 +143,6 @@ extension.Add("cli", async autoRestApi => {
     if (adjustments == null) adjustments = {};
     let adjustmentsObject = new Adjustments(adjustments);
     /*----------------------------------------------------*/
-    let debug = await autoRestApi.GetValue("debug");
-    let debugMap = await autoRestApi.GetValue("debug-map");
-    let debugCli = await autoRestApi.GetValue("debug-cli");
     let flattenAll = await autoRestApi.GetValue("flatten-all");
     let tag = await autoRestApi.GetValue("tag");
     Info(tag);

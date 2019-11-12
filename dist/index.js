@@ -53,12 +53,17 @@ const Adjustments_1 = require("./Common/Adjustments");
 const extension = new autorest_extension_base_1.AutoRestExtension();
 extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
     try {
+        let debug = yield autoRestApi.GetValue("debug");
+        let debugMap = yield autoRestApi.GetValue("debug-map");
+        let debugCli = yield autoRestApi.GetValue("debug-cli");
         // output function
         function Info(s) {
-            autoRestApi.Message({
-                Channel: "information",
-                Text: s
-            });
+            if (debug || debugMap || debugCli) {
+                autoRestApi.Message({
+                    Channel: "information",
+                    Text: s
+                });
+            }
         }
         function Error(s) {
             autoRestApi.Message({
@@ -115,9 +120,6 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             adjustments = {};
         let adjustmentsObject = new Adjustments_1.Adjustments(adjustments);
         /*----------------------------------------------------*/
-        let debug = yield autoRestApi.GetValue("debug");
-        let debugMap = yield autoRestApi.GetValue("debug-map");
-        let debugCli = yield autoRestApi.GetValue("debug-cli");
         let flattenAll = yield autoRestApi.GetValue("flatten-all");
         let tag = yield autoRestApi.GetValue("tag");
         Info(tag);
