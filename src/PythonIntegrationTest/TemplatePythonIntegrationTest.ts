@@ -30,14 +30,14 @@ export function GeneratePythonIntegrationTest(model: Example[],
     output.push("");
 
     output.push("");
-    output.push("TEST SCENARIO COVERAGE");
-    output.push("----------------------");
-    output.push("Methods Total   : " + methodsTotal);
-    output.push("Methods Covered : " + methodsCovered);
-    output.push("Examples Total  : " + examplesTotal);
-    output.push("Examples Tested : " + examplesTested);
-    output.push("Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
-    output.push("----------------------");
+    output.push("# TEST SCENARIO COVERAGE");
+    output.push("# ----------------------");
+    output.push("# Methods Total   : " + methodsTotal);
+    output.push("# Methods Covered : " + methodsCovered);
+    output.push("# Examples Total  : " + examplesTotal);
+    output.push("# Examples Tested : " + examplesTested);
+    output.push("# Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
+    output.push("# ----------------------");
     output.push("");
 
     output.push("import unittest");
