@@ -354,7 +354,7 @@ export class CodeModel
             {
                 // this is a hack, how to solve it properly?
                 let hiddenParamatersOption = this.ModuleParametersOption;
-                if (hiddenParamatersOption.NameSwagger == optionName)
+                if (hiddenParamatersOption != null &&hiddenParamatersOption.NameSwagger == optionName)
                 {
                     option = new ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
@@ -370,6 +370,8 @@ export class CodeModel
                             option.SubOptions.push(this.ModuleOptions[optionIdx]);
                         }
                     }
+                } else {
+                    //TODO: add log
                 }
             }
 
