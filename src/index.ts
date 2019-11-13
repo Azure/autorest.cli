@@ -59,14 +59,12 @@ extension.Add("cli", async autoRestApi => {
 
   try {
 
-    let debug = await autoRestApi.GetValue("debug");
-    let debugMap = await autoRestApi.GetValue("debug-map");
-    let debugCli = await autoRestApi.GetValue("debug-cli");
+    let log = await autoRestApi.GetValue("log");
 
     // output function
     function Info(s: string)
     {
-      if (debug || debugMap || debugCli)
+      if (log)
       {
         autoRestApi.Message({
           Channel: "information",
@@ -225,7 +223,7 @@ extension.Add("cli", async autoRestApi => {
       let exampleProcessor = new ExampleProcessor(swagger, testScenario);
       let examples: Example[] = exampleProcessor.GetExamples();
       let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
-        if (debugMap) {
+        if (log == "map") {
           autoRestApi.Message({
             Channel: "warning",
             Text: msg
@@ -262,7 +260,7 @@ extension.Add("cli", async autoRestApi => {
 
         // flatten the map using flattener
         let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
-          if (debug)
+          if (log == "flattener")
           {
             autoRestApi.Message({
               Channel: "warning",
@@ -455,13 +453,7 @@ extension.Add("cli", async autoRestApi => {
               let model = new CodeModel(map, index);
               try
               {
-                if (debug)
-                {
-                  autoRestApi.Message({
-                    Channel: "information",
-                    Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
-                  });
-                }
+                Info("PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]");
 
                 if (!model.ModuleName.endsWith('_info')) {
 
@@ -553,7 +545,7 @@ extension.Add("cli", async autoRestApi => {
           if (generateAzureCli)
           {
             let modelCli = new CodeModelCli(map, cliCommandOverrides, function(msg: string) {
-              if (debugCli) {
+              if (log == "cli") {
                 autoRestApi.Message({
                   Channel: "warning",
                   Text: msg

@@ -53,12 +53,10 @@ const Adjustments_1 = require("./Common/Adjustments");
 const extension = new autorest_extension_base_1.AutoRestExtension();
 extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
     try {
-        let debug = yield autoRestApi.GetValue("debug");
-        let debugMap = yield autoRestApi.GetValue("debug-map");
-        let debugCli = yield autoRestApi.GetValue("debug-cli");
+        let log = yield autoRestApi.GetValue("log");
         // output function
         function Info(s) {
-            if (debug || debugMap || debugCli) {
+            if (log) {
                 autoRestApi.Message({
                     Channel: "information",
                     Text: s
@@ -185,7 +183,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger, testScenario);
             let examples = exampleProcessor.GetExamples();
             let mapGenerator = new MapGenerator_1.MapGenerator(swagger, adjustmentsObject, cliName, examples, function (msg) {
-                if (debugMap) {
+                if (log == "map") {
                     autoRestApi.Message({
                         Channel: "warning",
                         Text: msg
@@ -217,7 +215,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             }
             // flatten the map using flattener
             let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function (msg) {
-                if (debug) {
+                if (log == "flattener") {
                     autoRestApi.Message({
                         Channel: "warning",
                         Text: msg
@@ -365,12 +363,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                     while (index < map.Modules.length) {
                         let model = new CodeModel_1.CodeModel(map, index);
                         try {
-                            if (debug) {
-                                autoRestApi.Message({
-                                    Channel: "information",
-                                    Text: "PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]"
-                                });
-                            }
+                            Info("PROCESSING " + model.ModuleName + " [" + (index + 1) + " / " + map.Modules.length + "]");
                             if (!model.ModuleName.endsWith('_info')) {
                                 if (generateAnsibleSdk) {
                                     autoRestApi.WriteFile(folderAnsibleModulesSdk + model.ModuleName + ".py", AnsibleModuleSdk_1.GenerateModuleSdk(model).join('\r\n'));
@@ -437,7 +430,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (generateAzureCli) {
                     let modelCli = new CodeModelCli_1.CodeModelCli(map, cliCommandOverrides, function (msg) {
-                        if (debugCli) {
+                        if (log == "cli") {
                             autoRestApi.Message({
                                 Channel: "warning",
                                 Text: msg
