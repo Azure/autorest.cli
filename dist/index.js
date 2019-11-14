@@ -103,13 +103,11 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             Error("\"namespace\" is not defined, please add readme.cli.md file to the specification.");
             return;
         }
-        // package name -- can be guessed from namespace
-        let packageName = yield autoRestApi.GetValue("package-name");
-        if (!packageName) {
-            packageName = namespace.replace('.', '-');
-        }
+        // package name and group name can be guessed from namespace
+        let packageName = (yield autoRestApi.GetValue("package-name")) || namespace.replace(/\./g, '-');
+        let cliName = (yield autoRestApi.GetValue("group-name")) || (yield autoRestApi.GetValue("cli-name")) || packageName.split('-').pop();
+        // this will be obsolete
         let adjustments = yield autoRestApi.GetValue("adjustments");
-        let cliName = (yield autoRestApi.GetValue("group-name")) || (yield autoRestApi.GetValue("cli-name"));
         let cliCommandOverrides = yield autoRestApi.GetValue("cmd-override");
         let optionOverrides = yield autoRestApi.GetValue("option-override");
         let testScenario = (yield autoRestApi.GetValue("test-setup")) || (yield autoRestApi.GetValue("test-scenario"));

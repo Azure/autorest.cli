@@ -121,16 +121,13 @@ extension.Add("cli", async autoRestApi => {
       return;
     }
 
-    // package name -- can be guessed from namespace
-    let packageName = await autoRestApi.GetValue("package-name");
+    // package name and group name can be guessed from namespace
+    let packageName = await autoRestApi.GetValue("package-name") || namespace.replace(/\./g, '-');
+    let cliName = await autoRestApi.GetValue("group-name") || await autoRestApi.GetValue("cli-name") || packageName.split('-').pop();
 
-    if (!packageName)
-    {
-      packageName = namespace.replace('.', '-');
-    }
-
+    // this will be obsolete
     let adjustments = await autoRestApi.GetValue("adjustments");
-    let cliName = await autoRestApi.GetValue("group-name") || await autoRestApi.GetValue("cli-name");
+
     let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
     let optionOverrides = await autoRestApi.GetValue("option-override");
 
