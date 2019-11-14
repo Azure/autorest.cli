@@ -6,20 +6,16 @@
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionKind } from "./ModuleMap"
 import { LogCallback } from "../index"
 import { Adjustments } from "./Adjustments";
-import { ToSnakeCase, Capitalize, Uncapitalize, ToGoCase } from "../Common/Helpers";
+import { ToSnakeCase, Capitalize, Uncapitalize, ToGoCase } from "./Helpers";
 
 export class MapFlattener
 {
     public constructor (map: MapModuleGroup,
-                        flatten: Adjustments,
-                        flattenAll: boolean,
                         optionOverride: any,
                         cmdOverride: any,
                         log: LogCallback)
     {
         this._map = map;
-        this._flatten = flatten;
-        this._flattenAll = flattenAll;
         this._optionOverride = optionOverride;
         this._cmdOverride = cmdOverride;
         this._log = log;
@@ -100,182 +96,62 @@ export class MapFlattener
                 //if (this._debug) this._log("flattener: checking path - " + optionPath);
                 suboptions = this.FlattenOptions(suboptions, ((path != "/") ? path : "") + "/" + option.NameSwagger);
 
-                let flatten: any = this._flatten.GetFlatten(optionPath);
+                // all the suboptions of current option will be attached at the end
+                this._log("flattener: found path - " + optionPath);
 
-                if (flatten == "" && this._flattenAll)
+                for (let si in suboptions)
                 {
-                    if (!(option.IsList && option.SubOptions.length > 1))
+                    let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
+                    let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                    
+                    if (path == "/")
                     {
-                        flatten = "*/*";
-                    }
-                }
+                        dispositionRest += option.NameSwagger;
 
-                if (flatten != "")
-                {
-                    // all the suboptions of current option will be attached at the end
-                    this._log("flattener: found path - " + optionPath);
-
-                    if (flatten == "hide")
-                    {
-                        // just completely remove this option....
-                        options = [].concat(options.slice(0, i), options.slice(i + 1));
-                    }
-                    else if (flatten == "*/*")
-                    {
-                        for (let si in suboptions)
+                        if (option.NamePythonSdk != "properties")
                         {
-                            let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
-                            let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
-                            
-                            if (path == "/")
-                            {
-                                dispositionRest += option.NameSwagger;
-
-                                if (option.NamePythonSdk != "properties")
-                                {
-                                    dispositionSdk += option.NamePythonSdk;
-                                }
-                                else
-                                {
-                                    dispositionSdk = "";
-                                }
-                            }
-
-                            dispositionRest += "/" + suboptions[si].DispositionRest;
-                            dispositionSdk +=  "/" + suboptions[si].DispositionSdk;
-                            
-                            //if (path == "/")
-                            //{
-                            //    dispositionRest = "/properties/" + dispositionRest;
-                            //    dispositionSdk = "/" + dispositionSdk;
-                            //}
-                            //else
-                            //{
-                            //    dispositionRest = "properties/" + dispositionRest;
-                            //}
-                            suboptions[si].DispositionRest = dispositionRest;
-                            suboptions[si].DispositionSdk = dispositionSdk;
-
-                            if (path != "/")
-                            {
-                                suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                                suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
-                            }
-
-                            // this happens only when parent is list of dictionaries containing single element
-                            // so the element becomes a list itself
-                            // we also inherit documentation from parent as it's usually more relevant
-                            if (option.IsList)
-                            {
-                                suboptions[si].IsList = option.IsList;
-                                suboptions[si].Documentation = option.Documentation;
-                            }
-                        }
-    
-                        options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
-                        options[i].SubOptions = [];
-                        options[i].Hidden = true;
-                    }
-                    // >>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>>
-                    // Everything below is going to be obsolete
-                    //
-                    //
-                    else
-                    {
-                        for (let si in suboptions)
-                        {
-                            let dispositionRest = suboptions[si].DispositionRest;
-                            let dispositionSdk = suboptions[si].DispositionSdk;
-
-                            if (flatten == "/*")
-                            {
-                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
-                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
-                            }
-                            else if (flatten.endsWith("/"))
-                            {
-                                let dispositionParts = dispositionRest.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NameSwagger;
-                                dispositionRest = dispositionParts.join('/');
-
-                                dispositionParts = dispositionSdk.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
-                                dispositionSdk = dispositionParts.join('/');
-
-                                let newName: string = flatten.split("/")[0];
-
-                                dispositionRest = (option.DispositionRest == "/" ? "/" : "") + option.NameSwagger + "/" + dispositionRest;
-                                dispositionSdk = (option.DispositionSdk == "/" ? "/" : "") + option.NamePythonSdk + "/" + dispositionSdk;
-
-                                
-
-                                newName = newName.replace("*", Capitalize(suboptions[si].NameSwagger));
-
-                                suboptions[si].NameAnsible = ToSnakeCase(newName);
-                                suboptions[si].NameSwagger = Uncapitalize(newName);
-                                //suboptions[si].NameGoSdk = newName;
-                                //suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = Uncapitalize(newName);
-                            }
-                            else if (flatten == "*/")
-                            {
-                                let dispositionParts = dispositionRest.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NameSwagger;
-                                dispositionRest = dispositionParts.join('/');
-
-                                dispositionParts = dispositionSdk.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
-                                dispositionSdk = dispositionParts.join('/');
-
-                                dispositionRest = option.NameSwagger + "/" + dispositionRest;
-                                dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
-
-                                suboptions[si].NameAnsible = option.NameAnsible;
-                                suboptions[si].NameSwagger = option.NameSwagger;
-                                suboptions[si].NameGoSdk = option.NameGoSdk;
-                                suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = option.NameTerraform;
-                            }
-                            suboptions[si].DispositionRest = dispositionRest;
-                            suboptions[si].DispositionSdk = dispositionSdk;
-                        }
-
-                        options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
-                        options[i].SubOptions = [];
-                        options[i].Hidden = true;
-                        //this._log("REMOVING AT " + i + " FROM " + option.NameSwagger);
-                    }
-                    // <<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<<
-                }
-                else if (option.NameSwagger == "properties")
-                {
-                    this._log("flattener: detected 'properties'");
-                    // XXX - this si a hack for current implementation
-                    for (let si in suboptions)
-                    {
-                        let dispositionRest = suboptions[si].DispositionRest;
-                        let dispositionSdk = suboptions[si].DispositionSdk;
-                        if (path == "/")
-                        {
-                            dispositionRest = "/properties/" + dispositionRest;
-                            dispositionSdk = "/" + dispositionSdk;
+                            dispositionSdk += option.NamePythonSdk;
                         }
                         else
                         {
-                            dispositionRest = "properties/" + dispositionRest;
+                            dispositionSdk = "";
                         }
-                        suboptions[si].DispositionRest = dispositionRest;
-                        suboptions[si].DispositionSdk = dispositionSdk;
                     }
 
-                    options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
-                    options[i].SubOptions = [];
-                    options[i].Hidden = true;
+                    dispositionRest += "/" + suboptions[si].DispositionRest;
+                    dispositionSdk +=  "/" + suboptions[si].DispositionSdk;
+                    
+                    //if (path == "/")
+                    //{
+                    //    dispositionRest = "/properties/" + dispositionRest;
+                    //    dispositionSdk = "/" + dispositionSdk;
+                    //}
+                    //else
+                    //{
+                    //    dispositionRest = "properties/" + dispositionRest;
+                    //}
+                    suboptions[si].DispositionRest = dispositionRest;
+                    suboptions[si].DispositionSdk = dispositionSdk;
+
+                    if (path != "/")
+                    {
+                        suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
+                        suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                    }
+
+                    // this happens only when parent is list of dictionaries containing single element
+                    // so the element becomes a list itself
+                    // we also inherit documentation from parent as it's usually more relevant
+                    if (option.IsList)
+                    {
+                        suboptions[si].IsList = option.IsList;
+                        suboptions[si].Documentation = option.Documentation;
+                    }
                 }
-                else
-                {
-                    option.SubOptions = suboptions;
-                }
+
+                options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));
+                options[i].SubOptions = [];
+                options[i].Hidden = true;
             }
         }
 
@@ -337,8 +213,6 @@ export class MapFlattener
     }
 
     private _map: MapModuleGroup = null;
-    private _flatten: Adjustments;
-    private _flattenAll: boolean;
     private _log: LogCallback;
     private _optionOverride: any;
     private _cmdOverride: any;

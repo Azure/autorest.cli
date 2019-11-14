@@ -4,6 +4,7 @@ import * as yaml from "node-yaml";
 // Generic
 import { MapGenerator } from "./Common/MapGenerator"
 import { MapFlattener } from "./Common/MapFlattener"
+import { MapFlattenerObsolete } from "./Common/MapFlattenerObsolete"
 import { CodeModel } from "./Common/CodeModel"
 import { ExampleProcessor } from "./Common/ExampleProcessor"; 
 import { Example } from "./Common/Example";
@@ -259,15 +260,26 @@ extension.Add("cli", async autoRestApi => {
         }
 
         // flatten the map using flattener
-        let mapFlattener = new MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
-          if (log == "flattener")
-          {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: msg
-            });
-          }
-        });
+        let mapFlattener = flattenAll ? 
+                           new MapFlattener(map, optionOverrides, cliCommandOverrides, function(msg: string) {
+                              if (log == "flattener")
+                              {
+                                autoRestApi.Message({
+                                  Channel: "warning",
+                                  Text: msg
+                                });
+                              }
+                            }) :
+                            new MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
+                              if (log == "flattener")
+                              {
+                                autoRestApi.Message({
+                                  Channel: "warning",
+                                  Text: msg
+                                });
+                              }
+                            });
+
         mapFlattener.Transform();
 
         //-------------------------------------------------------------------------------------------------------------------------

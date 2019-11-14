@@ -13,6 +13,7 @@ const yaml = require("node-yaml");
 // Generic
 const MapGenerator_1 = require("./Common/MapGenerator");
 const MapFlattener_1 = require("./Common/MapFlattener");
+const MapFlattenerObsolete_1 = require("./Common/MapFlattenerObsolete");
 const CodeModel_1 = require("./Common/CodeModel");
 const ExampleProcessor_1 = require("./Common/ExampleProcessor");
 // Azure CLI
@@ -214,14 +215,23 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
             // flatten the map using flattener
-            let mapFlattener = new MapFlattener_1.MapFlattener(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function (msg) {
-                if (log == "flattener") {
-                    autoRestApi.Message({
-                        Channel: "warning",
-                        Text: msg
-                    });
-                }
-            });
+            let mapFlattener = flattenAll ?
+                new MapFlattener_1.MapFlattener(map, optionOverrides, cliCommandOverrides, function (msg) {
+                    if (log == "flattener") {
+                        autoRestApi.Message({
+                            Channel: "warning",
+                            Text: msg
+                        });
+                    }
+                }) :
+                new MapFlattenerObsolete_1.MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function (msg) {
+                    if (log == "flattener") {
+                        autoRestApi.Message({
+                            Channel: "warning",
+                            Text: msg
+                        });
+                    }
+                });
             mapFlattener.Transform();
             //-------------------------------------------------------------------------------------------------------------------------
             //
