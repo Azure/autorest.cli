@@ -14,12 +14,7 @@ import { GenerateIntegrationTest } from "./IntegrationTest/Generator";
 
 import { GenerateAnsible } from "./Ansible/Generator";
 import { GenerateAzureCli } from "./AzureCli/Generator";
-
-// Magic Modules
-import { GenerateMagicModulesInput } from "./MagicModules/TemplateMagicModulesInput"
-import { GenerateMagicModulesAnsibleYaml } from "./MagicModules/TemplateMagicModulesAnsibleYaml"
-import { GenerateMagicModulesTerraformYaml } from "./MagicModules/TemplateMagicModulesTerraformYaml"
-import { GenerateMagicModulesAnsibleExample } from "./MagicModules/TemplateMagicModulesAnsibleExample"
+import { GenerateMagicModules } from "./MagicModules/Generator";
 
 import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
 import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
@@ -29,7 +24,6 @@ import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
 
 import { Adjustments } from "./Common/Adjustments"; 
 import { MapModuleGroup } from "./Common/ModuleMap";
-import { GenerateMagicModules } from "./MagicModules/Generator";
 
 export type LogCallback = (message: string) => void;
 export type FileCallback = (path: string, rows: string[]) => void;
@@ -90,7 +84,6 @@ extension.Add("cli", async autoRestApi => {
 
         let artifactType: ArtifactType;
         let writeIntermediate: boolean = false;
-        let outputFolder = "";
 
         // namespace is the only obligatory option
         // we will derive default "package-name" and "root-name" from it
@@ -132,8 +125,6 @@ extension.Add("cli", async autoRestApi => {
         else if (await autoRestApi.GetValue("ansible"))
         {
             Info("GENERATION: --ansible");
-            outputFolder = "lib/ansible/modules/cloud/azure/";
-
             if (await  autoRestApi.GetValue("rest"))
             {
                 artifactType = ArtifactType.ArtifactTypeAnsibleRest;
@@ -151,7 +142,6 @@ extension.Add("cli", async autoRestApi => {
         {
             Info("GENERATION: --magic-modules");
             artifactType = ArtifactType.ArtifactTypeMagicModulesInput
-            outputFolder = "magic-modules-input/";
         }
         else if (await autoRestApi.GetValue("swagger-integration-test"))
         {
@@ -162,7 +152,6 @@ extension.Add("cli", async autoRestApi => {
         {
             Info("GENERATION: --python-integration-test");
             artifactType = ArtifactType.ArtifactTypePythonIntegrationTest;
-            outputFolder = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
         }
         else if (await autoRestApi.GetValue("python-examples-rest"))
         {
@@ -178,13 +167,11 @@ extension.Add("cli", async autoRestApi => {
         {
             Info("GENERATION: --cli-examples-rest");
             artifactType = ArtifactType.ArtifactTypeExamplesAzureCliRest;
-            outputFolder = "examples-cli/";
         }
         else if (await autoRestApi.GetValue("ansible-examples-rest"))
         {
             Info("GENERATION: --ansible-examples-rest");
             artifactType = ArtifactType.ArtifactTypeExamplesAnsibleRest;
-            outputFolder = "examples-ansible/";
         }
         else
         {
@@ -347,7 +334,7 @@ extension.Add("cli", async autoRestApi => {
                     //-------------------------------------------------------------------------------------------------------------------------
                     if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
                     {
-                        let p = outputFolder + filename + ".py";
+                        let p = filename + ".py";
                         autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
                         Info("EXAMPLE: " + p);
                     }
@@ -359,7 +346,7 @@ extension.Add("cli", async autoRestApi => {
                     //-------------------------------------------------------------------------------------------------------------------------
                     if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
                     {
-                        let p = outputFolder + filename + ".py";
+                        let p = filename + ".py";
                         autoRestApi.WriteFile(p, GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
                         Info("EXAMPLE: " + p);
                     }
@@ -374,7 +361,7 @@ extension.Add("cli", async autoRestApi => {
                         let code = GenerateExampleAzureCLI(example);
                         if (code != null)
                         {
-                            let p = outputFolder + filename + ".sh";
+                            let p = filename + ".sh";
                             autoRestApi.WriteFile(p, code.join('\n'));
                             Info("EXAMPLE: " + p);
                         }
