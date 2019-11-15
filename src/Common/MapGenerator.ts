@@ -122,9 +122,6 @@ export class MapGenerator
             name = name.substring(0, name.length - 1);
         }
 
-        // XXXX - regex
-        //name = System.Text.RegularExpressions.Regex.replace(name, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
-
         return name;
     }
 

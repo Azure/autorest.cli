@@ -128,50 +128,6 @@ class CodeModel {
     get ModuleExamples() {
         return this.Map.Modules[this._selectedModule].Examples;
     }
-    GetModuleTestCreate(isCheckMode = false) {
-        return this.GetModuleTest(0, "Create instance of", "", isCheckMode);
-    }
-    get ModuleTestUpdate() {
-        return this.GetModuleTest(0, "Create again instance of", "", false);
-    }
-    get ModuleTestUpdateCheckMode() {
-        return this.GetModuleTest(0, "Create again instance of", "", true);
-    }
-    GetModuleTestDelete(isUnexistingInstance, isCheckMode) {
-        let prefix = isUnexistingInstance ? "Delete unexisting instance of" : "Delete instance of";
-        return this.GetModuleTest(0, prefix, "delete", isCheckMode);
-    }
-    GetModuleFactTestCount() {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods.length;
-    }
-    GetModuleFactTest(idx, instanceNamePostfix = "") {
-        var m = this.Map.Modules[this._selectedModule];
-        return this.GetModuleTest(0, "Gather facts", m.Methods[idx].Name, false, instanceNamePostfix);
-    }
-    IsModuleFactsTestMulti(idx) {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods[idx].Name != "get";
-    }
-    get ModuleTestDelete() {
-        return this.GetModuleTest(0, "Delete instance of", "delete", false);
-    }
-    get ModuleTestDeleteCheckMode() {
-        return this.GetModuleTest(0, "Delete instance of", "delete", true);
-    }
-    get ModuleTestDeleteUnexisting() {
-        return this.GetModuleTest(0, "Delete unexisting instance of", "delete", false);
-    }
-    GetModuleTest(level, testType, methodType, isCheckMode, instanceNamePostfix = "") {
-        let prePlaybook = [];
-        let postfix = isCheckMode ? " -- check mode" : "";
-        // XXX - this must be created in different way
-        //prePlaybook.concat(this.GetPlaybook(testType, ((methodType == "") ? this.ModuleOptions : this.GetMethodOptions(methodType)), "", "test:default", postfix, instanceNamePostfix));
-        if (methodType == "delete")
-            prePlaybook.push("    state: absent");
-        let arr = prePlaybook;
-        return arr;
-    }
     GetMethod(methodName) {
         var m = this.Map.Modules[this._selectedModule];
         for (var mi in m.Methods) {
@@ -192,19 +148,6 @@ class CodeModel {
                 return method.Options;
         }
         return null;
-    }
-    CanDelete() {
-        var m = this.Map.Modules[this._selectedModule];
-        for (var mi in m.Methods) {
-            let method = m.Methods[mi];
-            if (method.Name == "delete")
-                return true;
-        }
-        return false;
-    }
-    CanTestUpdate() {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.CannotTestUpdate;
     }
     GetMethodRequiredOptionNames(methodName) {
         var m = this.Map.Modules[this._selectedModule];
@@ -249,12 +192,6 @@ class CodeModel {
             }
         }
         return moduleOptions;
-    }
-    get GetInfo() {
-        let info = [];
-        // XXXX
-        //info.concat(JsonConvert.SerializeObject(Map, Formatting.Indented).Split(new[] { "\r", "\n", "\r\n" }, StringSplitOptions.None));
-        return info;
     }
     get ModuleMethods() {
         return this.Map.Modules[this._selectedModule].Methods;
