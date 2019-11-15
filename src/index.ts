@@ -82,367 +82,364 @@ extension.Add("cli", async autoRestApi => {
 
     try
     {
-      // read files offered to this plugin
-      const inputFileUris = await autoRestApi.ListInputs();
+        // read files offered to this plugin
+        const inputFileUris = await autoRestApi.ListInputs();
 
-      const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
+        const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
-      let artifactType: ArtifactType;
-      let writeIntermediate: boolean = false;
-      let outputFolder = "";
+        let artifactType: ArtifactType;
+        let writeIntermediate: boolean = false;
+        let outputFolder = "";
 
-      // namespace is the only obligatory option
-      // we will derive default "package-name" and "root-name" from it
-      const namespace = await autoRestApi.GetValue("namespace");
+        // namespace is the only obligatory option
+        // we will derive default "package-name" and "root-name" from it
+        const namespace = await autoRestApi.GetValue("namespace");
 
-      if (!namespace)
-      {
-        Error("\"namespace\" is not defined, please add readme.cli.md file to the specification.");
-        return;
-      }
-
-      // package name and group name can be guessed from namespace
-      let packageName = await autoRestApi.GetValue("package-name") || namespace.replace(/\./g, '-');
-      let cliName = await autoRestApi.GetValue("group-name") || await autoRestApi.GetValue("cli-name") || packageName.split('-').pop();
-
-      // this will be obsolete
-      let adjustments = await autoRestApi.GetValue("adjustments");
-
-      let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
-      let optionOverrides = await autoRestApi.GetValue("option-override");
-
-      let testScenario: any[] = await autoRestApi.GetValue("test-setup") || await autoRestApi.GetValue("test-scenario");
-
-      /* THIS IS TO BE OBSOLETED ---------------------------*/
-      if (adjustments == null) adjustments = {};
-      let adjustmentsObject = new Adjustments(adjustments);
-      /*----------------------------------------------------*/
-      let flattenAll = await autoRestApi.GetValue("flatten-all");
-      let tag = await autoRestApi.GetValue("tag");
-      Info(tag);
-      let generateReport = await autoRestApi.GetValue("report");
-
-      // Handle generation type parameter
-      if (await autoRestApi.GetValue("cli-module"))
-      {
-        Info("GENERATION: --cli-module");
-
-        if ((await autoRestApi.GetValue("extension")))
+        if (!namespace)
         {
-          outputFolder = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
+            Error("\"namespace\" is not defined, please add readme.cli.md file to the specification.");
+            return;
+        }
+
+        // package name and group name can be guessed from namespace
+        let packageName = await autoRestApi.GetValue("package-name") || namespace.replace(/\./g, '-');
+        let cliName = await autoRestApi.GetValue("group-name") || await autoRestApi.GetValue("cli-name") || packageName.split('-').pop();
+
+        // this will be obsolete
+        let adjustments = await autoRestApi.GetValue("adjustments");
+
+        let cliCommandOverrides = await autoRestApi.GetValue("cmd-override");
+        let optionOverrides = await autoRestApi.GetValue("option-override");
+
+        let testScenario: any[] = await autoRestApi.GetValue("test-setup") || await autoRestApi.GetValue("test-scenario");
+
+        /* THIS IS TO BE OBSOLETED ---------------------------*/
+        if (adjustments == null) adjustments = {};
+        let adjustmentsObject = new Adjustments(adjustments);
+        /*----------------------------------------------------*/
+        let flattenAll = await autoRestApi.GetValue("flatten-all");
+        let tag = await autoRestApi.GetValue("tag");
+        Info(tag);
+        let generateReport = await autoRestApi.GetValue("report");
+
+        // Handle generation type parameter
+        if (await autoRestApi.GetValue("cli-module"))
+        {
+            Info("GENERATION: --cli-module");
+
+            if ((await autoRestApi.GetValue("extension")))
+            {
+                outputFolder = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
+            }
+            else
+            {
+                outputFolder = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
+            }
+            artifactType = ArtifactType.ArtifactTypeAzureCliModule;
+        }
+        else if (await autoRestApi.GetValue("ansible"))
+        {
+            Info("GENERATION: --ansible");
+            outputFolder = "lib/ansible/modules/cloud/azure/";
+
+            if (await  autoRestApi.GetValue("rest"))
+            {
+                artifactType = ArtifactType.ArtifactTypeAnsibleRest;
+            }
+            else if (await  autoRestApi.GetValue("collection"))
+            {
+                artifactType = ArtifactType.ArtifactTypeAnsibleCollection;
+            }
+            else
+            {
+                artifactType = ArtifactType.ArtifactTypeAnsibleSdk;
+            }
+        }
+        else if (await autoRestApi.GetValue("mm"))
+        {
+            Info("GENERATION: --magic-modules");
+            artifactType = ArtifactType.ArtifactTypeMagicModulesInput
+            outputFolder = "magic-modules-input/";
+        }
+        else if (await autoRestApi.GetValue("swagger-integration-test"))
+        {
+            Info("GENERATION: --swagger-integration-test");
+            artifactType = ArtifactType.ArtifactTypeSwaggerIntegrationTest;
+        }
+        else if (await autoRestApi.GetValue("python-integration-test"))
+        {
+            Info("GENERATION: --python-integration-test");
+            artifactType = ArtifactType.ArtifactTypePythonIntegrationTest;
+            outputFolder = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
+        }
+        else if (await autoRestApi.GetValue("python-examples-rest"))
+        {
+            Info("GENERATION: --python-examples-rest");
+            artifactType = ArtifactType.ArtifactTypeExamplesPythonRest;
+        }
+        else if (await autoRestApi.GetValue("python-examples-sdk"))
+        {
+            Info("GENERATION: --python-examples-sdk");
+            artifactType = ArtifactType.ArtifactTypeExamplesPythonSdk;
+        }
+        else if (await autoRestApi.GetValue("cli-examples-rest"))
+        {
+            Info("GENERATION: --cli-examples-rest");
+            artifactType = ArtifactType.ArtifactTypeExamplesAzureCliRest;
+            outputFolder = "examples-cli/";
+        }
+        else if (await autoRestApi.GetValue("ansible-examples-rest"))
+        {
+            Info("GENERATION: --ansible-examples-rest");
+            artifactType = ArtifactType.ArtifactTypeExamplesAnsibleRest;
+            outputFolder = "examples-ansible/";
         }
         else
         {
-          outputFolder = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
+            Error("Output type not selected.");
+            return;
         }
-        artifactType = ArtifactType.ArtifactTypeAzureCliModule;
-      }
-      else if (await autoRestApi.GetValue("ansible"))
-      {
-        Info("GENERATION: --ansible");
-        outputFolder = "lib/ansible/modules/cloud/azure/";
 
-        if (await  autoRestApi.GetValue("rest"))
+        if (await autoRestApi.GetValue("intermediate"))
         {
-          artifactType = ArtifactType.ArtifactTypeAnsibleRest;
+            writeIntermediate = true;
         }
-        else if (await  autoRestApi.GetValue("collection"))
-        {
-          artifactType = ArtifactType.ArtifactTypeAnsibleCollection;
-        }
-        else
-        {
-          artifactType = ArtifactType.ArtifactTypeAnsibleSdk;
-        }
-      }
-      else if (await autoRestApi.GetValue("mm"))
-      {
-        Info("GENERATION: --magic-modules");
-        artifactType = ArtifactType.ArtifactTypeMagicModulesInput
-        outputFolder = "magic-modules-input/";
-      }
-      else if (await autoRestApi.GetValue("swagger-integration-test"))
-      {
-        Info("GENERATION: --swagger-integration-test");
-        artifactType = ArtifactType.ArtifactTypeSwaggerIntegrationTest;
-      }
-      else if (await autoRestApi.GetValue("python-integration-test"))
-      {
-        Info("GENERATION: --python-integration-test");
-        artifactType = ArtifactType.ArtifactTypePythonIntegrationTest;
-        outputFolder = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
-      }
-      else if (await autoRestApi.GetValue("python-examples-rest"))
-      {
-        Info("GENERATION: --python-examples-rest");
-        artifactType = ArtifactType.ArtifactTypeExamplesPythonRest;
-      }
-      else if (await autoRestApi.GetValue("python-examples-sdk"))
-      {
-        Info("GENERATION: --python-examples-sdk");
-        artifactType = ArtifactType.ArtifactTypeExamplesPythonSdk;
-      }
-      else if (await autoRestApi.GetValue("cli-examples-rest"))
-      {
-        Info("GENERATION: --cli-examples-rest");
-        artifactType = ArtifactType.ArtifactTypeExamplesAzureCliRest;
-        outputFolder = "examples-cli/";
-      }
-      else if (await autoRestApi.GetValue("ansible-examples-rest"))
-      {
-        Info("GENERATION: --ansible-examples-rest");
-        artifactType = ArtifactType.ArtifactTypeExamplesAnsibleRest;
-        outputFolder = "examples-ansible/";
-      }
-      else
-      {
-        Error("Output type not selected.");
-        return;
-      }
 
-      if (await autoRestApi.GetValue("intermediate"))
-      {
-        writeIntermediate = true;
-      }
-
-      for (var iif in inputFiles)
-      {
-        //
-        // First Stage -- Map Generation
-        //
-        let swagger = JSON.parse(inputFiles[iif]);
-        let exampleProcessor = new ExampleProcessor(swagger, testScenario);
-        let examples: Example[] = exampleProcessor.GetExamples();
-        let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
-          if (log == "map") {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: msg
+        for (var iif in inputFiles)
+        {
+            //
+            // First Stage -- Map Generation
+            //
+            let swagger = JSON.parse(inputFiles[iif]);
+            let exampleProcessor = new ExampleProcessor(swagger, testScenario);
+            let examples: Example[] = exampleProcessor.GetExamples();
+            let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
+                if (log == "map")
+                {
+                    Info(msg);
+                }
             });
-          }
-        });
-      
-          let map: MapModuleGroup = null;
-          try
-          {
-            map = mapGenerator.CreateMap();
-          } catch (e) {
-            autoRestApi.Message({
-              Channel: "warning",
-              Text: "ERROR " + e.stack,
-            });
-          }
+          
+            let map: MapModuleGroup = null;
+            try
+            {
+                map = mapGenerator.CreateMap();
+            }
+            catch (e)
+            {
+                Error("ERROR " + e.stack);
+            }
 
-          Info("");
-          Info("TEST SCENARIO COVERAGE");
-          Info("----------------------");
-          Info("Methods Total   : " + exampleProcessor.MethodsTotal);
-          Info("Methods Covered : " + exampleProcessor.MethodsCovered);
-          Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
-          Info("Examples Tested : " + exampleProcessor.ExamplesTested);
-          Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
-          Info("----------------------");
-          Info("");
+            Info("");
+            Info("TEST SCENARIO COVERAGE");
+            Info("----------------------");
+            Info("Methods Total   : " + exampleProcessor.MethodsTotal);
+            Info("Methods Covered : " + exampleProcessor.MethodsCovered);
+            Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
+            Info("Examples Tested : " + exampleProcessor.ExamplesTested);
+            Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
+            Info("----------------------");
+            Info("");
 
-          if (writeIntermediate)
-          {
-            autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
-          }
+            if (writeIntermediate)
+            {
+              autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
+            }
 
-          // flatten the map using flattener
-          let mapFlattener = flattenAll ? 
-                            new MapFlattener(map, optionOverrides, cliCommandOverrides, function(msg: string) {
-                                if (log == "flattener")
-                                {
-                                  autoRestApi.Message({
-                                    Channel: "warning",
-                                    Text: msg
-                                  });
-                                }
-                              }) :
-                              new MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
-                                if (log == "flattener")
-                                {
-                                  autoRestApi.Message({
-                                    Channel: "warning",
-                                    Text: msg
-                                  });
-                                }
-                              });
+            // flatten the map using flattener
+            let mapFlattener = flattenAll ? 
+                              new MapFlattener(map, optionOverrides, cliCommandOverrides, function(msg: string) {
+                                  if (log == "flattener")
+                                  {
+                                    autoRestApi.Message({
+                                      Channel: "warning",
+                                      Text: msg
+                                    });
+                                  }
+                                }) :
+                                new MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
+                                  if (log == "flattener")
+                                  {
+                                    autoRestApi.Message({
+                                      Channel: "warning",
+                                      Text: msg
+                                    });
+                                  }
+                                });
 
-          mapFlattener.Transform();
+            mapFlattener.Transform();
 
-          //-------------------------------------------------------------------------------------------------------------------------
-          //
-          // UPDATE TEST DESCRIPTIONS USING TEST SETUP
-          //
-          //-------------------------------------------------------------------------------------------------------------------------
-          if (testScenario)
-          {
-            testScenario.forEach(element => {
-              if (element['title'] != undefined)
-              {
-                map.Modules.forEach(m => {
-                  m.Examples.forEach(e => {
-                    if (e.Id == element['name'])
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // UPDATE TEST DESCRIPTIONS USING TEST SETUP
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
+            if (testScenario)
+            {
+                testScenario.forEach(element => {
+                    if (element['title'] != undefined)
                     {
-                      e.Title = element['title'];
+                        map.Modules.forEach(m => {
+                            m.Examples.forEach(e => {
+                                if (e.Id == element['name'])
+                                {
+                                    e.Title = element['title'];
+                                }
+                            })
+                        });
                     }
-                  })
                 });
-              }
-            });
-          }
-
-          //-------------------------------------------------------------------------------------------------------------------------
-          //
-          // WRITE INTERMEDIATE FILE IF --intermediate OPTION WAS SPECIFIED
-          //
-          //-------------------------------------------------------------------------------------------------------------------------
-          if (writeIntermediate)
-          {
-            autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
-          }
-      
-          if (map != null)
-          {
-            if (writeIntermediate)
-            {
-              autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
             }
 
             //-------------------------------------------------------------------------------------------------------------------------
             //
-            // REST EXAMPLES
-            //
-            //-------------------------------------------------------------------------------------------------------------------------
-            for (var i = 0; i < examples.length; i++)
-            {
-              var example: Example = examples[i];
-              var filename = example.Filename;
-
-              //-------------------------------------------------------------------------------------------------------------------------
-              //
-              // ANSIBLE REST EXAMPLES
-              //
-              //-------------------------------------------------------------------------------------------------------------------------
-              if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest)
-              {
-                let p = "intermediate/examples_rest/" + filename + ".yml";
-                autoRestApi.WriteFile(p, GenerateExampleAnsibleRest(example));
-                Info("EXAMPLE: " + p);
-              }
-
-              //-------------------------------------------------------------------------------------------------------------------------
-              //
-              // PYTHON REST EXAMPLES
-              //
-              //-------------------------------------------------------------------------------------------------------------------------
-              if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
-              {
-                let p = outputFolder + filename + ".py";
-                autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
-                Info("EXAMPLE: " + p);
-              }
-
-              //-------------------------------------------------------------------------------------------------------------------------
-              //
-              // PYTHON SDK EXAMPLES
-              //
-              //-------------------------------------------------------------------------------------------------------------------------
-              if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
-              {
-                let p = outputFolder + filename + ".py";
-                autoRestApi.WriteFile(p, GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
-                Info("EXAMPLE: " + p);
-              }
-
-              //-------------------------------------------------------------------------------------------------------------------------
-              //
-              // AZURE CLI REST EXAMPLES
-              //
-              //-------------------------------------------------------------------------------------------------------------------------
-              if (artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest)
-              {
-                let code = GenerateExampleAzureCLI(example);
-                if (code != null)
-                {
-                  let p = outputFolder + filename + ".sh";
-                  autoRestApi.WriteFile(p, code.join('\n'));
-                  Info("EXAMPLE: " + p);
-                }
-                else
-                {
-                  Info("EXAMPLE CODE WAS NULL: " + filename);
-                }
-              }
-            }
-
-            //-------------------------------------------------------------------------------------------------------------------------
-            //
-            // INTEGRATION TESTS
-            //
-            //-------------------------------------------------------------------------------------------------------------------------
-            if (artifactType == ArtifactType.ArtifactTypeSwaggerIntegrationTest || artifactType == ArtifactType.ArtifactTypePythonIntegrationTest)
-            {
-              GenerateIntegrationTest(artifactType,
-                                      testScenario,
-                                      examples,
-                                      map.Namespace,
-                                      cliName,
-                                      packageName,
-                                      map.MgmtClientName,
-                                      exampleProcessor.MethodsTotal,
-                                      exampleProcessor.MethodsCovered,
-                                      exampleProcessor.ExamplesTotal,
-                                      exampleProcessor.ExamplesTested,
-                                      WriteFile)
-            }
-
-            //-------------------------------------------------------------------------------------------------------------------------
-            //
-            // ANSIBLE
-            //
-            //-------------------------------------------------------------------------------------------------------------------------
-            if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk ||
-                artifactType == ArtifactType.ArtifactTypeAnsibleRest ||
-                artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
-            {
-                GenerateAnsible(artifactType, map, WriteFile, Info);         
-            }
-
-            //-------------------------------------------------------------------------------------------------------------------------
-            //
-            // MAGIC MODULES
-            //
-            //-------------------------------------------------------------------------------------------------------------------------
-            if (artifactType ==  ArtifactType.ArtifactTypeMagicModulesInput)
-            {
-                GenerateMagicModules(artifactType, map, WriteFile, tag, Info);
-            }
-
-            //-------------------------------------------------------------------------------------------------------------------------
-            //
-            // AZURE CLI COMMAND MODULE
-            //
-            //-------------------------------------------------------------------------------------------------------------------------
-            if (artifactType == ArtifactType.ArtifactTypeAzureCliModule)
-            {
-                GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
-            }
-            
-            //-------------------------------------------------------------------------------------------------------------------------
-            //
-            // INTERMEDIATE MAP
+            // WRITE INTERMEDIATE FILE IF --intermediate OPTION WAS SPECIFIED
             //
             //-------------------------------------------------------------------------------------------------------------------------
             if (writeIntermediate)
             {
-              // write map after everything is done
-              autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
+                autoRestApi.WriteFile("intermediate/" + cliName + "-input.yml", yaml.dump(swagger));
             }
-          }
-      }
+        
+            if (map != null)
+            {
+                if (writeIntermediate)
+                {
+                    autoRestApi.WriteFile("intermediate/" + cliName + "-map-pre.yml", yaml.dump(map));
+                }
+
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // REST EXAMPLES
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                for (var i = 0; i < examples.length; i++)
+                {
+                    var example: Example = examples[i];
+                    var filename = example.Filename;
+
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    //
+                    // ANSIBLE REST EXAMPLES
+                    //
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest)
+                    {
+                        let p = "intermediate/examples_rest/" + filename + ".yml";
+                        autoRestApi.WriteFile(p, GenerateExampleAnsibleRest(example));
+                        Info("EXAMPLE: " + p);
+                    }
+
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    //
+                    // PYTHON REST EXAMPLES
+                    //
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
+                    {
+                        let p = outputFolder + filename + ".py";
+                        autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
+                        Info("EXAMPLE: " + p);
+                    }
+
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    //
+                    // PYTHON SDK EXAMPLES
+                    //
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
+                    {
+                        let p = outputFolder + filename + ".py";
+                        autoRestApi.WriteFile(p, GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
+                        Info("EXAMPLE: " + p);
+                    }
+
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    //
+                    // AZURE CLI REST EXAMPLES
+                    //
+                    //-------------------------------------------------------------------------------------------------------------------------
+                    if (artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest)
+                    {
+                        let code = GenerateExampleAzureCLI(example);
+                        if (code != null)
+                        {
+                            let p = outputFolder + filename + ".sh";
+                            autoRestApi.WriteFile(p, code.join('\n'));
+                            Info("EXAMPLE: " + p);
+                        }
+                        else
+                        {
+                            Info("EXAMPLE CODE WAS NULL: " + filename);
+                        }
+                    }
+                }
+
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // INTEGRATION TESTS
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (artifactType == ArtifactType.ArtifactTypeSwaggerIntegrationTest || artifactType == ArtifactType.ArtifactTypePythonIntegrationTest)
+                {
+                    GenerateIntegrationTest(artifactType,
+                                            testScenario,
+                                            examples,
+                                            map.Namespace,
+                                            cliName,
+                                            packageName,
+                                            map.MgmtClientName,
+                                            exampleProcessor.MethodsTotal,
+                                            exampleProcessor.MethodsCovered,
+                                            exampleProcessor.ExamplesTotal,
+                                            exampleProcessor.ExamplesTested,
+                                            WriteFile)
+                }
+
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // ANSIBLE
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (artifactType == ArtifactType.ArtifactTypeAnsibleSdk ||
+                    artifactType == ArtifactType.ArtifactTypeAnsibleRest ||
+                    artifactType == ArtifactType.ArtifactTypeAnsibleCollection)
+                {
+                    GenerateAnsible(artifactType, map, WriteFile, Info);         
+                }
+
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // MAGIC MODULES
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (artifactType ==  ArtifactType.ArtifactTypeMagicModulesInput)
+                {
+                    GenerateMagicModules(artifactType, map, WriteFile, tag, Info);
+                }
+
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // AZURE CLI COMMAND MODULE
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule)
+                {
+                    GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
+                }
+                
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // INTERMEDIATE MAP
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
+                if (writeIntermediate)
+                {
+                  // write map after everything is done
+                  autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
+                }
+            }
+        }
     }
     catch (e)
     {
