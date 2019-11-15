@@ -199,12 +199,37 @@ extension.Add("cli", async autoRestApi => {
 
         for (var iif in inputFiles)
         {
+            //-------------------------------------------------------------------------------------------------------------------------
             //
-            // First Stage -- Map Generation
+            // PARSE INPUT MODEL
             //
+            //-------------------------------------------------------------------------------------------------------------------------
             let swagger = JSON.parse(inputFiles[iif]);
+
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // PROCESS EXAMPLES
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             let exampleProcessor = new ExampleProcessor(swagger, testScenario);
             let examples: Example[] = exampleProcessor.GetExamples();
+
+            Info("");
+            Info("TEST SCENARIO COVERAGE");
+            Info("----------------------");
+            Info("Methods Total   : " + exampleProcessor.MethodsTotal);
+            Info("Methods Covered : " + exampleProcessor.MethodsCovered);
+            Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
+            Info("Examples Tested : " + exampleProcessor.ExamplesTested);
+            Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
+            Info("----------------------");
+            Info("");
+
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // GENERATE RAW MAP
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             let mapGenerator = new MapGenerator(swagger, adjustmentsObject, cliName, examples, function(msg: string) {
                 if (log == "map")
                 {
@@ -222,23 +247,16 @@ extension.Add("cli", async autoRestApi => {
                 Error("ERROR " + e.stack);
             }
 
-            Info("");
-            Info("TEST SCENARIO COVERAGE");
-            Info("----------------------");
-            Info("Methods Total   : " + exampleProcessor.MethodsTotal);
-            Info("Methods Covered : " + exampleProcessor.MethodsCovered);
-            Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
-            Info("Examples Tested : " + exampleProcessor.ExamplesTested);
-            Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
-            Info("----------------------");
-            Info("");
-
             if (writeIntermediate)
             {
               autoRestApi.WriteFile("intermediate/" + cliName + "-map-unflattened.yml", yaml.dump(map));
             }
 
-            // flatten the map using flattener
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
+            // MAP FLATTENING AND TRANSFORMATIONS
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
             let mapFlattener = flattenAll ? 
                               new MapFlattener(map, optionOverrides, cliCommandOverrides, function(msg: string) {
                                   if (log == "flattener")
