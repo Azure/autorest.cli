@@ -24,7 +24,7 @@ class MapGenerator {
         this._map = new ModuleMap_1.MapModuleGroup();
         this._map.Modules = [];
         this._map.ServiceName = this._swagger['name'];
-        this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.MgmtClientName = this._swagger['name'];
         this._map.CliName = this._cliName;
         this._map.Namespace = this._swagger['namespace'].toLowerCase();
         for (var idx = 0; idx < this.Operations.length; idx++) {

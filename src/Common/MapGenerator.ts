@@ -8,8 +8,6 @@ import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize, PluralToSingular } from "../Common/Helpers";
 import { LogCallback } from "../index";
 import { Adjustments } from "./Adjustments";
-import { throws } from "assert";
-import { GenerateAzureCliReadme } from '../AzureCli/TemplateAzureCliReadme';
 
 export class MapGenerator
 {
@@ -32,7 +30,7 @@ export class MapGenerator
         this._map = new MapModuleGroup();
         this._map.Modules = [];
         this._map.ServiceName = this._swagger['name'];
-        this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.MgmtClientName = this._swagger['name'];
         this._map.CliName = this._cliName;
         this._map.Namespace = this._swagger['namespace'].toLowerCase();
 
