@@ -206,7 +206,7 @@ export class MapGenerator
         method.Url = NormalizeResourceId(rawMethod.url);
         method.HttpMethod = rawMethod.httpMethod.toLowerCase();
         method.IsAsync = (rawMethod['extensions'] != undefined && rawMethod['extensions']['x-ms-long-running-operation'] != undefined) ? rawMethod['extensions']['x-ms-long-running-operation'] : false;
-
+        method.Documentation = rawMethod['description'];
         methods.push(method);
     }
 

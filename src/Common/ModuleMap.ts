@@ -89,7 +89,6 @@ export class ModuleOption
     public Comparison: string = "";
     public Updatable: boolean = true;
     public ExampleValue: any = null;
-    public Flatten: boolean;
     public Hidden: boolean = false;
     public IncludeInResponse: boolean = false;
     public format: string = null;
@@ -139,6 +138,7 @@ export class ModuleMethod
     public Url: string = "";
     public HttpMethod: string = "";
     public IsAsync: boolean = false;
+    public Documentation: string = "";
 }
 
 export class Module

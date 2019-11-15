@@ -113,6 +113,7 @@ class ModuleMethod {
         this.Url = "";
         this.HttpMethod = "";
         this.IsAsync = false;
+        this.Documentation = "";
     }
 }
 exports.ModuleMethod = ModuleMethod;

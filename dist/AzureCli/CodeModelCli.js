@@ -15,6 +15,7 @@ class CommandExample {
 exports.CommandExample = CommandExample;
 class CommandMethod {
     constructor() {
+        this.Documentation = null;
         this.BodyParameterName = null;
     }
 }
@@ -172,6 +173,7 @@ class CodeModelCli {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
             method.Name = Helpers_1.ToSnakeCase(mm);
+            method.Documentation = "XXX - METHOD DOCUMENTATION - XXX";
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;

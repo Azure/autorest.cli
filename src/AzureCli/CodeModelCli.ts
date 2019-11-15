@@ -37,6 +37,7 @@ export class CommandExample
 export class CommandMethod
 {
     public Name: string;
+    public Documentation: string = null;
     public Parameters: CommandParameter[];
     public BodyParameterName: string = null;
 }
@@ -258,6 +259,7 @@ export class CodeModelCli
             let options = this.GetMethodOptions(mm, false);
             let method: CommandMethod = new CommandMethod();
             method.Name = ToSnakeCase(mm);
+            method.Documentation = "XXX - METHOD DOCUMENTATION - XXX";
             method.Parameters = [];
             options.forEach(o => {
                 let parameter: CommandParameter = null;
