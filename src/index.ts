@@ -39,6 +39,7 @@ const extension = new AutoRestExtension();
 export enum ArtifactType
 {
     ArtifactTypeAzureCliModule,
+    ArtifactTypeAzureCliExtension,
     ArtifactTypeMagicModulesInput,
     ArtifactTypeAnsibleSdk,
     ArtifactTypeAnsibleRest,
@@ -126,16 +127,7 @@ extension.Add("cli", async autoRestApi => {
         if (await autoRestApi.GetValue("cli-module"))
         {
             Info("GENERATION: --cli-module");
-
-            if ((await autoRestApi.GetValue("extension")))
-            {
-                outputFolder = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
-            }
-            else
-            {
-                outputFolder = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
-            }
-            artifactType = ArtifactType.ArtifactTypeAzureCliModule;
+            artifactType = (await autoRestApi.GetValue("extension")) ? ArtifactType.ArtifactTypeAzureCliExtension : ArtifactType.ArtifactTypeAzureCliModule;
         }
         else if (await autoRestApi.GetValue("ansible"))
         {
@@ -423,7 +415,7 @@ extension.Add("cli", async autoRestApi => {
                 // AZURE CLI COMMAND MODULE
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
-                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule)
+                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule || artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
                 {
                     GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
                 }

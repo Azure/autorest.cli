@@ -29,39 +29,39 @@ const extension = new autorest_extension_base_1.AutoRestExtension();
 var ArtifactType;
 (function (ArtifactType) {
     ArtifactType[ArtifactType["ArtifactTypeAzureCliModule"] = 0] = "ArtifactTypeAzureCliModule";
-    ArtifactType[ArtifactType["ArtifactTypeMagicModulesInput"] = 1] = "ArtifactTypeMagicModulesInput";
-    ArtifactType[ArtifactType["ArtifactTypeAnsibleSdk"] = 2] = "ArtifactTypeAnsibleSdk";
-    ArtifactType[ArtifactType["ArtifactTypeAnsibleRest"] = 3] = "ArtifactTypeAnsibleRest";
-    ArtifactType[ArtifactType["ArtifactTypeAnsibleCollection"] = 4] = "ArtifactTypeAnsibleCollection";
-    ArtifactType[ArtifactType["ArtifactTypeSwaggerIntegrationTest"] = 5] = "ArtifactTypeSwaggerIntegrationTest";
-    ArtifactType[ArtifactType["ArtifactTypePythonIntegrationTest"] = 6] = "ArtifactTypePythonIntegrationTest";
-    ArtifactType[ArtifactType["ArtifactTypeExamplesAzureCliRest"] = 7] = "ArtifactTypeExamplesAzureCliRest";
-    ArtifactType[ArtifactType["ArtifactTypeExamplesPythonRest"] = 8] = "ArtifactTypeExamplesPythonRest";
-    ArtifactType[ArtifactType["ArtifactTypeExamplesPythonSdk"] = 9] = "ArtifactTypeExamplesPythonSdk";
-    ArtifactType[ArtifactType["ArtifactTypeExamplesAnsibleRest"] = 10] = "ArtifactTypeExamplesAnsibleRest";
-    ArtifactType[ArtifactType["ArtifactTypeExamplesAnsibleModule"] = 11] = "ArtifactTypeExamplesAnsibleModule";
+    ArtifactType[ArtifactType["ArtifactTypeAzureCliExtension"] = 1] = "ArtifactTypeAzureCliExtension";
+    ArtifactType[ArtifactType["ArtifactTypeMagicModulesInput"] = 2] = "ArtifactTypeMagicModulesInput";
+    ArtifactType[ArtifactType["ArtifactTypeAnsibleSdk"] = 3] = "ArtifactTypeAnsibleSdk";
+    ArtifactType[ArtifactType["ArtifactTypeAnsibleRest"] = 4] = "ArtifactTypeAnsibleRest";
+    ArtifactType[ArtifactType["ArtifactTypeAnsibleCollection"] = 5] = "ArtifactTypeAnsibleCollection";
+    ArtifactType[ArtifactType["ArtifactTypeSwaggerIntegrationTest"] = 6] = "ArtifactTypeSwaggerIntegrationTest";
+    ArtifactType[ArtifactType["ArtifactTypePythonIntegrationTest"] = 7] = "ArtifactTypePythonIntegrationTest";
+    ArtifactType[ArtifactType["ArtifactTypeExamplesAzureCliRest"] = 8] = "ArtifactTypeExamplesAzureCliRest";
+    ArtifactType[ArtifactType["ArtifactTypeExamplesPythonRest"] = 9] = "ArtifactTypeExamplesPythonRest";
+    ArtifactType[ArtifactType["ArtifactTypeExamplesPythonSdk"] = 10] = "ArtifactTypeExamplesPythonSdk";
+    ArtifactType[ArtifactType["ArtifactTypeExamplesAnsibleRest"] = 11] = "ArtifactTypeExamplesAnsibleRest";
+    ArtifactType[ArtifactType["ArtifactTypeExamplesAnsibleModule"] = 12] = "ArtifactTypeExamplesAnsibleModule";
 })(ArtifactType = exports.ArtifactType || (exports.ArtifactType = {}));
 extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* () {
-    try {
-        let log = yield autoRestApi.GetValue("log");
-        // output function
-        function Info(s) {
-            if (log) {
-                autoRestApi.Message({
-                    Channel: "information",
-                    Text: s
-                });
-            }
-        }
-        function Error(s) {
+    let log = yield autoRestApi.GetValue("log");
+    function Info(s) {
+        if (log) {
             autoRestApi.Message({
-                Channel: "error",
+                Channel: "information",
                 Text: s
             });
         }
-        function WriteFile(path, rows) {
-            autoRestApi.WriteFile(path, rows.join('\r\n'));
-        }
+    }
+    function Error(s) {
+        autoRestApi.Message({
+            Channel: "error",
+            Text: s
+        });
+    }
+    function WriteFile(path, rows) {
+        autoRestApi.WriteFile(path, rows.join('\r\n'));
+    }
+    try {
         // read files offered to this plugin
         const inputFileUris = yield autoRestApi.ListInputs();
         const inputFiles = yield Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
@@ -95,13 +95,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         // Handle generation type parameter
         if (yield autoRestApi.GetValue("cli-module")) {
             Info("GENERATION: --cli-module");
-            if ((yield autoRestApi.GetValue("extension"))) {
-                outputFolder = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
-            }
-            else {
-                outputFolder = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
-            }
-            artifactType = ArtifactType.ArtifactTypeAzureCliModule;
+            artifactType = (yield autoRestApi.GetValue("extension")) ? ArtifactType.ArtifactTypeAzureCliExtension : ArtifactType.ArtifactTypeAzureCliModule;
         }
         else if (yield autoRestApi.GetValue("ansible")) {
             Info("GENERATION: --ansible");
@@ -164,10 +158,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             let examples = exampleProcessor.GetExamples();
             let mapGenerator = new MapGenerator_1.MapGenerator(swagger, adjustmentsObject, cliName, examples, function (msg) {
                 if (log == "map") {
-                    autoRestApi.Message({
-                        Channel: "warning",
-                        Text: msg
-                    });
+                    Info(msg);
                 }
             });
             let map = null;
@@ -175,10 +166,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 map = mapGenerator.CreateMap();
             }
             catch (e) {
-                autoRestApi.Message({
-                    Channel: "warning",
-                    Text: "ERROR " + e.stack,
-                });
+                Error("ERROR " + e.stack);
             }
             Info("");
             Info("TEST SCENARIO COVERAGE");
@@ -328,9 +316,14 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 // AZURE CLI COMMAND MODULE
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
-                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule) {
+                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule || artifactType == ArtifactType.ArtifactTypeAzureCliExtension) {
                     Generator_3.GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
                 }
+                //-------------------------------------------------------------------------------------------------------------------------
+                //
+                // INTERMEDIATE MAP
+                //
+                //-------------------------------------------------------------------------------------------------------------------------
                 if (writeIntermediate) {
                     // write map after everything is done
                     autoRestApi.WriteFile("intermediate/" + cliName + "-map.yml", yaml.dump(map));
@@ -339,10 +332,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
         }
     }
     catch (e) {
-        autoRestApi.Message({
-            Channel: "warning",
-            Text: e.message + " -- " + JSON.stringify(e.stack)
-        });
+        Error(e.message + " -- " + JSON.stringify(e.stack));
     }
 }));
 extension.Run();

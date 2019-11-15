@@ -32,37 +32,44 @@ export function GenerateAzureCli(artifactType: ArtifactType,
     logCb: LogCallback)
 {
     let path = "";
-    if (artifactType == ArtifactType.ArtifactTypeAzureCliModule)
+
+    if (artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
     {
-        let modelCli = new CodeModelCli(map, cliCommandOverrides, logCb);
+        path = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
+    }
+    else
+    {
+        path = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
+    }
 
-        fileCb(path + "_help.py", GenerateAzureCliHelp(modelCli));
-        modelCli.Reset();
-        fileCb(path + "_params.py", GenerateAzureCliParams(modelCli));
-        modelCli.Reset();
-        fileCb(path + "commands.py", GenerateAzureCliCommands(modelCli));
-        modelCli.Reset();
-        fileCb(path + "custom.py", GenerateAzureCliCustom(modelCli));
-        modelCli.Reset();
-        fileCb(path + "_client_factory.py", GenerateAzureCliClientFactory(modelCli));
-        modelCli.Reset();
-        fileCb(path + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli, testScenario));   
-        modelCli.Reset();
-        fileCb(path + "__init__.py", GenerateAzureCliInit(modelCli));
-        modelCli.Reset();
-        fileCb(path + "azext_metadata.json", GenerateAzureCliAzextMetadata(modelCli));
-        modelCli.Reset();
-        fileCb(path + "_validators.py", GenerateAzureCliValidators(modelCli));
+    let modelCli = new CodeModelCli(map, cliCommandOverrides, logCb);
 
-        fileCb(path + "HISTORY.rst", GenerateAzureCliHistory(modelCli));
-        fileCb(path + "README.rst", GenerateAzureCliReadme(modelCli));
-        fileCb(path + "setup.cfg", GenerateAzureCliSetupCfg(modelCli));
-        fileCb(path + "setup.py", GenerateAzureCliSetupPy(modelCli));  
+    fileCb(path + "_help.py", GenerateAzureCliHelp(modelCli));
+    modelCli.Reset();
+    fileCb(path + "_params.py", GenerateAzureCliParams(modelCli));
+    modelCli.Reset();
+    fileCb(path + "commands.py", GenerateAzureCliCommands(modelCli));
+    modelCli.Reset();
+    fileCb(path + "custom.py", GenerateAzureCliCustom(modelCli));
+    modelCli.Reset();
+    fileCb(path + "_client_factory.py", GenerateAzureCliClientFactory(modelCli));
+    modelCli.Reset();
+    fileCb(path + "tests/latest/test_" + cliName + "_scenario.py", GenerateAzureCliTestScenario(modelCli, testScenario));   
+    modelCli.Reset();
+    fileCb(path + "__init__.py", GenerateAzureCliInit(modelCli));
+    modelCli.Reset();
+    fileCb(path + "azext_metadata.json", GenerateAzureCliAzextMetadata(modelCli));
+    modelCli.Reset();
+    fileCb(path + "_validators.py", GenerateAzureCliValidators(modelCli));
 
-        if (generateReport)
-        {
-            modelCli.Reset();
-            fileCb(path + "report.md", GenerateAzureCliReport(modelCli));
-        }
+    fileCb(path + "HISTORY.rst", GenerateAzureCliHistory(modelCli));
+    fileCb(path + "README.rst", GenerateAzureCliReadme(modelCli));
+    fileCb(path + "setup.cfg", GenerateAzureCliSetupCfg(modelCli));
+    fileCb(path + "setup.py", GenerateAzureCliSetupPy(modelCli));  
+
+    if (generateReport)
+    {
+        modelCli.Reset();
+        fileCb(path + "report.md", GenerateAzureCliReport(modelCli));
     }
 }
