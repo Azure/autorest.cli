@@ -176,7 +176,6 @@ class CodeModel {
                 if (hiddenParamatersOption.NameSwagger == optionName) {
                     option = new ModuleMap_1.ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
-                    option.TypeName = hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
                     option.Kind = hiddenParamatersOption.Kind;
                     // XXX - and because this stupid option has no suboptions

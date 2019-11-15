@@ -854,7 +854,6 @@ export class CodeModelCli
                     option = new ModuleOptionPlaceholder(optionName, "dict", false);
 
                     option.SubOptions = [];
-                    option.TypeName =  hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
 
                     // XXX - and because this stupid option has no suboptions

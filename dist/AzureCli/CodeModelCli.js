@@ -602,7 +602,6 @@ class CodeModelCli {
                 let hiddenParamatersOption = this.ModuleParametersOption;
                 option = new ModuleMap_1.ModuleOptionPlaceholder(optionName, "dict", false);
                 option.SubOptions = [];
-                option.TypeName = hiddenParamatersOption.TypeName;
                 option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
                 // XXX - and because this stupid option has no suboptions
                 for (let optionIdx in this.ModuleOptions) {

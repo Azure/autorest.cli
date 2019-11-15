@@ -542,8 +542,7 @@ export class MapGenerator
                             let submodel = this.FindModelTypeByRef(ref);
                         
                         bodyPlaceholder.IsList = this.Type_IsList(p.modelType);
-                        bodyPlaceholder.TypeName = this.Type_Name(submodel);
-                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(bodyPlaceholder.TypeName, this.Namespace.split('.').pop());
+                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(this.Type_Name(submodel), this.Namespace.split('.').pop());
                         bodyPlaceholder.TypeNameGo = Capitalize(bodyPlaceholder.TypeNameGo);
 
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
@@ -713,8 +712,7 @@ export class MapGenerator
                     option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
                     option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                     option.IsList =  this.Type_IsList(attr.modelType);
-                    option.TypeName = this.Type_Name(attr.modelType);
-                    option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                    option.TypeNameGo = this.TrimPackageName(this.Type_Name(attr.modelType), this.Namespace.split('.').pop());
                     option.TypeNameGo = Capitalize(option.TypeNameGo);
                     option.format = this.Type_number_format(attr.modelType);
                     option.EnumValues = this.Type_EnumValues(attr.modelType);

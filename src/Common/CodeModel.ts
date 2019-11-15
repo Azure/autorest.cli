@@ -266,7 +266,6 @@ export class CodeModel
                 {
                     option = new ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
-                    option.TypeName =  hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
                     option.Kind = hiddenParamatersOption.Kind;
 
