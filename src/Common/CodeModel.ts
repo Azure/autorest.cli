@@ -192,77 +192,6 @@ export class CodeModel
         return this.Map.Modules[this._selectedModule].Examples;
     }
 
-    public GetModuleTestCreate(isCheckMode: boolean = false): string[]
-    {
-        return this.GetModuleTest(0, "Create instance of", "", isCheckMode);
-    }
-
-    public get ModuleTestUpdate(): string[]
-    {
-        return this.GetModuleTest(0, "Create again instance of", "", false);
-    }
-
-    public get ModuleTestUpdateCheckMode(): string[]
-    {
-        return this.GetModuleTest(0, "Create again instance of", "", true);
-    }
-
-    public GetModuleTestDelete(isUnexistingInstance: boolean, isCheckMode: boolean): string[] 
-    {
-        let prefix: string = isUnexistingInstance ? "Delete unexisting instance of" : "Delete instance of";
-        return this.GetModuleTest(0, prefix, "delete", isCheckMode);
-    }
-
-    public GetModuleFactTestCount(): number
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods.length;
-    }
-
-    public GetModuleFactTest(idx: number, instanceNamePostfix: string = ""): string[]
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return this.GetModuleTest(0, "Gather facts", m.Methods[idx].Name, false, instanceNamePostfix);
-    }
-
-    public IsModuleFactsTestMulti(idx: number): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-        return m.Methods[idx].Name != "get";
-    }
-
-    public get ModuleTestDelete(): string[]
-    {
-        return this.GetModuleTest(0, "Delete instance of", "delete", false);
-    }
-
-    public get ModuleTestDeleteCheckMode(): string[]
-    {
-        return this.GetModuleTest(0, "Delete instance of", "delete", true);
-    }
-
-    public get ModuleTestDeleteUnexisting(): string[]
-    {
-        return this.GetModuleTest(0, "Delete unexisting instance of", "delete", false);
-    }
-
-
-    private GetModuleTest(level: number, testType: string, methodType: string, isCheckMode: boolean, instanceNamePostfix: string = ""): string[]
-    {
-        let prePlaybook: string[] = [];
-        let postfix: string = isCheckMode ? " -- check mode" : "";
-
-        // XXX - this must be created in different way
-        //prePlaybook.concat(this.GetPlaybook(testType, ((methodType == "") ? this.ModuleOptions : this.GetMethodOptions(methodType)), "", "test:default", postfix, instanceNamePostfix));
-
-        if (methodType == "delete")
-            prePlaybook.push("    state: absent");
-
-        let arr: string[] = prePlaybook;
-
-        return arr;
-    }
-
     public GetMethod(methodName: string): ModuleMethod
     {
         var m = this.Map.Modules[this._selectedModule];
@@ -294,27 +223,6 @@ export class CodeModel
         }
 
         return null;
-    }
-
-    public CanDelete(): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-
-        for (var mi in m.Methods)
-        {
-            let method = m.Methods[mi];
-            if (method.Name == "delete")
-                return true;
-        }
-
-        return false;
-    }
-
-    public CanTestUpdate(): boolean
-    {
-        var m = this.Map.Modules[this._selectedModule];
-
-        return m.CannotTestUpdate;
     }
 
     public GetMethodRequiredOptionNames(methodName: string): string[]
@@ -358,7 +266,6 @@ export class CodeModel
                 {
                     option = new ModuleOption(optionName, "dict", false);
                     option.SubOptions = [];
-                    option.TypeName =  hiddenParamatersOption.TypeName;
                     option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
                     option.Kind = hiddenParamatersOption.Kind;
 
@@ -380,15 +287,6 @@ export class CodeModel
         }
 
         return moduleOptions;
-    }
-
-    public get GetInfo(): string[]
-    {
-        let info: string[] = [];
-
-        // XXXX
-        //info.concat(JsonConvert.SerializeObject(Map, Formatting.Indented).Split(new[] { "\r", "\n", "\r\n" }, StringSplitOptions.None));
-        return info;
     }
 
     public get ModuleMethods(): ModuleMethod[]

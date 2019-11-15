@@ -24,7 +24,7 @@ class MapGenerator {
         this._map = new ModuleMap_1.MapModuleGroup();
         this._map.Modules = [];
         this._map.ServiceName = this._swagger['name'];
-        this._map.MgmtClientName = this._swagger['name']; // ['codeGenExtensions']['name'] -- this is not available everywhere
+        this._map.MgmtClientName = this._swagger['name'];
         this._map.CliName = this._cliName;
         this._map.Namespace = this._swagger['namespace'].toLowerCase();
         for (var idx = 0; idx < this.Operations.length; idx++) {
@@ -91,8 +91,6 @@ class MapGenerator {
         else if (name.endsWith('s')) {
             name = name.substring(0, name.length - 1);
         }
-        // XXXX - regex
-        //name = System.Text.RegularExpressions.Regex.replace(name, "([A-Z])", " $1", System.Text.RegularExpressions.RegexOptions.Compiled).Trim();
         return name;
     }
     AddModule(rawMethods, isInfo) {
@@ -381,8 +379,7 @@ class MapGenerator {
                         let ref = p.modelType['$ref'];
                         let submodel = this.FindModelTypeByRef(ref);
                         bodyPlaceholder.IsList = this.Type_IsList(p.modelType);
-                        bodyPlaceholder.TypeName = this.Type_Name(submodel);
-                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(bodyPlaceholder.TypeName, this.Namespace.split('.').pop());
+                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(this.Type_Name(submodel), this.Namespace.split('.').pop());
                         bodyPlaceholder.TypeNameGo = Helpers_1.Capitalize(bodyPlaceholder.TypeNameGo);
                         let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
                         bodyPlaceholder.Documentation = this.ProcessDocumentation(p.documentation.raw);
@@ -498,8 +495,7 @@ class MapGenerator {
                     option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
                     option.NoLog = (attr.name.raw.indexOf("password") >= 0);
                     option.IsList = this.Type_IsList(attr.modelType);
-                    option.TypeName = this.Type_Name(attr.modelType);
-                    option.TypeNameGo = this.TrimPackageName(option.TypeName, this.Namespace.split('.').pop());
+                    option.TypeNameGo = this.TrimPackageName(this.Type_Name(attr.modelType), this.Namespace.split('.').pop());
                     option.TypeNameGo = Helpers_1.Capitalize(option.TypeNameGo);
                     option.format = this.Type_number_format(attr.modelType);
                     option.EnumValues = this.Type_EnumValues(attr.modelType);
