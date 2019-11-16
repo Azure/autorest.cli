@@ -1,14 +1,14 @@
-﻿import { Example } from "../Common/Example";
+﻿/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license logCbrmation.
+ *--------------------------------------------------------------------------------------------*/
+
+import { Example } from "../Common/Example";
 import { ArtifactType, LogCallback, FileCallback } from "..";
 import { GenerateExampleAnsibleRest} from "./AnsibleExampleRest";
 import { GenerateExamplePythonRest } from "./TemplateExamplePythonRest";
 import { GenerateExamplePythonSdk } from "./TemplateExamplePythonSdk";
 import { GenerateExampleAzureCLI } from "./TemplateExampleAzureCLI";
-
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license logCbrmation.
- *--------------------------------------------------------------------------------------------*/
 
 export function GenerateExamples(artifactType: ArtifactType,
                                  examples: Example[],

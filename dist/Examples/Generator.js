@@ -1,14 +1,14 @@
 "use strict";
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license logCbrmation.
+ *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
 const __1 = require("..");
 const AnsibleExampleRest_1 = require("./AnsibleExampleRest");
 const TemplateExamplePythonRest_1 = require("./TemplateExamplePythonRest");
 const TemplateExamplePythonSdk_1 = require("./TemplateExamplePythonSdk");
 const TemplateExampleAzureCLI_1 = require("./TemplateExampleAzureCLI");
-/*---------------------------------------------------------------------------------------------
- *  Copyright (c) Microsoft Corporation. All rights reserved.
- *  Licensed under the MIT License. See License.txt in the project root for license logCbrmation.
- *--------------------------------------------------------------------------------------------*/
 function GenerateExamples(artifactType, examples, namespace, mgmtClientName, fileCb, logCb) {
     for (var i = 0; i < examples.length; i++) {
         var example = examples[i];
