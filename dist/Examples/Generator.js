@@ -38,7 +38,7 @@ function GenerateExamples(artifactType, examples, namespace, mgmtClientName, fil
         // PYTHON SDK EXAMPLES
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        if (artifactType == __1.ArtifactType.ArtifactTypeExamplesPythonRest) {
+        if (artifactType == __1.ArtifactType.ArtifactTypeExamplesPythonSdk) {
             let p = filename + ".py";
             fileCb(p, TemplateExamplePythonSdk_1.GenerateExamplePythonSdk(namespace, mgmtClientName, example));
             logCb("EXAMPLE: " + p);

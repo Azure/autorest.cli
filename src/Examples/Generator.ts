@@ -51,7 +51,7 @@ export function GenerateExamples(artifactType: ArtifactType,
         // PYTHON SDK EXAMPLES
         //
         //-------------------------------------------------------------------------------------------------------------------------
-        if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
+        if (artifactType == ArtifactType.ArtifactTypeExamplesPythonSdk)
         {
             let p = filename + ".py";
             fileCb(p, GenerateExamplePythonSdk(namespace, mgmtClientName, example));
