@@ -173,7 +173,7 @@ class CodeModelCli {
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
             method.Name = Helpers_1.ToSnakeCase(mm);
-            method.Documentation = "XXX - METHOD DOCUMENTATION - XXX";
+            method.Documentation = this.GetMethodDocumentation(mm);
             method.Parameters = [];
             options.forEach(o => {
                 let parameter = null;
@@ -574,6 +574,15 @@ class CodeModelCli {
                 return method.Options;
         }
         return null;
+    }
+    GetMethodDocumentation(methodName) {
+        var m = this.Map.Modules[this._selectedModule];
+        for (var mi in m.Methods) {
+            let method = m.Methods[mi];
+            if (method.Name == methodName)
+                return method.Documentation;
+        }
+        return "";
     }
     GetMethodRequiredOptionNames(methodName) {
         var m = this.Map.Modules[this._selectedModule];

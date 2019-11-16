@@ -35,7 +35,10 @@ function GenerateAzureCliHelp(model) {
             output.push("");
             output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
             output.push("    type: command");
-            output.push("    short-summary: " + method + " " + model.GetCliCommandDescriptionName() + ".");
+            // there will be just one method for create, update, delete, show, etc.
+            // there may be a few list methods, so let's just take description from the first one.
+            // as we can't use all of them
+            output.push("    short-summary: " + ctx.Methods[0].Documentation);
             let examplesStarted = false;
             let examples = ctx.Examples;
             examples.forEach(example => {

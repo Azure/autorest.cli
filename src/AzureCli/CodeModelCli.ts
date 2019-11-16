@@ -259,7 +259,7 @@ export class CodeModelCli
             let options = this.GetMethodOptions(mm, false);
             let method: CommandMethod = new CommandMethod();
             method.Name = ToSnakeCase(mm);
-            method.Documentation = "XXX - METHOD DOCUMENTATION - XXX";
+            method.Documentation = this.GetMethodDocumentation(mm);
             method.Parameters = [];
             options.forEach(o => {
                 let parameter: CommandParameter = null;
@@ -810,6 +810,20 @@ export class CodeModelCli
         }
 
         return null;
+    }
+
+    public GetMethodDocumentation(methodName: string): string
+    {
+        var m = this.Map.Modules[this._selectedModule];
+
+        for (var mi in m.Methods)
+        {
+            let method = m.Methods[mi];
+            if (method.Name == methodName)
+                return method.Documentation;
+        }
+
+        return "";
     }
 
     public GetMethodRequiredOptionNames(methodName: string): string[]
