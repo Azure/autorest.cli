@@ -18,7 +18,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
     var output: string[] = [];
 
     let className: string = "Mgmt" + mgmtClientName.split("ManagementClient")[0] + "Test";
-    let testName: string = "test_" + cliCommandName;
+    let testName: string = "test_" + cliCommandName.replace(/-/g, '_');
 
     output.push("# coding: utf-8");
     output.push("");

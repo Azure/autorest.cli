@@ -8,7 +8,7 @@ const Helpers_1 = require("../Common/Helpers");
 function GeneratePythonIntegrationTest(model, config, namespace, cliCommandName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested) {
     var output = [];
     let className = "Mgmt" + mgmtClientName.split("ManagementClient")[0] + "Test";
-    let testName = "test_" + cliCommandName;
+    let testName = "test_" + cliCommandName.replace(/-/g, '_');
     output.push("# coding: utf-8");
     output.push("");
     output.push("#-------------------------------------------------------------------------");

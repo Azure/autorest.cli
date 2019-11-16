@@ -45,13 +45,13 @@ function GenerateIntegrationTest(artifactType, testScenario, examples, namespace
     logCb("----------------------");
     logCb("");
     if (artifactType == index_1.ArtifactType.ArtifactTypePythonIntegrationTest) {
-        let code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testScenario, namespace, cliName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested);
+        code = TemplatePythonIntegrationTest_1.GeneratePythonIntegrationTest(examples, testScenario, namespace, cliName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested);
         path = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
-        path += "test_cli_mgmt_" + cliName + ".py";
+        path += "test_cli_mgmt_" + cliName.replace(/-/g, '_') + ".py";
     }
     else {
-        let code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, testScenario);
-        path += "test_cli_mgmt_" + cliName + ".py";
+        code = TemplateSwaggerIntegrationTest_1.GenerateSwaggerIntegrationTest(examples, testScenario);
+        path += "test_cli_mgmt_" + cliName.replace(/-/g, '_') + ".py";
     }
     fileCb(path, code);
 }

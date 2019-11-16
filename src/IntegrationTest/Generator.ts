@@ -67,7 +67,7 @@ export function GenerateIntegrationTest(artifactType: ArtifactType,
 
     if (artifactType == ArtifactType.ArtifactTypePythonIntegrationTest)
     {
-        let code = GeneratePythonIntegrationTest(examples,
+        code = GeneratePythonIntegrationTest(examples,
                                             testScenario,
                                             namespace,
                                             cliName,
@@ -76,13 +76,13 @@ export function GenerateIntegrationTest(artifactType: ArtifactType,
                                             methodsCovered,
                                             examplesTotal,
                                             examplesTested);
-      path = "sdk/" + packageName.split('-').pop() + "/" + packageName + "/tests/";
-      path += "test_cli_mgmt_" + cliName + ".py";
+      path = "sdk/" + packageName.split('-').pop() + "/" +  packageName + "/tests/";
+      path += "test_cli_mgmt_" + cliName.replace(/-/g, '_') + ".py";
     }
     else
     {
-        let code = GenerateSwaggerIntegrationTest(examples, testScenario);
-        path += "test_cli_mgmt_" + cliName + ".py";
+        code = GenerateSwaggerIntegrationTest(examples, testScenario);
+        path += "test_cli_mgmt_" + cliName.replace(/-/g, '_') + ".py";
     }
 
     fileCb(path, code);
