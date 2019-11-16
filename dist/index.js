@@ -20,10 +20,7 @@ const Generator_1 = require("./IntegrationTest/Generator");
 const Generator_2 = require("./Ansible/Generator");
 const Generator_3 = require("./AzureCli/Generator");
 const Generator_4 = require("./MagicModules/Generator");
-const AnsibleExampleRest_1 = require("./Examples/AnsibleExampleRest");
-const TemplateExamplePythonRest_1 = require("./Examples/TemplateExamplePythonRest");
-const TemplateExamplePythonSdk_1 = require("./Examples/TemplateExamplePythonSdk");
-const TemplateExampleAzureCLI_1 = require("./Examples/TemplateExampleAzureCLI");
+const Generator_5 = require("./Examples/Generator");
 const Adjustments_1 = require("./Common/Adjustments");
 const extension = new autorest_extension_base_1.AutoRestExtension();
 var ArtifactType;
@@ -184,20 +181,12 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             //-------------------------------------------------------------------------------------------------------------------------
             let mapFlattener = flattenAll ?
                 new MapFlattener_1.MapFlattener(map, optionOverrides, cliCommandOverrides, function (msg) {
-                    if (log == "flattener") {
-                        autoRestApi.Message({
-                            Channel: "warning",
-                            Text: msg
-                        });
-                    }
+                    if (log == "flattener")
+                        Info(msg);
                 }) :
                 new MapFlattenerObsolete_1.MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function (msg) {
-                    if (log == "flattener") {
-                        autoRestApi.Message({
-                            Channel: "warning",
-                            Text: msg
-                        });
-                    }
+                    if (log == "flattener")
+                        Info(msg);
                 });
             mapFlattener.Transform();
             //-------------------------------------------------------------------------------------------------------------------------
@@ -235,55 +224,11 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 // REST EXAMPLES
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
-                for (var i = 0; i < examples.length; i++) {
-                    var example = examples[i];
-                    var filename = example.Filename;
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // ANSIBLE REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest) {
-                        let p = "intermediate/examples_rest/" + filename + ".yml";
-                        autoRestApi.WriteFile(p, AnsibleExampleRest_1.GenerateExampleAnsibleRest(example));
-                        Info("EXAMPLE: " + p);
-                    }
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // PYTHON REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest) {
-                        let p = filename + ".py";
-                        autoRestApi.WriteFile(p, TemplateExamplePythonRest_1.GenerateExamplePythonRest(example).join('\r\n'));
-                        Info("EXAMPLE: " + p);
-                    }
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // PYTHON SDK EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest) {
-                        let p = filename + ".py";
-                        autoRestApi.WriteFile(p, TemplateExamplePythonSdk_1.GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
-                        Info("EXAMPLE: " + p);
-                    }
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // AZURE CLI REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest) {
-                        let code = TemplateExampleAzureCLI_1.GenerateExampleAzureCLI(example);
-                        if (code != null) {
-                            let p = filename + ".sh";
-                            autoRestApi.WriteFile(p, code.join('\n'));
-                            Info("EXAMPLE: " + p);
-                        }
-                        else {
-                            Info("EXAMPLE CODE WAS NULL: " + filename);
-                        }
-                    }
+                if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesPythonRest ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesPythonSdk ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest) {
+                    Generator_5.GenerateExamples(artifactType, examples, map.Namespace, map.MgmtClientName, WriteFile, Info);
                 }
                 //-------------------------------------------------------------------------------------------------------------------------
                 //

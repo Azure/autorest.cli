@@ -6,7 +6,7 @@
 import { Example } from "../Common/Example"
 import * as yaml from "node-yaml";
 
-export function GenerateExampleAnsibleRest(model: Example) : string {
+export function GenerateExampleAnsibleRest(model: Example) : string[] {
     var output: any[] = [];
     var references = model.References;
     
@@ -21,10 +21,6 @@ export function GenerateExampleAnsibleRest(model: Example) : string {
             }
         }
     }
-
-    // XXX - why it's needed?
-    //var ignore: string[] = [];
-    //ignore.push("api-version");
 
     var parts: string[] = model.Url.split("/");
     var isLongRunning: boolean = model.IsExampleLongRunning();    
@@ -153,5 +149,5 @@ export function GenerateExampleAnsibleRest(model: Example) : string {
     output.push(play)
 
     // dump yaml
-    return yaml.dump(output);
+    return yaml.dump(output).split(/[\r\n]+/);
 }

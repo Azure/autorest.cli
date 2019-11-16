@@ -16,9 +16,6 @@ function GenerateExampleAnsibleRest(model) {
             }
         }
     }
-    // XXX - why it's needed?
-    //var ignore: string[] = [];
-    //ignore.push("api-version");
     var parts = model.Url.split("/");
     var isLongRunning = model.IsExampleLongRunning();
     // create vars
@@ -111,6 +108,6 @@ function GenerateExampleAnsibleRest(model) {
     // add play to playbook
     output.push(play);
     // dump yaml
-    return yaml.dump(output);
+    return yaml.dump(output).split(/[\r\n]+/);
 }
 exports.GenerateExampleAnsibleRest = GenerateExampleAnsibleRest;

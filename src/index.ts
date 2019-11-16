@@ -5,7 +5,6 @@ import * as yaml from "node-yaml";
 import { MapGenerator } from "./Common/MapGenerator"
 import { MapFlattener } from "./Common/MapFlattener"
 import { MapFlattenerObsolete } from "./Common/MapFlattenerObsolete"
-import { CodeModel } from "./Common/CodeModel"
 import { ExampleProcessor } from "./Common/ExampleProcessor"; 
 import { Example } from "./Common/Example";
 
@@ -15,12 +14,7 @@ import { GenerateIntegrationTest } from "./IntegrationTest/Generator";
 import { GenerateAnsible } from "./Ansible/Generator";
 import { GenerateAzureCli } from "./AzureCli/Generator";
 import { GenerateMagicModules } from "./MagicModules/Generator";
-
-import { GenerateExampleAnsibleRest } from "./Examples/AnsibleExampleRest"
-import { GenerateExampleAnsibleRrm } from "./Examples/AnsibleExample"
-import { GenerateExamplePythonRest } from "./Examples/TemplateExamplePythonRest"
-import { GenerateExamplePythonSdk } from "./Examples/TemplateExamplePythonSdk"
-import { GenerateExampleAzureCLI } from "./Examples/TemplateExampleAzureCLI"
+import { GenerateExamples } from "./Examples/Generator";
 
 import { Adjustments } from "./Common/Adjustments"; 
 import { MapModuleGroup } from "./Common/ModuleMap";
@@ -236,21 +230,11 @@ extension.Add("cli", async autoRestApi => {
             let mapFlattener = flattenAll ? 
                               new MapFlattener(map, optionOverrides, cliCommandOverrides, function(msg: string) {
                                   if (log == "flattener")
-                                  {
-                                    autoRestApi.Message({
-                                      Channel: "warning",
-                                      Text: msg
-                                    });
-                                  }
+                                    Info(msg);
                                 }) :
                                 new MapFlattenerObsolete(map, adjustmentsObject, flattenAll, optionOverrides, cliCommandOverrides, function(msg: string) {
                                   if (log == "flattener")
-                                  {
-                                    autoRestApi.Message({
-                                      Channel: "warning",
-                                      Text: msg
-                                    });
-                                  }
+                                    Info(msg);
                                 });
 
             mapFlattener.Transform();
@@ -299,66 +283,13 @@ extension.Add("cli", async autoRestApi => {
                 // REST EXAMPLES
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
-                for (var i = 0; i < examples.length; i++)
+
+                if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesPythonRest ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesPythonSdk ||
+                    artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest)
                 {
-                    var example: Example = examples[i];
-                    var filename = example.Filename;
-
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // ANSIBLE REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesAnsibleRest)
-                    {
-                        let p = "intermediate/examples_rest/" + filename + ".yml";
-                        autoRestApi.WriteFile(p, GenerateExampleAnsibleRest(example));
-                        Info("EXAMPLE: " + p);
-                    }
-
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // PYTHON REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
-                    {
-                        let p = filename + ".py";
-                        autoRestApi.WriteFile(p, GenerateExamplePythonRest(example).join('\r\n'));
-                        Info("EXAMPLE: " + p);
-                    }
-
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // PYTHON SDK EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesPythonRest)
-                    {
-                        let p = filename + ".py";
-                        autoRestApi.WriteFile(p, GenerateExamplePythonSdk(map.Namespace, map.MgmtClientName, example).join('\r\n'));
-                        Info("EXAMPLE: " + p);
-                    }
-
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    //
-                    // AZURE CLI REST EXAMPLES
-                    //
-                    //-------------------------------------------------------------------------------------------------------------------------
-                    if (artifactType == ArtifactType.ArtifactTypeExamplesAzureCliRest)
-                    {
-                        let code = GenerateExampleAzureCLI(example);
-                        if (code != null)
-                        {
-                            let p = filename + ".sh";
-                            autoRestApi.WriteFile(p, code.join('\n'));
-                            Info("EXAMPLE: " + p);
-                        }
-                        else
-                        {
-                            Info("EXAMPLE CODE WAS NULL: " + filename);
-                        }
-                    }
+                    GenerateExamples(artifactType, examples, map.Namespace, map.MgmtClientName, WriteFile, Info);
                 }
 
                 //-------------------------------------------------------------------------------------------------------------------------
