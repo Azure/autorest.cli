@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { ArtifactType, FileCallback } from "../index"
+import { ArtifactType, FileCallback, LogCallback } from "../index"
 import { Example } from "../Common/Example";
 import { GeneratePythonIntegrationTest } from "./TemplatePythonIntegrationTest"
 import { GenerateSwaggerIntegrationTest } from "./TemplateSwaggerIntegrationTest"
@@ -19,8 +19,20 @@ export function GenerateIntegrationTest(artifactType: ArtifactType,
                                         methodsCovered: number,
                                         examplesTotal: number,
                                         examplesTested: number,
-                                        fileCb: FileCallback)
+                                        fileCb: FileCallback,
+                                        logCb: LogCallback)
 {
+    logCb("");
+    logCb("TEST SCENARIO COVERAGE");
+    logCb("----------------------");
+    logCb("Methods Total   : " + methodsTotal);
+    logCb("Methods Covered : " + methodsCovered);
+    logCb("Examples Total  : " + examplesTotal);
+    logCb("Examples Tested : " + examplesTested);
+    logCb("Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
+    logCb("----------------------");
+    logCb("");
+
     let code: string[] = [];
     let path: string = "";
     // if test config is not specified

@@ -157,16 +157,6 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
             //-------------------------------------------------------------------------------------------------------------------------
             let exampleProcessor = new ExampleProcessor_1.ExampleProcessor(swagger, testScenario);
             let examples = exampleProcessor.GetExamples();
-            Info("");
-            Info("TEST SCENARIO COVERAGE");
-            Info("----------------------");
-            Info("Methods Total   : " + exampleProcessor.MethodsTotal);
-            Info("Methods Covered : " + exampleProcessor.MethodsCovered);
-            Info("Examples Total  : " + exampleProcessor.ExamplesTotal);
-            Info("Examples Tested : " + exampleProcessor.ExamplesTested);
-            Info("Coverage %      : " + (exampleProcessor.MethodsCovered / exampleProcessor.MethodsTotal) * (exampleProcessor.ExamplesTested / exampleProcessor.ExamplesTotal) * 100);
-            Info("----------------------");
-            Info("");
             //-------------------------------------------------------------------------------------------------------------------------
             //
             // GENERATE RAW MAP

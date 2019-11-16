@@ -7,7 +7,17 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const index_1 = require("../index");
 const TemplatePythonIntegrationTest_1 = require("./TemplatePythonIntegrationTest");
 const TemplateSwaggerIntegrationTest_1 = require("./TemplateSwaggerIntegrationTest");
-function GenerateIntegrationTest(artifactType, testScenario, examples, namespace, cliName, packageName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested, fileCb) {
+function GenerateIntegrationTest(artifactType, testScenario, examples, namespace, cliName, packageName, mgmtClientName, methodsTotal, methodsCovered, examplesTotal, examplesTested, fileCb, logCb) {
+    logCb("");
+    logCb("TEST SCENARIO COVERAGE");
+    logCb("----------------------");
+    logCb("Methods Total   : " + methodsTotal);
+    logCb("Methods Covered : " + methodsCovered);
+    logCb("Examples Total  : " + examplesTotal);
+    logCb("Examples Tested : " + examplesTested);
+    logCb("Coverage %      : " + (methodsCovered / methodsTotal) * (examplesTested / examplesTotal) * 100);
+    logCb("----------------------");
+    logCb("");
     let code = [];
     let path = "";
     // if test config is not specified
