@@ -291,7 +291,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (artifactType == ArtifactType.ArtifactTypeSwaggerIntegrationTest || artifactType == ArtifactType.ArtifactTypePythonIntegrationTest) {
-                    Generator_1.GenerateIntegrationTest(artifactType, testScenario, examples, map.Namespace, cliName, packageName, map.MgmtClientName, exampleProcessor.MethodsTotal, exampleProcessor.MethodsCovered, exampleProcessor.ExamplesTotal, exampleProcessor.ExamplesTested, WriteFile);
+                    Generator_1.GenerateIntegrationTest(artifactType, testScenario, examples, map.Namespace, cliName, packageName, map.MgmtClientName, exampleProcessor.MethodsTotal, exampleProcessor.MethodsCovered, exampleProcessor.ExamplesTotal, exampleProcessor.ExamplesTested, WriteFile, Info);
                 }
                 //-------------------------------------------------------------------------------------------------------------------------
                 //

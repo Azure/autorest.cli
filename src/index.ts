@@ -379,7 +379,8 @@ extension.Add("cli", async autoRestApi => {
                                             exampleProcessor.MethodsCovered,
                                             exampleProcessor.ExamplesTotal,
                                             exampleProcessor.ExamplesTested,
-                                            WriteFile)
+                                            WriteFile,
+                                            Info)
                 }
 
                 //-------------------------------------------------------------------------------------------------------------------------
