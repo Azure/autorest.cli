@@ -137,14 +137,7 @@ export class MapGenerator
         module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
         module.Methods = [];
 
-        if (!isInfo)
-        {
-            module.Options = this.CreateTopLevelOptions([ rawMethods[0] ]);
-        }
-        else
-        {
-            module.Options = this.CreateTopLevelOptions(rawMethods);
-        }
+        module.Options = this.CreateTopLevelOptions(rawMethods);
 
         for (let mi in rawMethods)
         {
