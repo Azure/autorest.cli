@@ -211,6 +211,26 @@ export class CodeModel
         return this.GetMethod("CreateOrUpdate") != null;
     }
 
+    public HasCreate(): boolean
+    {
+        return this.GetMethod("Create") != null;
+    }
+
+    public HasGet(): boolean
+    {
+        return this.GetMethod("Get") != null;
+    }
+
+    public HasGetByName(): boolean
+    {
+        return this.GetMethod("GetByName") != null;
+    }
+
+    public HasDelete(): boolean
+    {
+        return this.GetMethod("Delete") != null;
+    }
+
     public GetMethodOptionNames(methodName: string): string[]
     {
         var m = this.Map.Modules[this._selectedModule];
