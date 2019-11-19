@@ -28,7 +28,7 @@ export class ModuleOption
         this.NameSwagger = name;
         this.NameAnsible = ToSnakeCase(name);
         this.NamePythonSdk = this.NameAnsible;
-        this.NameGoSdk = ToGoCase(this.NameAnsible);
+        this.NameGoSdk = ToGoCase(name);
         this.NameTerraform = this.NameGoSdk;
         this.Type = type;
         this.Required = required;
