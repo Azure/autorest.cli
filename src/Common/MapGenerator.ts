@@ -64,7 +64,7 @@ export class MapGenerator
             // if any of the create/update methods were detected -- add main module
             if (methods.length > 0)
             {
-                this.AddModule(methods, false);
+                this.AddModule(methods);
             }
         }
 
@@ -123,11 +123,11 @@ export class MapGenerator
         return name;
     }
 
-    private AddModule(rawMethods: any[], isInfo: boolean)
+    private AddModule(rawMethods: any[])
     {
         var module = new Module();
         module.CommandGroup = this.GetCliCommandFromUrl(rawMethods[0].url);
-        module.ModuleName = this.ModuleName + (isInfo ? "_info" : "");
+        module.ModuleName = this.ModuleName;
         module.ApiVersion =  this._swagger.apiVersion;
         module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
         module.Methods = [];
@@ -140,7 +140,7 @@ export class MapGenerator
         }
 
         // for response use GET response fields
-        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
+        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0]);
         this.MergeOptions(module.Options, module.ResponseFields, true);
 
         // do some preprocessing
@@ -170,21 +170,6 @@ export class MapGenerator
             {
                 this._log("Missing example: " + module.ModuleName + " " + operation['name']['raw'] + " " + m['name']['raw']);
             }
-        }
-
-        if (isInfo)
-        {
-            // update options required parameters
-            module.Options.forEach(o => {
-                o.Required = true;
-
-                module.Methods.forEach(m => {
-                    if (m.Options.indexOf(o.NameSwagger) < 0)
-                    {
-                        o.Required = false;
-                    }
-                });
-            });
         }
 
         this._map.Modules.push(module);
@@ -452,7 +437,7 @@ export class MapGenerator
     }
 
 
-    private GetResponseFieldsForMethod(rawMethod: any, alwaysInclude: boolean, isInfo: boolean):  ModuleOption[]
+    private GetResponseFieldsForMethod(rawMethod: any):  ModuleOption[]
     {
         if (rawMethod['returnType']['body'] == undefined)
         {
@@ -462,15 +447,7 @@ export class MapGenerator
         let ref: string = rawMethod['returnType']['body']['$ref'];
         let model = this.FindModelTypeByRef(ref);
 
-        if (isInfo)
-        {
-            return this.GetModelOptions(model, 0, null, "", "", true, true, true, isInfo);
-        }
-        else
-        {
-            return this.GetModelOptions(model, 0, null, "", "", true, false, true, isInfo);
-        }
-
+        return this.GetModelOptions(model, 0, null, "", "", true, false, true, true);
     }
 
     private CreateTopLevelOptions(methods: any[]): ModuleOption[]

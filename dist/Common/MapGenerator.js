@@ -52,7 +52,7 @@ class MapGenerator {
             methods = methods.concat(methodsInfo);
             // if any of the create/update methods were detected -- add main module
             if (methods.length > 0) {
-                this.AddModule(methods, false);
+                this.AddModule(methods);
             }
         }
         return this._map;
@@ -93,10 +93,10 @@ class MapGenerator {
         }
         return name;
     }
-    AddModule(rawMethods, isInfo) {
+    AddModule(rawMethods) {
         var module = new ModuleMap_1.Module();
         module.CommandGroup = this.GetCliCommandFromUrl(rawMethods[0].url);
-        module.ModuleName = this.ModuleName + (isInfo ? "_info" : "");
+        module.ModuleName = this.ModuleName;
         module.ApiVersion = this._swagger.apiVersion;
         module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
         module.Methods = [];
@@ -105,7 +105,7 @@ class MapGenerator {
             this.AddMethod(module.Methods, rawMethods[mi]);
         }
         // for response use GET response fields
-        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0], true, true);
+        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0]);
         this.MergeOptions(module.Options, module.ResponseFields, true);
         // do some preprocessing
         for (let rf in module.ResponseFields) {
@@ -125,17 +125,6 @@ class MapGenerator {
             if (module.Examples.length == 0) {
                 this._log("Missing example: " + module.ModuleName + " " + operation['name']['raw'] + " " + m['name']['raw']);
             }
-        }
-        if (isInfo) {
-            // update options required parameters
-            module.Options.forEach(o => {
-                o.Required = true;
-                module.Methods.forEach(m => {
-                    if (m.Options.indexOf(o.NameSwagger) < 0) {
-                        o.Required = false;
-                    }
-                });
-            });
         }
         this._map.Modules.push(module);
     }
@@ -317,19 +306,14 @@ class MapGenerator {
             }
         }
     }
-    GetResponseFieldsForMethod(rawMethod, alwaysInclude, isInfo) {
+    GetResponseFieldsForMethod(rawMethod) {
         if (rawMethod['returnType']['body'] == undefined) {
             this._log("NO RETURN TYPE: " + JSON.stringify(rawMethod['returnType']['body']));
             return [];
         }
         let ref = rawMethod['returnType']['body']['$ref'];
         let model = this.FindModelTypeByRef(ref);
-        if (isInfo) {
-            return this.GetModelOptions(model, 0, null, "", "", true, true, true, isInfo);
-        }
-        else {
-            return this.GetModelOptions(model, 0, null, "", "", true, false, true, isInfo);
-        }
+        return this.GetModelOptions(model, 0, null, "", "", true, false, true, true);
     }
     CreateTopLevelOptions(methods) {
         var options = {};

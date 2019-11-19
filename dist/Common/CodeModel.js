@@ -186,6 +186,7 @@ class CodeModel {
                     }
                 }
                 else {
+                    //TODO: add log
                 }
             }
             if (option != null) {
