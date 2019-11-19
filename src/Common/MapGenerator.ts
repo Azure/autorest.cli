@@ -227,25 +227,6 @@ export class MapGenerator
         return ToSnakeCase(this.GetModuleOperation().name.raw);
     }
 
-    public get ModuleOperationNameSingular(): string
-    {
-        let name: string = ToSnakeCase(this.GetModuleOperation().name.raw);
-        if (name.endsWith("ies"))
-        {
-            name = name.substring(0, name.length - 3) + "y";
-        }
-        else if (name.toLowerCase().endsWith("xes"))
-        {
-            name = name.substring(0, name.length - 2);
-        }
-        else if (name.endsWith('s'))
-        {
-            name = name.substring(0, name.length - 1);
-        }
-
-        return name;
-    }
-
     public get ModuleOperationNameUpper(): string
     {
         return this.GetModuleOperation().name.raw;

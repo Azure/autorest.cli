@@ -163,19 +163,6 @@ class MapGenerator {
     get ModuleOperationName() {
         return Helpers_1.ToSnakeCase(this.GetModuleOperation().name.raw);
     }
-    get ModuleOperationNameSingular() {
-        let name = Helpers_1.ToSnakeCase(this.GetModuleOperation().name.raw);
-        if (name.endsWith("ies")) {
-            name = name.substring(0, name.length - 3) + "y";
-        }
-        else if (name.toLowerCase().endsWith("xes")) {
-            name = name.substring(0, name.length - 2);
-        }
-        else if (name.endsWith('s')) {
-            name = name.substring(0, name.length - 1);
-        }
-        return name;
-    }
     get ModuleOperationNameUpper() {
         return this.GetModuleOperation().name.raw;
     }
