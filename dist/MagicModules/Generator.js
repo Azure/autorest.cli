@@ -22,9 +22,11 @@ function GenerateMagicModules(artifactType, map, fileCb, tag, logCb) {
                 if (tag != null) {
                     tagfolder = "/" + tag;
                 }
-                fileCb(path + mn + tagfolder + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model));
-                fileCb(path + mn + tagfolder + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model));
-                fileCb(path + mn + tagfolder + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model));
+                if ((model.HasCreateOrUpdate() || model.HasCreate()) && (model.HasGet() || model.HasGetByName()) && model.HasDelete()) {
+                    fileCb(path + mn + tagfolder + "/api.yaml", TemplateMagicModulesInput_1.GenerateMagicModulesInput(model, logCb));
+                    fileCb(path + mn + tagfolder + "/ansible.yaml", TemplateMagicModulesAnsibleYaml_1.GenerateMagicModulesAnsibleYaml(model));
+                    fileCb(path + mn + tagfolder + "/terraform.yaml", TemplateMagicModulesTerraformYaml_1.GenerateMagicModulesTerraformYaml(model));
+                }
             }
             // generate magic modules input example files
             let moduleExamples = model.ModuleExamples;

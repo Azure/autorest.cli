@@ -36,9 +36,12 @@ export function GenerateMagicModules(artifactType: ArtifactType,
                 if (tag != null) {
                     tagfolder = "/" + tag;
                 }
-                fileCb(path + mn + tagfolder + "/api.yaml", GenerateMagicModulesInput(model));
-                fileCb(path + mn + tagfolder + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model));
-                fileCb(path + mn + tagfolder + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model));
+                if ((model.HasCreateOrUpdate() || model.HasCreate()) && (model.HasGet() || model.HasGetByName()) && model.HasDelete())
+                {
+                    fileCb(path + mn + tagfolder + "/api.yaml", GenerateMagicModulesInput(model, logCb));
+                    fileCb(path + mn + tagfolder + "/ansible.yaml", GenerateMagicModulesAnsibleYaml(model));
+                    fileCb(path + mn + tagfolder + "/terraform.yaml", GenerateMagicModulesTerraformYaml(model));
+                }
             }
 
             // generate magic modules input example files
