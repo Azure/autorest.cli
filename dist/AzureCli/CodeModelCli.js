@@ -41,7 +41,6 @@ class CodeModelCli {
     NextModule() {
         if (this._selectedModule < this.Map.Modules.length - 1) {
             this._selectedModule++;
-            this._log("******************************* NEXT MODULE: " + this.Map.Modules[this._selectedModule].ModuleName);
             return true;
         }
         return false;
@@ -85,14 +84,11 @@ class CodeModelCli {
         if (this._cmdOverrides) {
             for (let regex in this._cmdOverrides) {
                 let regexp = new RegExp(regex);
-                // this._log("------------------ check: " + regex);
                 if (url.toLowerCase().match(regexp)) {
-                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
-        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
         while (partIdx < urlParts.length) {
             let part = urlParts[partIdx];
             if (command == "") {
@@ -132,25 +128,27 @@ class CodeModelCli {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
         let methods = new Set();
         for (let i = 0; i < restMethods.length; i++) {
+            let kind = restMethods[i].Kind;
             let name = restMethods[i].Name;
-            if (name == "CreateOrUpdate") {
+            if (kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_CREATE) {
                 methods.add("create");
                 methods.add("update");
             }
-            else if (name == "Create") {
-                methods.add("create");
-            }
-            else if (name == "Update") {
+            else if (kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_UPDATE) {
                 methods.add("update");
             }
-            else if (name == "Get") {
+            else if (kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_GET) {
                 methods.add("show");
             }
-            else if (name.startsWith("List")) {
+            else if (kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_LIST) {
                 methods.add("list");
             }
-            else if (name == "Delete") {
+            else if (kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_DELETE) {
                 methods.add("delete");
+            }
+            else {
+                // these are all custom methods
+                methods.add(Helpers_1.ToSnakeCase(name));
             }
         }
         return Array.from(methods.values());
@@ -169,7 +167,6 @@ class CodeModelCli {
         ctx.Url = url;
         // enumerate all swagger method names
         methods.forEach(mm => {
-            this._log("PROCESSING: " + mm);
             let options = this.GetMethodOptions(mm, false);
             let method = new CommandMethod();
             method.Name = Helpers_1.ToSnakeCase(mm);
@@ -340,85 +337,43 @@ class CodeModelCli {
         }
         return examples;
     }
-    GetSdkMethodNames(name) {
-        let names = [];
-        let method = null;
-        if (name == "create") {
-            method = this.GetMethod("CreateOrUpdate");
-            if (method == null) {
-                method = this.GetMethod('Create');
-            }
-            names.push(Helpers_1.ToSnakeCase(method.Name));
-        }
-        else if (name == "update") {
-            method = this.GetMethod("CreateOrUpdate");
-            if (method == null) {
-                method = this.GetMethod('Update');
-            }
-            names.push(Helpers_1.ToSnakeCase(method.Name));
-        }
-        else if (name == "show") {
-            method = this.GetMethod('Get');
-            names.push(Helpers_1.ToSnakeCase(method.Name));
-        }
-        else if (name == "list") {
-            var m = this.Map.Modules[this._selectedModule];
-            for (var mi in m.Methods) {
-                let method = m.Methods[mi];
-                if (method.Name.startsWith("List"))
-                    names.push(Helpers_1.ToSnakeCase(method.Name));
-            }
-        }
-        else if (name == "delete") {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
-            names.push(Helpers_1.ToSnakeCase(method.Name));
-        }
-        return names;
-    }
     GetSwaggerMethodNames(name) {
         let names = [];
         let method = null;
         if (name == "create") {
-            method = this.GetMethod("CreateOrUpdate");
-            if (method == null) {
-                method = this.GetMethod('Create');
-            }
+            method = this.GetMethodByKind(ModuleMap_1.ModuleMethodKind.MODULE_METHOD_CREATE);
             names.push(method.Name);
         }
         else if (name == "update") {
-            method = this.GetMethod("CreateOrUpdate");
+            // XXX - should be create or update
+            method = this.GetMethodByKind(ModuleMap_1.ModuleMethodKind.MODULE_METHOD_CREATE);
             if (method == null) {
-                method = this.GetMethod('Update');
+                method = this.GetMethodByKind(ModuleMap_1.ModuleMethodKind.MODULE_METHOD_UPDATE);
             }
             names.push(method.Name);
         }
         else if (name == "show") {
-            method = this.GetMethod('Get');
+            method = this.GetMethodByKind(ModuleMap_1.ModuleMethodKind.MODULE_METHOD_GET);
             names.push(method.Name);
         }
         else if (name == "list") {
             var m = this.Map.Modules[this._selectedModule];
             for (var mi in m.Methods) {
                 let method = m.Methods[mi];
-                if (method.Name.startsWith("List"))
+                if (method.Kind == ModuleMap_1.ModuleMethodKind.MODULE_METHOD_LIST)
                     names.push(method.Name);
             }
         }
         else if (name == "delete") {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
+            method = this.GetMethodByKind(ModuleMap_1.ModuleMethodKind.MODULE_METHOD_DELETE);
+            names.push(method.Name);
+        }
+        if (names.length == 0) {
+            // name is just pythonized swagger method name
+            method = this.GetMethod(Helpers_1.ToCamelCase(name));
             names.push(method.Name);
         }
         return names;
-    }
-    GetSdkMethods(name) {
-        let methodNames = this.GetSwaggerMethodNames(name);
-        let methods = [];
-        methodNames.forEach(element => {
-            methods.push(this.GetMethod(element));
-        });
-        return methods;
     }
     // this is for list methods
     GetAggregatedCommandParameters(method) {
@@ -561,7 +516,17 @@ class CodeModelCli {
         var m = this.Map.Modules[this._selectedModule];
         for (var mi in m.Methods) {
             let method = m.Methods[mi];
-            if (method.Name == methodName)
+            if (method.Name.toLowerCase() == methodName.toLowerCase()) {
+                return method;
+            }
+        }
+        return null;
+    }
+    GetMethodByKind(kind) {
+        var m = this.Map.Modules[this._selectedModule];
+        for (var mi in m.Methods) {
+            let method = m.Methods[mi];
+            if (method.Kind == kind)
                 return method;
         }
         return null;

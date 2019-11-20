@@ -15,6 +15,17 @@ var ModuleOptionKind;
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PLACEHOLDER"] = 2] = "MODULE_OPTION_PLACEHOLDER";
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_HEADER"] = 3] = "MODULE_OPTION_HEADER";
 })(ModuleOptionKind = exports.ModuleOptionKind || (exports.ModuleOptionKind = {}));
+var ModuleMethodKind;
+(function (ModuleMethodKind) {
+    ModuleMethodKind["MODULE_METHOD_CREATE"] = "MODULE_METHOD_CREATE";
+    ModuleMethodKind["MODULE_METHOD_UPDATE"] = "MODULE_METHOD_UPDATE";
+    ModuleMethodKind["MODULE_METHOD_DELETE"] = "MODULE_METHOD_DELETE";
+    ModuleMethodKind["MODULE_METHOD_GET"] = "MODULE_METHOD_GET";
+    ModuleMethodKind["MODULE_METHOD_LIST"] = "MODULE_METHOD_LIST";
+    ModuleMethodKind["MODULE_METHOD_ACTION"] = "MODULE_METHOD_ACTION";
+    ModuleMethodKind["MODULE_METHOD_GET_OTHER"] = "MODULE_METHOD_GET_OTHER";
+    ModuleMethodKind["MODULE_METHOD_OTHER"] = "MODULE_METHOD_OTHER";
+})(ModuleMethodKind = exports.ModuleMethodKind || (exports.ModuleMethodKind = {}));
 class ModuleOption {
     constructor(name, type, required) {
         // Original option name from swagger file

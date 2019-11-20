@@ -3,7 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, ModuleMethodKind, ModuleOptionKind, ModuleOptionPlaceholder } from "../Common/ModuleMap"
 import { Example } from "../Common/Example";
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
@@ -71,7 +71,6 @@ export class CodeModelCli
         {
             this._selectedModule++;
 
-            this._log("******************************* NEXT MODULE: " + this.Map.Modules[this._selectedModule].ModuleName);
             return true;
         }
 
@@ -134,17 +133,13 @@ export class CodeModelCli
             for (let regex in this._cmdOverrides)
             {
                 let regexp = new RegExp(regex);
-                // this._log("------------------ check: " + regex);
 
                 if (url.toLowerCase().match(regexp))
                 {
-                    // this._log("-------------- " + url.toLowerCase() + " ------- " +  this._cmdOverrides[regex]);
                     return this._cmdOverrides[regex];
                 }
             }
         }
-
-        // this._log("-------------- " + url.toLowerCase() + " ------- NO MATCH");
 
         while (partIdx < urlParts.length)
         {
@@ -205,32 +200,33 @@ export class CodeModelCli
 
         for (let i = 0; i < restMethods.length; i++)
         {
+            let kind: string = restMethods[i].Kind;
             let name: string = restMethods[i].Name;
-            
-            if (name == "CreateOrUpdate")
+            if (kind == ModuleMethodKind.MODULE_METHOD_CREATE)
             {
                 methods.add("create");
                 methods.add("update")
             }
-            else if (name == "Create")
-            {
-                methods.add("create");
-            }
-            else if (name == "Update")
+            else if (kind == ModuleMethodKind.MODULE_METHOD_UPDATE)
             {
                 methods.add("update");
             }
-            else if (name == "Get")
+            else if (kind == ModuleMethodKind.MODULE_METHOD_GET)
             {
                 methods.add("show")
             }
-            else if (name.startsWith("List"))
+            else if (kind == ModuleMethodKind.MODULE_METHOD_LIST)
             {
                 methods.add("list");
             }
-            else if (name == "Delete")
+            else if (kind == ModuleMethodKind.MODULE_METHOD_DELETE)
             {
                 methods.add("delete");
+            }
+            else
+            {
+                // these are all custom methods
+                methods.add(ToSnakeCase(name));
             }
         }
 
@@ -255,7 +251,6 @@ export class CodeModelCli
 
         // enumerate all swagger method names
         methods.forEach(mm => {
-            this._log("PROCESSING: " + mm);
             let options = this.GetMethodOptions(mm, false);
             let method: CommandMethod = new CommandMethod();
             method.Name = ToSnakeCase(mm);
@@ -487,82 +482,29 @@ export class CodeModelCli
         return examples
     }
   
-    public GetSdkMethodNames(name: string): string[]
-    {
-        let names: string[] = [];
-        let method: ModuleMethod  = null;
-        if (name == "create")
-        {
-            method = this.GetMethod("CreateOrUpdate");
-
-            if (method == null)
-            {
-                method = this.GetMethod('Create');
-            }
-            names.push(ToSnakeCase(method.Name));
-        }
-        else if (name == "update")
-        {
-            method = this.GetMethod("CreateOrUpdate");
-
-            if (method == null)
-            {
-                method = this.GetMethod('Update');
-            }
-            names.push(ToSnakeCase(method.Name));
-        }
-        else if (name == "show")
-        {
-            method = this.GetMethod('Get');
-            names.push(ToSnakeCase(method.Name));
-        }
-        else if (name == "list")
-        {
-            var m = this.Map.Modules[this._selectedModule];
-            for (var mi in m.Methods)
-            {
-                let method = m.Methods[mi];
-                if (method.Name.startsWith("List"))
-                    names.push(ToSnakeCase(method.Name));
-            }
-        }
-        else if (name == "delete")
-        {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
-            names.push(ToSnakeCase(method.Name));
-        }
-
-        return names;
-    }
-
     public GetSwaggerMethodNames(name: string): string[]
     {
         let names: string[] = [];
         let method: ModuleMethod  = null;
         if (name == "create")
         {
-            method = this.GetMethod("CreateOrUpdate");
-
-            if (method == null)
-            {
-                method = this.GetMethod('Create');
-            }
+            method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_CREATE);
             names.push(method.Name);
         }
         else if (name == "update")
         {
-            method = this.GetMethod("CreateOrUpdate");
+            // XXX - should be create or update
+            method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_CREATE);
 
             if (method == null)
             {
-                method = this.GetMethod('Update');
+                method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_UPDATE);
             }
             names.push(method.Name);
         }
         else if (name == "show")
         {
-            method = this.GetMethod('Get');
+            method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_GET);
             names.push(method.Name);
         }
         else if (name == "list")
@@ -571,30 +513,24 @@ export class CodeModelCli
             for (var mi in m.Methods)
             {
                 let method = m.Methods[mi];
-                if (method.Name.startsWith("List"))
+                if (method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
                     names.push(method.Name);
             }
         }
         else if (name == "delete")
         {
-            // XXX - fix this
-            method = this.GetMethod('Delete');
+            method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_DELETE);
+            names.push(method.Name);
+        }
+        
+        if (names.length == 0)
+        {
+            // name is just pythonized swagger method name
+            method = this.GetMethod(ToCamelCase(name));
             names.push(method.Name);
         }
 
         return names;
-    }
-
-    public GetSdkMethods(name: string): ModuleMethod[]
-    {
-        let methodNames: string[] = this.GetSwaggerMethodNames(name);
-        let methods: ModuleMethod[] = [];
-
-        methodNames.forEach(element => {
-            methods.push(this.GetMethod(element));
-        });
-
-        return methods;
     }
 
     // this is for list methods
@@ -791,7 +727,23 @@ export class CodeModelCli
         for (var mi in m.Methods)
         {
             let method = m.Methods[mi];
-            if (method.Name == methodName)
+            if (method.Name.toLowerCase() == methodName.toLowerCase())
+            {
+                return method;
+            }
+        }
+
+        return null;
+    }
+
+    public GetMethodByKind(kind: ModuleMethodKind): ModuleMethod
+    {
+        var m = this.Map.Modules[this._selectedModule];
+
+        for (var mi in m.Methods)
+        {
+            let method = m.Methods[mi];
+            if (method.Kind == kind)
                 return method;
         }
 
