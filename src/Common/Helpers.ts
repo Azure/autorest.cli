@@ -37,12 +37,153 @@ export function ToCamelCase(v: string)
 
 export function ToGoCase(v: string)
 {
-    v = (' ' + v.toLowerCase().replace(/[^A-Za-z0-9]/g, ' ')).split(' ')
-    .reduce((result, word) => result + ((word != "id" && word != "url") ?
-                                        Capitalize(word.toLowerCase()):
-                                        word.toUpperCase()));
-    return v;
+    if (v === '') return v;
+    return ensureNameCase(removeInvalidCharacters(pascalCase(v)));
 }
+
+function ensureNameCase(name: string): string {
+    const words = toWords(name);
+    let r = '';
+    for (let i = 0; i < words.length; i++) {
+        let word = words[i];
+        if (commonInitialisms.has(word)) {
+            word = word.toUpperCase();
+        } else if (i < words.length - 1) {
+            const concat = words[i] + words[i + 1].toLowerCase();
+            if (commonInitialisms.has(concat)) {
+                word = concat.toUpperCase();
+                i++;
+            }
+        }
+        r += word;
+    }
+    return r;
+}
+
+function toWords(value: string) : string[] {
+    return wordMapCache[value] === undefined
+        ? wordMapCache[value] = value.replace(/([A-Z][a-z]+)/g, ' $1 ').split(' ').filter(v => v !== '')
+        : wordMapCache[value];
+}
+
+const wordMapCache: {[key: string]: string[]} = {};
+
+function pascalCase(name: string): string {
+    if (name === '') return name;
+    return name.split(/[\._@\- $]+/)
+        .filter((v, i, a) => v !== "")
+        .map((s, i, a) => s[0].toUpperCase() + s.substring(1))
+        .reduce((r, w) => r + w);
+}
+
+function removeInvalidCharacters(name: string): string {
+    return getValidName(name, ['_', '-']);
+}
+
+function getValidName(name:string, allowedCharacters: string[]): string {
+    var correctName = ensureValidCharacters(name, allowedCharacters);
+    if (correctName === '' || basicLaticCharacters[correctName[0]]) {
+        correctName = ensureValidCharacters(
+            name.split('').map((s, i, a) => basicLaticCharacters[s] ? basicLaticCharacters[s] : s).reduce((r, w) => r + w), 
+            allowedCharacters);
+    }
+
+    if (correctName === '') {
+        throw `Property name {name} cannot be used as an Identifier, as it contains only invalid characters.`;
+    }
+    return correctName;
+}
+
+function ensureValidCharacters(name: string, allowedCharacters: string[]): string {
+    return name.replace('[]', 'Sequence').split('')
+        .filter((c, i, a) => c.match(/^[A-Za-z0-9]$/) || allowedCharacters.includes(c))
+        .join('');
+}
+
+const basicLaticCharacters = {
+    ' ': 'Space',
+    '!': 'ExclamationMark',
+    '"': "QuotationMark",
+    '#': "NumberSign",
+    '$': "DollarSign",
+    '%': "PercentSign",
+    '&': "Ampersand",
+    '\'': "Apostrophe",
+    '(': "LeftParenthesis",
+    ')': "RightParenthesis",
+    '*': "Asterisk",
+    '+': "PlusSign",
+    ',': "Comma",
+    '-': "HyphenMinus",
+    '.': "FullStop",
+    '/': "Slash",
+    '0': "Zero",
+    '1': "One",
+    '2': "Two",
+    '3': "Three",
+    '4': "Four",
+    '5': "Five",
+    '6': "Six",
+    '7': "Seven",
+    '8': "Eight",
+    '9': "Nine",
+    ':': "Colon",
+    ';': "Semicolon",
+    '<': "LessThanSign",
+    '=': "EqualSign",
+    '>': "GreaterThanSign",
+    '?': "QuestionMark",
+    '@': "AtSign",
+    '[': "LeftSquareBracket",
+    '\\': "Backslash",
+    ']': "RightSquareBracket",
+    '^': "CircumflexAccent",
+    '`': "GraveAccent",
+    '{': "LeftCurlyBracket",
+    '|': "VerticalBar",
+    '}': "RightCurlyBracket",
+    '~': "Tilde"
+};
+
+const commonInitialisms = new Set([
+    "Acl",
+    "Api",
+    "Ascii",
+    "Cpu",
+    "Css",
+    "Dns",
+    "Eof",
+    "Guid",
+    "Html",
+    "Http",
+    "Https",
+    "Id",
+    "Ip",
+    "Json",
+    "Lhs",
+    "Qps",
+    "Ram",
+    "Rhs",
+    "Rpc",
+    "Sla",
+    "Smtp",
+    "Sql",
+    "Ssh",
+    "Tcp",
+    "Tls",
+    "Ttl",
+    "Udp",
+    "Ui",
+    "Uid",
+    "Uuid",
+    "Uri",
+    "Url",
+    "Utf8",
+    "Vm",
+    "Xml",
+    "Xsrf",
+    "Xss",
+]);
 
 export function NormalizeResourceId(oldId: string): string
 {
