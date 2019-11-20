@@ -112,14 +112,21 @@ export class MapGenerator
 
         let baseUrl = this.FindCrudBaseUrl();
 
-        allMethods = allMethods.sort((m1,m2) => (this.CalculateMethodOrder(m1, baseUrl) > this.CalculateMethodOrder(m2, baseUrl) ? 1 : -1))
-
         for (let mi in allMethods)
         {
             let m: any = allMethods[mi];
     
             this.AddMethod(module.Methods, allMethods[mi], this.ClassifyMethod(m));
         }
+
+        module.Methods = module.Methods.sort((m1,m2) => {
+            if (m1.Kind < m2.Kind) return -1;
+            else if (m1.Kind > m2.Kind) return 1;
+            else if (m1.Kind != ModuleMethodKind.MODULE_METHOD_LIST) return 0;
+            else if (m1.Url.length > m2.Url.length) return -1;
+            else if (m1.Url.length < m2.Url.length) return 1;
+            else return 0;
+        })
 
         // for response use GET response fields
         module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : allMethods[0]);
@@ -157,24 +164,6 @@ export class MapGenerator
         this._map.Modules.push(module);
     }
 
-    private CalculateMethodOrder(m: any, baseUrl: string): number
-    {
-        switch (m.httpMethod)
-        {
-            case 'put': return 1000;
-            case 'patch': return 2000;
-            case 'delete': return 3000;
-            case 'get':
-                if (baseUrl.startsWith(m.url) ||
-                    baseUrl.replace("/resourceGroups/{resourceGroupName}", "").startsWith(m.url))
-                {
-                    return 4000 + m.url.length;
-                }
-                return 7000;
-            case 'post': return 5000;
-            default: return 6000;
-        }
-    }
 
     private FindCrudBaseUrl(): string
     {
@@ -208,7 +197,8 @@ export class MapGenerator
             case 'get': kind = ModuleMethodKind.MODULE_METHOD_GET; break;
             }
         }
-        else if (baseUrl.startsWith(m.url))
+        else if (baseUrl.startsWith(m.url) ||
+                 baseUrl.replace("/resourceGroups/{resourceGroupName}", "").startsWith(m.url))
         {
             if (m.httpMethod == 'get')
             {

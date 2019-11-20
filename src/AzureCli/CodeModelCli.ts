@@ -27,11 +27,12 @@ export class CommandParameter
 
 export class CommandExample
 {
-    // this should be "create", "update", "list", "show"
+    // this should be "create", "update", "list", "show", or custom name
     public Method: string;
     public Id: string;
     public Title: string;
     public Parameters: Map<string, string>;
+    public MethodName: string;
 }
 
 export class CommandMethod
@@ -200,7 +201,7 @@ export class CodeModelCli
 
         for (let i = 0; i < restMethods.length; i++)
         {
-            let kind: string = restMethods[i].Kind;
+            let kind: ModuleMethodKind = restMethods[i].Kind;
             let name: string = restMethods[i].Name;
             if (kind == ModuleMethodKind.MODULE_METHOD_CREATE)
             {
@@ -447,8 +448,7 @@ export class CodeModelCli
             }
             else
             {
-                // XXX - need warning
-                continue;
+                example.Method = moduleExample.MethodName;
             }
 
             this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);
@@ -456,7 +456,7 @@ export class CodeModelCli
             example.Parameters = new Map<string,string>();
             example.Id = moduleExample.Id;
             example.Title = moduleExample.Title;
-
+            example.MethodName = moduleExample.MethodName;
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
 
             let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);

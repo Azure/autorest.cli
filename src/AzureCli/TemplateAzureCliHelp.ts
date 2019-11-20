@@ -5,6 +5,7 @@
 
 import { CodeModelCli, CommandExample } from "./CodeModelCli"
 import { ModuleMethod } from "../Common/ModuleMap";
+import { ToSnakeCase } from "../Common/Helpers"
 
 export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     var output: string[] = [];
@@ -57,7 +58,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
             let examples: CommandExample[] = ctx.Examples;
 
             examples.forEach(example => {
-                if (example.Method == method)
+                if ((example.Method == method) || (ToSnakeCase(example.MethodName) == method))
                 {
                     if (!examplesStarted)
                     {

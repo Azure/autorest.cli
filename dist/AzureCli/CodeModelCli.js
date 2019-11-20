@@ -312,13 +312,13 @@ class CodeModelCli {
                 example.Method = "delete";
             }
             else {
-                // XXX - need warning
-                continue;
+                example.Method = moduleExample.MethodName;
             }
             this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);
             example.Parameters = new Map();
             example.Id = moduleExample.Id;
             example.Title = moduleExample.Title;
+            example.MethodName = moduleExample.MethodName;
             // this._log("EXAMPLE: " + JSON.stringify(moduleExample.Example));
             let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);
             ctx.Parameters.forEach(element => {

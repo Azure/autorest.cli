@@ -17,14 +17,14 @@ var ModuleOptionKind;
 })(ModuleOptionKind = exports.ModuleOptionKind || (exports.ModuleOptionKind = {}));
 var ModuleMethodKind;
 (function (ModuleMethodKind) {
-    ModuleMethodKind["MODULE_METHOD_CREATE"] = "MODULE_METHOD_CREATE";
-    ModuleMethodKind["MODULE_METHOD_UPDATE"] = "MODULE_METHOD_UPDATE";
-    ModuleMethodKind["MODULE_METHOD_DELETE"] = "MODULE_METHOD_DELETE";
-    ModuleMethodKind["MODULE_METHOD_GET"] = "MODULE_METHOD_GET";
-    ModuleMethodKind["MODULE_METHOD_LIST"] = "MODULE_METHOD_LIST";
-    ModuleMethodKind["MODULE_METHOD_ACTION"] = "MODULE_METHOD_ACTION";
-    ModuleMethodKind["MODULE_METHOD_GET_OTHER"] = "MODULE_METHOD_GET_OTHER";
-    ModuleMethodKind["MODULE_METHOD_OTHER"] = "MODULE_METHOD_OTHER";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_CREATE"] = 0] = "MODULE_METHOD_CREATE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_UPDATE"] = 1] = "MODULE_METHOD_UPDATE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_DELETE"] = 2] = "MODULE_METHOD_DELETE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_GET"] = 3] = "MODULE_METHOD_GET";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_LIST"] = 4] = "MODULE_METHOD_LIST";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_ACTION"] = 5] = "MODULE_METHOD_ACTION";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_GET_OTHER"] = 6] = "MODULE_METHOD_GET_OTHER";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_OTHER"] = 7] = "MODULE_METHOD_OTHER";
 })(ModuleMethodKind = exports.ModuleMethodKind || (exports.ModuleMethodKind = {}));
 class ModuleOption {
     constructor(name, type, required) {
