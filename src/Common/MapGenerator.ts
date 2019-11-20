@@ -3,11 +3,12 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader } from './ModuleMap';
+import { MapModuleGroup, ModuleOption, ModuleMethod, Module, EnumValue, ModuleOptionPlaceholder, ModuleOptionPath, ModuleOptionBody, ModuleOptionHeader, ModuleMethodKind, ModuleOptionKind } from './ModuleMap';
 import { Example } from "../Common/Example";
 import { ToSnakeCase, ToCamelCase, NormalizeResourceId, Capitalize, PluralToSingular } from "../Common/Helpers";
 import { LogCallback } from "../index";
 import { Adjustments } from "./Adjustments";
+import { METHODS } from 'http';
 
 export class MapGenerator
 {
@@ -15,12 +16,14 @@ export class MapGenerator
                         adjustments: Adjustments,
                         cliName: string,
                         examples: Example[],
-                        cb: LogCallback)
+                        cb: LogCallback,
+                        errorCb: LogCallback)
     {
         this._swagger = swagger;
         this._index = 0;
         this._examples = examples;
         this._log = cb
+        this._error = errorCb;
         this._adjustments = adjustments;
         this._cliName = cliName;
     }
@@ -37,35 +40,7 @@ export class MapGenerator
         for (var idx = 0; idx < this.Operations.length; idx++)
         {
             this._index = idx;
-
-            // just for logging purposes
-            this._log("--------------------------------------------------------- OPERATIONS: " + this.GetModuleOperation().name.raw);
-            for (var mi in this.GetModuleOperation().methods)
-            {
-                let m = this.GetModuleOperation().methods[mi];
-                this._log(" ... " + m.name.raw + "[" + m.serializedName + "]");
-                this._log(" ... " + (m.httpMethod as string).toUpperCase() + " " + m.url);
-            }
-        
-            let methods: any[] = [];
-            let methodsInfo = this.GetModuleInfoMethods();
-
-            if ((this.ModuleCreateOrUpdateMethod != null) || (this.ModuleCreateMethod != null))
-            {
-                if (this.ModuleCreateOrUpdateMethod != null) methods.push(this.ModuleCreateOrUpdateMethod);
-                if (this.ModuleCreateMethod != null) methods.push(this.ModuleCreateMethod);
-                if (this.ModuleUpdateMethod != null) methods.push(this.ModuleUpdateMethod);
-                if (this.ModuleDeleteMethod != null) methods.push(this.ModuleDeleteMethod);
-                //if (this.ModuleGetMethod != null) methods.push(this.ModuleGetMethod);
-            }
-
-            methods = methods.concat(methodsInfo);
-
-            // if any of the create/update methods were detected -- add main module
-            if (methods.length > 0)
-            {
-                this.AddModule(methods);
-            }
+            this.AddModule();
         }
 
         return this._map;
@@ -123,24 +98,37 @@ export class MapGenerator
         return name;
     }
 
-    private AddModule(rawMethods: any[])
+    private AddModule()
     {
         var module = new Module();
-        module.CommandGroup = this.GetCliCommandFromUrl(rawMethods[0].url);
+        var allMethods: any[] =  this.GetModuleOperation().methods;
+        module.CommandGroup = this.GetCliCommandFromUrl(allMethods[0].url);
         module.ModuleName = this.ModuleName;
         module.ApiVersion =  this._swagger.apiVersion;
-        module.Provider = this.GetProviderFromUrl(rawMethods[0].url);
+        module.Provider = this.GetProviderFromUrl(allMethods[0].url);
         module.Methods = [];
 
-        module.Options = this.CreateTopLevelOptions(rawMethods);
+        module.Options = this.CreateTopLevelOptions(allMethods);
 
-        for (let mi in rawMethods)
+        let baseUrl = this.FindCrudBaseUrl();
+
+        for (let mi in allMethods)
         {
-            this.AddMethod(module.Methods, rawMethods[mi]);
+            let m: any = allMethods[mi];  
+            this.AddMethod(module.Methods, m, this.ClassifyMethod(m));
         }
 
+        module.Methods = module.Methods.sort((m1,m2) => {
+            if (m1.Kind < m2.Kind) return -1;
+            else if (m1.Kind > m2.Kind) return 1;
+            else if (m1.Kind != ModuleMethodKind.MODULE_METHOD_LIST) return 0;
+            else if (m1.Url.length > m2.Url.length) return -1;
+            else if (m1.Url.length < m2.Url.length) return 1;
+            else return 0;
+        })
+
         // for response use GET response fields
-        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : rawMethods[0]);
+        module.ResponseFields = this.GetResponseFieldsForMethod(this.ModuleGetMethod ? this.ModuleGetMethod : allMethods[0]);
         this.MergeOptions(module.Options, module.ResponseFields, true);
 
         // do some preprocessing
@@ -160,9 +148,9 @@ export class MapGenerator
         // create all examples for included methods
         let operation = this.Operations[this._index];
         module.Examples = [];
-        for (var mi in rawMethods)
+        for (var mi in allMethods)
         {
-            let m = rawMethods[mi];
+            let m = allMethods[mi];
 
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'] , m['$id']));
 
@@ -175,7 +163,64 @@ export class MapGenerator
         this._map.Modules.push(module);
     }
 
-    private AddMethod(methods: ModuleMethod[], rawMethod: any)
+
+    private FindCrudBaseUrl(): string
+    {
+        var allMethods: any[] =  this.GetModuleOperation().methods;
+        let baseUrl: string = "";
+
+        // find base CRUD URL it will be used to classify get methods
+        for (let mi in allMethods)
+        {
+            let m = allMethods[mi];
+            if (m.httpMethod == 'put' || m.httpMethod == 'patch' || m.httpMethod == 'delete')
+            {
+                baseUrl = m.url;
+                break;
+            }
+        }
+
+        return baseUrl;
+    }
+
+    private ClassifyMethod(m: any): ModuleMethodKind
+    {
+        let baseUrl: string = this.FindCrudBaseUrl();
+        let kind: ModuleMethodKind = ModuleMethodKind.MODULE_METHOD_OTHER;
+        if (m.url == baseUrl)
+        {
+            switch (m.httpMethod)
+            {
+            case 'put':  kind = ModuleMethodKind.MODULE_METHOD_CREATE; break;
+            case 'patch': kind = ModuleMethodKind.MODULE_METHOD_UPDATE; break;
+            case 'delete': kind = ModuleMethodKind.MODULE_METHOD_DELETE; break;
+            case 'get': kind = ModuleMethodKind.MODULE_METHOD_GET; break;
+            }
+        }
+        else if (baseUrl.startsWith(m.url) ||
+                 baseUrl.replace("/resourceGroups/{resourceGroupName}", "").startsWith(m.url))
+        {
+            if (m.httpMethod == 'get')
+            {
+                kind = ModuleMethodKind.MODULE_METHOD_LIST;
+            }
+        }
+        else
+        {
+            if (m.httpMethod == 'post')
+            {
+                kind = ModuleMethodKind.MODULE_METHOD_ACTION;
+            }
+            else if (m.httpMethod == 'get')
+            {
+                kind = ModuleMethodKind.MODULE_METHOD_GET_OTHER;
+            }
+        }
+
+        return kind;
+    }
+
+    private AddMethod(methods: ModuleMethod[], rawMethod: any, kind: ModuleMethodKind)
     {
         var method = new ModuleMethod();
         method.Name = rawMethod.name.raw;
@@ -185,6 +230,8 @@ export class MapGenerator
         method.HttpMethod = rawMethod.httpMethod.toLowerCase();
         method.IsAsync = (rawMethod['extensions'] != undefined && rawMethod['extensions']['x-ms-long-running-operation'] != undefined) ? rawMethod['extensions']['x-ms-long-running-operation'] : false;
         method.Documentation = rawMethod['description'];
+        method.Kind = kind;
+
         methods.push(method);
     }
 
@@ -752,22 +799,6 @@ export class MapGenerator
         return this.ModuleFindMethod("Delete");
     }
 
-    private GetModuleInfoMethods(): any[]
-    {
-        var l: any[] = [];
-
-        for (var mi in this.GetModuleOperation().methods)
-        {
-            let m = this.GetModuleOperation().methods[mi];
-            if (m.httpMethod == "get")
-            {
-                l.push(m);
-            }
-        }
-
-        return l.sort((m1,m2) => (m1.url.length > m2.url.length) ? 1 : -1);
-    }
-
     private FindModelTypeByRef(id: string): any
     {
         let model = this._modelCache[id];
@@ -1014,5 +1045,6 @@ export class MapGenerator
     private _index: number;
     private _examples: Example[];
     private _log: LogCallback;
+    private _error: LogCallback;
     private _modelCache: any = {};
 }

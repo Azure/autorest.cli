@@ -26,9 +26,6 @@ function GenerateAzureCliCustom(model) {
     //output.push("from knack.util import CLIError");
     //output.push("import json");
     do {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
         let methods = model.GetCliCommandMethods();
         for (let mi in methods) {
             // create, delete, list, show, update

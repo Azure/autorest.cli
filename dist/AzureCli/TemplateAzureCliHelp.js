@@ -4,6 +4,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 Object.defineProperty(exports, "__esModule", { value: true });
+const Helpers_1 = require("../Common/Helpers");
 function GenerateAzureCliHelp(model) {
     var output = [];
     output.push("# coding=utf-8");
@@ -42,7 +43,7 @@ function GenerateAzureCliHelp(model) {
             let examplesStarted = false;
             let examples = ctx.Examples;
             examples.forEach(example => {
-                if (example.Method == method) {
+                if ((example.Method == method) || (Helpers_1.ToSnakeCase(example.MethodName) == method)) {
                     if (!examplesStarted) {
                         output.push("    examples:");
                         examplesStarted = true;

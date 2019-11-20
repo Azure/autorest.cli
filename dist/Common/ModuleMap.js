@@ -15,6 +15,17 @@ var ModuleOptionKind;
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_PLACEHOLDER"] = 2] = "MODULE_OPTION_PLACEHOLDER";
     ModuleOptionKind[ModuleOptionKind["MODULE_OPTION_HEADER"] = 3] = "MODULE_OPTION_HEADER";
 })(ModuleOptionKind = exports.ModuleOptionKind || (exports.ModuleOptionKind = {}));
+var ModuleMethodKind;
+(function (ModuleMethodKind) {
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_CREATE"] = 0] = "MODULE_METHOD_CREATE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_UPDATE"] = 1] = "MODULE_METHOD_UPDATE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_DELETE"] = 2] = "MODULE_METHOD_DELETE";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_GET"] = 3] = "MODULE_METHOD_GET";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_LIST"] = 4] = "MODULE_METHOD_LIST";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_ACTION"] = 5] = "MODULE_METHOD_ACTION";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_GET_OTHER"] = 6] = "MODULE_METHOD_GET_OTHER";
+    ModuleMethodKind[ModuleMethodKind["MODULE_METHOD_OTHER"] = 7] = "MODULE_METHOD_OTHER";
+})(ModuleMethodKind = exports.ModuleMethodKind || (exports.ModuleMethodKind = {}));
 class ModuleOption {
     constructor(name, type, required) {
         // Original option name from swagger file
