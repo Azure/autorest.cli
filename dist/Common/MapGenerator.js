@@ -82,7 +82,7 @@ class MapGenerator {
         let baseUrl = this.FindCrudBaseUrl();
         for (let mi in allMethods) {
             let m = allMethods[mi];
-            this.AddMethod(module.Methods, allMethods[mi], this.ClassifyMethod(m));
+            this.AddMethod(module.Methods, m, this.ClassifyMethod(m));
         }
         module.Methods = module.Methods.sort((m1, m2) => {
             if (m1.Kind < m2.Kind)
@@ -127,8 +127,9 @@ class MapGenerator {
         let baseUrl = "";
         // find base CRUD URL it will be used to classify get methods
         for (let mi in allMethods) {
-            if (allMethods[mi].httpMethod == 'put' || allMethods[mi].httpMethod == 'patch' || allMethods[mi].httpMethod == 'delete') {
-                baseUrl = allMethods[mi].url;
+            let m = allMethods[mi];
+            if (m.httpMethod == 'put' || m.httpMethod == 'patch' || m.httpMethod == 'delete') {
+                baseUrl = m.url;
                 break;
             }
         }

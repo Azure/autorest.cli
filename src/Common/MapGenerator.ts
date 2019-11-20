@@ -114,9 +114,8 @@ export class MapGenerator
 
         for (let mi in allMethods)
         {
-            let m: any = allMethods[mi];
-    
-            this.AddMethod(module.Methods, allMethods[mi], this.ClassifyMethod(m));
+            let m: any = allMethods[mi];  
+            this.AddMethod(module.Methods, m, this.ClassifyMethod(m));
         }
 
         module.Methods = module.Methods.sort((m1,m2) => {
@@ -173,9 +172,10 @@ export class MapGenerator
         // find base CRUD URL it will be used to classify get methods
         for (let mi in allMethods)
         {
-            if (allMethods[mi].httpMethod == 'put' || allMethods[mi].httpMethod == 'patch' || allMethods[mi].httpMethod == 'delete')
+            let m = allMethods[mi];
+            if (m.httpMethod == 'put' || m.httpMethod == 'patch' || m.httpMethod == 'delete')
             {
-                baseUrl = allMethods[mi].url;
+                baseUrl = m.url;
                 break;
             }
         }
