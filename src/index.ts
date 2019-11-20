@@ -205,7 +205,7 @@ extension.Add("cli", async autoRestApi => {
                 {
                     Info(msg);
                 }
-            });
+            }, Error);
           
             let map: MapModuleGroup = null;
             try

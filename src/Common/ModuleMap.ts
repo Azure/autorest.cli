@@ -21,6 +21,18 @@ export enum ModuleOptionKind
     MODULE_OPTION_HEADER
 }
 
+export enum ModuleMethodKind
+{
+    MODULE_METHOD_CREATE,
+    MODULE_METHOD_UPDATE,
+    MODULE_METHOD_DELETE,
+    MODULE_METHOD_GET,
+    MODULE_METHOD_LIST,
+    MODULE_METHOD_ACTION,
+    MODULE_METHOD_GET_OTHER,
+    MODULE_METHOD_OTHER
+}
+
 export class ModuleOption
 {
     public constructor(name: string, type: string, required: boolean)
@@ -139,6 +151,7 @@ export class ModuleMethod
     public HttpMethod: string = "";
     public IsAsync: boolean = false;
     public Documentation: string = "";
+    public Kind: ModuleMethodKind;
 }
 
 export class Module

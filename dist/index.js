@@ -163,7 +163,7 @@ extension.Add("cli", (autoRestApi) => __awaiter(this, void 0, void 0, function* 
                 if (log == "map") {
                     Info(msg);
                 }
-            });
+            }, Error);
             let map = null;
             try {
                 map = mapGenerator.CreateMap();

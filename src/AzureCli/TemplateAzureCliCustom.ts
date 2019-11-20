@@ -36,10 +36,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
-
         let methods: string[] = model.GetCliCommandMethods();
         for (let mi in methods)
         {
