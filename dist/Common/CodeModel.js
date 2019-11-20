@@ -140,6 +140,18 @@ class CodeModel {
     HasCreateOrUpdate() {
         return this.GetMethod("CreateOrUpdate") != null;
     }
+    HasCreate() {
+        return this.GetMethod("Create") != null;
+    }
+    HasGet() {
+        return this.GetMethod("Get") != null;
+    }
+    HasGetByName() {
+        return this.GetMethod("GetByName") != null;
+    }
+    HasDelete() {
+        return this.GetMethod("Delete") != null;
+    }
     GetMethodOptionNames(methodName) {
         var m = this.Map.Modules[this._selectedModule];
         for (var mi in m.Methods) {

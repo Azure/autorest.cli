@@ -6,7 +6,7 @@
 Object.defineProperty(exports, "__esModule", { value: true });
 const Helpers_1 = require("../Common/Helpers");
 let g_model = null;
-function GenerateMagicModulesInput(model) {
+function GenerateMagicModulesInput(model, log) {
     g_model = model;
     var output = [];
     output.push("--- !ruby/object:Api::Product");
@@ -29,6 +29,7 @@ function GenerateMagicModulesInput(model) {
     output.push("      go_client: " + model.GoMgmtClient);
     output.push("      python_client_namespace: " + model.PythonNamespace);
     output.push("      python_client: " + model.PythonMgmtClient + "." + model.ModuleOperationName);
+    log("Generate module:" + model.ObjectName);
     for (let method_index in model.ModuleMethods) {
         let method = model.ModuleMethods[method_index];
         let operationName = "";
@@ -52,6 +53,7 @@ function GenerateMagicModulesInput(model) {
             default:
                 continue;
         }
+        log("append method:" + method.Name);
         appendMethod(output, model, method, operationName);
     }
     // append all list methods at the end
@@ -283,7 +285,7 @@ function appendUxOptions(output, options, prefix, appendReadOnly = false) {
             if (option.IsList)
                 subprefix += "  ";
             output.push(subprefix + "  properties:");
-            appendUxOptions(output, option.SubOptions, subprefix + "    ");
+            appendUxOptions(output, option.SubOptions, subprefix + "    ", appendReadOnly);
         }
     }
 }

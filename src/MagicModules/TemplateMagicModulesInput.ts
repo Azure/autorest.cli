@@ -5,11 +5,12 @@
 
 import { CodeModel } from "../Common/CodeModel"
 import { ModuleOption, ModuleMethod } from "../Common/ModuleMap";
-import { ToSnakeCase, ToCamelCase, Uncapitalize } from "../Common/Helpers"
+import { ToSnakeCase, ToCamelCase, Uncapitalize, Capitalize } from "../Common/Helpers"
+import { LogCallback } from "..";
 
 let g_model: CodeModel = null;
 
-export function GenerateMagicModulesInput(model: CodeModel) : string[] {
+export function GenerateMagicModulesInput(model: CodeModel, log: LogCallback) : string[] {
     g_model = model;
     var output: string[] = [];
     output.push("--- !ruby/object:Api::Product");
@@ -33,11 +34,12 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
     output.push("      python_client_namespace: " + model.PythonNamespace);
     output.push("      python_client: " + model.PythonMgmtClient + "." + model.ModuleOperationName);
 
+    log("Generate module:" + model.ObjectName);
     for (let method_index in model.ModuleMethods)
     {
         let method = model.ModuleMethods[method_index];
         let operationName = "";
-
+        
         switch (method.Name)
         {
             case "Get":
@@ -59,6 +61,7 @@ export function GenerateMagicModulesInput(model: CodeModel) : string[] {
             default:
                 continue;
         }
+        log("append method:" + method.Name);
         appendMethod(output, model, method, operationName);
     }
 
@@ -366,7 +369,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
             let subprefix = prefix;
             if (option.IsList) subprefix += "  ";
             output.push(subprefix + "  properties:");
-            appendUxOptions(output, option.SubOptions, subprefix + "    ");
+            appendUxOptions(output, option.SubOptions, subprefix + "    ", appendReadOnly);
         }
     }
 }
