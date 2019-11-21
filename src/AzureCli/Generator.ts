@@ -32,13 +32,16 @@ export function GenerateAzureCli(artifactType: ArtifactType,
     logCb: LogCallback)
 {
     let path = "";
+    let pathTop = "";
 
     if (artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
     {
+        pathTop = "src/" + cliName + "/";
         path = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
     }
     else
     {
+        pathTop = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
         path = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
     }
 
@@ -62,14 +65,14 @@ export function GenerateAzureCli(artifactType: ArtifactType,
     modelCli.Reset();
     fileCb(path + "_validators.py", GenerateAzureCliValidators(modelCli));
 
-    fileCb(path + "HISTORY.rst", GenerateAzureCliHistory(modelCli));
-    fileCb(path + "README.rst", GenerateAzureCliReadme(modelCli));
-    fileCb(path + "setup.cfg", GenerateAzureCliSetupCfg(modelCli));
-    fileCb(path + "setup.py", GenerateAzureCliSetupPy(modelCli));  
+    fileCb(pathTop + "HISTORY.rst", GenerateAzureCliHistory(modelCli));
+    fileCb(pathTop + "README.rst", GenerateAzureCliReadme(modelCli));
+    fileCb(pathTop + "setup.cfg", GenerateAzureCliSetupCfg(modelCli));
+    fileCb(pathTop + "setup.py", GenerateAzureCliSetupPy(modelCli));  
 
     if (generateReport)
     {
         modelCli.Reset();
-        fileCb(path + "report.md", GenerateAzureCliReport(modelCli));
+        fileCb(pathTop + "report.md", GenerateAzureCliReport(modelCli));
     }
 }

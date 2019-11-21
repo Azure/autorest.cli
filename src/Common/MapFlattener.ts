@@ -90,7 +90,7 @@ export class MapFlattener
             let option = options[i];
             let suboptions = option.SubOptions;
 
-            if (suboptions != null)
+            if (suboptions != null && !option.IsList)
             {
                 let optionPath = (((path != "/") ? path : "") + "/" + option.NameSwagger).toLowerCase();
                 //if (this._debug) this._log("flattener: checking path - " + optionPath);
