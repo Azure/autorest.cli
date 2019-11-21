@@ -52,7 +52,6 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
             // as we can't use all of them
             output.push("    short-summary: " + ctx.Methods[0].Documentation);
 
-
             let examplesStarted: boolean = false;
 
             let examples: CommandExample[] = ctx.Examples;

@@ -420,35 +420,31 @@ export class CodeModelCli
         {
             let moduleExample: Example = moduleExamples[exampleIdx];
             let example = new CommandExample();
+            let method = this.GetMethod(moduleExample.MethodName);
 
-            if (moduleExample.Method == "put")
+            if (method.Kind == ModuleMethodKind.MODULE_METHOD_CREATE)
             {
                 example.Method = "create";
             }
-            else if (moduleExample.Method == "patch")
+            else if (method.Kind == ModuleMethodKind.MODULE_METHOD_UPDATE)
             {
                 example.Method = "update";
             }
-            else if (moduleExample.Method == "get")
+            else if (method.Kind == ModuleMethodKind.MODULE_METHOD_GET)
             {
-                // maybe this should be done in a different way, but if url ends with
-                // variable it means we are looking for specific resource instance
-                if (moduleExample.Url.endsWith("}"))
-                {
-                    example.Method = "show";
-                }
-                else
-                {
-                    example.Method = "list";
-                }
+                example.Method = "show";
             }
-            else if (moduleExample.Method == "delete")
+            else if (method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
+            {
+                example.Method = "list";
+            }
+            else if (method.Kind == ModuleMethodKind.MODULE_METHOD_DELETE)
             {
                 example.Method = "delete";
             }
             else
             {
-                example.Method = moduleExample.MethodName;
+                example.Method = ToSnakeCase(moduleExample.MethodName);
             }
 
             this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);
@@ -842,15 +838,6 @@ export class CodeModelCli
         }
 
         return moduleOptions;
-    }
-
-    public get GetInfo(): string[]
-    {
-        let info: string[] = [];
-
-        // XXXX
-        //info.concat(JsonConvert.SerializeObject(Map, Formatting.Indented).Split(new[] { "\r", "\n", "\r\n" }, StringSplitOptions.None));
-        return info;
     }
 
     public get ModuleMethods(): ModuleMethod[]
