@@ -54,4 +54,33 @@ Run:
 
     autorest --cli --use=/_/autorest.cli --python-integration-test --output-folder=/_/azure-sdk-for-python /_/azure-rest-api-specs/specification/web/resource-manager/readme.md
 
+## Running Test
+
+First of all set the variable, to enable live tests:
+
+    export AZURE_TEST_RUN_LIVE=true
+
+Live test requires credentials, in order to do that create **mgmt_settings_real.py** file:
+
+    cd /_/azure-sdk-for-python
+    cp tools/azure-sdk-tools/devtools_testutils/mgmt_settings_fake.py tools/azure-sdk-tools/devtools_testutils/mgmt_settings_real.py
+    vi tools/azure-sdk-tools/devtools_testutils/mgmt_settings_real.py
+
+and make sure your subscription ID is correct:
+
+    SUBSCRIPTION_ID="xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx"
+
+and **get_credentials** looks as follows:
+
+    def get_credentials(**kwargs):
+        from azure.common.credentials import ServicePrincipalCredentials
+        return ServicePrincipalCredentials(
+            client_id =  'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx',
+            secret = 'XxxxXxxxXXXxxxXXXXxxxxXXxxxXxxx',
+            tenant = 'xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxxx'
+        )
+
+now you can run live integration test:
+
+    pytest -s sdk/attestation/azure-mgmt-attestation
 
