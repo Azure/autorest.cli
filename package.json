@@ -21,7 +21,7 @@
     "@types/node": "^7.0.18"
   },
   "dependencies": {
-    "@azure-tools/autorest-extension-base": "^3.0.184",
+    "autorest-extension-base": "https://github.com/olydis/autorest-extension-base",
     "net": "^1.0.2",
     "node": "^12.11.0",
     "node-yaml": "^3.2.0"

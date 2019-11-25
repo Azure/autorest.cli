@@ -1,4 +1,4 @@
-import { AutoRestExtension, Channel } from '@azure-tools/autorest-extension-base';
+import { AutoRestExtension } from "autorest-extension-base";
 import * as yaml from "node-yaml";
 
 // Generic
@@ -50,7 +50,7 @@ extension.Add("cli", async autoRestApi => {
         if (log)
         {
             autoRestApi.Message({
-                Channel: Channel.Information,
+                Channel: "information",
                 Text: s
             });
         }
@@ -59,7 +59,7 @@ extension.Add("cli", async autoRestApi => {
     function Error(s: string)
     {
         autoRestApi.Message({
-            Channel: Channel.Error,
+            Channel: "error",
             Text: s
         });
     }
