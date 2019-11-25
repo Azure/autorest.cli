@@ -963,10 +963,10 @@ export class MapGenerator
         {
             let mo: ModuleOption = null;
             let oo: ModuleOption = other[oi];
-
+            
             for (let mi: number = 0; mi < main.length; mi++)
             {
-                if (oo.NameSwagger == main[mi].NameSwagger)
+                if (oo.NameSwagger == main[mi].NameSwagger && oo.Kind == main[mi].Kind)
                 {
                     mo = main[mi];
                     break;
