@@ -13,6 +13,7 @@ import { GenerateMagicModulesAnsibleExample } from "./TemplateMagicModulesAnsibl
 import { GenerateMagicModulesAnsibleYaml } from "./TemplateMagicModulesAnsibleYaml";
 import { GenerateMagicModulesTerraformYaml } from "./TemplateMagicModulesTerraformYaml";
 import { GenerateMagicModulesInput } from "./TemplateMagicModulesInput";
+import { GenerateMagicModulesTerraformExample} from "./TemplateMagicModulesTerraformExample";
 
 export function GenerateMagicModules(artifactType: ArtifactType,
                                      map: MapModuleGroup,
@@ -63,6 +64,14 @@ export function GenerateMagicModules(artifactType: ArtifactType,
                     fileCb(path + mn + "/examples/ansible/" + filename + ".yml", GenerateMagicModulesAnsibleExample(example, model.Module));
                 }
                 }
+            }
+
+            // terraform exmaples
+            if (!model.ModuleName.endsWith('_info'))
+            {
+              let mn = model.ModuleName.split("azure_rm_")[1];
+              fileCb(path + mn + "/examples/terraform/basic.yaml", GenerateMagicModulesTerraformExample(model, true));
+              fileCb(path + mn + "/examples/terraform/complete.yaml", GenerateMagicModulesTerraformExample(model, false));
             }
         }
         catch (e)

@@ -79,7 +79,7 @@ export class MapFlattenerObsolete
             {
                 options[oi].NameAnsible = "resource_group";
                 options[oi].NameGoSdk = "ResourceGroup";
-                options[oi].NameTerraform = "resourceGroup";
+                options[oi].NameTerraform = "resourceGroupName";
             }
 
             if (options[oi].Type != "dict")
