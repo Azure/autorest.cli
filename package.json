@@ -18,7 +18,7 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^7.10.9"
+    "@types/node": "^7.0.18"
   },
   "dependencies": {
     "@azure-tools/autorest-extension-base": "^3.0.184",
