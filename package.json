@@ -18,10 +18,10 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "^7.0.18"
+    "@types/node": "^7.10.9"
   },
   "dependencies": {
-    "autorest-extension-base": "https://github.com/olydis/autorest-extension-base",
+    "@azure-tools/autorest-extension-base": "^3.0.184",
     "net": "^1.0.2",
     "node": "^12.11.0",
     "node-yaml": "^3.2.0"
