@@ -504,81 +504,84 @@ export class MapGenerator
 
         for (var m of methods)
         {
-            for (var p of m.parameters)
+            if (m.parameters)
             {
-                if (p.name.raw != "subscriptionId" &&
-                    p.name.raw != "api-version" &&
-                    (p.name.raw.indexOf('$') == -1) &&
-                    (p.name.raw.indexOf('-') == -1))
+                for (var p of m.parameters)
                 {
-                    let type: string = this.Type_MappedType(p.modelType);
-
-                    if (type != "dict")
+                    if (p.name.raw != "subscriptionId" &&
+                        p.name.raw != "api-version" &&
+                        (p.name.raw.indexOf('$') == -1) &&
+                        (p.name.raw.indexOf('-') == -1))
                     {
-                        if (p.location == "header") {
-                            options[p.name.raw] = new ModuleOptionHeader(p.name.raw, type, p.isRequired);
-                        }
-                        else
-                        {
-                            options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
-                        }
-                        
-                        options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
+                        let type: string = this.Type_MappedType(p.modelType);
 
-                        options[p.name.raw].IsList = this.Type_IsList(p.modelType);
-                        options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
-                        options[p.name.raw].format = this.Type_number_format(p.modelType);
-        
-                        if (p.location == "path")
+                        if (type != "dict")
                         {
-                            let splittedId: string[] = m.url.split("/{" + p.name.raw + '}');
-
-                            if (splittedId.length == 2)
-                            {
-                                options[p.name.raw].IdPortion = splittedId[0].split('/').pop();
+                            if (p.location == "header") {
+                                options[p.name.raw] = new ModuleOptionHeader(p.name.raw, type, p.isRequired);
                             }
                             else
                             {
-                                this._log("ERROR: COULDN'T EXTRACT ID PORTION");
-                                splittedId.forEach(element => {
-                                    this._log(" ... part: " + element);
-                                });
-                                this._log(" ... {" + p.name.raw + "}");
-                                this._log(" ... " + m.url);
+                                options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
                             }
+                            
+                            options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
+
+                            options[p.name.raw].IsList = this.Type_IsList(p.modelType);
+                            options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+                            options[p.name.raw].format = this.Type_number_format(p.modelType);
+            
+                            if (p.location == "path")
+                            {
+                                let splittedId: string[] = m.url.split("/{" + p.name.raw + '}');
+
+                                if (splittedId.length == 2)
+                                {
+                                    options[p.name.raw].IdPortion = splittedId[0].split('/').pop();
+                                }
+                                else
+                                {
+                                    this._log("ERROR: COULDN'T EXTRACT ID PORTION");
+                                    splittedId.forEach(element => {
+                                        this._log(" ... part: " + element);
+                                    });
+                                    this._log(" ... {" + p.name.raw + "}");
+                                    this._log(" ... " + m.url);
+                                }
+                            }
+                            
+                            if (p.IsRequired) options[p.Name].RequiredCount++;
                         }
-                        
-                        if (p.IsRequired) options[p.Name].RequiredCount++;
-                    }
-                    else    
-                    {
-                        var bodyPlaceholder = new ModuleOptionPlaceholder(p.name.raw, type, p.IsRequired);
-                                              
-                        let ref = p.modelType['$ref'];
-                            let submodel = this.FindModelTypeByRef(ref);
-                        
-                        bodyPlaceholder.IsList = this.Type_IsList(p.modelType);
-                        bodyPlaceholder.TypeNameGo = this.TrimPackageName(this.Type_Name(submodel), this.Namespace.split('.').pop());
-                        bodyPlaceholder.TypeNameGo = Capitalize(bodyPlaceholder.TypeNameGo);
+                        else    
+                        {
+                            var bodyPlaceholder = new ModuleOptionPlaceholder(p.name.raw, type, p.IsRequired);
+                                                
+                            let ref = p.modelType['$ref'];
+                                let submodel = this.FindModelTypeByRef(ref);
+                            
+                            bodyPlaceholder.IsList = this.Type_IsList(p.modelType);
+                            bodyPlaceholder.TypeNameGo = this.TrimPackageName(this.Type_Name(submodel), this.Namespace.split('.').pop());
+                            bodyPlaceholder.TypeNameGo = Capitalize(bodyPlaceholder.TypeNameGo);
 
-                        let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
-                        bodyPlaceholder.Documentation = this.ProcessDocumentation(p.documentation.raw);
-                        bodyPlaceholder.format = this.Type_number_format(p.modelType);
+                            let suboptions = this.GetModelOptions(submodel, 0, null, "", "", false, true, false, false);
+                            bodyPlaceholder.Documentation = this.ProcessDocumentation(p.documentation.raw);
+                            bodyPlaceholder.format = this.Type_number_format(p.modelType);
 
- 
-                        this._log("---------- " + p.documentation.raw)
+    
+                            this._log("---------- " + p.documentation.raw)
 
-                        options[p.name.raw] = bodyPlaceholder;
-                        this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
+                            options[p.name.raw] = bodyPlaceholder;
+                            this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
 
-                        // these suboptions should all go to the body
-                        suboptions.forEach(element => {
-                            this._log("---------- ADDING FLATTENED " + element.NameAnsible);
-                            // XXX - just fixing it
-                            element.DispositionSdk = "/"; //suboption.NameAlt;
-                            element.DispositionRest = "/";
-                            options[element.NameAnsible] = element;
-                        });
+                            // these suboptions should all go to the body
+                            suboptions.forEach(element => {
+                                this._log("---------- ADDING FLATTENED " + element.NameAnsible);
+                                // XXX - just fixing it
+                                element.DispositionSdk = "/"; //suboption.NameAlt;
+                                element.DispositionRest = "/";
+                                options[element.NameAnsible] = element;
+                            });
+                        }
                     }
                 }
             }
@@ -774,20 +777,23 @@ export class MapGenerator
 
         if (method != null)
         {
-            for (var p of method.parameters)
+            if (method.parameters)
             {
-                // path parameters are already added in first loop
-                if (p.location == "path")
-                    continue;
+                for (var p of method.parameters)
+                {
+                    // path parameters are already added in first loop
+                    if (p.location == "path")
+                        continue;
 
-                if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && p.name.raw != "If-Match" && (p.isRequired == true || !required))
-                {
-                    this._log(" ... parameter: " + p.name.raw + " - INCLUDED");
-                    options.push(p.name.raw);
-                }
-                else
-                {
-                    this._log(" ... parameter: " + p.name.raw + " - EXCLUDED");
+                    if (p.name.raw != "subscriptionId" && p.name.raw != "api-version" && !p.name.raw.startsWith('$') && p.name.raw != "If-Match" && (p.isRequired == true || !required))
+                    {
+                        this._log(" ... parameter: " + p.name.raw + " - INCLUDED");
+                        options.push(p.name.raw);
+                    }
+                    else
+                    {
+                        this._log(" ... parameter: " + p.name.raw + " - EXCLUDED");
+                    }
                 }
             }
         }
