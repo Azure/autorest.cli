@@ -1,13 +1,5 @@
 # Appendix A3: Docker Tools Cheatsheet
 
-## Getting the Tools
-
-Run following command:
-
-    docker pull mcr.microsoft.com/azure-cli/tools:0.2.1
-    
-> NOTE: Currently it's necessary to include specific version when pulling. It needs to be figured out how to set **latest** tag to match current version.
-
 ## Working with Local Repositories
 
 Run following command:
