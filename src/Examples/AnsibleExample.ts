@@ -15,9 +15,8 @@ export function GenerateExampleAnsibleRrm(model: Example, module: Module) : stri
     
     if (references.length > 0)
     {
-        for (var i in references)
+        for (var ref of references)
         {
-            var ref: string = model.References[i];
             if (!ref.startsWith("# ref##"))
             {
                 output.push("- import_playbook: " + ref + ".yml");
@@ -48,9 +47,9 @@ export function GenerateExampleAnsibleRrm(model: Example, module: Module) : stri
 
     // add vars
     var vars = model.Variables;
-    for (var i in vars)
+    for (var v of vars)
     {
-        output.push("    " + vars[i].name + ": " + vars[i].value);
+        output.push("    " + v.name + ": " + v.value);
     }
 
     output.push("  tasks:");
@@ -63,9 +62,9 @@ export function GenerateExampleAnsibleRrm(model: Example, module: Module) : stri
 
     var lines: string[] = yaml.dump([processedExample]).split(/\r?\n/);
 
-    for (let l in lines)
+    for (let l of lines)
     {
-        output.push("    " + lines[l]);
+        output.push("    " + l);
     }
 
 //////////////////////////////////

@@ -74,7 +74,7 @@ extension.Add("cli", async autoRestApi => {
         // read files offered to this plugin
         const inputFileUris = await autoRestApi.ListInputs();
 
-        const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
+        const inputFiles: string[] = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
         let artifactType: ArtifactType;
         let writeIntermediate: boolean = false;
@@ -178,14 +178,14 @@ extension.Add("cli", async autoRestApi => {
             writeIntermediate = true;
         }
 
-        for (var iif in inputFiles)
+        for (let iff of inputFiles)
         {
             //-------------------------------------------------------------------------------------------------------------------------
             //
             // PARSE INPUT MODEL
             //
             //-------------------------------------------------------------------------------------------------------------------------
-            let swagger = JSON.parse(inputFiles[iif]);
+            let swagger = JSON.parse(iff);
 
             //-------------------------------------------------------------------------------------------------------------------------
             //

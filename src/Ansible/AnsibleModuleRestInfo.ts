@@ -79,9 +79,8 @@ export function GenerateModuleRestInfo(model: CodeModel, collection: boolean) : 
     output.push("");
     //@foreach (var m in Model.ModuleMethods)
     //{
-    for (let mi in model.ModuleMethods)
+    for (let m of model.ModuleMethods)
     {
-        let m = model.ModuleMethods[mi];
         output.push("    def " + m.Name.toLowerCase() + "(self):");
         output.push("        response = None");
         output.push("        results = {}");

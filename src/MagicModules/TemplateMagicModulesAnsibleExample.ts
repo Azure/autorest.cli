@@ -22,9 +22,9 @@ export function GenerateMagicModulesAnsibleExample(model: Example, module: Modul
 
     var body_yaml: string[] = yaml.dump(body).split(/\r?\n/);
 
-    for (let i in body_yaml)
+    for (let line of body_yaml)
     {
-        output.push("  " + body_yaml[i]);
+        output.push("  " + line);
     }
 
     return output;

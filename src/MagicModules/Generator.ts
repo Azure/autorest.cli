@@ -46,9 +46,8 @@ export function GenerateMagicModules(artifactType: ArtifactType,
 
             // generate magic modules input example files
             let moduleExamples: Example[] = model.ModuleExamples;
-            for (let exampleIdx in moduleExamples)
+            for (let example of moduleExamples)
             {
-                var example = moduleExamples[exampleIdx];
                 var filename = example.Filename;
                 //if (artifactType == ArtifactType.ArtifactTypeMagicModulesInput)
                 //{

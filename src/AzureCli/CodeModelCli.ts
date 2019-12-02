@@ -416,9 +416,8 @@ export class CodeModelCli
         let examples: CommandExample[] = [];
         let processedExamples: any[] = []
     
-        for (let exampleIdx in moduleExamples)
+        for (let moduleExample of moduleExamples)
         {
-            let moduleExample: Example = moduleExamples[exampleIdx];
             let example = new CommandExample();
             let method = this.GetMethod(moduleExample.MethodName);
 
@@ -506,9 +505,8 @@ export class CodeModelCli
         else if (name == "list")
         {
             var m = this.Map.Modules[this._selectedModule];
-            for (var mi in m.Methods)
+            for (let method of m.Methods)
             {
-                let method = m.Methods[mi];
                 if (method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
                     names.push(method.Name);
             }
@@ -685,11 +683,11 @@ export class CodeModelCli
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
-        for (var oi in m.Options)
+        for (let option of m.Options)
         {
-            if (!(m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
+            if (!(option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
             {
-                options.push(m.Options[oi]);
+                options.push(option);
             }
         }
 
@@ -700,11 +698,11 @@ export class CodeModelCli
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
-        for (var oi in m.Options)
+        for (let option of m.Options)
         {
-            if (m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
+            if (option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
             {
-                return m.Options[oi];
+                return option;
             }
         }
 
@@ -720,9 +718,8 @@ export class CodeModelCli
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name.toLowerCase() == methodName.toLowerCase())
             {
                 return method;
@@ -736,9 +733,8 @@ export class CodeModelCli
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Kind == kind)
                 return method;
         }
@@ -750,9 +746,8 @@ export class CodeModelCli
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method.Options;
         }
@@ -764,9 +759,8 @@ export class CodeModelCli
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method.Documentation;
         }
@@ -778,9 +772,8 @@ export class CodeModelCli
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method.RequiredOptions;
         }
@@ -793,47 +786,45 @@ export class CodeModelCli
         let methodOptionNames: string[] = (required? this.GetMethodRequiredOptionNames(methodName) : this.GetMethodOptionNames(methodName));
         let moduleOptions: ModuleOption[] = [];
 
-        for (let optionNameIdx in methodOptionNames)
+        for (let optionName of methodOptionNames)
         {
-            let optionName = methodOptionNames[optionNameIdx];
-
             this._log("OPTION NAME: " + optionName);
 
             // this._log("   ---- CHECKING: " + optionName);
-            let option = null;
-            for (let optionIdx in this.ModuleOptions)
+            let foundOption = null;
+            for (let option of this.ModuleOptions)
             {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName && this.ModuleOptions[optionIdx].Kind != ModuleOptionKind.MODULE_OPTION_BODY)
+                if (option.NameSwagger == optionName && option.Kind != ModuleOptionKind.MODULE_OPTION_BODY)
                 {
-                    option = this.ModuleOptions[optionIdx];
+                    foundOption = option;
                     break;
                 }
             }
 
-            if (option == null)
+            if (foundOption == null)
             {
                 //if (optionName == "parameters" || optionName == "peeringService" || optionName == "peeringServicePrefix" || optionName == "peering" || optionName == "managedNetwork")
                 //{
                     let hiddenParamatersOption = this.ModuleParametersOption;
-                    option = new ModuleOptionPlaceholder(optionName, "dict", false);
+                    foundOption = new ModuleOptionPlaceholder(optionName, "dict", false);
 
-                    option.SubOptions = [];
-                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+                    foundOption.SubOptions = [];
+                    foundOption.TypeNameGo = hiddenParamatersOption.TypeNameGo;
 
                     // XXX - and because this stupid option has no suboptions
-                    for (let optionIdx in this.ModuleOptions)
+                    for (let option of this.ModuleOptions)
                     {
-                        if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/"))
+                        if (option.DispositionSdk.startsWith("/"))
                         {
-                            option.SubOptions.push(this.ModuleOptions[optionIdx]);
+                            foundOption.SubOptions.push(option);
                         }
                     }
                 //}
             }
 
-            if(option != null)
+            if(foundOption != null)
             {
-                moduleOptions.push(option);
+                moduleOptions.push(foundOption);
             }
         }
 

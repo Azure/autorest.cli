@@ -47,10 +47,9 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             }
             output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
             output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
-            for (let mi in methods)
+            for (let method of methods)
             {
                 // create, delete, list, show, update
-                let method = methods[mi];
 
                 if (method == 'delete')
                 {
