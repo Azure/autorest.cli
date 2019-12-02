@@ -258,7 +258,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
 
         output.push(prefix + "- " + dataType);
-        output.push(prefix + "  name: '" + ToCamelCase(option.NameAnsible) + "'");
+        output.push(prefix + "  name: '" + option.NameGoSdk + "'");
         output.push(prefix + "  description: '" + EscapeDocumentation(option.Documentation) + "'");
 
         if (!appendReadOnly)
