@@ -81,9 +81,8 @@ export function GenerateModuleSdkInfo(model: CodeModel) : string[] {
 
     output.push("");
 
-    for (let mi in model.ModuleMethods)
+    for (let m of model.ModuleMethods)
     {
-        let m = model.ModuleMethods[mi];
         output.push("    def " + m.Name.toLowerCase() + "(self):");
         output.push("        response = None");
         output.push("");

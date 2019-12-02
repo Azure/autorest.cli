@@ -86,9 +86,8 @@ export function GeneratePythonIntegrationTest(model: Example[],
         if (hasBody)
         {
             var json: string[] = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
-            for (var lidx in json)
+            for (let line of json)
             {
-                var line: string = json[lidx]; 
                 if (line.startsWith("{"))
                 {
                     output.push("        BODY = " + line);

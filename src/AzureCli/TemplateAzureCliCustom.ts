@@ -37,11 +37,9 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     do
     {
         let methods: string[] = model.GetCliCommandMethods();
-        for (let mi in methods)
+        for (let methodName of methods)
         {
             // create, delete, list, show, update
-            let methodName = methods[mi];
-
 
             // all methods are custom now for simplicity
             //if (methodName == "show")
@@ -76,9 +74,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             let params: CommandParameter[] = ctx.Parameters;
  
             // first parameters that are required
-            for (let idx in params)
+            for (let element of params)
             {
-                let element = params[idx];
                 let required = element.Required;
 
                 if (element.Type == "placeholder")
@@ -96,9 +93,8 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             }
 
             // following by required parameters
-            for (let idx in params)
+            for (let element of params)
             {
-                let element = params[idx];
                 let required = element.Required;
 
                 if (element.Type == "placeholder")

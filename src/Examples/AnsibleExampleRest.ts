@@ -12,9 +12,8 @@ export function GenerateExampleAnsibleRest(model: Example) : string[] {
     
     if (references.length > 0)
     {
-        for (var i in references)
+        for (var ref of references)
         {
-            var ref: string = model.References[i];
             if (!ref.startsWith("# ref##"))
             {
                 output.push({ 'import_playbook': ref + '.yml'});
@@ -28,9 +27,9 @@ export function GenerateExampleAnsibleRest(model: Example) : string[] {
     // create vars
     var var_array = model.Variables;
     var vars = {};
-    for (var i in var_array)
+    for (var v of var_array)
     {
-        vars[var_array[i].name] = var_array[i].value;
+        vars[v.name] = v.value;
     }
 
     var tasks = [];

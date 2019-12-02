@@ -88,10 +88,8 @@ export class ExamplePostProcessor
 
         // find method & options
         let foundMethod: ModuleMethod = null;
-        for (let x in this._module.Methods)
+        for (let method of this._module.Methods)
         {
-            let method = this._module.Methods[x];
-
             //compare.push("COMPARE " + method.Url + "/" + method.HttpMethod + " --- " + example.Url + "/" + example.Method);
             if ((method.Url == example.Url) && (method.HttpMethod == example.Method))
             {
@@ -121,10 +119,8 @@ export class ExamplePostProcessor
     {
         let response: any = {};
 
-        for (let optionIdx in options)
+        for (let option of options)
         {
-            let option = options[optionIdx];
-
             // XXX - this should not be passed
             if (option.NameSwagger == "parameters")
                 continue;
@@ -197,17 +193,17 @@ export class ExamplePostProcessor
             // 
             if (option.DispositionRest == "*" && (level == 0))
             {
-                for (let vi in variables)
+                for (let variable of variables)
                 {
-                    if (variables[vi].swaggerName == option.NameSwagger)
+                    if (variable.swaggerName == option.NameSwagger)
                     {
                         if (useVars)
                         {
-                            value = '{{' + variables[vi].name + '}}';
+                            value = '{{' + variable.name + '}}';
                         }
                         else
                         {
-                            value = variables[vi].value;
+                            value = variable.value;
                         }
                     }
                 }

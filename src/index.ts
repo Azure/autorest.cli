@@ -1,4 +1,4 @@
-import { AutoRestExtension } from "autorest-extension-base";
+import { AutoRestExtension, Channel } from '@azure-tools/autorest-extension-base';
 import * as yaml from "node-yaml";
 
 // Generic
@@ -50,7 +50,7 @@ extension.Add("cli", async autoRestApi => {
         if (log)
         {
             autoRestApi.Message({
-                Channel: "information",
+                Channel: Channel.Information,
                 Text: s
             });
         }
@@ -59,7 +59,7 @@ extension.Add("cli", async autoRestApi => {
     function Error(s: string)
     {
         autoRestApi.Message({
-            Channel: "error",
+            Channel: Channel.Error,
             Text: s
         });
     }
@@ -74,7 +74,7 @@ extension.Add("cli", async autoRestApi => {
         // read files offered to this plugin
         const inputFileUris = await autoRestApi.ListInputs();
 
-        const inputFiles = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
+        const inputFiles: string[] = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
 
         let artifactType: ArtifactType;
         let writeIntermediate: boolean = false;
@@ -178,14 +178,14 @@ extension.Add("cli", async autoRestApi => {
             writeIntermediate = true;
         }
 
-        for (var iif in inputFiles)
+        for (let iff of inputFiles)
         {
             //-------------------------------------------------------------------------------------------------------------------------
             //
             // PARSE INPUT MODEL
             //
             //-------------------------------------------------------------------------------------------------------------------------
-            let swagger = JSON.parse(inputFiles[iif]);
+            let swagger = JSON.parse(iff);
 
             //-------------------------------------------------------------------------------------------------------------------------
             //

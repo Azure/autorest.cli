@@ -37,16 +37,15 @@ export function GenerateExamplePythonSdk(namespace: string, mgmtClient: string, 
     output.push("SUBSCRIPTION_ID = os.environ['AZURE_SUBSCRIPTION_ID']");
 
     var vars =  example.Variables;
-    for (var v in vars)
+    for (var v of vars)
     {
-        output.push(vars[v].name.toUpperCase() + " = \"" + ToCamelCase(vars[v].value.split("_NAME")[0].toLowerCase()) + "\"");   
+        output.push(v.name.toUpperCase() + " = \"" + ToCamelCase(v.value.split("_NAME")[0].toLowerCase()) + "\"");   
     }
     output.push("");
 
     var json: string[] = GetExampleBodyJson(_PythonizeBody(example.GetExampleBody()));
-    for (var lidx in json)
+    for (var line of json)
     {
-        var line: string = json[lidx]; 
         if (line.startsWith("{"))
         {
             output.push("BODY = " + line);

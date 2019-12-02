@@ -112,9 +112,8 @@ export class MapGenerator
 
         let baseUrl = this.FindCrudBaseUrl();
 
-        for (let mi in allMethods)
+        for (let m of allMethods)
         {
-            let m: any = allMethods[mi];  
             this.AddMethod(module.Methods, m, this.ClassifyMethod(m));
         }
 
@@ -132,11 +131,11 @@ export class MapGenerator
         this.MergeOptions(module.Options, module.ResponseFields, true);
 
         // do some preprocessing
-        for (let rf in module.ResponseFields)
+        for (let rf of module.ResponseFields)
         {
-            if (module.ResponseFields[rf].NameSwagger == "id")
+            if (rf.NameSwagger == "id")
             {
-                module.ResponseFields[rf].IncludeInResponse = true;
+                rf.IncludeInResponse = true;
             }
         }
 
@@ -148,10 +147,8 @@ export class MapGenerator
         // create all examples for included methods
         let operation = this.Operations[this._index];
         module.Examples = [];
-        for (var mi in allMethods)
+        for (var m of allMethods)
         {
-            let m = allMethods[mi];
-
             module.Examples = module.Examples.concat(this.CreateExamples(operation['$id'] , m['$id']));
 
             if (module.Examples.length == 0)
@@ -505,12 +502,10 @@ export class MapGenerator
     {
         var options: any = {};
 
-        for (var mi in methods)
+        for (var m of methods)
         {
-            let m = methods[mi];
-            for (var pi in m.parameters)
+            for (var p of m.parameters)
             {
-                let p = m.parameters[pi];
                 if (p.name.raw != "subscriptionId" &&
                     p.name.raw != "api-version" &&
                     (p.name.raw.indexOf('$') == -1) &&
@@ -619,131 +614,133 @@ export class MapGenerator
                 options = this.GetModelOptions(baseModel, level, sampleValue, pathSwagger, pathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
             }
 
-            for (var attri in model.properties)
+            if (model.properties)
             {
-                let attr: any = model.properties[attri];
-                let flatten: boolean = false;
-
-                if (attr['x-ms-client-flatten'])
+                for (var attr of model.properties)
                 {
-                    flatten = true;
-                }
+                    let flatten: boolean = false;
 
-                this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw)
-    
-                if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
-                    this._log("INCLUDED IN RESPONSE");
-                if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
-                    this._log("EXCLUDED FROM RESPONSE");
-        
-                let includeOverride: boolean = false;
-                let excludeOverride: boolean = false;
-
-                // check if path wa explicitly excluded
-                if (isResponse)
-                {
-                    if (isInfo)
+                    if (attr['x-ms-client-flatten'])
                     {
-                        if (this._adjustments.IsPathExcludedFromInfoResponse(pathSwagger + "/" + attr.name.raw))
+                        flatten = true;
+                    }
+
+                    this._log("MAP PROCESSING ATTR: " + pathSwagger + "/" + attr.name.raw)
+        
+                    if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("INCLUDED IN RESPONSE");
+                    if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
+                        this._log("EXCLUDED FROM RESPONSE");
+            
+                    let includeOverride: boolean = false;
+                    let excludeOverride: boolean = false;
+
+                    // check if path wa explicitly excluded
+                    if (isResponse)
+                    {
+                        if (isInfo)
                         {
-                            excludeOverride = true;
-                            this._log("INFO EXCLUDE OVERRIDE")
+                            if (this._adjustments.IsPathExcludedFromInfoResponse(pathSwagger + "/" + attr.name.raw))
+                            {
+                                excludeOverride = true;
+                                this._log("INFO EXCLUDE OVERRIDE")
+                            }
+                            if (this._adjustments.IsPathIncludedInInfoResponse(pathSwagger + "/" + attr.name.raw))
+                            {
+                                includeOverride = true;
+                                this._log("INFO INCLUDE OVERRIDE")
+                            }
                         }
-                        if (this._adjustments.IsPathIncludedInInfoResponse(pathSwagger + "/" + attr.name.raw))
+                        else
                         {
-                            includeOverride = true;
-                            this._log("INFO INCLUDE OVERRIDE")
+                            if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
+                            {
+                                excludeOverride = true;
+                                this._log("RESPONSE EXCLUDE OVERRIDE")
+                            }
+                            if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
+                            {
+                                includeOverride = true;
+                                this._log("RESPONSE INCLUDE OVERRIDE")
+                            }
                         }
                     }
                     else
                     {
-                        if (this._adjustments.IsPathExcludedFromResponse(pathSwagger + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathExcludedFromRequest(pathSwagger + "/" + attr.name.raw))
                         {
                             excludeOverride = true;
-                            this._log("RESPONSE EXCLUDE OVERRIDE")
+                            this._log("REQUEST EXCLUDE OVERRIDE")
                         }
-                        if (this._adjustments.IsPathIncludedInResponse(pathSwagger + "/" + attr.name.raw))
+                        if (this._adjustments.IsPathIncludedInRequest(pathSwagger + "/" + attr.name.raw))
                         {
                             includeOverride = true;
-                            this._log("RESPONSE INCLUDE OVERRIDE")
+                            this._log("REQUEST INCLUDE OVERRIDE")
                         }
                     }
-                }
-                else
-                {
-                    if (this._adjustments.IsPathExcludedFromRequest(pathSwagger + "/" + attr.name.raw))
+
+                    if (excludeOverride)
+                        continue;
+
+                    if (!includeOverride)
                     {
-                        excludeOverride = true;
-                        this._log("REQUEST EXCLUDE OVERRIDE")
-                    }
-                    if (this._adjustments.IsPathIncludedInRequest(pathSwagger + "/" + attr.name.raw))
-                    {
-                        includeOverride = true;
-                        this._log("REQUEST INCLUDE OVERRIDE")
-                    }
-                }
-
-                if (excludeOverride)
-                    continue;
-
-                if (!includeOverride)
-                {
-                    if (!includeReadOnly)
-                    {
-                        if (attr['isReadOnly'])
-                            continue;
-
-                        if (attr.name.raw == "provisioningState")
-                            continue;
-                    }
-
-                    if (!includeReadWrite)
-                    {
-                        if (!attr['isReadOnly'])
-                            continue;
-                    }
-                }
-
-                if (attr.name != "tags" &&
-                    !attr.name.raw.startsWith('$') &&
-                    (attr.name.raw.indexOf('-') == -1))
-                {
-                    let attrName: string = attr.name.raw;
-
-                    let subSampleValue: any = null;
-                    let sampleValueObject: any = sampleValue;
-
-                    if (sampleValueObject != null)
-                    {
-                        for (var ppi in sampleValueObject.Properties())
+                        if (!includeReadOnly)
                         {
-                            let pp = sampleValueObject.Properties()[ppi];
-                            //look += " " + pp.Name; 
-                            if (pp.Name == attrName)
+                            if (attr['isReadOnly'])
+                                continue;
+
+                            if (attr.name.raw == "provisioningState")
+                                continue;
+                        }
+
+                        if (!includeReadWrite)
+                        {
+                            if (!attr['isReadOnly'])
+                                continue;
+                        }
+                    }
+
+                    if (attr.name != "tags" &&
+                        !attr.name.raw.startsWith('$') &&
+                        (attr.name.raw.indexOf('-') == -1))
+                    {
+                        let attrName: string = attr.name.raw;
+
+                        let subSampleValue: any = null;
+                        let sampleValueObject: any = sampleValue;
+
+                        if (sampleValueObject != null)
+                        {
+                            for (var ppi in sampleValueObject.Properties())
                             {
-                                subSampleValue = pp.Value;
+                                let pp = sampleValueObject.Properties()[ppi];
+                                //look += " " + pp.Name; 
+                                if (pp.Name == attrName)
+                                {
+                                    subSampleValue = pp.Value;
+                                }
                             }
                         }
+
+                        let type = this.Type_Get(attr.modelType);
+                        let typeName: string = this.Type_MappedType(attr.modelType);
+
+                        var option = new ModuleOptionBody(attrName, typeName, attr.isRequired);
+                        option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
+                        option.NoLog = (attr.name.raw.indexOf("password") >= 0);
+                        option.IsList =  this.Type_IsList(attr.modelType);
+                        option.TypeNameGo = this.TrimPackageName(this.Type_Name(attr.modelType), this.Namespace.split('.').pop());
+                        option.TypeNameGo = Capitalize(option.TypeNameGo);
+                        option.format = this.Type_number_format(attr.modelType);
+                        option.EnumValues = this.Type_EnumValues(attr.modelType);
+
+                        option.PathSwagger = pathSwagger + "/" + attrName
+                        option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
+                        option.PathGo = option.PathSwagger;
+
+                        option.SubOptions = this.GetModelOptions(type, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
+                        options.push(option);
                     }
-
-                    let type = this.Type_Get(attr.modelType);
-                    let typeName: string = this.Type_MappedType(attr.modelType);
-
-                    var option = new ModuleOptionBody(attrName, typeName, attr.isRequired);
-                    option.Documentation = this.ProcessDocumentation(attr.documentation.raw);
-                    option.NoLog = (attr.name.raw.indexOf("password") >= 0);
-                    option.IsList =  this.Type_IsList(attr.modelType);
-                    option.TypeNameGo = this.TrimPackageName(this.Type_Name(attr.modelType), this.Namespace.split('.').pop());
-                    option.TypeNameGo = Capitalize(option.TypeNameGo);
-                    option.format = this.Type_number_format(attr.modelType);
-                    option.EnumValues = this.Type_EnumValues(attr.modelType);
-
-                    option.PathSwagger = pathSwagger + "/" + attrName
-                    option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
-                    option.PathGo = option.PathSwagger;
-
-                    option.SubOptions = this.GetModelOptions(type, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
-                    options.push(option);
                 }
             }
         }
@@ -777,10 +774,8 @@ export class MapGenerator
 
         if (method != null)
         {
-            for (var pi in method.parameters)
+            for (var p of method.parameters)
             {
-                let p = method.parameters[pi];
-
                 // path parameters are already added in first loop
                 if (p.location == "path")
                     continue;
@@ -802,9 +797,8 @@ export class MapGenerator
 
     private ModuleFindMethod(name: string): any
     {
-        for (var mi in this.GetModuleOperation().methods)
+        for (let m of this.GetModuleOperation().methods)
         {
-            let m = this.GetModuleOperation().methods[mi];
             if (m.name.raw == name)
                 return m;
         }
@@ -829,18 +823,16 @@ export class MapGenerator
         if (model != undefined)
             return model;
 
-        for (var mi in this._swagger.modelTypes)
+        for (var m of this._swagger.modelTypes)
         {
-            let m = this._swagger.modelTypes[mi]; 
             m = this.ScanModelTypeByRef(id, m);
 
             if (m != undefined)
                 return m;
         }
 
-        for (var mi in this._swagger.enumTypes)
+        for (var m of this._swagger.enumTypes)
         {
-            let m = this._swagger.enumTypes[mi]; 
             m = this.ScanModelTypeByRef(id, m);
 
             if (m != undefined)
@@ -877,9 +869,8 @@ export class MapGenerator
         // does it have properties?
         if (m['properties'] != undefined)
         {
-            for (let propertyIdx in m['properties'])
+            for (let property of m['properties'])
             {
-                let property = m['properties'][propertyIdx];
                 let found = this.ScanModelTypeByRef(id, property['modelType']);
                 if (found != undefined)
                     return found;
