@@ -21,7 +21,14 @@ RUN apt-get install -y nodejs
 RUN apt-get install -y npm
 
 RUN apt-get install -y libunwind-dev
+
+# Autorest
 RUN npm install -g autorest
+
+# AutoRest v3 beta
+RUN npm install -g @autorest/autorest
+
+RUN npm install -g typescript
 RUN npm install -g n
 RUN n 10.15.0
 RUN apt-get -y install vim
@@ -42,7 +49,7 @@ RUN pip3 install wheel
 RUN pip3 install azdev
 RUN pip3 install six==1.12
 
-RUN cd autorest.cli; npm install
+RUN cd autorest.cli; npm install; tsc -p tsconfig.json
 
 # this is just to trigger setup of basic packages
 RUN cd /_/azure-sdk-for-python; python ./scripts/dev_setup.py -p azure-mgmt-healthcareapis
