@@ -4,6 +4,10 @@
 
 Model v1 i supported in both **autorest** and **autorest-beta**
 
+>NOTE 1: There are some differences in **autorest-beta** that may cause **modeller1** to crash in case of some RPs.
+
+>NOTE 2: **autorest-beta** strips examples from input file.
+
 ## Model v3
 
 >NOTE: Model v3 requires **autorest-beta**
@@ -76,6 +80,9 @@ And finally add following section in your pipeline:
             input: modelerfour
             output-artifact: source-file-cli
 
+>NOTE 1: I got **code-model-v4.yaml** and **code-model-v4-no-tags.yaml** as input to **autorest.cli**
+
+>NOTE 2: I noticed some failures, when trying some resources, for instance **healthcareapis**
 
 
 Input changes from:
