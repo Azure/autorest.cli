@@ -33,6 +33,47 @@ Following command will generate default Azure CLI extension considering all ther
 
     autorest --cli --use=/_/autorest.cli --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
 
+### Add Local Copy of Python SDK
+
+> NOTE: This step will be replaced by appropriate AutoRest command and performed automatically by CI in the future.
+
+In your extension folder create a subfolder called **vendored_sdks** and copy appropriate subfolder from Python SDK.
+
+For instance using **healthcareapis** as an example, your folder structure should look as follows:
+
+    azure-cli-extensions
+      src
+        healthcareapis
+          azext_healthcareapis
+            vendored_sdks
+              ------- HEALTHCARE APIS SDK ------
+              healthcareapis
+                models
+                operations
+                __init__.py
+                _configuration.py
+                _healthcareapis_managemenet_client.py
+                version.py
+
+## Running The Extension
+
+To install the extesnion run:
+
+    azdev extension add <your-extension-name>
+
+Then you can verify that extension was installed correctly by running:
+
+    az <your-extension-name> --help
+
+and proceed with:
+
+    az login
+
+and testing all the examples.
+
+## Running Integration Test
+
+TBD
 
 ## Next Steps
 
