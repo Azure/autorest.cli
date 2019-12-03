@@ -15,9 +15,7 @@ For simplicity let's assume they are cloned under **c:\dev** directory on Window
 
 The easiest way to use **autorest.cli** is the container:
 
-    docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools-v2
-
->NOTE: The docker image **zikalino/azure-sdk-tools** will be migrated to **mcr.microsoft.com/azure-sdk-tools**
+    docker run -it --rm -v c:\dev:/_ mcr.microsoft.com/azure-cli/tools
 
 ## Configuration in **readme.cli.md** File
 

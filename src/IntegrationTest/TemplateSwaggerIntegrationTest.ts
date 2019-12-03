@@ -58,10 +58,10 @@ export function GenerateSwaggerIntegrationTest(model: Example[], config: any) : 
         {
             output.push("        body = (");
             let json: string[] = GetExampleBodyJson(example.GetExampleBody());
-            for (var lidx in json)
+            for (let line of json)
             {
-                var line: string = "                 '" + json[lidx] + "'";
-                if (json[lidx] == "}") line += ")";
+                if (line == "}") line += ")";
+                line = "                 '" + line + "'";
                 output.push(line);
             }
 

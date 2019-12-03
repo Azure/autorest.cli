@@ -101,9 +101,9 @@ export class ExampleProcessor
                         this.ExamplesTotal++;
 
                         // check if example is in test scenario
-                        for (let item in this._testScenario)
+                        for (let item of this._testScenario)
                         {
-                            if (this._testScenario[item]['name'] == example)
+                            if (item['name'] == example)
                             {
                                 this.ExamplesTested++;
                                 break;
@@ -251,9 +251,9 @@ export class ExampleProcessor
             }
 
             var anyReferences = false;
-            for (var ri in refs)
+            for (let ref of refs)
             {
-                if (!refs[ri].startsWith("# ref##"))
+                if (!ref.startsWith("# ref##"))
                     anyReferences = true;
             }
 
@@ -329,9 +329,9 @@ export class ExampleProcessor
                     {
                         swaggerName = swaggerName.substr(1, swaggerName.length - 2);
                         var found: boolean = false;
-                        for (var vi in vars)
+                        for (var v of vars)
                         {
-                            if (vars[vi].name == varName)
+                            if (v.name == varName)
                                 found = true;
                         }
 

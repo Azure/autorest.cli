@@ -35,9 +35,8 @@ export function GenerateMagicModulesInput(model: CodeModel, log: LogCallback) : 
     output.push("      python_client: " + model.PythonMgmtClient + "." + model.ModuleOperationName);
 
     log("Generate module:" + model.ObjectName);
-    for (let method_index in model.ModuleMethods)
+    for (let method of model.ModuleMethods)
     {
-        let method = model.ModuleMethods[method_index];
         let operationName = "";
         
         switch (method.Name)
@@ -66,9 +65,8 @@ export function GenerateMagicModulesInput(model: CodeModel, log: LogCallback) : 
     }
 
     // append all list methods at the end
-    for (let method_index in model.ModuleMethods)
+    for (let method of model.ModuleMethods)
     {
-        let method = model.ModuleMethods[method_index];
         let operationName = "";
 
         if (method.Name.startsWith("List"))
@@ -118,10 +116,8 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
 
     let methodOptions = model.GetMethodOptions(method.Name, false);
     methodOptions.sort((n1, n2) => n1.Kind - n2.Kind);
-    for (let optionIndex in methodOptions)
+    for (let option of methodOptions)
     {
-        let option = methodOptions[optionIndex];
-
         if (option.PathGo == option.PathPython)
         {
             appendOption(output, option, true, true, false);
@@ -140,10 +136,8 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
     {
         output.push("        response:");
         let methodOptions = model.ModuleOptions; // model.ModuleResponseFields;
-        for (let optionIndex in methodOptions)
+        for (let option of methodOptions)
         {
-            let option = methodOptions[optionIndex];
-
             if (option.PathGo == option.PathPython)
             {
                 appendOption(output, option, true, true, true);
@@ -258,7 +252,7 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         }
 
         output.push(prefix + "- " + dataType);
-        output.push(prefix + "  name: '" + ToCamelCase(option.NameAnsible) + "'");
+        output.push(prefix + "  name: '" + option.NameGoSdk + "'");
         output.push(prefix + "  description: '" + EscapeDocumentation(option.Documentation) + "'");
 
         if (!appendReadOnly)
@@ -666,10 +660,8 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
     if (option.Type == "dict")
     {
-        for (var si in option.SubOptions)
+        for (var so of option.SubOptions)
         {
-            var so = option.SubOptions[si];
-
             if (isGo && isPython && so.PathGo != so.PathPython)
             {
                 appendOption(output, so, false, true, isRead);

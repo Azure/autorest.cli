@@ -27,26 +27,26 @@ export class MapFlattenerObsolete
 
     public Transform(): void
     {
-        for (let mi in this._map.Modules)
+        for (let module of this._map.Modules)
         {
             for (let regex in this._cmdOverride)
             {
                 let regexp = new RegExp(regex);
 
-                if (this._map.Modules[mi].CommandGroup.match(regexp))
+                if (module.CommandGroup.match(regexp))
                 {
-                    this._map.Modules[mi].CommandGroup = this._cmdOverride[regex].replace("*", this._map.CliName);
+                    module.CommandGroup = this._cmdOverride[regex].replace("*", this._map.CliName);
                 }
             }
 
             // process top level options, right now it will rename xxx_name -> name
-            this.ProcessTopLevelOptions(this._map.Modules[mi].Options);
+            this.ProcessTopLevelOptions(module.Options);
 
             // here we perform flattening of the option according to current rules
-            this._map.Modules[mi].Options = this.FlattenOptions(this._map.Modules[mi].Options, "/");
+            module.Options = this.FlattenOptions(module.Options, "/");
 
             // apply options override as a final step
-            this.ApplyOptionOverride(this._map.Modules[mi].Options);
+            this.ApplyOptionOverride(module.Options);
         }
     }
 
@@ -73,17 +73,17 @@ export class MapFlattenerObsolete
             //    break;
         }
 
-        for (let oi in options)
+        for (let option of options)
         {
-            if (options[oi].NameAnsible == "resource_group_name")
+            if (option.NameAnsible == "resource_group_name")
             {
-                options[oi].NameAnsible = "resource_group";
-                options[oi].NameGoSdk = "ResourceGroup";
-                options[oi].NameTerraform = "resourceGroupName";
+                option.NameAnsible = "resource_group";
+                option.NameGoSdk = "ResourceGroup";
+                option.NameTerraform = "resourceGroupName";
             }
 
-            if (options[oi].Type != "dict")
-                options[oi].Updatable = false;
+            if (option.Type != "dict")
+                option.Updatable = false;
         }
     }
 
@@ -122,10 +122,10 @@ export class MapFlattenerObsolete
                     }
                     else if (flatten == "*/*")
                     {
-                        for (let si in suboptions)
+                        for (let suboption of suboptions)
                         {
-                            let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
-                            let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
+                            let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboption.DispositionRest.replace("*", suboption.NameSwagger);
+                            let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboption.DispositionSdk.replace("*", suboption.NamePythonSdk);
                             
                             if (path == "/")
                             {
@@ -141,8 +141,8 @@ export class MapFlattenerObsolete
                                 }
                             }
 
-                            dispositionRest += "/" + suboptions[si].DispositionRest;
-                            dispositionSdk +=  "/" + suboptions[si].DispositionSdk;
+                            dispositionRest += "/" + suboption.DispositionRest;
+                            dispositionSdk +=  "/" + suboption.DispositionSdk;
                             
                             //if (path == "/")
                             //{
@@ -153,13 +153,13 @@ export class MapFlattenerObsolete
                             //{
                             //    dispositionRest = "properties/" + dispositionRest;
                             //}
-                            suboptions[si].DispositionRest = dispositionRest;
-                            suboptions[si].DispositionSdk = dispositionSdk;
+                            suboption.DispositionRest = dispositionRest;
+                            suboption.DispositionSdk = dispositionSdk;
 
                             if (path != "/")
                             {
-                                suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                                suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                                suboption.NameAnsible = option.NameAnsible + "_" + suboption.NameAnsible;
+                                suboption.NameTerraform = option.NameTerraform + suboption.NameAnsible;
                             }
 
                             // this happens only when parent is list of dictionaries containing single element
@@ -167,8 +167,8 @@ export class MapFlattenerObsolete
                             // we also inherit documentation from parent as it's usually more relevant
                             if (option.IsList)
                             {
-                                suboptions[si].IsList = option.IsList;
-                                suboptions[si].Documentation = option.Documentation;
+                                suboption.IsList = option.IsList;
+                                suboption.Documentation = option.Documentation;
                             }
                         }
     
@@ -182,10 +182,10 @@ export class MapFlattenerObsolete
                     //
                     else
                     {
-                        for (let si in suboptions)
+                        for (let suboption of suboptions)
                         {
-                            let dispositionRest = suboptions[si].DispositionRest;
-                            let dispositionSdk = suboptions[si].DispositionSdk;
+                            let dispositionRest = suboption.DispositionRest;
+                            let dispositionSdk = suboption.DispositionSdk;
 
                             if (flatten == "/*")
                             {
@@ -195,11 +195,11 @@ export class MapFlattenerObsolete
                             else if (flatten.endsWith("/"))
                             {
                                 let dispositionParts = dispositionRest.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NameSwagger;
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboption.NameSwagger;
                                 dispositionRest = dispositionParts.join('/');
 
                                 dispositionParts = dispositionSdk.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboption.NamePythonSdk;
                                 dispositionSdk = dispositionParts.join('/');
 
                                 let newName: string = flatten.split("/")[0];
@@ -209,35 +209,35 @@ export class MapFlattenerObsolete
 
                                 
 
-                                newName = newName.replace("*", Capitalize(suboptions[si].NameSwagger));
+                                newName = newName.replace("*", Capitalize(suboption.NameSwagger));
 
-                                suboptions[si].NameAnsible = ToSnakeCase(newName);
-                                suboptions[si].NameSwagger = Uncapitalize(newName);
-                                //suboptions[si].NameGoSdk = newName;
-                                //suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = Uncapitalize(newName);
+                                suboption.NameAnsible = ToSnakeCase(newName);
+                                suboption.NameSwagger = Uncapitalize(newName);
+                                //suboption.NameGoSdk = newName;
+                                //suboption.NamePythonSdk = option.NamePythonSdk;
+                                suboption.NameTerraform = Uncapitalize(newName);
                             }
                             else if (flatten == "*/")
                             {
                                 let dispositionParts = dispositionRest.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NameSwagger;
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboption.NameSwagger;
                                 dispositionRest = dispositionParts.join('/');
 
                                 dispositionParts = dispositionSdk.split('/');
-                                if (dispositionParts[0] == '*') dispositionParts[0] = suboptions[si].NamePythonSdk;
+                                if (dispositionParts[0] == '*') dispositionParts[0] = suboption.NamePythonSdk;
                                 dispositionSdk = dispositionParts.join('/');
 
                                 dispositionRest = option.NameSwagger + "/" + dispositionRest;
                                 dispositionSdk = option.NamePythonSdk + "/" + dispositionSdk;
 
-                                suboptions[si].NameAnsible = option.NameAnsible;
-                                suboptions[si].NameSwagger = option.NameSwagger;
-                                suboptions[si].NameGoSdk = option.NameGoSdk;
-                                suboptions[si].NamePythonSdk = option.NamePythonSdk;
-                                suboptions[si].NameTerraform = option.NameTerraform;
+                                suboption.NameAnsible = option.NameAnsible;
+                                suboption.NameSwagger = option.NameSwagger;
+                                suboption.NameGoSdk = option.NameGoSdk;
+                                suboption.NamePythonSdk = option.NamePythonSdk;
+                                suboption.NameTerraform = option.NameTerraform;
                             }
-                            suboptions[si].DispositionRest = dispositionRest;
-                            suboptions[si].DispositionSdk = dispositionSdk;
+                            suboption.DispositionRest = dispositionRest;
+                            suboption.DispositionSdk = dispositionSdk;
                         }
 
                         options = [].concat(options.slice(0, i + 1), suboptions, options.slice(i + 1));
@@ -251,10 +251,10 @@ export class MapFlattenerObsolete
                 {
                     this._log("flattener: detected 'properties'");
                     // XXX - this si a hack for current implementation
-                    for (let si in suboptions)
+                    for (let suboption of suboptions)
                     {
-                        let dispositionRest = suboptions[si].DispositionRest;
-                        let dispositionSdk = suboptions[si].DispositionSdk;
+                        let dispositionRest = suboption.DispositionRest;
+                        let dispositionSdk = suboption.DispositionSdk;
                         if (path == "/")
                         {
                             dispositionRest = "/properties/" + dispositionRest;
@@ -264,8 +264,8 @@ export class MapFlattenerObsolete
                         {
                             dispositionRest = "properties/" + dispositionRest;
                         }
-                        suboptions[si].DispositionRest = dispositionRest;
-                        suboptions[si].DispositionSdk = dispositionSdk;
+                        suboption.DispositionRest = dispositionRest;
+                        suboption.DispositionSdk = dispositionSdk;
                     }
 
                     options = options.slice(0, i + 1).concat(suboptions, options.slice(i + 1));

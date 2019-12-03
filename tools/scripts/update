@@ -1,0 +1,21 @@
+#!/bin/bash
+set -x
+curdir = $(pwd)
+
+cd /_/azure-sdk-for-python
+git pull
+
+cd /_/azure-rest-api-specs
+git pull
+
+cd /_/azure-cli
+git pull
+
+cd /_/azure-cli-extensions
+git pull
+
+cd /_/autorest.cli
+git pull
+tsc -p tsconfig.json
+
+cd $curdir

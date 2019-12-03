@@ -23,26 +23,26 @@ export class MapFlattener
 
     public Transform(): void
     {
-        for (let mi in this._map.Modules)
+        for (let module of this._map.Modules)
         {
             for (let regex in this._cmdOverride)
             {
                 let regexp = new RegExp(regex);
 
-                if (this._map.Modules[mi].CommandGroup.match(regexp))
+                if (module.CommandGroup.match(regexp))
                 {
-                    this._map.Modules[mi].CommandGroup = this._cmdOverride[regex].replace("*", this._map.CliName);
+                    module.CommandGroup = this._cmdOverride[regex].replace("*", this._map.CliName);
                 }
             }
 
             // process top level options, right now it will rename xxx_name -> name
-            this.ProcessTopLevelOptions(this._map.Modules[mi].Options);
+            this.ProcessTopLevelOptions(module.Options);
 
             // here we perform flattening of the option according to current rules
-            this._map.Modules[mi].Options = this.FlattenOptions(this._map.Modules[mi].Options, "/");
+            module.Options = this.FlattenOptions(module.Options, "/");
 
             // apply options override as a final step
-            this.ApplyOptionOverride(this._map.Modules[mi].Options);
+            this.ApplyOptionOverride(module.Options);
         }
     }
 
@@ -69,17 +69,17 @@ export class MapFlattener
             //    break;
         }
 
-        for (let oi in options)
+        for (let option of options)
         {
-            if (options[oi].NameAnsible == "resource_group_name")
+            if (option.NameAnsible == "resource_group_name")
             {
-                options[oi].NameAnsible = "resource_group";
-                options[oi].NameGoSdk = "ResourceGroup";
-                options[oi].NameTerraform = "resourceGroupName";
+                option.NameAnsible = "resource_group";
+                option.NameGoSdk = "ResourceGroup";
+                option.NameTerraform = "resourceGroupName";
             }
 
-            if (options[oi].Type != "dict")
-                options[oi].Updatable = false;
+            if (option.Type != "dict")
+                option.Updatable = false;
         }
     }
 
@@ -99,7 +99,7 @@ export class MapFlattener
                 // all the suboptions of current option will be attached at the end
                 this._log("flattener: found path - " + optionPath);
 
-                for (let si in suboptions)
+                for (let suboption of suboptions)
                 {
                     let dispositionRest: string = option.DispositionRest.replace("*", option.NameSwagger); // + "/" + suboptions[si].DispositionRest.replace("*", suboptions[si].NameSwagger);
                     let dispositionSdk: string = option.DispositionSdk.replace("*", option.NamePythonSdk); // + "/" + suboptions[si].DispositionSdk.replace("*", suboptions[si].NamePythonSdk);
@@ -118,8 +118,8 @@ export class MapFlattener
                         }
                     }
 
-                    dispositionRest += "/" + suboptions[si].DispositionRest;
-                    dispositionSdk +=  "/" + suboptions[si].DispositionSdk;
+                    dispositionRest += "/" + suboption.DispositionRest;
+                    dispositionSdk +=  "/" + suboption.DispositionSdk;
                     
                     //if (path == "/")
                     //{
@@ -130,13 +130,13 @@ export class MapFlattener
                     //{
                     //    dispositionRest = "properties/" + dispositionRest;
                     //}
-                    suboptions[si].DispositionRest = dispositionRest;
-                    suboptions[si].DispositionSdk = dispositionSdk;
+                    suboption.DispositionRest = dispositionRest;
+                    suboption.DispositionSdk = dispositionSdk;
 
                     if (path != "/")
                     {
-                        suboptions[si].NameAnsible = option.NameAnsible + "_" + suboptions[si].NameAnsible;
-                        suboptions[si].NameTerraform = option.NameTerraform + suboptions[si].NameAnsible;
+                        suboption.NameAnsible = option.NameAnsible + "_" + suboption.NameAnsible;
+                        suboption.NameTerraform = option.NameTerraform + suboption.NameAnsible;
                     }
 
                     // this happens only when parent is list of dictionaries containing single element
@@ -144,8 +144,8 @@ export class MapFlattener
                     // we also inherit documentation from parent as it's usually more relevant
                     if (option.IsList)
                     {
-                        suboptions[si].IsList = option.IsList;
-                        suboptions[si].Documentation = option.Documentation;
+                        suboption.IsList = option.IsList;
+                        suboption.Documentation = option.Documentation;
                     }
                 }
 

@@ -137,9 +137,8 @@ export function AppendInfoModuleLogic(output: string[], model: CodeModel)
     let sortedMethods = model.ModuleMethods.sort((m1,m2) => {
         return (m1.Url.length > m2.Url.length) ? -1 : 1;
     });
-    for (let mi in sortedMethods)
+    for (let m of sortedMethods)
     {
-        let m = model.ModuleMethods[mi];
         let ps: ModuleOption[] = model.GetMethodOptions(m.Name, true);
 
         if (ps.length == 0)
@@ -196,9 +195,8 @@ function GetHelpFromOptions(model: CodeModel, options: ModuleOption[], padding: 
 {
     var help: any = {};
 
-    for (var oi in options)
+    for (var option of options)
     {
-        let option = options[oi];
         let option_doc = {};
 
         if (option.Hidden)
@@ -463,9 +461,9 @@ function haveSuboptions(option: ModuleOption): boolean
 
     let cnt = 0;
 
-    for (var so in option.SubOptions)
+    for (var so of option.SubOptions)
     {
-        if (option.SubOptions[so].Hidden)
+        if (so.Hidden)
             continue;
 
         cnt++;
@@ -478,9 +476,8 @@ export function ModuleTopLevelOptionsVariables(options: ModuleOption[]): string[
 {
     var variables: string[] = [];
 
-    for (var oi in options)
+    for (let option of options)
     {
-        let option = options[oi];
         if (option.DispositionSdk == "*")
         {
             variables.push("self." + option.NameAnsible + " = None");
@@ -510,9 +507,8 @@ export function ModuleGenerateApiCall(output: string[], indent: string, model: C
 
     if (method != null)
     {
-        for (var pi in method.RequiredOptions)
+        for (var p of method.RequiredOptions)
         {
-            var p = method.RequiredOptions[pi];
             var o: ModuleOption = null;
 
             for (var i = 0; i < model.ModuleOptions.length; i++)
@@ -556,9 +552,8 @@ export function GetFixUrlStatements(model: CodeModel): string[]
 
     let parts: string[] = url.split('{{');
 
-    for (let pi in parts)
+    for (let part of parts)
     {
-        let part = parts[pi];
         if (! part.startsWith('/'))
         {
             let last: boolean = (part == parts[parts.length - 1]);
@@ -602,9 +597,8 @@ function GetHelpFromResponseFields(model: CodeModel, fields: ModuleOption[], pad
 
     if (fields != null)
     {
-        for (var fi in fields)
+        for (let field of fields)
         {
-            let field = fields[fi];
             // setting nameAlt to empty or "x" will remove the field
             if (field.NameAnsible == "" || field.NameAnsible.toLowerCase() == "x" || field.NameAnsible.toLowerCase() == "nl")
                 continue;

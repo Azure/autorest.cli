@@ -49,12 +49,12 @@ export class CodeModel
     
     private SupportsTagsInternal(options: ModuleOption[]): boolean
     {
-        for(let oi in options)
+        for(let option of options)
         {
-            if (options[oi].NameSwagger == "tags")
+            if (option.NameSwagger == "tags")
                 return true;
 
-            if (options[oi].SubOptions && this.SupportsTagsInternal(options[oi].SubOptions))
+            if (option.SubOptions && this.SupportsTagsInternal(option.SubOptions))
                 return true;
         }
         return false;
@@ -62,9 +62,9 @@ export class CodeModel
 
     public HasResourceGroup(): boolean
     {
-        for(let oi in this.ModuleOptions)
+        for(let option of this.ModuleOptions)
         {
-            if (this.ModuleOptions[oi].NameSwagger == "resourceGroupName")
+            if (option.NameSwagger == "resourceGroupName")
                 return true;
         }
 
@@ -75,11 +75,11 @@ export class CodeModel
     {
         let options = this.ModuleOptions;
 
-        for (let oi in options)
+        for (let option of options)
         {
-            if (options[oi].NameSwagger == "location")
+            if (option.NameSwagger == "location")
             {
-                return options[oi].DispositionSdk;
+                return option.DispositionSdk;
             }
         }
 
@@ -119,11 +119,11 @@ export class CodeModel
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
-        for (var oi in m.Options)
+        for (let option of m.Options)
         {
-            if (!(m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
+            if (!(option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
             {
-                options.push(m.Options[oi]);
+                options.push(option);
             }
         }
 
@@ -134,11 +134,11 @@ export class CodeModel
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
-        for (var oi in m.Options)
+        for (let option of m.Options)
         {
-            if (m.Options[oi].Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
+            if (option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
             {
-                return m.Options[oi];
+                return option;
             }
         }
 
@@ -167,9 +167,8 @@ export class CodeModel
     private AddModuleResponseFieldPaths(prefix: string, fields: ModuleOption[]): string[]
     {
         let paths: string[] = [];
-        for (var i in fields)
+        for (var f of fields)
         {
-            let f = fields[i];
             //if (f.Returned == "always")
             //{
                 if (f.Type == "complex")
@@ -196,9 +195,8 @@ export class CodeModel
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method;
         }
@@ -235,9 +233,8 @@ export class CodeModel
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method.Options;
         }
@@ -249,9 +246,8 @@ export class CodeModel
     {
         var m = this.Map.Modules[this._selectedModule];
 
-        for (var mi in m.Methods)
+        for (let method of m.Methods)
         {
-            let method = m.Methods[mi];
             if (method.Name == methodName)
                 return method.RequiredOptions;
         }
@@ -265,36 +261,35 @@ export class CodeModel
         let moduleOptions: ModuleOption[] = [];
 
 
-        for (let optionNameIdx in methodOptionNames)
+        for (let optionName of methodOptionNames)
         {
-            let optionName = methodOptionNames[optionNameIdx];
-            let option = null;
-            for (let optionIdx in this.ModuleOptions)
+            let foundOption = null;
+            for (let option of this.ModuleOptions)
             {
-                if (this.ModuleOptions[optionIdx].NameSwagger == optionName)
+                if (option.NameSwagger == optionName)
                 {
-                    option = this.ModuleOptions[optionIdx];
+                    foundOption = option;
                     break;
                 }
             }
 
-            if (option == null)
+            if (foundOption == null)
             {
                 // this is a hack, how to solve it properly?
                 let hiddenParamatersOption = this.ModuleParametersOption;
                 if (hiddenParamatersOption != null &&hiddenParamatersOption.NameSwagger == optionName)
                 {
-                    option = new ModuleOption(optionName, "dict", false);
-                    option.SubOptions = [];
-                    option.TypeNameGo = hiddenParamatersOption.TypeNameGo;
-                    option.Kind = hiddenParamatersOption.Kind;
+                    foundOption = new ModuleOption(optionName, "dict", false);
+                    foundOption.SubOptions = [];
+                    foundOption.TypeNameGo = hiddenParamatersOption.TypeNameGo;
+                    foundOption.Kind = hiddenParamatersOption.Kind;
 
                     // XXX - and because this stupid option has no suboptions
-                    for (let optionIdx in this.ModuleOptions)
+                    for (let option of this.ModuleOptions)
                     {
-                        if (this.ModuleOptions[optionIdx].DispositionSdk.startsWith("/"))
+                        if (option.DispositionSdk.startsWith("/"))
                         {
-                            option.SubOptions.push(this.ModuleOptions[optionIdx]);
+                            foundOption.SubOptions.push(option);
                         }
                     }
                 } else {
@@ -302,9 +297,9 @@ export class CodeModel
                 }
             }
 
-            if(option != null)
+            if(foundOption != null)
             {
-                moduleOptions.push(option);
+                moduleOptions.push(foundOption);
             }
         }
 
@@ -416,9 +411,8 @@ export class CodeModel
     {
         let statements: string[] = [];
 
-        for (var fi in fields)
+        for (let field of fields)
         {
-            let field = fields[fi];
             if (field.NameAnsible == "nl")
             {
                 let statement: string = responseDict + ".pop('" + field.NamePythonSdk + "', None)";
@@ -446,9 +440,8 @@ export class CodeModel
     {
         let statements: string[] = [];
 
-        for (var fi in fields)
+        for (let field of fields)
         {
-            let field = fields[fi];
             if (field.NameAnsible != "" && field.NameAnsible.toLowerCase() != "x" && field.NameAnsible.toLowerCase() != "nl")
             {
                 let statement: string = responseDict + "[\"" + field.NameAnsible + "\"] = response[\"" + field.NamePythonSdk + "\"]";

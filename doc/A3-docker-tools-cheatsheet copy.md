@@ -4,11 +4,11 @@
 
 Run following command:
 
-    docker run -it --rm -v c:\dev:/_ zikalino/azure-sdk-tools-v2
+    docker run -it --rm -v c:\dev:/_ mcr.microsoft.com/azure-cli/tools
 
 ## Working with Embedded Repositories
 
-    docker run -it --rm zikalino/azure-sdk-tools-v2
+    docker run -it --rm mcr.microsoft.com/azure-cli/tools
 
 ## Generating Python SDK
 
