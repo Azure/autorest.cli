@@ -5,22 +5,9 @@ use-extension:
   "@microsoft.azure/autorest.modeler": "2.3.45" # keep in sync with package.json's dev dependency in order to have meaningful tests
 
 pipeline:
-    cli/imodeler1:
-        input: openapi-document/identity
-        output-artifact: code-model-v1
-        scope: cli
-    cli/commonmarker:
-        input: imodeler1
-        output-artifact: code-model-v1
-    cli/cm/transform:
-        input: commonmarker
-        output-artifact: code-model-v1
-    cli/cm/emitter:
-        input: transform
-        scope: scope-cm/emitter
     cli/generate:
         plugin: cli
-        input: cm/transform
+        input: modelerfour
         output-artifact: source-file-cli
     cli/transform:
         input: generate
