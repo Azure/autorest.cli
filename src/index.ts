@@ -74,7 +74,20 @@ extension.Add("cli", async autoRestApi => {
         // read files offered to this plugin
         const inputFileUris = await autoRestApi.ListInputs();
 
+        for (let uri of inputFileUris)
+        {
+            Error("FILE: " + uri);
+        }
+
         const inputFiles: string[] = await Promise.all(inputFileUris.map(uri => autoRestApi.ReadFile(uri)));
+
+        Error("LENGTH: " + inputFiles[0].length);
+
+        var fs = require('fs');
+        fs.writeFileSync("/_/azure-cli-extensions/codemodel-v3.yml", inputFiles[0]);
+        //fs.writeFileSync("/_/azure-cli-extensions/codemodel-v4-no-tags.yml", inputFiles[1]);
+        return;
+
 
         let artifactType: ArtifactType;
         let writeIntermediate: boolean = false;

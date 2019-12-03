@@ -2,37 +2,34 @@ See documentation [here](doc/00-overview.md)
 
 ``` yaml
 use-extension:
-  "@microsoft.azure/autorest.modeler": "2.3.45" # keep in sync with package.json's dev dependency in order to have meaningful tests
+  "@autorest/modelerfour" : "~4.1.60" 
+  "@autorest/remodeler" : "~2.1.0" 
+```
+
+> Multi-Api Mode
+``` yaml
+pipeline-model: v3
+```
+
+``` yaml
 
 pipeline:
-    cli/imodeler1:
-        input: openapi-document/identity
-        output-artifact: code-model-v1
-        scope: cli
-    cli/commonmarker:
-        input: imodeler1
-        output-artifact: code-model-v1
-    cli/cm/transform:
-        input: commonmarker
-        output-artifact: code-model-v1
-    cli/cm/emitter:
-        input: transform
-        scope: scope-cm/emitter
+
+    # "Shake the tree", and normalize the model
+    modelerfour:
+        input: openapi-document/multi-api/identity     # the plugin where we get inputs from
+    remodeler:
+        input: openapi-document/multi-api/identity     # the plugin where we get inputs from
+
     cli/generate:
         plugin: cli
-        input: cm/transform
+        input: remodeler
         output-artifact: source-file-cli
-    cli/transform:
-        input: generate
-        output-artifact: source-file-cli
-        scope: scope-transform-string
-    cli/emitter:
-        input: transform
-        scope: scope-cli/emitter
 
-scope-cli/emitter:
-  input-artifact: source-file-cli
-  output-uri-expr: $key
+scope-here:
+  is-object: false
+  output-artifact:
+    - source-file-cli
 
 output-artifact:
 - source-file-cli
