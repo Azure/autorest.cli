@@ -75,6 +75,25 @@ and testing all the examples.
 
 TBD
 
+## Publishing Extension
+
+To publish an extension (assuming you did **az login** already):
+
+azdev extension publish <extension-name> --storage-account <storage-account-name> --update-index --storage-container <storage-container-name> --storage-subscription <subscription-id>
+
+After doing that, following things will happen:
+- package will be built
+- package will be pushed to storage account
+- **index.json** file will be updated
+
+At this point you can commit and push the change to **index.json**.
+
+>NOTE 1: Extension won't be published until PR is merged into master branch
+
+>NOTE 2: When running **azdev extension publish** old entry won't be removed so it may be necessary to remove it manually
+
+>NOTE 3: Adding extension to index triggers some additional sanity checks and there may be additional errors to fix, so it advised to add extension to index as soon as possible.
+
 ## Next Steps
 
 ### Changing Extension / Top Command Group Name
