@@ -1,0 +1,3747 @@
+$id: '1'
+modelTypes:
+  - $id: '2'
+    $type: CompositeType
+    properties:
+      - $id: '3'
+        isReadOnly: false
+        realPath:
+          - objectId
+        collectionFormat: none
+        defaultValue:
+          $id: '4'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '5'
+          fixed: false
+          raw: >-
+            An Azure AD object ID (User or Apps) that is allowed access to the
+            FHIR service.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '6'
+          fixed: false
+          raw: objectId
+        serializedName: objectId
+        modelType:
+          $id: '7'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '8'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ServiceAccessPolicyEntry
+    documentation: An access policy entry.
+    containsConstantProperties: false
+    name:
+      $id: '9'
+      fixed: false
+      raw: ServiceAccessPolicyEntry
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServiceAccessPolicyEntry
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServiceAccessPolicyEntry
+    deprecated: false
+  - $id: '10'
+    $type: CompositeType
+    properties:
+      - $id: '11'
+        isReadOnly: false
+        realPath:
+          - offerThroughput
+        collectionFormat: none
+        constraints:
+          InclusiveMaximum: '10000'
+          InclusiveMinimum: '400'
+        defaultValue:
+          $id: '12'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '13'
+          fixed: false
+          raw: The provisioned throughput for the backing database.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '14'
+          fixed: false
+          raw: offerThroughput
+        serializedName: offerThroughput
+        modelType:
+          $id: '15'
+          $type: PrimaryType
+          knownPrimaryType: int
+          name:
+            $id: '16'
+            fixed: false
+            raw: Int
+          deprecated: false
+    serializedName: ServiceCosmosDbConfigurationInfo
+    documentation: The settings for the Cosmos DB database backing the service.
+    containsConstantProperties: false
+    name:
+      $id: '17'
+      fixed: false
+      raw: ServiceCosmosDbConfigurationInfo
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServiceCosmosDbConfigurationInfo
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServiceCosmosDbConfigurationInfo
+    deprecated: false
+  - $id: '18'
+    $type: CompositeType
+    properties:
+      - $id: '19'
+        isReadOnly: false
+        realPath:
+          - authority
+        collectionFormat: none
+        defaultValue:
+          $id: '20'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '21'
+          fixed: false
+          raw: The authority url for the service
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '22'
+          fixed: false
+          raw: authority
+        serializedName: authority
+        modelType:
+          $id: '23'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '24'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '25'
+        isReadOnly: false
+        realPath:
+          - audience
+        collectionFormat: none
+        defaultValue:
+          $id: '26'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '27'
+          fixed: false
+          raw: The audience url for the service
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '28'
+          fixed: false
+          raw: audience
+        serializedName: audience
+        modelType:
+          $id: '29'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '30'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '31'
+        isReadOnly: false
+        realPath:
+          - smartProxyEnabled
+        collectionFormat: none
+        defaultValue:
+          $id: '32'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '33'
+          fixed: false
+          raw: If the SMART on FHIR proxy is enabled
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '34'
+          fixed: false
+          raw: smartProxyEnabled
+        serializedName: smartProxyEnabled
+        modelType:
+          $id: '35'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '36'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+    serializedName: ServiceAuthenticationConfigurationInfo
+    documentation: Authentication configuration information
+    containsConstantProperties: false
+    name:
+      $id: '37'
+      fixed: false
+      raw: ServiceAuthenticationConfigurationInfo
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServiceAuthenticationConfigurationInfo
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServiceAuthenticationConfigurationInfo
+    deprecated: false
+  - $id: '38'
+    $type: CompositeType
+    properties:
+      - $id: '39'
+        isReadOnly: false
+        realPath:
+          - origins
+        collectionFormat: none
+        defaultValue:
+          $id: '40'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '41'
+          fixed: false
+          raw: The origins to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '42'
+          fixed: false
+          raw: origins
+        serializedName: origins
+        modelType:
+          $id: '43'
+          $type: SequenceType
+          elementType:
+            $id: '44'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '45'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '46'
+            fixed: false
+          deprecated: false
+      - $id: '47'
+        isReadOnly: false
+        realPath:
+          - headers
+        collectionFormat: none
+        defaultValue:
+          $id: '48'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '49'
+          fixed: false
+          raw: The headers to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '50'
+          fixed: false
+          raw: headers
+        serializedName: headers
+        modelType:
+          $id: '51'
+          $type: SequenceType
+          elementType:
+            $id: '52'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '53'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '54'
+            fixed: false
+          deprecated: false
+      - $id: '55'
+        isReadOnly: false
+        realPath:
+          - methods
+        collectionFormat: none
+        defaultValue:
+          $id: '56'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '57'
+          fixed: false
+          raw: The methods to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '58'
+          fixed: false
+          raw: methods
+        serializedName: methods
+        modelType:
+          $id: '59'
+          $type: SequenceType
+          elementType:
+            $id: '60'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '61'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '62'
+            fixed: false
+          deprecated: false
+      - $id: '63'
+        isReadOnly: false
+        realPath:
+          - maxAge
+        collectionFormat: none
+        constraints:
+          InclusiveMaximum: '99999'
+          InclusiveMinimum: '0'
+        defaultValue:
+          $id: '64'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '65'
+          fixed: false
+          raw: The max age to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '66'
+          fixed: false
+          raw: maxAge
+        serializedName: maxAge
+        modelType:
+          $id: '67'
+          $type: PrimaryType
+          knownPrimaryType: int
+          name:
+            $id: '68'
+            fixed: false
+            raw: Int
+          deprecated: false
+      - $id: '69'
+        isReadOnly: false
+        realPath:
+          - allowCredentials
+        collectionFormat: none
+        defaultValue:
+          $id: '70'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '71'
+          fixed: false
+          raw: If credentials are allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '72'
+          fixed: false
+          raw: allowCredentials
+        serializedName: allowCredentials
+        modelType:
+          $id: '73'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '74'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+    serializedName: ServiceCorsConfigurationInfo
+    documentation: The settings for the CORS configuration of the service instance.
+    containsConstantProperties: false
+    name:
+      $id: '75'
+      fixed: false
+      raw: ServiceCorsConfigurationInfo
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServiceCorsConfigurationInfo
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServiceCorsConfigurationInfo
+    deprecated: false
+  - $id: '76'
+    $type: CompositeType
+    properties:
+      - $id: '77'
+        isReadOnly: true
+        realPath:
+          - provisioningState
+        collectionFormat: none
+        defaultValue:
+          $id: '78'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '79'
+          fixed: false
+          raw: The provisioning state.
+        extensions:
+          x-ms-metadata:
+            apiVersions:
+              - '2019-09-16'
+            filename:
+              - 'mem:///125?oai3.shaken.json'
+            name: provisioningState
+            originalLocations:
+              - >-
+                file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesProperties-provisioningState
+          x-ms-enum:
+            name: provisioningState
+            modelAsString: true
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '80'
+          fixed: false
+          raw: provisioningState
+        serializedName: provisioningState
+        modelType:
+          $id: '81'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '82'
+              name: Deleting
+              serializedName: Deleting
+            - $id: '83'
+              name: Succeeded
+              serializedName: Succeeded
+            - $id: '84'
+              name: Creating
+              serializedName: Creating
+            - $id: '85'
+              name: Accepted
+              serializedName: Accepted
+            - $id: '86'
+              name: Verifying
+              serializedName: Verifying
+            - $id: '87'
+              name: Updating
+              serializedName: Updating
+            - $id: '88'
+              name: Failed
+              serializedName: Failed
+            - $id: '89'
+              name: Canceled
+              serializedName: Canceled
+            - $id: '90'
+              name: Deprovisioned
+              serializedName: Deprovisioned
+          modelAsString: true
+          underlyingType:
+            $id: '91'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '92'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '93'
+            fixed: false
+            raw: provisioningState
+          deprecated: false
+      - $id: '94'
+        isReadOnly: false
+        realPath:
+          - accessPolicies
+        collectionFormat: none
+        defaultValue:
+          $id: '95'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '96'
+          fixed: false
+          raw: The access policies of the service instance.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '97'
+          fixed: false
+          raw: accessPolicies
+        serializedName: accessPolicies
+        modelType:
+          $id: '98'
+          $type: SequenceType
+          elementType:
+            $ref: '2'
+          name:
+            $id: '99'
+            fixed: false
+          deprecated: false
+      - $id: '100'
+        isReadOnly: false
+        realPath:
+          - cosmosDbConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '101'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '102'
+          fixed: false
+          raw: The settings for the Cosmos DB database backing the service.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '103'
+          fixed: false
+          raw: cosmosDbConfiguration
+        serializedName: cosmosDbConfiguration
+        modelType:
+          $ref: '10'
+      - $id: '104'
+        isReadOnly: false
+        realPath:
+          - authenticationConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '105'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '106'
+          fixed: false
+          raw: The authentication configuration for the service instance.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '107'
+          fixed: false
+          raw: authenticationConfiguration
+        serializedName: authenticationConfiguration
+        modelType:
+          $ref: '18'
+      - $id: '108'
+        isReadOnly: false
+        realPath:
+          - corsConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '109'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '110'
+          fixed: false
+          raw: The settings for the CORS configuration of the service instance.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '111'
+          fixed: false
+          raw: corsConfiguration
+        serializedName: corsConfiguration
+        modelType:
+          $ref: '38'
+    serializedName: ServicesProperties
+    documentation: The properties of a service instance.
+    containsConstantProperties: false
+    name:
+      $id: '112'
+      fixed: false
+      raw: ServicesProperties
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServicesProperties
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesProperties
+    deprecated: false
+  - $id: '113'
+    $type: CompositeType
+    properties:
+      - $id: '114'
+        isReadOnly: false
+        realPath:
+          - properties
+        collectionFormat: none
+        defaultValue:
+          $id: '115'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '116'
+          fixed: false
+          raw: The common properties of a service.
+        extensions:
+          x-ms-client-flatten: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '117'
+          fixed: false
+          raw: properties
+        serializedName: properties
+        modelType:
+          $ref: '76'
+    serializedName: ServicesDescription
+    baseModelType:
+      $id: '118'
+      $type: CompositeType
+      properties:
+        - $id: '119'
+          isReadOnly: true
+          realPath:
+            - id
+          collectionFormat: none
+          defaultValue:
+            $id: '120'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '121'
+            fixed: false
+            raw: The resource identifier.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '122'
+            fixed: false
+            raw: id
+          serializedName: id
+          modelType:
+            $id: '123'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '124'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '125'
+          isReadOnly: true
+          realPath:
+            - name
+          collectionFormat: none
+          defaultValue:
+            $id: '126'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '127'
+            fixed: false
+            raw: The resource name.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '128'
+            fixed: false
+            raw: name
+          serializedName: name
+          modelType:
+            $id: '129'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '130'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '131'
+          isReadOnly: true
+          realPath:
+            - type
+          collectionFormat: none
+          defaultValue:
+            $id: '132'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '133'
+            fixed: false
+            raw: The resource type.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '134'
+            fixed: false
+            raw: type
+          serializedName: type
+          modelType:
+            $id: '135'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '136'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '137'
+          isReadOnly: false
+          realPath:
+            - kind
+          collectionFormat: none
+          defaultValue:
+            $id: '138'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '139'
+            fixed: false
+            raw: The kind of the service.
+          extensions:
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: kind
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/Resource-kind
+            x-ms-enum:
+              name: kind
+              modelAsString: false
+          isRequired: true
+          isConstant: false
+          name:
+            $id: '140'
+            fixed: false
+            raw: kind
+          serializedName: kind
+          modelType:
+            $id: '141'
+            $type: EnumType
+            modelAsExtensible: false
+            values:
+              - $id: '142'
+                name: fhir
+                serializedName: fhir
+              - $id: '143'
+                name: fhir-Stu3
+                serializedName: fhir-Stu3
+              - $id: '144'
+                name: fhir-R4
+                serializedName: fhir-R4
+            modelAsString: false
+            underlyingType:
+              $id: '145'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '146'
+                fixed: false
+                raw: String
+              deprecated: false
+            name:
+              $id: '147'
+              fixed: false
+              raw: kind
+            deprecated: false
+        - $id: '148'
+          isReadOnly: false
+          realPath:
+            - location
+          collectionFormat: none
+          defaultValue:
+            $id: '149'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '150'
+            fixed: false
+            raw: The resource location.
+          isRequired: true
+          isConstant: false
+          name:
+            $id: '151'
+            fixed: false
+            raw: location
+          serializedName: location
+          modelType:
+            $id: '152'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '153'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '154'
+          isReadOnly: false
+          realPath:
+            - tags
+          collectionFormat: none
+          defaultValue:
+            $id: '155'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '156'
+            fixed: false
+            raw: The resource tags.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '157'
+            fixed: false
+            raw: tags
+          serializedName: tags
+          modelType:
+            $id: '158'
+            $type: DictionaryType
+            valueType:
+              $id: '159'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '160'
+                fixed: false
+                raw: String
+              deprecated: false
+            supportsAdditionalProperties: false
+            name:
+              $id: '161'
+              fixed: false
+            deprecated: false
+        - $id: '162'
+          isReadOnly: false
+          realPath:
+            - etag
+          collectionFormat: none
+          defaultValue:
+            $id: '163'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '164'
+            fixed: false
+            raw: >-
+              An etag associated with the resource, used for optimistic
+              concurrency when editing it.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '165'
+            fixed: false
+            raw: etag
+          serializedName: etag
+          modelType:
+            $id: '166'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '167'
+              fixed: false
+              raw: String
+            deprecated: false
+      serializedName: Resource
+      documentation: The common properties of a service.
+      containsConstantProperties: false
+      name:
+        $id: '168'
+        fixed: false
+        raw: Resource
+      extensions:
+        x-ms-metadata:
+          apiVersions:
+            - '2019-09-16'
+          filename:
+            - 'mem:///125?oai3.shaken.json'
+          name: Resource
+          originalLocations:
+            - >-
+              file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/Resource
+        x-ms-azure-resource: true
+      deprecated: false
+    documentation: The description of the service.
+    containsConstantProperties: false
+    name:
+      $id: '169'
+      fixed: false
+      raw: ServicesDescription
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServicesDescription
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesDescription
+    deprecated: false
+  - $id: '170'
+    $type: CompositeType
+    properties:
+      - $id: '171'
+        isReadOnly: false
+        realPath:
+          - tags
+        collectionFormat: none
+        defaultValue:
+          $id: '172'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '173'
+          fixed: false
+          raw: Instance tags
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '174'
+          fixed: false
+          raw: tags
+        serializedName: tags
+        modelType:
+          $id: '175'
+          $type: DictionaryType
+          valueType:
+            $id: '176'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '177'
+              fixed: false
+              raw: String
+            deprecated: false
+          supportsAdditionalProperties: false
+          name:
+            $id: '178'
+            fixed: false
+          deprecated: false
+    serializedName: ServicesPatchDescription
+    documentation: The description of the service.
+    containsConstantProperties: false
+    name:
+      $id: '179'
+      fixed: false
+      raw: ServicesPatchDescription
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServicesPatchDescription
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesPatchDescription
+    deprecated: false
+  - $ref: '118'
+  - $id: '180'
+    $type: CompositeType
+    properties:
+      - $id: '181'
+        isReadOnly: true
+        realPath:
+          - code
+        collectionFormat: none
+        defaultValue:
+          $id: '182'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '183'
+          fixed: false
+          raw: The error code.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '184'
+          fixed: false
+          raw: code
+        serializedName: code
+        modelType:
+          $id: '185'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '186'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '187'
+        isReadOnly: true
+        realPath:
+          - message
+        collectionFormat: none
+        defaultValue:
+          $id: '188'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '189'
+          fixed: false
+          raw: The error message.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '190'
+          fixed: false
+          raw: message
+        serializedName: message
+        modelType:
+          $id: '191'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '192'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '193'
+        isReadOnly: true
+        realPath:
+          - target
+        collectionFormat: none
+        defaultValue:
+          $id: '194'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '195'
+          fixed: false
+          raw: The target of the particular error.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '196'
+          fixed: false
+          raw: target
+        serializedName: target
+        modelType:
+          $id: '197'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '198'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ErrorDetailsInternal
+    documentation: Error details.
+    containsConstantProperties: false
+    name:
+      $id: '199'
+      fixed: false
+      raw: ErrorDetailsInternal
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ErrorDetailsInternal
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ErrorDetailsInternal
+    deprecated: false
+  - $id: '200'
+    $type: CompositeType
+    properties:
+      - $id: '201'
+        isReadOnly: false
+        realPath:
+          - error
+        collectionFormat: none
+        defaultValue:
+          $id: '202'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '203'
+          fixed: false
+          raw: Object containing error details.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '204'
+          fixed: false
+          raw: error
+        serializedName: error
+        modelType:
+          $ref: '180'
+    serializedName: ErrorDetails
+    documentation: Error details.
+    containsConstantProperties: false
+    name:
+      $id: '205'
+      fixed: false
+      raw: ErrorDetails
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ErrorDetails
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ErrorDetails
+    deprecated: false
+  - $id: '206'
+    $type: CompositeType
+    properties:
+      - $id: '207'
+        isReadOnly: false
+        realPath:
+          - nextLink
+        collectionFormat: none
+        defaultValue:
+          $id: '208'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '209'
+          fixed: false
+          raw: The link used to get the next page of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '210'
+          fixed: false
+          raw: nextLink
+        serializedName: nextLink
+        modelType:
+          $id: '211'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '212'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '213'
+        isReadOnly: false
+        realPath:
+          - value
+        collectionFormat: none
+        defaultValue:
+          $id: '214'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '215'
+          fixed: false
+          raw: A list of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '216'
+          fixed: false
+          raw: value
+        serializedName: value
+        modelType:
+          $id: '217'
+          $type: SequenceType
+          elementType:
+            $ref: '113'
+          name:
+            $id: '218'
+            fixed: false
+          deprecated: false
+    serializedName: ServicesDescriptionListResult
+    documentation: A list of service description objects with a next link.
+    containsConstantProperties: false
+    name:
+      $id: '219'
+      fixed: false
+      raw: ServicesDescriptionListResult
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServicesDescriptionListResult
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesDescriptionListResult
+    deprecated: false
+  - $id: '220'
+    $type: CompositeType
+    properties:
+      - $id: '221'
+        isReadOnly: true
+        realPath:
+          - provider
+        collectionFormat: none
+        defaultValue:
+          $id: '222'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '223'
+          fixed: false
+          raw: 'Service provider: Microsoft.HealthcareApis'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '224'
+          fixed: false
+          raw: provider
+        serializedName: provider
+        modelType:
+          $id: '225'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '226'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '227'
+        isReadOnly: true
+        realPath:
+          - resource
+        collectionFormat: none
+        defaultValue:
+          $id: '228'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '229'
+          fixed: false
+          raw: 'Resource Type: Services'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '230'
+          fixed: false
+          raw: resource
+        serializedName: resource
+        modelType:
+          $id: '231'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '232'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '233'
+        isReadOnly: true
+        realPath:
+          - operation
+        collectionFormat: none
+        defaultValue:
+          $id: '234'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '235'
+          fixed: false
+          raw: Name of the operation
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '236'
+          fixed: false
+          raw: operation
+        serializedName: operation
+        modelType:
+          $id: '237'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '238'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '239'
+        isReadOnly: true
+        realPath:
+          - description
+        collectionFormat: none
+        defaultValue:
+          $id: '240'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '241'
+          fixed: false
+          raw: 'Friendly description for the operation,'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '242'
+          fixed: false
+          raw: description
+        serializedName: description
+        modelType:
+          $id: '243'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '244'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: OperationDisplay
+    documentation: The object that represents the operation.
+    containsConstantProperties: false
+    name:
+      $id: '245'
+      fixed: false
+      raw: OperationDisplay
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: OperationDisplay
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/OperationDisplay
+    deprecated: false
+  - $id: '246'
+    $type: CompositeType
+    properties:
+      - $id: '247'
+        isReadOnly: true
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '248'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '249'
+          fixed: false
+          raw: >-
+            Operation name: {provider}/{resource}/{read | write | action |
+            delete}
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '250'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '251'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '252'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '253'
+        isReadOnly: true
+        realPath:
+          - origin
+        collectionFormat: none
+        defaultValue:
+          $id: '254'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '255'
+          fixed: false
+          raw: 'Default value is ''user,system''.'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '256'
+          fixed: false
+          raw: origin
+        serializedName: origin
+        modelType:
+          $id: '257'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '258'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '259'
+        isReadOnly: false
+        realPath:
+          - display
+        collectionFormat: none
+        defaultValue:
+          $id: '260'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '261'
+          fixed: false
+          raw: The information displayed about the operation.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '262'
+          fixed: false
+          raw: display
+        serializedName: display
+        modelType:
+          $ref: '220'
+    serializedName: Operation
+    documentation: Service REST API operation.
+    containsConstantProperties: false
+    name:
+      $id: '263'
+      fixed: false
+      raw: Operation
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: Operation
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/Operation
+    deprecated: false
+  - $id: '264'
+    $type: CompositeType
+    properties:
+      - $id: '265'
+        isReadOnly: false
+        realPath:
+          - nextLink
+        collectionFormat: none
+        defaultValue:
+          $id: '266'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '267'
+          fixed: false
+          raw: The link used to get the next page of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '268'
+          fixed: false
+          raw: nextLink
+        serializedName: nextLink
+        modelType:
+          $id: '269'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '270'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '271'
+        isReadOnly: true
+        realPath:
+          - value
+        collectionFormat: none
+        defaultValue:
+          $id: '272'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '273'
+          fixed: false
+          raw: >-
+            A list of service operations supported by the
+            Microsoft.HealthcareApis resource provider.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '274'
+          fixed: false
+          raw: value
+        serializedName: value
+        modelType:
+          $id: '275'
+          $type: SequenceType
+          elementType:
+            $ref: '246'
+          name:
+            $id: '276'
+            fixed: false
+          deprecated: false
+    serializedName: OperationListResult
+    documentation: >-
+      A list of service operations. It contains a list of operations and a URL
+      link to get the next set of results.
+    containsConstantProperties: false
+    name:
+      $id: '277'
+      fixed: false
+      raw: OperationListResult
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: OperationListResult
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/OperationListResult
+    deprecated: false
+  - $id: '278'
+    $type: CompositeType
+    properties:
+      - $id: '279'
+        isReadOnly: false
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '280'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '281'
+          fixed: false
+          raw: The name of the service instance to check.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '282'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '283'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '284'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '285'
+        isReadOnly: false
+        realPath:
+          - type
+        collectionFormat: none
+        defaultValue:
+          $id: '286'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '287'
+          fixed: false
+          raw: The fully qualified resource type which includes provider namespace.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '288'
+          fixed: false
+          raw: type
+        serializedName: type
+        modelType:
+          $id: '289'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '290'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: CheckNameAvailabilityParameters
+    documentation: Input values.
+    containsConstantProperties: false
+    name:
+      $id: '291'
+      fixed: false
+      raw: CheckNameAvailabilityParameters
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: CheckNameAvailabilityParameters
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/CheckNameAvailabilityParameters
+    deprecated: false
+  - $id: '292'
+    $type: CompositeType
+    properties:
+      - $id: '293'
+        isReadOnly: true
+        realPath:
+          - nameAvailable
+        collectionFormat: none
+        defaultValue:
+          $id: '294'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '295'
+          fixed: false
+          raw: The value which indicates whether the provided name is available.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '296'
+          fixed: false
+          raw: nameAvailable
+        serializedName: nameAvailable
+        modelType:
+          $id: '297'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '298'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+      - $id: '299'
+        isReadOnly: true
+        realPath:
+          - reason
+        collectionFormat: none
+        defaultValue:
+          $id: '300'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '301'
+          fixed: false
+          raw: The reason for unavailability.
+        extensions:
+          x-ms-metadata:
+            apiVersions:
+              - '2019-09-16'
+            filename:
+              - 'mem:///125?oai3.shaken.json'
+            name: ServiceNameUnavailabilityReason
+            originalLocations:
+              - >-
+                file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesNameAvailabilityInfo-reason
+          x-ms-enum:
+            name: ServiceNameUnavailabilityReason
+            modelAsString: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '302'
+          fixed: false
+          raw: reason
+        serializedName: reason
+        modelType:
+          $id: '303'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '304'
+              name: Invalid
+              serializedName: Invalid
+            - $id: '305'
+              name: AlreadyExists
+              serializedName: AlreadyExists
+          modelAsString: false
+          underlyingType:
+            $id: '306'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '307'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '308'
+            fixed: false
+            raw: ServiceNameUnavailabilityReason
+          deprecated: false
+      - $id: '309'
+        isReadOnly: false
+        realPath:
+          - message
+        collectionFormat: none
+        defaultValue:
+          $id: '310'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '311'
+          fixed: false
+          raw: The detailed reason message.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '312'
+          fixed: false
+          raw: message
+        serializedName: message
+        modelType:
+          $id: '313'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '314'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ServicesNameAvailabilityInfo
+    documentation: The properties indicating whether a given service name is available.
+    containsConstantProperties: false
+    name:
+      $id: '315'
+      fixed: false
+      raw: ServicesNameAvailabilityInfo
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: ServicesNameAvailabilityInfo
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/ServicesNameAvailabilityInfo
+    deprecated: false
+  - $id: '316'
+    $type: CompositeType
+    properties:
+      - $id: '317'
+        isReadOnly: true
+        realPath:
+          - id
+        collectionFormat: none
+        defaultValue:
+          $id: '318'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '319'
+          fixed: false
+          raw: The ID of the operation returned.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '320'
+          fixed: false
+          raw: id
+        serializedName: id
+        modelType:
+          $id: '321'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '322'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '323'
+        isReadOnly: true
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '324'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '325'
+          fixed: false
+          raw: The name of the operation result.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '326'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '327'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '328'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '329'
+        isReadOnly: true
+        realPath:
+          - status
+        collectionFormat: none
+        defaultValue:
+          $id: '330'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '331'
+          fixed: false
+          raw: The status of the operation being performed.
+        extensions:
+          x-ms-metadata:
+            apiVersions:
+              - '2019-09-16'
+            filename:
+              - 'mem:///125?oai3.shaken.json'
+            name: OperationResultStatus
+            originalLocations:
+              - >-
+                file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/OperationResultsDescription-status
+          x-ms-enum:
+            name: OperationResultStatus
+            modelAsString: true
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '332'
+          fixed: false
+          raw: status
+        serializedName: status
+        modelType:
+          $id: '333'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '334'
+              name: Canceled
+              serializedName: Canceled
+            - $id: '335'
+              name: Succeeded
+              serializedName: Succeeded
+            - $id: '336'
+              name: Failed
+              serializedName: Failed
+            - $id: '337'
+              name: Requested
+              serializedName: Requested
+            - $id: '338'
+              name: Running
+              serializedName: Running
+          modelAsString: true
+          underlyingType:
+            $id: '339'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '340'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '341'
+            fixed: false
+            raw: OperationResultStatus
+          deprecated: false
+      - $id: '342'
+        isReadOnly: true
+        realPath:
+          - startTime
+        collectionFormat: none
+        defaultValue:
+          $id: '343'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '344'
+          fixed: false
+          raw: The time that the operation was started.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '345'
+          fixed: false
+          raw: startTime
+        serializedName: startTime
+        modelType:
+          $id: '346'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '347'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '348'
+        isReadOnly: false
+        realPath:
+          - properties
+        collectionFormat: none
+        defaultValue:
+          $id: '349'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '350'
+          fixed: false
+          raw: Additional properties of the operation result.
+        extensions:
+          x-ms-client-flatten: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '351'
+          fixed: false
+          raw: properties
+        serializedName: properties
+        modelType:
+          $id: '352'
+          $type: PrimaryType
+          knownPrimaryType: object
+          name:
+            $id: '353'
+            fixed: false
+            raw: Object
+          deprecated: false
+    serializedName: OperationResultsDescription
+    documentation: >-
+      The properties indicating the operation result of an operation on a
+      service.
+    containsConstantProperties: false
+    name:
+      $id: '354'
+      fixed: false
+      raw: OperationResultsDescription
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: OperationResultsDescription
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/schemas/OperationResultsDescription
+    deprecated: false
+errorTypes:
+  - $ref: '200'
+enumTypes:
+  - $ref: '81'
+  - $ref: '141'
+  - $ref: '303'
+  - $ref: '333'
+name: HealthcareApisManagementClient
+namespace: Azure.mgmt.healthcareapis
+modelsName: Models
+apiVersion: '2019-09-16'
+baseUrl: 'https://management.azure.com'
+documentation: Azure Healthcare APIs Client
+extensions:
+  security:
+    - azure_auth:
+        - user_impersonation
+  directive: []
+properties:
+  - $id: '355'
+    isReadOnly: false
+    realPath:
+      - subscriptionId
+    collectionFormat: none
+    defaultValue:
+      $id: '356'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '357'
+      fixed: false
+      raw: The subscription identifier.
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: subscriptionId
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '358'
+      fixed: false
+      raw: subscriptionId
+    serializedName: subscriptionId
+    modelType:
+      $id: '359'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '360'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '361'
+    isReadOnly: false
+    realPath:
+      - resourceGroupName
+    collectionFormat: none
+    constraints:
+      MaxLength: '90'
+      MinLength: '1'
+      Pattern: '^[-\w\._\(\)]+$'
+    defaultValue:
+      $id: '362'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '363'
+      fixed: false
+      raw: The name of the resource group that contains the service instance.
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: resourceGroupName
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '364'
+      fixed: false
+      raw: resourceGroupName
+    serializedName: resourceGroupName
+    modelType:
+      $id: '365'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '366'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '367'
+    isReadOnly: false
+    realPath:
+      - resourceName
+    collectionFormat: none
+    constraints:
+      MaxLength: '24'
+      MinLength: '3'
+    defaultValue:
+      $id: '368'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '369'
+      fixed: false
+      raw: The name of the service instance.
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: resourceName
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceName
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '370'
+      fixed: false
+      raw: resourceName
+    serializedName: resourceName
+    modelType:
+      $id: '371'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '372'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '373'
+    isReadOnly: false
+    realPath:
+      - locationName
+    collectionFormat: none
+    defaultValue:
+      $id: '374'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '375'
+      fixed: false
+      raw: The location of the operation.
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: locationName
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/locationName
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '376'
+      fixed: false
+      raw: locationName
+    serializedName: locationName
+    modelType:
+      $id: '377'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '378'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '379'
+    isReadOnly: false
+    realPath:
+      - operationResultId
+    collectionFormat: none
+    defaultValue:
+      $id: '380'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '381'
+      fixed: false
+      raw: The ID of the operation result to get.
+    extensions:
+      x-ms-metadata:
+        apiVersions:
+          - '2019-09-16'
+        filename:
+          - 'mem:///125?oai3.shaken.json'
+        name: operationResultId
+        originalLocations:
+          - >-
+            file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/operationResultId
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '382'
+      fixed: false
+      raw: operationResultId
+    serializedName: operationResultId
+    modelType:
+      $id: '383'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '384'
+        fixed: false
+        raw: String
+      deprecated: false
+operations:
+  - $id: '385'
+    methods:
+      - $id: '386'
+        parameters:
+          - $id: '387'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '388'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '389'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '390'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '391'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '392'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '393'
+            clientProperty:
+              $ref: '361'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '394'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '395'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceGroupName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '396'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '397'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '398'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '399'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '400'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '401'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '402'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '403'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '404'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '405'
+          fixed: false
+          raw: Get
+        group:
+          $id: '406'
+          fixed: false
+          raw: Services
+        serializedName: Services_Get
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '407'
+            body:
+              $ref: '113'
+            extensions:
+              $id: '408'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·get·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·get·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '409'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '410'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·get·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·get·responses·default
+          isNullable: true
+        returnType:
+          $id: '411'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Get the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+        deprecated: false
+        hidden: false
+      - $id: '412'
+        parameters:
+          - $id: '413'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '414'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '415'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '416'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '417'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '418'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '419'
+            clientProperty:
+              $ref: '361'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '420'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '421'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceGroupName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '422'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '423'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '424'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '425'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '426'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '427'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '428'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '429'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '430'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '431'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '432'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '433'
+              fixed: false
+              raw: The service instance metadata.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·requestbody
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/requestBodies/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·requestbody
+              x-ms-requestBody-name: serviceDescription
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '434'
+              fixed: false
+              raw: serviceDescription
+            serializedName: serviceDescription
+            modelType:
+              $ref: '113'
+        name:
+          $id: '435'
+          fixed: false
+          raw: CreateOrUpdate
+        group:
+          $id: '436'
+          fixed: false
+          raw: Services
+        serializedName: Services_CreateOrUpdate
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: put
+        responses:
+          OK:
+            $id: '437'
+            body:
+              $ref: '113'
+            extensions:
+              $id: '438'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·200
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·201
+            isNullable: true
+          Created:
+            $id: '439'
+            body:
+              $ref: '113'
+            extensions:
+              $id: '440'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·200
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·201
+            isNullable: true
+        defaultResponse:
+          $id: '441'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '442'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·put·responses·default
+          isNullable: true
+        returnType:
+          $id: '443'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Create or update the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-long-running-operation: true
+          x-ms-requestBody-index: '4'
+        deprecated: false
+        hidden: false
+      - $id: '444'
+        parameters:
+          - $id: '445'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '446'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '447'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '448'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '449'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '450'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '451'
+            clientProperty:
+              $ref: '361'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '452'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '453'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceGroupName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '454'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '455'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '456'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '457'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '458'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '459'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '460'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '461'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '462'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '463'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '464'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '465'
+              fixed: false
+              raw: The service instance metadata and security metadata.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·requestbody
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/requestBodies/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·requestbody
+              x-ms-requestBody-name: servicePatchDescription
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '466'
+              fixed: false
+              raw: servicePatchDescription
+            serializedName: servicePatchDescription
+            modelType:
+              $ref: '170'
+        name:
+          $id: '467'
+          fixed: false
+          raw: Update
+        group:
+          $id: '468'
+          fixed: false
+          raw: Services
+        serializedName: Services_Update
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: patch
+        responses:
+          OK:
+            $id: '469'
+            body:
+              $ref: '113'
+            extensions:
+              $id: '470'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '471'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '472'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·patch·responses·default
+          isNullable: true
+        returnType:
+          $id: '473'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Update the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-long-running-operation: true
+          x-ms-requestBody-index: '4'
+        deprecated: false
+        hidden: false
+      - $id: '474'
+        parameters:
+          - $id: '475'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '476'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '477'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '478'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '479'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '480'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '481'
+            clientProperty:
+              $ref: '361'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '482'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '483'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceGroupName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '484'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '485'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '486'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '487'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '488'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '489'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '490'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '491'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '492'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '493'
+          fixed: false
+          raw: Delete
+        group:
+          $id: '494'
+          fixed: false
+          raw: Services
+        serializedName: Services_Delete
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: delete
+        responses:
+          Accepted:
+            $id: '495'
+            extensions:
+              $id: '496'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·202
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·202
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·204
+            isNullable: true
+          NoContent:
+            $id: '497'
+            extensions:
+              $id: '498'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·202
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·202
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·204
+            isNullable: true
+        defaultResponse:
+          $id: '499'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '500'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services-resourcename·delete·responses·default
+          isNullable: true
+        returnType:
+          $id: '501'
+          isNullable: true
+        description: Delete a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-long-running-operation: true
+        deprecated: false
+        hidden: false
+      - $id: '502'
+        parameters:
+          - $id: '503'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '504'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '505'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '506'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '507'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '508'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '509'
+          fixed: false
+          raw: List
+        group:
+          $id: '510'
+          fixed: false
+          raw: Services
+        serializedName: Services_List
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '511'
+            body:
+              $ref: '206'
+            extensions:
+              $id: '512'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-services·get·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-services·get·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '513'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '514'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-services·get·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-services·get·responses·default
+          isNullable: true
+        returnType:
+          $id: '515'
+          body:
+            $ref: '206'
+          isNullable: true
+        description: Get all the service instances in a subscription.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+      - $id: '516'
+        parameters:
+          - $id: '517'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '518'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '519'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '520'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '521'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '522'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '523'
+            clientProperty:
+              $ref: '361'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '524'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '525'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: resourceGroupName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/resourceGroupName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '526'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '527'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '528'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '529'
+          fixed: false
+          raw: ListByResourceGroup
+        group:
+          $id: '530'
+          fixed: false
+          raw: Services
+        serializedName: Services_ListByResourceGroup
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '531'
+            body:
+              $ref: '206'
+            extensions:
+              $id: '532'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services·get·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services·get·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '533'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '534'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services·get·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-resourcegroups-resourcegroupname-providers-microsoft-healthcareapis-services·get·responses·default
+          isNullable: true
+        returnType:
+          $id: '535'
+          body:
+            $ref: '206'
+          isNullable: true
+        description: Get all the service instances in a resource group.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+      - $id: '536'
+        parameters:
+          - $id: '537'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '538'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '539'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '540'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '541'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '542'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '543'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '544'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '545'
+              fixed: false
+              raw: >-
+                Set the name parameter in the CheckNameAvailabilityParameters
+                structure to the name of the service instance to check.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·requestbody
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/requestBodies/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·requestbody
+              x-ms-requestBody-name: checkNameAvailabilityInputs
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '546'
+              fixed: false
+              raw: checkNameAvailabilityInputs
+            serializedName: checkNameAvailabilityInputs
+            modelType:
+              $ref: '278'
+        name:
+          $id: '547'
+          fixed: false
+          raw: CheckNameAvailability
+        group:
+          $id: '548'
+          fixed: false
+          raw: Services
+        serializedName: Services_CheckNameAvailability
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/checkNameAvailability
+        isAbsoluteUrl: false
+        httpMethod: post
+        responses:
+          OK:
+            $id: '549'
+            body:
+              $ref: '292'
+            extensions:
+              $id: '550'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '551'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '552'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-checknameavailability·post·responses·default
+          isNullable: true
+        returnType:
+          $id: '553'
+          body:
+            $ref: '292'
+          isNullable: true
+        description: Check if a service instance name is available.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-requestBody-index: '2'
+        deprecated: false
+        hidden: false
+    name:
+      $id: '554'
+      fixed: false
+      raw: Services
+    typeName:
+      $id: '555'
+      fixed: false
+    nameForProperty: Services
+  - $id: '556'
+    methods:
+      - $id: '557'
+        name:
+          $id: '558'
+          fixed: false
+          raw: List
+        group:
+          $id: '559'
+          fixed: false
+          raw: Operations
+        serializedName: Operations_List
+        url: /providers/Microsoft.HealthcareApis/operations
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '560'
+            body:
+              $ref: '264'
+            extensions:
+              $id: '561'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·providers-microsoft-healthcareapis-operations·get·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·providers-microsoft-healthcareapis-operations·get·responses·200
+            isNullable: true
+        defaultResponse:
+          $id: '562'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '563'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·providers-microsoft-healthcareapis-operations·get·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·providers-microsoft-healthcareapis-operations·get·responses·default
+          isNullable: true
+        returnType:
+          $id: '564'
+          body:
+            $ref: '264'
+          isNullable: true
+        description: Lists all of the available Healthcare service REST API operations.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+    name:
+      $id: '565'
+      fixed: false
+      raw: Operations
+    typeName:
+      $id: '566'
+      fixed: false
+    nameForProperty: Operations
+  - $id: '567'
+    methods:
+      - $id: '568'
+        parameters:
+          - $id: '569'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '570'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '571'
+              fixed: false
+              raw: The subscription identifier.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: subscriptionId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/subscriptionId
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '572'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '573'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '574'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '575'
+            clientProperty:
+              $ref: '373'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '576'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '577'
+              fixed: false
+              raw: The location of the operation.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: locationName
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/locationName
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '578'
+              fixed: false
+              raw: locationName
+            serializedName: locationName
+            modelType:
+              $id: '579'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '580'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '581'
+            clientProperty:
+              $ref: '379'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '582'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '583'
+              fixed: false
+              raw: The ID of the operation result to get.
+            extensions:
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: operationResultId
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/parameters/operationResultId
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '584'
+              fixed: false
+              raw: operationResultId
+            serializedName: operationResultId
+            modelType:
+              $id: '585'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '586'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '587'
+          fixed: false
+          raw: Get
+        group:
+          $id: '588'
+          fixed: false
+          raw: OperationResults
+        serializedName: OperationResults_Get
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/locations/{locationName}/operationresults/{operationResultId}
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '589'
+            body:
+              $ref: '316'
+            extensions:
+              $id: '590'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·200
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·200
+            isNullable: true
+          NotFound:
+            $id: '591'
+            body:
+              $ref: '200'
+            extensions:
+              $id: '592'
+              x-ms-metadata:
+                apiVersions:
+                  - '2019-09-16'
+                filename:
+                  - 'mem:///125?oai3.shaken.json'
+                name: >-
+                  paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·404
+                originalLocations:
+                  - >-
+                    file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·404
+            isNullable: true
+        defaultResponse:
+          $id: '593'
+          body:
+            $ref: '200'
+          extensions:
+            $id: '594'
+            x-ms-metadata:
+              apiVersions:
+                - '2019-09-16'
+              filename:
+                - 'mem:///125?oai3.shaken.json'
+              name: >-
+                paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·default
+              originalLocations:
+                - >-
+                  file:///_/azure-rest-api-specs/specification/healthcareapis/resource-manager/Microsoft.HealthcareApis/stable/2019-09-16/healthcare-apis.json#/components/responses/paths·subscriptions-subscriptionid-providers-microsoft-healthcareapis-locations-locationname-operationresults-operationresultid·get·responses·default
+          isNullable: true
+        returnType:
+          $id: '595'
+          body:
+            $id: '596'
+            $type: PrimaryType
+            knownPrimaryType: object
+            name:
+              $id: '597'
+              fixed: false
+              raw: Object
+            deprecated: false
+          isNullable: true
+        description: Get the operation result for a long running operation.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          servers:
+            - url: 'https://management.azure.com/'
+        deprecated: false
+        hidden: false
+    name:
+      $id: '598'
+      fixed: false
+      raw: OperationResults
+    typeName:
+      $id: '599'
+      fixed: false
+    nameForProperty: OperationResults

@@ -1,0 +1,3778 @@
+$id: '1'
+modelTypes:
+  - $id: '2'
+    $type: CompositeType
+    properties:
+      - $id: '3'
+        isReadOnly: false
+        realPath:
+          - objectId
+        collectionFormat: none
+        constraints:
+          Pattern: '^(([0-9A-Fa-f]{8}[-]?(?:[0-9A-Fa-f]{4}[-]?){3}[0-9A-Fa-f]{12}){1})+$'
+        defaultValue:
+          $id: '4'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '5'
+          fixed: false
+          raw: >-
+            An Azure AD object ID (User or Apps) that is allowed access to the
+            FHIR service.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '6'
+          fixed: false
+          raw: objectId
+        serializedName: objectId
+        modelType:
+          $id: '7'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '8'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ServiceAccessPolicyEntry
+    documentation: An access policy entry.
+    containsConstantProperties: false
+    name:
+      $id: '9'
+      fixed: false
+      raw: ServiceAccessPolicyEntry
+    deprecated: false
+  - $id: '10'
+    $type: CompositeType
+    properties:
+      - $id: '11'
+        isReadOnly: false
+        realPath:
+          - offerThroughput
+        collectionFormat: none
+        constraints:
+          InclusiveMaximum: '10000'
+          InclusiveMinimum: '400'
+        defaultValue:
+          $id: '12'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '13'
+          fixed: false
+          raw: The provisioned throughput for the backing database.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '14'
+          fixed: false
+          raw: offerThroughput
+        serializedName: offerThroughput
+        modelType:
+          $id: '15'
+          $type: PrimaryType
+          knownPrimaryType: int
+          name:
+            $id: '16'
+            fixed: false
+            raw: Int
+          deprecated: false
+    serializedName: ServiceCosmosDbConfigurationInfo
+    documentation: The settings for the Cosmos DB database backing the service.
+    containsConstantProperties: false
+    name:
+      $id: '17'
+      fixed: false
+      raw: ServiceCosmosDbConfigurationInfo
+    deprecated: false
+  - $id: '18'
+    $type: CompositeType
+    properties:
+      - $id: '19'
+        isReadOnly: false
+        realPath:
+          - authority
+        collectionFormat: none
+        defaultValue:
+          $id: '20'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '21'
+          fixed: false
+          raw: The authority url for the service
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '22'
+          fixed: false
+          raw: authority
+        serializedName: authority
+        modelType:
+          $id: '23'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '24'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '25'
+        isReadOnly: false
+        realPath:
+          - audience
+        collectionFormat: none
+        defaultValue:
+          $id: '26'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '27'
+          fixed: false
+          raw: The audience url for the service
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '28'
+          fixed: false
+          raw: audience
+        serializedName: audience
+        modelType:
+          $id: '29'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '30'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '31'
+        isReadOnly: false
+        realPath:
+          - smartProxyEnabled
+        collectionFormat: none
+        defaultValue:
+          $id: '32'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '33'
+          fixed: false
+          raw: If the SMART on FHIR proxy is enabled
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '34'
+          fixed: false
+          raw: smartProxyEnabled
+        serializedName: smartProxyEnabled
+        modelType:
+          $id: '35'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '36'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+    serializedName: ServiceAuthenticationConfigurationInfo
+    documentation: Authentication configuration information
+    containsConstantProperties: false
+    name:
+      $id: '37'
+      fixed: false
+      raw: ServiceAuthenticationConfigurationInfo
+    deprecated: false
+  - $id: '38'
+    $type: CompositeType
+    properties:
+      - $id: '39'
+        isReadOnly: false
+        realPath:
+          - origins
+        collectionFormat: none
+        defaultValue:
+          $id: '40'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '41'
+          fixed: false
+          raw: The origins to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '42'
+          fixed: false
+          raw: origins
+        serializedName: origins
+        modelType:
+          $id: '43'
+          $type: SequenceType
+          elementType:
+            $id: '44'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '45'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '46'
+            fixed: false
+          deprecated: false
+      - $id: '47'
+        isReadOnly: false
+        realPath:
+          - headers
+        collectionFormat: none
+        defaultValue:
+          $id: '48'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '49'
+          fixed: false
+          raw: The headers to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '50'
+          fixed: false
+          raw: headers
+        serializedName: headers
+        modelType:
+          $id: '51'
+          $type: SequenceType
+          elementType:
+            $id: '52'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '53'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '54'
+            fixed: false
+          deprecated: false
+      - $id: '55'
+        isReadOnly: false
+        realPath:
+          - methods
+        collectionFormat: none
+        defaultValue:
+          $id: '56'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '57'
+          fixed: false
+          raw: The methods to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '58'
+          fixed: false
+          raw: methods
+        serializedName: methods
+        modelType:
+          $id: '59'
+          $type: SequenceType
+          elementType:
+            $id: '60'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '61'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '62'
+            fixed: false
+          deprecated: false
+      - $id: '63'
+        isReadOnly: false
+        realPath:
+          - maxAge
+        collectionFormat: none
+        constraints:
+          InclusiveMaximum: '99999'
+          InclusiveMinimum: '0'
+        defaultValue:
+          $id: '64'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '65'
+          fixed: false
+          raw: The max age to be allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '66'
+          fixed: false
+          raw: maxAge
+        serializedName: maxAge
+        modelType:
+          $id: '67'
+          $type: PrimaryType
+          knownPrimaryType: int
+          name:
+            $id: '68'
+            fixed: false
+            raw: Int
+          deprecated: false
+      - $id: '69'
+        isReadOnly: false
+        realPath:
+          - allowCredentials
+        collectionFormat: none
+        defaultValue:
+          $id: '70'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '71'
+          fixed: false
+          raw: If credentials are allowed via CORS.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '72'
+          fixed: false
+          raw: allowCredentials
+        serializedName: allowCredentials
+        modelType:
+          $id: '73'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '74'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+    serializedName: ServiceCorsConfigurationInfo
+    documentation: The settings for the CORS configuration of the service instance.
+    containsConstantProperties: false
+    name:
+      $id: '75'
+      fixed: false
+      raw: ServiceCorsConfigurationInfo
+    deprecated: false
+  - $id: '76'
+    $type: CompositeType
+    properties:
+      - $id: '77'
+        isReadOnly: true
+        realPath:
+          - provisioningState
+        collectionFormat: none
+        defaultValue:
+          $id: '78'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '79'
+          fixed: false
+          raw: The provisioning state.
+        extensions:
+          x-ms-enum:
+            name: provisioningState
+            modelAsString: true
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '80'
+          fixed: false
+          raw: provisioningState
+        serializedName: provisioningState
+        modelType:
+          $id: '81'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '82'
+              name: Deleting
+              serializedName: Deleting
+            - $id: '83'
+              name: Succeeded
+              serializedName: Succeeded
+            - $id: '84'
+              name: Creating
+              serializedName: Creating
+            - $id: '85'
+              name: Accepted
+              serializedName: Accepted
+            - $id: '86'
+              name: Verifying
+              serializedName: Verifying
+            - $id: '87'
+              name: Updating
+              serializedName: Updating
+            - $id: '88'
+              name: Failed
+              serializedName: Failed
+            - $id: '89'
+              name: Canceled
+              serializedName: Canceled
+            - $id: '90'
+              name: Deprovisioned
+              serializedName: Deprovisioned
+          modelAsString: true
+          underlyingType:
+            $id: '91'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '92'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '93'
+            fixed: false
+            raw: provisioningState
+          deprecated: false
+      - $id: '94'
+        isReadOnly: false
+        realPath:
+          - accessPolicies
+        collectionFormat: none
+        defaultValue:
+          $id: '95'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '96'
+          fixed: false
+          raw: The access policies of the service instance.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '97'
+          fixed: false
+          raw: accessPolicies
+        serializedName: accessPolicies
+        modelType:
+          $id: '98'
+          $type: SequenceType
+          elementType:
+            $ref: '2'
+          name:
+            $id: '99'
+            fixed: false
+          deprecated: false
+      - $id: '100'
+        isReadOnly: false
+        realPath:
+          - cosmosDbConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '101'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '102'
+          fixed: false
+          raw: The settings for the Cosmos DB database backing the service.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '103'
+          fixed: false
+          raw: cosmosDbConfiguration
+        serializedName: cosmosDbConfiguration
+        modelType:
+          $ref: '10'
+      - $id: '104'
+        isReadOnly: false
+        realPath:
+          - authenticationConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '105'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '106'
+          fixed: false
+          raw: The authentication configuration for the service instance.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '107'
+          fixed: false
+          raw: authenticationConfiguration
+        serializedName: authenticationConfiguration
+        modelType:
+          $ref: '18'
+      - $id: '108'
+        isReadOnly: false
+        realPath:
+          - corsConfiguration
+        collectionFormat: none
+        defaultValue:
+          $id: '109'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '110'
+          fixed: false
+          raw: The settings for the CORS configuration of the service instance.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '111'
+          fixed: false
+          raw: corsConfiguration
+        serializedName: corsConfiguration
+        modelType:
+          $ref: '38'
+    serializedName: ServicesProperties
+    documentation: The properties of a service instance.
+    containsConstantProperties: false
+    name:
+      $id: '112'
+      fixed: false
+      raw: ServicesProperties
+    deprecated: false
+  - $id: '113'
+    $type: CompositeType
+    properties:
+      - $id: '114'
+        isReadOnly: false
+        realPath:
+          - properties
+        collectionFormat: none
+        defaultValue:
+          $id: '115'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '116'
+          fixed: false
+          raw: The common properties of a service.
+        extensions:
+          x-ms-client-flatten: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '117'
+          fixed: false
+          raw: properties
+        serializedName: properties
+        modelType:
+          $ref: '76'
+    serializedName: ServicesDescription
+    baseModelType:
+      $id: '118'
+      $type: CompositeType
+      properties:
+        - $id: '119'
+          isReadOnly: true
+          realPath:
+            - id
+          collectionFormat: none
+          defaultValue:
+            $id: '120'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '121'
+            fixed: false
+            raw: The resource identifier.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '122'
+            fixed: false
+            raw: id
+          serializedName: id
+          modelType:
+            $id: '123'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '124'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '125'
+          isReadOnly: true
+          realPath:
+            - name
+          collectionFormat: none
+          constraints:
+            Pattern: '^[a-z0-9][a-z0-9-]{1,21}[a-z0-9]$'
+          defaultValue:
+            $id: '126'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '127'
+            fixed: false
+            raw: The resource name.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '128'
+            fixed: false
+            raw: name
+          serializedName: name
+          modelType:
+            $id: '129'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '130'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '131'
+          isReadOnly: true
+          realPath:
+            - type
+          collectionFormat: none
+          defaultValue:
+            $id: '132'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '133'
+            fixed: false
+            raw: The resource type.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '134'
+            fixed: false
+            raw: type
+          serializedName: type
+          modelType:
+            $id: '135'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '136'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '137'
+          isReadOnly: false
+          realPath:
+            - kind
+          collectionFormat: none
+          defaultValue:
+            $id: '138'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '139'
+            fixed: false
+            raw: The kind of the service.
+          extensions:
+            x-ms-enum:
+              name: kind
+              modelAsString: false
+          isRequired: true
+          isConstant: false
+          name:
+            $id: '140'
+            fixed: false
+            raw: kind
+          serializedName: kind
+          modelType:
+            $id: '141'
+            $type: EnumType
+            modelAsExtensible: false
+            values:
+              - $id: '142'
+                name: fhir
+                serializedName: fhir
+              - $id: '143'
+                name: fhir-Stu3
+                serializedName: fhir-Stu3
+              - $id: '144'
+                name: fhir-R4
+                serializedName: fhir-R4
+            modelAsString: false
+            underlyingType:
+              $id: '145'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '146'
+                fixed: false
+                raw: String
+              deprecated: false
+            name:
+              $id: '147'
+              fixed: false
+              raw: kind
+            deprecated: false
+        - $id: '148'
+          isReadOnly: false
+          realPath:
+            - location
+          collectionFormat: none
+          defaultValue:
+            $id: '149'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '150'
+            fixed: false
+            raw: The resource location.
+          extensions:
+            x-ms-mutability:
+              - create
+              - read
+          isRequired: true
+          isConstant: false
+          name:
+            $id: '151'
+            fixed: false
+            raw: location
+          serializedName: location
+          modelType:
+            $id: '152'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '153'
+              fixed: false
+              raw: String
+            deprecated: false
+        - $id: '154'
+          isReadOnly: false
+          realPath:
+            - tags
+          collectionFormat: none
+          defaultValue:
+            $id: '155'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '156'
+            fixed: false
+            raw: The resource tags.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '157'
+            fixed: false
+            raw: tags
+          serializedName: tags
+          modelType:
+            $id: '158'
+            $type: DictionaryType
+            valueType:
+              $id: '159'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '160'
+                fixed: false
+                raw: String
+              deprecated: false
+            supportsAdditionalProperties: false
+            name:
+              $id: '161'
+              fixed: false
+            deprecated: false
+        - $id: '162'
+          isReadOnly: false
+          realPath:
+            - etag
+          collectionFormat: none
+          defaultValue:
+            $id: '163'
+            fixed: false
+          deprecated: false
+          documentation:
+            $id: '164'
+            fixed: false
+            raw: >-
+              An etag associated with the resource, used for optimistic
+              concurrency when editing it.
+          isRequired: false
+          isConstant: false
+          name:
+            $id: '165'
+            fixed: false
+            raw: etag
+          serializedName: etag
+          modelType:
+            $id: '166'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '167'
+              fixed: false
+              raw: String
+            deprecated: false
+      serializedName: Resource
+      documentation: The common properties of a service.
+      containsConstantProperties: false
+      name:
+        $id: '168'
+        fixed: false
+        raw: Resource
+      extensions:
+        x-ms-azure-resource: true
+      deprecated: false
+    documentation: The description of the service.
+    containsConstantProperties: false
+    name:
+      $id: '169'
+      fixed: false
+      raw: ServicesDescription
+    deprecated: false
+  - $id: '170'
+    $type: CompositeType
+    properties:
+      - $id: '171'
+        isReadOnly: false
+        realPath:
+          - tags
+        collectionFormat: none
+        defaultValue:
+          $id: '172'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '173'
+          fixed: false
+          raw: Instance tags
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '174'
+          fixed: false
+          raw: tags
+        serializedName: tags
+        modelType:
+          $id: '175'
+          $type: DictionaryType
+          valueType:
+            $id: '176'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '177'
+              fixed: false
+              raw: String
+            deprecated: false
+          supportsAdditionalProperties: false
+          name:
+            $id: '178'
+            fixed: false
+          deprecated: false
+    serializedName: ServicesPatchDescription
+    documentation: The description of the service.
+    containsConstantProperties: false
+    name:
+      $id: '179'
+      fixed: false
+      raw: ServicesPatchDescription
+    deprecated: false
+  - $ref: '118'
+  - $id: '180'
+    $type: CompositeType
+    properties:
+      - $id: '181'
+        isReadOnly: true
+        realPath:
+          - code
+        collectionFormat: none
+        defaultValue:
+          $id: '182'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '183'
+          fixed: false
+          raw: The error code.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '184'
+          fixed: false
+          raw: code
+        serializedName: code
+        modelType:
+          $id: '185'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '186'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '187'
+        isReadOnly: true
+        realPath:
+          - message
+        collectionFormat: none
+        defaultValue:
+          $id: '188'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '189'
+          fixed: false
+          raw: The error message.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '190'
+          fixed: false
+          raw: message
+        serializedName: message
+        modelType:
+          $id: '191'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '192'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '193'
+        isReadOnly: true
+        realPath:
+          - target
+        collectionFormat: none
+        defaultValue:
+          $id: '194'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '195'
+          fixed: false
+          raw: The target of the particular error.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '196'
+          fixed: false
+          raw: target
+        serializedName: target
+        modelType:
+          $id: '197'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '198'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ErrorDetailsInternal
+    documentation: Error details.
+    containsConstantProperties: false
+    name:
+      $id: '199'
+      fixed: false
+      raw: ErrorDetailsInternal
+    deprecated: false
+  - $id: '200'
+    $type: CompositeType
+    properties:
+      - $id: '201'
+        isReadOnly: false
+        realPath:
+          - error
+        collectionFormat: none
+        defaultValue:
+          $id: '202'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '203'
+          fixed: false
+          raw: Object containing error details.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '204'
+          fixed: false
+          raw: error
+        serializedName: error
+        modelType:
+          $ref: '180'
+    serializedName: ErrorDetails
+    documentation: Error details.
+    containsConstantProperties: false
+    name:
+      $id: '205'
+      fixed: false
+      raw: ErrorDetails
+    deprecated: false
+  - $id: '206'
+    $type: CompositeType
+    properties:
+      - $id: '207'
+        isReadOnly: false
+        realPath:
+          - nextLink
+        collectionFormat: none
+        defaultValue:
+          $id: '208'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '209'
+          fixed: false
+          raw: The link used to get the next page of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '210'
+          fixed: false
+          raw: nextLink
+        serializedName: nextLink
+        modelType:
+          $id: '211'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '212'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '213'
+        isReadOnly: false
+        realPath:
+          - value
+        collectionFormat: none
+        defaultValue:
+          $id: '214'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '215'
+          fixed: false
+          raw: A list of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '216'
+          fixed: false
+          raw: value
+        serializedName: value
+        modelType:
+          $id: '217'
+          $type: SequenceType
+          elementType:
+            $ref: '113'
+          name:
+            $id: '218'
+            fixed: false
+          deprecated: false
+    serializedName: ServicesDescriptionListResult
+    documentation: A list of service description objects with a next link.
+    containsConstantProperties: false
+    name:
+      $id: '219'
+      fixed: false
+      raw: ServicesDescriptionListResult
+    deprecated: false
+  - $id: '220'
+    $type: CompositeType
+    properties:
+      - $id: '221'
+        isReadOnly: true
+        realPath:
+          - provider
+        collectionFormat: none
+        defaultValue:
+          $id: '222'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '223'
+          fixed: false
+          raw: 'Service provider: Microsoft.HealthcareApis'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '224'
+          fixed: false
+          raw: provider
+        serializedName: provider
+        modelType:
+          $id: '225'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '226'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '227'
+        isReadOnly: true
+        realPath:
+          - resource
+        collectionFormat: none
+        defaultValue:
+          $id: '228'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '229'
+          fixed: false
+          raw: 'Resource Type: Services'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '230'
+          fixed: false
+          raw: resource
+        serializedName: resource
+        modelType:
+          $id: '231'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '232'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '233'
+        isReadOnly: true
+        realPath:
+          - operation
+        collectionFormat: none
+        defaultValue:
+          $id: '234'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '235'
+          fixed: false
+          raw: Name of the operation
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '236'
+          fixed: false
+          raw: operation
+        serializedName: operation
+        modelType:
+          $id: '237'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '238'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '239'
+        isReadOnly: true
+        realPath:
+          - description
+        collectionFormat: none
+        defaultValue:
+          $id: '240'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '241'
+          fixed: false
+          raw: 'Friendly description for the operation,'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '242'
+          fixed: false
+          raw: description
+        serializedName: description
+        modelType:
+          $id: '243'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '244'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: OperationDisplay
+    documentation: The object that represents the operation.
+    containsConstantProperties: false
+    name:
+      $id: '245'
+      fixed: false
+      raw: OperationDisplay
+    deprecated: false
+  - $id: '246'
+    $type: CompositeType
+    properties:
+      - $id: '247'
+        isReadOnly: true
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '248'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '249'
+          fixed: false
+          raw: >-
+            Operation name: {provider}/{resource}/{read | write | action |
+            delete}
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '250'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '251'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '252'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '253'
+        isReadOnly: true
+        realPath:
+          - origin
+        collectionFormat: none
+        defaultValue:
+          $id: '254'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '255'
+          fixed: false
+          raw: 'Default value is ''user,system''.'
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '256'
+          fixed: false
+          raw: origin
+        serializedName: origin
+        modelType:
+          $id: '257'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '258'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '259'
+        isReadOnly: false
+        realPath:
+          - display
+        collectionFormat: none
+        defaultValue:
+          $id: '260'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '261'
+          fixed: false
+          raw: The information displayed about the operation.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '262'
+          fixed: false
+          raw: display
+        serializedName: display
+        modelType:
+          $ref: '220'
+    serializedName: Operation
+    documentation: Service REST API operation.
+    containsConstantProperties: false
+    name:
+      $id: '263'
+      fixed: false
+      raw: Operation
+    deprecated: false
+  - $id: '264'
+    $type: CompositeType
+    properties:
+      - $id: '265'
+        isReadOnly: false
+        realPath:
+          - nextLink
+        collectionFormat: none
+        defaultValue:
+          $id: '266'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '267'
+          fixed: false
+          raw: The link used to get the next page of service description objects.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '268'
+          fixed: false
+          raw: nextLink
+        serializedName: nextLink
+        modelType:
+          $id: '269'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '270'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '271'
+        isReadOnly: true
+        realPath:
+          - value
+        collectionFormat: none
+        defaultValue:
+          $id: '272'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '273'
+          fixed: false
+          raw: >-
+            A list of service operations supported by the
+            Microsoft.HealthcareApis resource provider.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '274'
+          fixed: false
+          raw: value
+        serializedName: value
+        modelType:
+          $id: '275'
+          $type: SequenceType
+          elementType:
+            $ref: '246'
+          name:
+            $id: '276'
+            fixed: false
+          deprecated: false
+    serializedName: OperationListResult
+    documentation: >-
+      A list of service operations. It contains a list of operations and a URL
+      link to get the next set of results.
+    containsConstantProperties: false
+    name:
+      $id: '277'
+      fixed: false
+      raw: OperationListResult
+    deprecated: false
+  - $id: '278'
+    $type: CompositeType
+    properties:
+      - $id: '279'
+        isReadOnly: false
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '280'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '281'
+          fixed: false
+          raw: The name of the service instance to check.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '282'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '283'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '284'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '285'
+        isReadOnly: false
+        realPath:
+          - type
+        collectionFormat: none
+        defaultValue:
+          $id: '286'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '287'
+          fixed: false
+          raw: The fully qualified resource type which includes provider namespace.
+        isRequired: true
+        isConstant: false
+        name:
+          $id: '288'
+          fixed: false
+          raw: type
+        serializedName: type
+        modelType:
+          $id: '289'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '290'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: CheckNameAvailabilityParameters
+    documentation: Input values.
+    containsConstantProperties: false
+    name:
+      $id: '291'
+      fixed: false
+      raw: CheckNameAvailabilityParameters
+    deprecated: false
+  - $id: '292'
+    $type: CompositeType
+    properties:
+      - $id: '293'
+        isReadOnly: true
+        realPath:
+          - nameAvailable
+        collectionFormat: none
+        defaultValue:
+          $id: '294'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '295'
+          fixed: false
+          raw: The value which indicates whether the provided name is available.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '296'
+          fixed: false
+          raw: nameAvailable
+        serializedName: nameAvailable
+        modelType:
+          $id: '297'
+          $type: PrimaryType
+          knownPrimaryType: boolean
+          name:
+            $id: '298'
+            fixed: false
+            raw: Boolean
+          deprecated: false
+      - $id: '299'
+        isReadOnly: true
+        realPath:
+          - reason
+        collectionFormat: none
+        defaultValue:
+          $id: '300'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '301'
+          fixed: false
+          raw: The reason for unavailability.
+        extensions:
+          x-ms-enum:
+            name: ServiceNameUnavailabilityReason
+            modelAsString: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '302'
+          fixed: false
+          raw: reason
+        serializedName: reason
+        modelType:
+          $id: '303'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '304'
+              name: Invalid
+              serializedName: Invalid
+            - $id: '305'
+              name: AlreadyExists
+              serializedName: AlreadyExists
+          modelAsString: false
+          underlyingType:
+            $id: '306'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '307'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '308'
+            fixed: false
+            raw: ServiceNameUnavailabilityReason
+          deprecated: false
+      - $id: '309'
+        isReadOnly: false
+        realPath:
+          - message
+        collectionFormat: none
+        defaultValue:
+          $id: '310'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '311'
+          fixed: false
+          raw: The detailed reason message.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '312'
+          fixed: false
+          raw: message
+        serializedName: message
+        modelType:
+          $id: '313'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '314'
+            fixed: false
+            raw: String
+          deprecated: false
+    serializedName: ServicesNameAvailabilityInfo
+    documentation: The properties indicating whether a given service name is available.
+    containsConstantProperties: false
+    name:
+      $id: '315'
+      fixed: false
+      raw: ServicesNameAvailabilityInfo
+    deprecated: false
+  - $id: '316'
+    $type: CompositeType
+    properties:
+      - $id: '317'
+        isReadOnly: true
+        realPath:
+          - id
+        collectionFormat: none
+        defaultValue:
+          $id: '318'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '319'
+          fixed: false
+          raw: The ID of the operation returned.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '320'
+          fixed: false
+          raw: id
+        serializedName: id
+        modelType:
+          $id: '321'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '322'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '323'
+        isReadOnly: true
+        realPath:
+          - name
+        collectionFormat: none
+        defaultValue:
+          $id: '324'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '325'
+          fixed: false
+          raw: The name of the operation result.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '326'
+          fixed: false
+          raw: name
+        serializedName: name
+        modelType:
+          $id: '327'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '328'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '329'
+        isReadOnly: true
+        realPath:
+          - status
+        collectionFormat: none
+        defaultValue:
+          $id: '330'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '331'
+          fixed: false
+          raw: The status of the operation being performed.
+        extensions:
+          x-ms-enum:
+            name: OperationResultStatus
+            modelAsString: true
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '332'
+          fixed: false
+          raw: status
+        serializedName: status
+        modelType:
+          $id: '333'
+          $type: EnumType
+          modelAsExtensible: false
+          values:
+            - $id: '334'
+              name: Canceled
+              serializedName: Canceled
+            - $id: '335'
+              name: Succeeded
+              serializedName: Succeeded
+            - $id: '336'
+              name: Failed
+              serializedName: Failed
+            - $id: '337'
+              name: Requested
+              serializedName: Requested
+            - $id: '338'
+              name: Running
+              serializedName: Running
+          modelAsString: true
+          underlyingType:
+            $id: '339'
+            $type: PrimaryType
+            knownPrimaryType: string
+            name:
+              $id: '340'
+              fixed: false
+              raw: String
+            deprecated: false
+          name:
+            $id: '341'
+            fixed: false
+            raw: OperationResultStatus
+          deprecated: false
+      - $id: '342'
+        isReadOnly: true
+        realPath:
+          - startTime
+        collectionFormat: none
+        defaultValue:
+          $id: '343'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '344'
+          fixed: false
+          raw: The time that the operation was started.
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '345'
+          fixed: false
+          raw: startTime
+        serializedName: startTime
+        modelType:
+          $id: '346'
+          $type: PrimaryType
+          knownPrimaryType: string
+          name:
+            $id: '347'
+            fixed: false
+            raw: String
+          deprecated: false
+      - $id: '348'
+        isReadOnly: false
+        realPath:
+          - properties
+        collectionFormat: none
+        defaultValue:
+          $id: '349'
+          fixed: false
+        deprecated: false
+        documentation:
+          $id: '350'
+          fixed: false
+          raw: Additional properties of the operation result.
+        extensions:
+          x-ms-client-flatten: false
+        isRequired: false
+        isConstant: false
+        name:
+          $id: '351'
+          fixed: false
+          raw: properties
+        serializedName: properties
+        modelType:
+          $id: '352'
+          $type: PrimaryType
+          knownPrimaryType: object
+          name:
+            $id: '353'
+            fixed: false
+            raw: Object
+          deprecated: false
+    serializedName: OperationResultsDescription
+    documentation: >-
+      The properties indicating the operation result of an operation on a
+      service.
+    containsConstantProperties: false
+    name:
+      $id: '354'
+      fixed: false
+      raw: OperationResultsDescription
+    deprecated: false
+errorTypes:
+  - $ref: '200'
+enumTypes:
+  - $ref: '81'
+  - $ref: '141'
+  - $ref: '303'
+  - $ref: '333'
+name: HealthcareApisManagementClient
+namespace: Azure.mgmt.healthcareapis
+modelsName: Models
+apiVersion: '2019-09-16'
+baseUrl: 'https://management.azure.com'
+documentation: Azure Healthcare APIs Client
+extensions:
+  security:
+    - azure_auth:
+        - user_impersonation
+properties:
+  - $id: '355'
+    isReadOnly: false
+    realPath:
+      - subscriptionId
+    collectionFormat: none
+    defaultValue:
+      $id: '356'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '357'
+      fixed: false
+      raw: The subscription identifier.
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '358'
+      fixed: false
+      raw: subscriptionId
+    serializedName: subscriptionId
+    modelType:
+      $id: '359'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '360'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '361'
+    isReadOnly: false
+    realPath:
+      - api-version
+    collectionFormat: none
+    defaultValue:
+      $id: '362'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '363'
+      fixed: false
+      raw: Client Api Version.
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '364'
+      fixed: false
+      raw: api-version
+    serializedName: api-version
+    modelType:
+      $id: '365'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '366'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '367'
+    isReadOnly: false
+    realPath:
+      - resourceGroupName
+    collectionFormat: none
+    constraints:
+      MaxLength: '90'
+      MinLength: '1'
+      Pattern: '^[-\w\._\(\)]+$'
+    defaultValue:
+      $id: '368'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '369'
+      fixed: false
+      raw: The name of the resource group that contains the service instance.
+    extensions:
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '370'
+      fixed: false
+      raw: resourceGroupName
+    serializedName: resourceGroupName
+    modelType:
+      $id: '371'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '372'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '373'
+    isReadOnly: false
+    realPath:
+      - resourceName
+    collectionFormat: none
+    constraints:
+      MaxLength: '24'
+      MinLength: '3'
+    defaultValue:
+      $id: '374'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '375'
+      fixed: false
+      raw: The name of the service instance.
+    extensions:
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '376'
+      fixed: false
+      raw: resourceName
+    serializedName: resourceName
+    modelType:
+      $id: '377'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '378'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '379'
+    isReadOnly: false
+    realPath:
+      - locationName
+    collectionFormat: none
+    defaultValue:
+      $id: '380'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '381'
+      fixed: false
+      raw: The location of the operation.
+    extensions:
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '382'
+      fixed: false
+      raw: locationName
+    serializedName: locationName
+    modelType:
+      $id: '383'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '384'
+        fixed: false
+        raw: String
+      deprecated: false
+  - $id: '385'
+    isReadOnly: false
+    realPath:
+      - operationResultId
+    collectionFormat: none
+    defaultValue:
+      $id: '386'
+      fixed: false
+    deprecated: false
+    documentation:
+      $id: '387'
+      fixed: false
+      raw: The ID of the operation result to get.
+    extensions:
+      x-ms-parameter-location: method
+    isRequired: true
+    isConstant: false
+    name:
+      $id: '388'
+      fixed: false
+      raw: operationResultId
+    serializedName: operationResultId
+    modelType:
+      $id: '389'
+      $type: PrimaryType
+      knownPrimaryType: string
+      name:
+        $id: '390'
+        fixed: false
+        raw: String
+      deprecated: false
+operations:
+  - $id: '391'
+    methods:
+      - $id: '392'
+        parameters:
+          - $id: '393'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '394'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '395'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '396'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '397'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '398'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '399'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '400'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '401'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '402'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '403'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '404'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '405'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '406'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '407'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '408'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '409'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '410'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '411'
+            clientProperty:
+              $ref: '373'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '412'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '413'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '414'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '415'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '416'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '417'
+          fixed: false
+          raw: Get
+        group:
+          $id: '418'
+          fixed: false
+          raw: Services
+        serializedName: Services_Get
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '419'
+            body:
+              $ref: '113'
+            isNullable: true
+        defaultResponse:
+          $id: '420'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '421'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Get the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Get metadata:
+              parameters:
+                resourceName: service1
+                resourceGroupName: rg1
+                api-version: '2019-09-16'
+                subscriptionId: subid
+              responses:
+                '200':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service1
+                    location: West US
+                    type: Microsoft.HealthcareApis/services
+                    kind: fhir-R4
+                    etag: etagvalue
+                    tags: {}
+                    properties:
+                      provisioningState: Creating
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                        - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: true
+                      corsConfiguration:
+                        origins:
+                          - '*'
+                        headers:
+                          - '*'
+                        methods:
+                          - DELETE
+                          - GET
+                          - OPTIONS
+                          - PATCH
+                          - POST
+                          - PUT
+                        maxAge: '1440'
+                        allowCredentials: false
+        deprecated: false
+        hidden: false
+      - $id: '422'
+        parameters:
+          - $id: '423'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '424'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '425'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '426'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '427'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '428'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '429'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '430'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '431'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '432'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '433'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '434'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '435'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '436'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '437'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '438'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '439'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '440'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '441'
+            clientProperty:
+              $ref: '373'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '442'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '443'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '444'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '445'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '446'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '447'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '448'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '449'
+              fixed: false
+              raw: The service instance metadata.
+            extensions:
+              x-ms-requestBody-name: serviceDescription
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '450'
+              fixed: false
+              raw: serviceDescription
+            serializedName: serviceDescription
+            modelType:
+              $ref: '113'
+        name:
+          $id: '451'
+          fixed: false
+          raw: CreateOrUpdate
+        group:
+          $id: '452'
+          fixed: false
+          raw: Services
+        serializedName: Services_CreateOrUpdate
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: put
+        responses:
+          OK:
+            $id: '453'
+            body:
+              $ref: '113'
+            isNullable: true
+          Created:
+            $id: '454'
+            body:
+              $ref: '113'
+            isNullable: true
+        defaultResponse:
+          $id: '455'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '456'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Create or update the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Create or Update a service with all parameters:
+              parameters:
+                resourceName: service1
+                resourceGroupName: rg1
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                serviceDescription:
+                  location: westus2
+                  tags: {}
+                  kind: fhir-R4
+                  properties:
+                    accessPolicies:
+                      - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                      - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                    cosmosDbConfiguration:
+                      offerThroughput: '1000'
+                    authenticationConfiguration:
+                      authority: >-
+                        https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                      audience: 'https://azurehealthcareapis.com'
+                      smartProxyEnabled: true
+                    corsConfiguration:
+                      origins:
+                        - '*'
+                      headers:
+                        - '*'
+                      methods:
+                        - DELETE
+                        - GET
+                        - OPTIONS
+                        - PATCH
+                        - POST
+                        - PUT
+                      maxAge: '1440'
+                      allowCredentials: false
+              responses:
+                '200':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service1
+                    location: West US 2
+                    type: Microsoft.HealthcareApis/services
+                    kind: fhir-R4
+                    etag: etagvalue
+                    tags: {}
+                    properties:
+                      provisioningState: Creating
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                        - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: true
+                      corsConfiguration:
+                        origins:
+                          - '*'
+                        headers:
+                          - '*'
+                        methods:
+                          - DELETE
+                          - GET
+                          - OPTIONS
+                          - PATCH
+                          - POST
+                          - PUT
+                        maxAge: '1440'
+                        allowCredentials: false
+                '201':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service1
+                    location: West US 2
+                    type: Microsoft.HealthcareApis/services
+                    kind: fhir-R4
+                    etag: etagvalue
+                    tags: {}
+                    properties:
+                      provisioningState: Creating
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                        - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: true
+                      corsConfiguration:
+                        origins:
+                          - '*'
+                        headers:
+                          - '*'
+                        methods:
+                          - DELETE
+                          - GET
+                          - OPTIONS
+                          - PATCH
+                          - POST
+                          - PUT
+                        maxAge: '1440'
+                        allowCredentials: false
+            Create or Update a service with minimum parameters:
+              parameters:
+                resourceName: service2
+                resourceGroupName: rg1
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                serviceDescription:
+                  location: westus2
+                  tags: {}
+                  kind: fhir-R4
+                  properties:
+                    accessPolicies:
+                      - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+              responses:
+                '200':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service2
+                    type: Microsoft.HealthcareApis/services
+                    etag: etagvalue
+                    location: westus2
+                    kind: fhir-R4
+                    tags: {}
+                    properties:
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: false
+                      corsConfiguration:
+                        origins: []
+                        headers: []
+                        methods: []
+                        maxAge: null
+                        allowCredentials: false
+                      provisioningState: Creating
+                '201':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service2
+                    type: Microsoft.HealthcareApis/services
+                    etag: etagvalue
+                    location: westus2
+                    kind: fhir-R4
+                    tags: {}
+                    properties:
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: false
+                      corsConfiguration:
+                        origins: []
+                        headers: []
+                        methods: []
+                        maxAge: null
+                        allowCredentials: false
+                      provisioningState: Creating
+          x-ms-long-running-operation: true
+          x-ms-requestBody-index: '4'
+        deprecated: false
+        hidden: false
+      - $id: '457'
+        parameters:
+          - $id: '458'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '459'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '460'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '461'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '462'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '463'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '464'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '465'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '466'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '467'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '468'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '469'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '470'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '471'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '472'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '473'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '474'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '475'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '476'
+            clientProperty:
+              $ref: '373'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '477'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '478'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '479'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '480'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '481'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '482'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '483'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '484'
+              fixed: false
+              raw: The service instance metadata and security metadata.
+            extensions:
+              x-ms-requestBody-name: servicePatchDescription
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '485'
+              fixed: false
+              raw: servicePatchDescription
+            serializedName: servicePatchDescription
+            modelType:
+              $ref: '170'
+        name:
+          $id: '486'
+          fixed: false
+          raw: Update
+        group:
+          $id: '487'
+          fixed: false
+          raw: Services
+        serializedName: Services_Update
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: patch
+        responses:
+          OK:
+            $id: '488'
+            body:
+              $ref: '113'
+            isNullable: true
+        defaultResponse:
+          $id: '489'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '490'
+          body:
+            $ref: '113'
+          isNullable: true
+        description: Update the metadata of a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Patch service:
+              parameters:
+                resourceName: service1
+                resourceGroupName: rg1
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                servicePatchDescription:
+                  tags:
+                    tag1: value1
+                    tag2: value2
+              responses:
+                '200':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                      resource_group
+                      }}/providers/Microsoft.HealthcareApis/services/{{
+                      service_name }}
+                    name: service1
+                    location: West US
+                    type: Microsoft.HealthcareApis/services
+                    kind: fhir-R4
+                    etag: etagvalue
+                    tags:
+                      tag1: value1
+                      tag2: value2
+                    properties:
+                      provisioningState: Creating
+                      accessPolicies:
+                        - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                        - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                      cosmosDbConfiguration:
+                        offerThroughput: '1000'
+                      authenticationConfiguration:
+                        authority: >-
+                          https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                        audience: 'https://azurehealthcareapis.com'
+                        smartProxyEnabled: true
+                      corsConfiguration:
+                        origins:
+                          - '*'
+                        headers:
+                          - '*'
+                        methods:
+                          - DELETE
+                          - GET
+                          - OPTIONS
+                          - PATCH
+                          - POST
+                          - PUT
+                        maxAge: '1440'
+                        allowCredentials: false
+          x-ms-long-running-operation: true
+          x-ms-requestBody-index: '4'
+        deprecated: false
+        hidden: false
+      - $id: '491'
+        parameters:
+          - $id: '492'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '493'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '494'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '495'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '496'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '497'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '498'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '499'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '500'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '501'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '502'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '503'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '504'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '505'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '506'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '507'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '508'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '509'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '510'
+            clientProperty:
+              $ref: '373'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '24'
+              MinLength: '3'
+            defaultValue:
+              $id: '511'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '512'
+              fixed: false
+              raw: The name of the service instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '513'
+              fixed: false
+              raw: resourceName
+            serializedName: resourceName
+            modelType:
+              $id: '514'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '515'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '516'
+          fixed: false
+          raw: Delete
+        group:
+          $id: '517'
+          fixed: false
+          raw: Services
+        serializedName: Services_Delete
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services/{resourceName}
+        isAbsoluteUrl: false
+        httpMethod: delete
+        responses:
+          Accepted:
+            $id: '518'
+            isNullable: true
+          NoContent:
+            $id: '519'
+            isNullable: true
+        defaultResponse:
+          $id: '520'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '521'
+          isNullable: true
+        description: Delete a service instance.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Delete service:
+              parameters:
+                resourceName: service1
+                resourceGroupName: rg1
+                api-version: '2019-09-16'
+                subscriptionId: subid
+              responses:
+                '202': {}
+                '204': {}
+          x-ms-long-running-operation: true
+        deprecated: false
+        hidden: false
+      - $id: '522'
+        parameters:
+          - $id: '523'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '524'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '525'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '526'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '527'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '528'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '529'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '530'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '531'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '532'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '533'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '534'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '535'
+          fixed: false
+          raw: List
+        group:
+          $id: '536'
+          fixed: false
+          raw: Services
+        serializedName: Services_List
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/services
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '537'
+            body:
+              $ref: '206'
+            isNullable: true
+        defaultResponse:
+          $id: '538'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '539'
+          body:
+            $ref: '206'
+          isNullable: true
+        description: Get all the service instances in a subscription.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            List all services in subscription:
+              parameters:
+                api-version: '2019-09-16'
+                subscriptionId: subid
+              responses:
+                '200':
+                  body:
+                    value:
+                      - id: >-
+                          /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                          resource_group
+                          }}/providers/Microsoft.HealthcareApis/services/{{
+                          service_name }}
+                        name: service1
+                        location: West US
+                        type: Microsoft.HealthcareApis/services
+                        kind: fhir-R4
+                        etag: etag
+                        tags: {}
+                        properties:
+                          provisioningState: Creating
+                          accessPolicies:
+                            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                            - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                          cosmosDbConfiguration:
+                            offerThroughput: '1000'
+                          authenticationConfiguration:
+                            authority: >-
+                              https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                            audience: 'https://azurehealthcareapis.com'
+                            smartProxyEnabled: true
+                          corsConfiguration:
+                            origins:
+                              - '*'
+                            headers:
+                              - '*'
+                            methods:
+                              - DELETE
+                              - GET
+                              - OPTIONS
+                              - PATCH
+                              - POST
+                              - PUT
+                            maxAge: '1440'
+                            allowCredentials: false
+                    nextLink: >-
+                      https://host/subscriptions/subid/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+      - $id: '540'
+        parameters:
+          - $id: '541'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '542'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '543'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '544'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '545'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '546'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '547'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '548'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '549'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '550'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '551'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '552'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '553'
+            clientProperty:
+              $ref: '367'
+            location: path
+            collectionFormat: none
+            constraints:
+              MaxLength: '90'
+              MinLength: '1'
+              Pattern: '^[-\w\._\(\)]+$'
+            defaultValue:
+              $id: '554'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '555'
+              fixed: false
+              raw: >-
+                The name of the resource group that contains the service
+                instance.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '556'
+              fixed: false
+              raw: resourceGroupName
+            serializedName: resourceGroupName
+            modelType:
+              $id: '557'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '558'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '559'
+          fixed: false
+          raw: ListByResourceGroup
+        group:
+          $id: '560'
+          fixed: false
+          raw: Services
+        serializedName: Services_ListByResourceGroup
+        url: >-
+          /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.HealthcareApis/services
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '561'
+            body:
+              $ref: '206'
+            isNullable: true
+        defaultResponse:
+          $id: '562'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '563'
+          body:
+            $ref: '206'
+          isNullable: true
+        description: Get all the service instances in a resource group.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            List all services in resource group:
+              parameters:
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                resourceGroupName: rgname
+              responses:
+                '200':
+                  body:
+                    value:
+                      - id: >-
+                          /subscriptions/{{ subscription_id }}/resourceGroups/{{
+                          resource_group
+                          }}/providers/Microsoft.HealthcareApis/services/{{
+                          service_name }}
+                        name: service1
+                        location: westus
+                        type: Microsoft.HealthcareApis/services
+                        kind: fhir-R4
+                        tags: {}
+                        etag: etagvalue
+                        properties:
+                          provisioningState: Creating
+                          accessPolicies:
+                            - objectId: c487e7d1-3210-41a3-8ccc-e9372b78da47
+                            - objectId: 5b307da8-43d4-492b-8b66-b0294ade872f
+                          cosmosDbConfiguration:
+                            offerThroughput: '1000'
+                          authenticationConfiguration:
+                            authority: >-
+                              https://login.microsoftonline.com/abfde7b2-df0f-47e6-aabf-2462b07508dc
+                            audience: 'https://azurehealthcareapis.com'
+                            smartProxyEnabled: true
+                          corsConfiguration:
+                            origins:
+                              - '*'
+                            headers:
+                              - '*'
+                            methods:
+                              - DELETE
+                              - GET
+                              - OPTIONS
+                              - PATCH
+                              - POST
+                              - PUT
+                            maxAge: '1440'
+                            allowCredentials: false
+                    nextLink: >-
+                      https://host/subscriptions/subid/resourceGroups/rgname/providers/Microsoft.HealthcareApis/services?api-version=2018-08-20-preview&%24skipToken=e30%3d
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+      - $id: '564'
+        parameters:
+          - $id: '565'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '566'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '567'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '568'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '569'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '570'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '571'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '572'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '573'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '574'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '575'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '576'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '577'
+            location: body
+            collectionFormat: none
+            defaultValue:
+              $id: '578'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '579'
+              fixed: false
+              raw: >-
+                Set the name parameter in the CheckNameAvailabilityParameters
+                structure to the name of the service instance to check.
+            extensions:
+              x-ms-requestBody-name: checkNameAvailabilityInputs
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '580'
+              fixed: false
+              raw: checkNameAvailabilityInputs
+            serializedName: checkNameAvailabilityInputs
+            modelType:
+              $ref: '278'
+        name:
+          $id: '581'
+          fixed: false
+          raw: CheckNameAvailability
+        group:
+          $id: '582'
+          fixed: false
+          raw: Services
+        serializedName: Services_CheckNameAvailability
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/checkNameAvailability
+        isAbsoluteUrl: false
+        httpMethod: post
+        responses:
+          OK:
+            $id: '583'
+            body:
+              $ref: '292'
+            isNullable: true
+        defaultResponse:
+          $id: '584'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '585'
+          body:
+            $ref: '292'
+          isNullable: true
+        description: Check if a service instance name is available.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Check name availability:
+              parameters:
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                checkNameAvailabilityInputs:
+                  type: Microsoft.HealthcareApis/services
+                  name: serviceName
+              responses:
+                '200':
+                  body:
+                    nameAvailable: false
+                    reason: AlreadyExists
+                    message: Service name is not available.
+          x-ms-requestBody-index: '2'
+        deprecated: false
+        hidden: false
+    name:
+      $id: '586'
+      fixed: false
+      raw: Services
+    typeName:
+      $id: '587'
+      fixed: false
+    nameForProperty: Services
+  - $id: '588'
+    methods:
+      - $id: '589'
+        parameters:
+          - $id: '590'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '591'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '592'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '593'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '594'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '595'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '596'
+          fixed: false
+          raw: List
+        group:
+          $id: '597'
+          fixed: false
+          raw: Operations
+        serializedName: Operations_List
+        url: /providers/Microsoft.HealthcareApis/operations
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '598'
+            body:
+              $ref: '264'
+            isNullable: true
+        defaultResponse:
+          $id: '599'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '600'
+          body:
+            $ref: '264'
+          isNullable: true
+        description: Lists all of the available Healthcare service REST API operations.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            List operations:
+              parameters:
+                api-version: '2019-09-16'
+              responses:
+                '200':
+                  body:
+                    value:
+                      - name: Microsoft.HealthcareApis/services/read
+                        display: {}
+                        origin: 'user,system'
+                      - name: Microsoft.HealthcareApis/services/write
+                        display: {}
+                        origin: 'user,system'
+                      - name: Microsoft.HealthcareApis/services/delete
+                        display: {}
+                        origin: 'user,system'
+                      - name: >-
+                          Microsoft.HealthcareApis/locations/operationresults/read
+                        display:
+                          provider: Microsoft.HealthcareApis
+                          resource: operationresults
+                          operation: read
+                          description: Get the status of an asynchronous operation
+                        origin: 'user,system'
+                      - name: Microsoft.HealthcareApis/checkNameAvailability/post
+                        display: {}
+                        origin: user
+                      - name: Microsoft.HealthcareApis/Operations/read
+                        display:
+                          provider: Microsoft.HealthcareApis
+                          resource: operations
+                          operation: read
+                          description: >-
+                            Get the list of operations supported by this
+                            Resource Provider.
+                        origin: 'user,system'
+          x-ms-pageable:
+            nextLinkName: nextLink
+        deprecated: false
+        hidden: false
+    name:
+      $id: '601'
+      fixed: false
+      raw: Operations
+    typeName:
+      $id: '602'
+      fixed: false
+    nameForProperty: Operations
+  - $id: '603'
+    methods:
+      - $id: '604'
+        parameters:
+          - $id: '605'
+            clientProperty:
+              $ref: '361'
+            location: query
+            collectionFormat: none
+            defaultValue:
+              $id: '606'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '607'
+              fixed: false
+              raw: Client Api Version.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '608'
+              fixed: false
+              raw: api-version
+            serializedName: api-version
+            modelType:
+              $id: '609'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '610'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '611'
+            clientProperty:
+              $ref: '355'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '612'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '613'
+              fixed: false
+              raw: The subscription identifier.
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '614'
+              fixed: false
+              raw: subscriptionId
+            serializedName: subscriptionId
+            modelType:
+              $id: '615'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '616'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '617'
+            clientProperty:
+              $ref: '379'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '618'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '619'
+              fixed: false
+              raw: The location of the operation.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '620'
+              fixed: false
+              raw: locationName
+            serializedName: locationName
+            modelType:
+              $id: '621'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '622'
+                fixed: false
+                raw: String
+              deprecated: false
+          - $id: '623'
+            clientProperty:
+              $ref: '385'
+            location: path
+            collectionFormat: none
+            defaultValue:
+              $id: '624'
+              fixed: false
+            deprecated: false
+            documentation:
+              $id: '625'
+              fixed: false
+              raw: The ID of the operation result to get.
+            extensions:
+              x-ms-parameter-location: method
+            isRequired: true
+            isConstant: false
+            name:
+              $id: '626'
+              fixed: false
+              raw: operationResultId
+            serializedName: operationResultId
+            modelType:
+              $id: '627'
+              $type: PrimaryType
+              knownPrimaryType: string
+              name:
+                $id: '628'
+                fixed: false
+                raw: String
+              deprecated: false
+        name:
+          $id: '629'
+          fixed: false
+          raw: Get
+        group:
+          $id: '630'
+          fixed: false
+          raw: OperationResults
+        serializedName: OperationResults_Get
+        url: >-
+          /subscriptions/{subscriptionId}/providers/Microsoft.HealthcareApis/locations/{locationName}/operationresults/{operationResultId}
+        isAbsoluteUrl: false
+        httpMethod: get
+        responses:
+          OK:
+            $id: '631'
+            body:
+              $ref: '316'
+            isNullable: true
+          NotFound:
+            $id: '632'
+            body:
+              $ref: '200'
+            isNullable: true
+        defaultResponse:
+          $id: '633'
+          body:
+            $ref: '200'
+          isNullable: true
+        returnType:
+          $id: '634'
+          body:
+            $id: '635'
+            $type: PrimaryType
+            knownPrimaryType: object
+            name:
+              $id: '636'
+              fixed: false
+              raw: Object
+            deprecated: false
+          isNullable: true
+        description: Get the operation result for a long running operation.
+        requestContentType: application/json; charset=utf-8
+        responseContentTypes:
+          - application/json
+        extensions:
+          x-ms-examples:
+            Get operation result:
+              parameters:
+                api-version: '2019-09-16'
+                subscriptionId: subid
+                locationName: westus
+                operationResultId: exampleid
+              responses:
+                '200':
+                  body:
+                    id: >-
+                      /subscriptions/{{ subscription_id
+                      }}/providers/Microsoft.HealthcareApis/locations/{{
+                      location_name }}/operationresults/{{ operationresult_name
+                      }}
+                    name: servicename
+                    status: Requested
+                    startTime: '2019-01-21T06:03:30.2716301Z'
+                    properties: {}
+                '404':
+                  body:
+                    error:
+                      code: OperationResultNotFound
+                      message: The operation result was not found.
+        deprecated: false
+        hidden: false
+    name:
+      $id: '637'
+      fixed: false
+      raw: OperationResults
+    typeName:
+      $id: '638'
+      fixed: false
+    nameForProperty: OperationResults

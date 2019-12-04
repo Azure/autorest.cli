@@ -1,0 +1,3634 @@
+schemas:
+  objects:
+  - &ref_7
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    children:
+      all:
+      - &ref_24
+        type: object
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        children:
+          all:
+          - &ref_25
+            type: object
+            apiVersions:
+            -
+              version: 2019-06-01-preview
+            parents:
+              all:
+              - *ref_24
+              - *ref_7
+              immediate:
+              - *ref_24
+            properties:
+            - schema: &ref_16
+                type: object
+                apiVersions:
+                -
+                  version: 2019-06-01-preview
+                parents:
+                  all:
+                  - &ref_12
+                    type: object
+                    apiVersions:
+                    -
+                      version: 2019-06-01-preview
+                    children:
+                      all:
+                      - &ref_11
+                        type: object
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        parents:
+                          all:
+                          - *ref_12
+                          immediate:
+                          - *ref_12
+                        properties:
+                        - schema: &ref_49
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: &ref_9
+                              type: object
+                              apiVersions:
+                              -
+                                version: 2019-06-01-preview
+                              properties:
+                              - schema: &ref_8
+                                  type: string
+                                  apiVersions:
+                                  -
+                                    version: 2019-06-01-preview
+                                  language:
+                                    default:
+                                      name: ResourceId-id
+                                      description: Resource Id
+                                  protocol: {}
+                                serializedName: id
+                                language:
+                                  default:
+                                    name: id
+                                    description: Resource Id
+                                protocol: {}
+                              language:
+                                default:
+                                  name: ResourceId
+                                  description: Generic pointer to a resource
+                                  namespace: Api20190601Preview
+                              protocol: {}
+                            language:
+                              default:
+                                name: ManagedNetworkGroupProperties-managementGroups
+                                description: The collection of management groups covered by the Managed Network
+                            protocol: {}
+                          serializedName: managementGroups
+                          language:
+                            default:
+                              name: managementGroups
+                              description: The collection of management groups covered by the Managed Network
+                          protocol: {}
+                        - schema: &ref_50
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: *ref_9
+                            language:
+                              default:
+                                name: ManagedNetworkGroupProperties-subscriptions
+                                description: The collection of subscriptions covered by the Managed Network
+                            protocol: {}
+                          serializedName: subscriptions
+                          language:
+                            default:
+                              name: subscriptions
+                              description: The collection of subscriptions covered by the Managed Network
+                          protocol: {}
+                        - schema: &ref_51
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: *ref_9
+                            language:
+                              default:
+                                name: ManagedNetworkGroupProperties-virtualNetworks
+                                description: The collection of virtual nets covered by the Managed Network
+                            protocol: {}
+                          serializedName: virtualNetworks
+                          language:
+                            default:
+                              name: virtualNetworks
+                              description: The collection of virtual nets covered by the Managed Network
+                          protocol: {}
+                        - schema: &ref_52
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: *ref_9
+                            language:
+                              default:
+                                name: ManagedNetworkGroupProperties-subnets
+                                description: The collection of  subnets covered by the Managed Network
+                            protocol: {}
+                          serializedName: subnets
+                          language:
+                            default:
+                              name: subnets
+                              description: The collection of  subnets covered by the Managed Network
+                          protocol: {}
+                        language:
+                          default:
+                            name: ManagedNetworkGroupProperties
+                            description: Properties of a Managed Network Group
+                            namespace: Api20190601Preview
+                        protocol: {}
+                      - &ref_13
+                        type: object
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        children:
+                          all:
+                          - &ref_14
+                            type: object
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            parents:
+                              all:
+                              - *ref_13
+                              - *ref_12
+                              immediate:
+                              - *ref_13
+                            properties:
+                            - schema: *ref_9
+                              serializedName: hub
+                              language:
+                                default:
+                                  name: hub
+                                  description: Generic pointer to a resource
+                              protocol: {}
+                            - schema: &ref_62
+                                type: array
+                                apiVersions:
+                                -
+                                  version: 2019-06-01-preview
+                                elementType: *ref_9
+                                language:
+                                  default:
+                                    name: HubAndSpokePeeringPolicyProperties-spokes
+                                    description: Gets or sets the spokes group IDs
+                                protocol: {}
+                              serializedName: spokes
+                              language:
+                                default:
+                                  name: spokes
+                                  description: Gets or sets the spokes group IDs
+                              protocol: {}
+                            extensions:
+                              x-ms-discriminator-value: HubAndSpokeTopology
+                            language:
+                              default:
+                                name: HubAndSpokePeeringPolicyProperties
+                                description: Properties of a Hub and Spoke Peering Policy
+                                namespace: Api20190601Preview
+                            protocol: {}
+                          - &ref_15
+                            type: object
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            parents:
+                              all:
+                              - *ref_13
+                              - *ref_12
+                              immediate:
+                              - *ref_13
+                            properties:
+                            - schema: &ref_63
+                                type: array
+                                apiVersions:
+                                -
+                                  version: 2019-06-01-preview
+                                elementType: *ref_9
+                                language:
+                                  default:
+                                    name: MeshPeeringPolicyProperties-mesh
+                                    description: Gets or sets the mesh group IDs
+                                protocol: {}
+                              serializedName: mesh
+                              language:
+                                default:
+                                  name: mesh
+                                  description: Gets or sets the mesh group IDs
+                              protocol: {}
+                            extensions:
+                              x-ms-discriminator-value: MeshTopology
+                            language:
+                              default:
+                                name: MeshPeeringPolicyProperties
+                                description: Properties of a Mesh Peering Policy
+                                namespace: Api20190601Preview
+                            protocol: {}
+                          immediate:
+                          - *ref_14
+                          - *ref_15
+                        parents:
+                          all:
+                          - *ref_12
+                          immediate:
+                          - *ref_12
+                        properties:
+                        - schema: &ref_44
+                            choices:
+                            - value: HubAndSpokeTopology
+                              language:
+                                default:
+                                  name: HubAndSpokeTopology
+                                  description: ''
+                            - value: MeshTopology
+                              language:
+                                default:
+                                  name: MeshTopology
+                                  description: ''
+                            type: sealed-choice
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            choiceType: &ref_0
+                              type: string
+                              language:
+                                default:
+                                  name: string
+                                  description: simple string
+                              protocol: {}
+                            language:
+                              default:
+                                name: type
+                                description: Gets or sets the connectivity type of a network structure policy
+                            protocol: {}
+                          required: true
+                          serializedName: type
+                          language:
+                            default:
+                              name: type
+                              description: Gets or sets the connectivity type of a network structure policy
+                          protocol: {}
+                        - schema: *ref_9
+                          required: false
+                          serializedName: hub
+                          language:
+                            default:
+                              name: hub
+                              description: Generic pointer to a resource
+                          protocol: {}
+                        - schema: &ref_54
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: *ref_9
+                            language:
+                              default:
+                                name: ManagedNetworkPeeringPolicyProperties-spokes
+                                description: Gets or sets the spokes group IDs
+                            protocol: {}
+                          required: false
+                          serializedName: spokes
+                          language:
+                            default:
+                              name: spokes
+                              description: Gets or sets the spokes group IDs
+                          protocol: {}
+                        - schema: &ref_55
+                            type: array
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            elementType: *ref_9
+                            language:
+                              default:
+                                name: ManagedNetworkPeeringPolicyProperties-mesh
+                                description: Gets or sets the mesh group IDs
+                            protocol: {}
+                          required: false
+                          serializedName: mesh
+                          language:
+                            default:
+                              name: mesh
+                              description: Gets or sets the mesh group IDs
+                          protocol: {}
+                        language:
+                          default:
+                            name: ManagedNetworkPeeringPolicyProperties
+                            description: Properties of a Managed Network Peering Policy
+                            namespace: Api20190601Preview
+                        protocol: {}
+                      - *ref_16
+                      - &ref_18
+                        type: object
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        parents:
+                          all:
+                          - *ref_12
+                          immediate:
+                          - *ref_12
+                        properties:
+                        - schema: &ref_17
+                            type: string
+                            apiVersions:
+                            -
+                              version: 2019-06-01-preview
+                            language:
+                              default:
+                                name: ScopeAssignmentProperties-assignedManagedNetwork
+                                description: The managed network ID with scope will be assigned to.
+                            protocol: {}
+                          serializedName: assignedManagedNetwork
+                          language:
+                            default:
+                              name: assignedManagedNetwork
+                              description: The managed network ID with scope will be assigned to.
+                          protocol: {}
+                        language:
+                          default:
+                            name: ScopeAssignmentProperties
+                            description: Properties of Managed Network
+                            namespace: Api20190601Preview
+                        protocol: {}
+                      - *ref_14
+                      - *ref_15
+                      immediate:
+                      - *ref_11
+                      - *ref_13
+                      - *ref_16
+                      - *ref_18
+                    properties:
+                    - schema: &ref_43
+                        choices:
+                        - value: Updating
+                          language:
+                            default:
+                              name: Updating
+                              description: ''
+                        - value: Deleting
+                          language:
+                            default:
+                              name: Deleting
+                              description: ''
+                        - value: Failed
+                          language:
+                            default:
+                              name: Failed
+                              description: ''
+                        - value: Succeeded
+                          language:
+                            default:
+                              name: Succeeded
+                              description: ''
+                        type: sealed-choice
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        choiceType: *ref_0
+                        language:
+                          default:
+                            name: ProvisioningState
+                            description: Provisioning state of the ManagedNetwork resource.
+                        protocol: {}
+                      readOnly: true
+                      serializedName: provisioningState
+                      language:
+                        default:
+                          name: provisioningState
+                          description: Provisioning state of the ManagedNetwork resource.
+                      protocol: {}
+                    - schema: &ref_10
+                        type: string
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        language:
+                          default:
+                            name: ResourceProperties-etag
+                            description: A unique read-only string that changes whenever the resource is updated.
+                        protocol: {}
+                      readOnly: true
+                      serializedName: etag
+                      language:
+                        default:
+                          name: etag
+                          description: A unique read-only string that changes whenever the resource is updated.
+                      protocol: {}
+                    language:
+                      default:
+                        name: ResourceProperties
+                        description: Base for resource properties.
+                        namespace: Api20190601Preview
+                    protocol: {}
+                  immediate:
+                  - *ref_12
+                properties:
+                - schema: &ref_26
+                    type: object
+                    apiVersions:
+                    -
+                      version: 2019-06-01-preview
+                    properties:
+                    - schema: &ref_45
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: *ref_9
+                        language:
+                          default:
+                            name: Scope-managementGroups
+                            description: The collection of management groups covered by the Managed Network
+                        protocol: {}
+                      serializedName: managementGroups
+                      language:
+                        default:
+                          name: managementGroups
+                          description: The collection of management groups covered by the Managed Network
+                      protocol: {}
+                    - schema: &ref_46
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: *ref_9
+                        language:
+                          default:
+                            name: Scope-subscriptions
+                            description: The collection of subscriptions covered by the Managed Network
+                        protocol: {}
+                      serializedName: subscriptions
+                      language:
+                        default:
+                          name: subscriptions
+                          description: The collection of subscriptions covered by the Managed Network
+                      protocol: {}
+                    - schema: &ref_47
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: *ref_9
+                        language:
+                          default:
+                            name: Scope-virtualNetworks
+                            description: The collection of virtual nets covered by the Managed Network
+                        protocol: {}
+                      serializedName: virtualNetworks
+                      language:
+                        default:
+                          name: virtualNetworks
+                          description: The collection of virtual nets covered by the Managed Network
+                      protocol: {}
+                    - schema: &ref_48
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: *ref_9
+                        language:
+                          default:
+                            name: Scope-subnets
+                            description: The collection of  subnets covered by the Managed Network
+                        protocol: {}
+                      serializedName: subnets
+                      language:
+                        default:
+                          name: subnets
+                          description: The collection of  subnets covered by the Managed Network
+                      protocol: {}
+                    language:
+                      default:
+                        name: Scope
+                        description: Scope of a Managed Network
+                        namespace: Api20190601Preview
+                    protocol: {}
+                  serializedName: scope
+                  language:
+                    default:
+                      name: scope
+                      description: Scope of a Managed Network
+                  protocol: {}
+                - schema: &ref_27
+                    type: object
+                    apiVersions:
+                    -
+                      version: 2019-06-01-preview
+                    properties:
+                    - schema: &ref_53
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: &ref_20
+                          type: object
+                          apiVersions:
+                          -
+                            version: 2019-06-01-preview
+                          parents:
+                            all:
+                            - &ref_21
+                              type: object
+                              apiVersions:
+                              -
+                                version: 2019-06-01-preview
+                              children:
+                                all:
+                                - *ref_20
+                                - &ref_22
+                                  type: object
+                                  apiVersions:
+                                  -
+                                    version: 2019-06-01-preview
+                                  parents:
+                                    all:
+                                    - *ref_21
+                                    - *ref_7
+                                    immediate:
+                                    - *ref_21
+                                  properties:
+                                  - schema: *ref_13
+                                    serializedName: properties
+                                    language:
+                                      default:
+                                        name: properties
+                                        description: Properties of a Managed Network Peering Policy
+                                    protocol: {}
+                                  language:
+                                    default:
+                                      name: ManagedNetworkPeeringPolicy
+                                      description: The Managed Network Peering Policy resource
+                                      namespace: Api20190601Preview
+                                  protocol: {}
+                                - &ref_23
+                                  type: object
+                                  apiVersions:
+                                  -
+                                    version: 2019-06-01-preview
+                                  parents:
+                                    all:
+                                    - *ref_21
+                                    - *ref_7
+                                    immediate:
+                                    - *ref_21
+                                  properties:
+                                  - schema: *ref_18
+                                    serializedName: properties
+                                    language:
+                                      default:
+                                        name: properties
+                                        description: Properties of Managed Network
+                                    protocol: {}
+                                  language:
+                                    default:
+                                      name: ScopeAssignment
+                                      description: The Managed Network resource
+                                      namespace: Api20190601Preview
+                                  protocol: {}
+                                immediate:
+                                - *ref_20
+                                - *ref_22
+                                - *ref_23
+                              parents:
+                                all:
+                                - *ref_7
+                                immediate:
+                                - *ref_7
+                              language:
+                                default:
+                                  name: ProxyResource
+                                  description: The resource model definition for a ARM proxy resource. It will have everything other than required location and tags
+                                  namespace: Api20190601Preview
+                              protocol: {}
+                            - *ref_7
+                            immediate:
+                            - *ref_21
+                          properties:
+                          - schema: *ref_11
+                            serializedName: properties
+                            language:
+                              default:
+                                name: properties
+                                description: Properties of a Managed Network Group
+                            protocol: {}
+                          - schema: &ref_19
+                              type: constant
+                              apiVersions:
+                              -
+                                version: 2019-06-01-preview
+                              value:
+                                value: Connectivity
+                                language:
+                                  default:
+                                    name: ''
+                                    description: ''
+                              valueType: *ref_0
+                              language:
+                                default:
+                                  name: Kind
+                                  description: Responsibility role under which this Managed Network Group will be created
+                              protocol: {}
+                            serializedName: kind
+                            language:
+                              default:
+                                name: kind
+                                description: Responsibility role under which this Managed Network Group will be created
+                            protocol: {}
+                          language:
+                            default:
+                              name: ManagedNetworkGroup
+                              description: The Managed Network Group resource
+                              namespace: Api20190601Preview
+                          protocol: {}
+                        language:
+                          default:
+                            name: ConnectivityCollection-groups
+                            description: The collection of connectivity related Managed Network Groups within the Managed Network
+                        protocol: {}
+                      readOnly: true
+                      serializedName: groups
+                      language:
+                        default:
+                          name: groups
+                          description: The collection of connectivity related Managed Network Groups within the Managed Network
+                      protocol: {}
+                    - schema: &ref_56
+                        type: array
+                        apiVersions:
+                        -
+                          version: 2019-06-01-preview
+                        elementType: *ref_22
+                        language:
+                          default:
+                            name: ConnectivityCollection-peerings
+                            description: The collection of Managed Network Peering Policies within the Managed Network
+                        protocol: {}
+                      readOnly: true
+                      serializedName: peerings
+                      language:
+                        default:
+                          name: peerings
+                          description: The collection of Managed Network Peering Policies within the Managed Network
+                      protocol: {}
+                    language:
+                      default:
+                        name: ConnectivityCollection
+                        description: The collection of Connectivity related groups and policies within the Managed Network
+                        namespace: Api20190601Preview
+                    protocol: {}
+                  serializedName: connectivity
+                  language:
+                    default:
+                      name: connectivity
+                      description: The collection of Connectivity related groups and policies within the Managed Network
+                  protocol: {}
+                language:
+                  default:
+                    name: ManagedNetworkProperties
+                    description: Properties of Managed Network
+                    namespace: Api20190601Preview
+                protocol: {}
+              serializedName: properties
+              language:
+                default:
+                  name: properties
+                  description: Properties of Managed Network
+              protocol: {}
+            language:
+              default:
+                name: ManagedNetwork
+                description: The Managed Network resource
+                namespace: Api20190601Preview
+            protocol: {}
+          immediate:
+          - *ref_25
+        parents:
+          all:
+          - *ref_7
+          immediate:
+          - *ref_7
+        properties:
+        - schema: &ref_41
+            type: dictionary
+            elementType: &ref_6
+              type: string
+              apiVersions:
+              -
+                version: 2019-06-01-preview
+              language:
+                default:
+                  name: components·schemas·trackedresource·properties·tags·additionalproperties
+                  description: MISSING·SCHEMA-DESCRIPTION-STRING
+              protocol: {}
+            language:
+              default:
+                name: TrackedResource-tags
+                description: Resource tags
+            protocol: {}
+          required: false
+          serializedName: tags
+          extensions:
+            x-ms-mutability:
+            - read
+            - create
+            - update
+          language:
+            default:
+              name: tags
+              description: Resource tags
+          protocol: {}
+        language:
+          default:
+            name: TrackedResource
+            description: The resource model definition for a ARM tracked top level resource
+            namespace: Api20190601Preview
+        protocol: {}
+      - *ref_21
+      - *ref_20
+      - *ref_22
+      - *ref_25
+      - *ref_23
+      immediate:
+      - *ref_24
+      - *ref_21
+    properties:
+    - schema: &ref_1
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: Resource-id
+            description: 'Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+        protocol: {}
+      readOnly: true
+      serializedName: id
+      language:
+        default:
+          name: id
+          description: 'Fully qualified resource Id for the resource. Ex - /subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/{resourceProviderNamespace}/{resourceType}/{resourceName}'
+      protocol: {}
+    - schema: &ref_2
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: Resource-name
+            description: The name of the resource
+        protocol: {}
+      readOnly: true
+      serializedName: name
+      language:
+        default:
+          name: name
+          description: The name of the resource
+      protocol: {}
+    - schema: &ref_3
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: Resource-type
+            description: The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+        protocol: {}
+      readOnly: true
+      serializedName: type
+      language:
+        default:
+          name: type
+          description: The type of the resource. Ex- Microsoft.Compute/virtualMachines or Microsoft.Storage/storageAccounts.
+      protocol: {}
+    - schema: &ref_4
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        extensions:
+          x-ms-mutability: &ref_5
+          - read
+          - create
+        language:
+          default:
+            name: Resource-location
+            description: The geo-location where the resource lives
+        protocol: {}
+      serializedName: location
+      extensions:
+        x-ms-mutability: *ref_5
+      language:
+        default:
+          name: location
+          description: The geo-location where the resource lives
+      protocol: {}
+    extensions:
+      x-ms-azure-resource: true
+    language:
+      default:
+        name: Resource
+        description: The general resource model definition
+        namespace: Api20190601Preview
+    protocol: {}
+  - *ref_24
+  - *ref_25
+  - *ref_12
+  - *ref_16
+  - *ref_26
+  - *ref_9
+  - *ref_27
+  - *ref_21
+  - *ref_20
+  - *ref_11
+  - *ref_22
+  - *ref_13
+  - &ref_65
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_28
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ErrorResponse-code
+            description: The error code.
+        protocol: {}
+      readOnly: true
+      serializedName: code
+      language:
+        default:
+          name: code
+          description: The error code.
+      protocol: {}
+    - schema: &ref_29
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ErrorResponse-message
+            description: The error message.
+        protocol: {}
+      readOnly: true
+      serializedName: message
+      language:
+        default:
+          name: message
+          description: The error message.
+      protocol: {}
+    language:
+      default:
+        name: ErrorResponse
+        description: The error response that indicates why an operation has failed.
+        namespace: Api20190601Preview
+    protocol: {}
+  - &ref_70
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_42
+        type: dictionary
+        elementType: *ref_6
+        language:
+          default:
+            name: ManagedNetworkUpdate-tags
+            description: Resource tags
+        protocol: {}
+      serializedName: tags
+      extensions:
+        x-ms-mutability:
+        - read
+        - create
+        - update
+      language:
+        default:
+          name: tags
+          description: Resource tags
+      protocol: {}
+    language:
+      default:
+        name: ManagedNetworkUpdate
+        description: Update Tags of Managed Network
+        namespace: Api20190601Preview
+    protocol: {}
+  - &ref_73
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_57
+        type: array
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        elementType: *ref_25
+        language:
+          default:
+            name: ManagedNetworkListResult-value
+            description: Gets a page of ManagedNetworks
+        protocol: {}
+      serializedName: value
+      language:
+        default:
+          name: value
+          description: Gets a page of ManagedNetworks
+      protocol: {}
+    - schema: &ref_30
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ManagedNetworkListResult-nextLink
+            description: Gets the URL to get the next page of results.
+        protocol: {}
+      serializedName: nextLink
+      language:
+        default:
+          name: nextLink
+          description: Gets the URL to get the next page of results.
+      protocol: {}
+    language:
+      default:
+        name: ManagedNetworkListResult
+        description: Result of the request to list Managed Network. It contains a list of Managed Networks and a URL link to get the next set of results.
+        namespace: Api20190601Preview
+    protocol: {}
+  - *ref_23
+  - *ref_18
+  - &ref_79
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_58
+        type: array
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        elementType: *ref_23
+        language:
+          default:
+            name: ScopeAssignmentListResult-value
+            description: Gets a page of ScopeAssignment
+        protocol: {}
+      serializedName: value
+      language:
+        default:
+          name: value
+          description: Gets a page of ScopeAssignment
+      protocol: {}
+    - schema: &ref_31
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ScopeAssignmentListResult-nextLink
+            description: Gets the URL to get the next set of results.
+        protocol: {}
+      serializedName: nextLink
+      language:
+        default:
+          name: nextLink
+          description: Gets the URL to get the next set of results.
+      protocol: {}
+    language:
+      default:
+        name: ScopeAssignmentListResult
+        description: Result of the request to list ScopeAssignment. It contains a list of groups and a URL link to get the next set of results.
+        namespace: Api20190601Preview
+    protocol: {}
+  - &ref_84
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_59
+        type: array
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        elementType: *ref_20
+        language:
+          default:
+            name: ManagedNetworkGroupListResult-value
+            description: Gets a page of ManagedNetworkGroup
+        protocol: {}
+      serializedName: value
+      language:
+        default:
+          name: value
+          description: Gets a page of ManagedNetworkGroup
+      protocol: {}
+    - schema: &ref_32
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ManagedNetworkGroupListResult-nextLink
+            description: Gets the URL to get the next set of results.
+        protocol: {}
+      serializedName: nextLink
+      language:
+        default:
+          name: nextLink
+          description: Gets the URL to get the next set of results.
+      protocol: {}
+    language:
+      default:
+        name: ManagedNetworkGroupListResult
+        description: Result of the request to list Managed Network Groups. It contains a list of groups and a URL link to get the next set of results.
+        namespace: Api20190601Preview
+    protocol: {}
+  - &ref_89
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_60
+        type: array
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        elementType: *ref_22
+        language:
+          default:
+            name: ManagedNetworkPeeringPolicyListResult-value
+            description: Gets a page of Peering Policies
+        protocol: {}
+      serializedName: value
+      language:
+        default:
+          name: value
+          description: Gets a page of Peering Policies
+      protocol: {}
+    - schema: &ref_33
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: ManagedNetworkPeeringPolicyListResult-nextLink
+            description: Gets the URL to get the next page of results.
+        protocol: {}
+      serializedName: nextLink
+      language:
+        default:
+          name: nextLink
+          description: Gets the URL to get the next page of results.
+      protocol: {}
+    language:
+      default:
+        name: ManagedNetworkPeeringPolicyListResult
+        description: Result of the request to list Managed Network Peering Policies. It contains a list of policies and a URL link to get the next set of results.
+        namespace: Api20190601Preview
+    protocol: {}
+  - &ref_91
+    type: object
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    properties:
+    - schema: &ref_61
+        type: array
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        elementType: &ref_39
+          type: object
+          apiVersions:
+          -
+            version: 2019-06-01-preview
+          properties:
+          - schema: &ref_34
+              type: string
+              apiVersions:
+              -
+                version: 2019-06-01-preview
+              language:
+                default:
+                  name: Operation-name
+                  description: 'Operation name: {provider}/{resource}/{operation}'
+              protocol: {}
+            serializedName: name
+            language:
+              default:
+                name: name
+                description: 'Operation name: {provider}/{resource}/{operation}'
+            protocol: {}
+          - schema: &ref_40
+              type: object
+              apiVersions:
+              -
+                version: 2019-06-01-preview
+              properties:
+              - schema: &ref_35
+                  type: string
+                  apiVersions:
+                  -
+                    version: 2019-06-01-preview
+                  language:
+                    default:
+                      name: Operation-display-provider
+                      description: 'Service provider: Microsoft.ManagedNetwork'
+                  protocol: {}
+                serializedName: provider
+                language:
+                  default:
+                    name: provider
+                    description: 'Service provider: Microsoft.ManagedNetwork'
+                protocol: {}
+              - schema: &ref_36
+                  type: string
+                  apiVersions:
+                  -
+                    version: 2019-06-01-preview
+                  language:
+                    default:
+                      name: Operation-display-resource
+                      description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
+                  protocol: {}
+                serializedName: resource
+                language:
+                  default:
+                    name: resource
+                    description: 'Resource on which the operation is performed: Profile, endpoint, etc.'
+                protocol: {}
+              - schema: &ref_37
+                  type: string
+                  apiVersions:
+                  -
+                    version: 2019-06-01-preview
+                  language:
+                    default:
+                      name: Operation-display-operation
+                      description: 'Operation type: Read, write, delete, etc.'
+                  protocol: {}
+                serializedName: operation
+                language:
+                  default:
+                    name: operation
+                    description: 'Operation type: Read, write, delete, etc.'
+                protocol: {}
+              language:
+                default:
+                  name: Operation-display
+                  description: The object that represents the operation.
+                  namespace: Api20190601Preview
+              protocol: {}
+            serializedName: display
+            language:
+              default:
+                name: display
+                description: The object that represents the operation.
+            protocol: {}
+          language:
+            default:
+              name: Operation
+              description: REST API operation
+              namespace: Api20190601Preview
+          protocol: {}
+        language:
+          default:
+            name: OperationListResult-value
+            description: List of Resource Provider operations supported by the Managed Network resource provider.
+        protocol: {}
+      serializedName: value
+      language:
+        default:
+          name: value
+          description: List of Resource Provider operations supported by the Managed Network resource provider.
+      protocol: {}
+    - schema: &ref_38
+        type: string
+        apiVersions:
+        -
+          version: 2019-06-01-preview
+        language:
+          default:
+            name: OperationListResult-nextLink
+            description: URL to get the next set of operation list results if there are any.
+        protocol: {}
+      serializedName: nextLink
+      language:
+        default:
+          name: nextLink
+          description: URL to get the next set of operation list results if there are any.
+      protocol: {}
+    language:
+      default:
+        name: OperationListResult
+        description: Result of the request to list Managed Network operations. It contains a list of operations and a URL link to get the next set of results.
+        namespace: Api20190601Preview
+    protocol: {}
+  - *ref_39
+  - *ref_40
+  - *ref_14
+  - *ref_15
+  dictionaries:
+  - *ref_41
+  - *ref_42
+  arrays:
+  - *ref_45
+  - *ref_46
+  - *ref_47
+  - *ref_48
+  - *ref_49
+  - *ref_50
+  - *ref_51
+  - *ref_52
+  - *ref_53
+  - *ref_54
+  - *ref_55
+  - *ref_56
+  - *ref_57
+  - *ref_58
+  - *ref_59
+  - *ref_60
+  - *ref_61
+  - *ref_62
+  - *ref_63
+  constants:
+  - &ref_64
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - *ref_19
+  - &ref_67
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_68
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_69
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_71
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_74
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_75
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_76
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_77
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_78
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_80
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_81
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_82
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_83
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_85
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_86
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_87
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_88
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  - &ref_90
+    type: constant
+    value:
+      value: 2019-06-01-preview
+      language:
+        default:
+          name: ''
+          description: ''
+    valueType: *ref_0
+    language:
+      default:
+        name: ApiVersion-2019-06-01-preview
+        description: Api Version (2019-06-01-preview)
+    protocol: {}
+  numbers:
+  - &ref_72
+    type: integer
+    apiVersions:
+    -
+      version: 2019-06-01-preview
+    maximum: 20
+    minimum: 1
+    precision: 32
+    language:
+      default:
+        name: components·parameters·listpagesizeparameter·schema
+        description: MISSING·SCHEMA-DESCRIPTION-INTEGER
+    protocol: {}
+  sealedChoices:
+  - *ref_43
+  - *ref_44
+  strings:
+  - *ref_0
+  - *ref_6
+  - *ref_1
+  - *ref_2
+  - *ref_3
+  - *ref_4
+  - *ref_10
+  - *ref_8
+  - *ref_28
+  - *ref_29
+  - *ref_30
+  - *ref_17
+  - *ref_31
+  - *ref_32
+  - *ref_33
+  - *ref_34
+  - *ref_35
+  - *ref_36
+  - *ref_37
+  - *ref_38
+globalParameters:
+- &ref_66
+  schema: *ref_0
+  clientDefaultValue: 'https://management.azure.com'
+  implementation: Client
+  required: true
+  language:
+    default:
+      name: $host
+      description: server parameter
+  protocol:
+    http:
+      in: uri
+info:
+  description: >-
+    The Microsoft Azure Managed Network management API provides a RESTful set of web services that interact with Microsoft Azure Networks service to programmatically view, control, change, and monitor your entire Azure network centrally and
+    with ease.
+  title: ManagedNetworkManagementClient
+operationGroups:
+- $key: ManagedNetworks
+  operations:
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_64
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_25
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    language:
+      default:
+        name: Get
+        description: 'The Get ManagedNetworks operation gets a Managed Network Resource, specified by the resource group and Managed Network name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_67
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_25
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-requestBody-name: managedNetwork
+        language:
+          default:
+            name: managedNetwork
+            description: Parameters supplied to the create/update a Managed Network Resource
+        protocol:
+          http:
+            in: body
+            style: json
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+          method: put
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          uri: '{$host}'
+    responses:
+    - schema: *ref_25
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    - schema: *ref_25
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '201'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-requestBody-index: 0
+    language:
+      default:
+        name: CreateOrUpdate
+        description: 'The Put ManagedNetworks operation creates/updates a Managed Network Resource, specified by resource group and Managed Network name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_68
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+          method: delete
+          uri: '{$host}'
+    responses:
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '200'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '202'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '204'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+    language:
+      default:
+        name: Delete
+        description: 'The Delete ManagedNetworks operation deletes a Managed Network Resource, specified by the  resource group and Managed Network name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_69
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_70
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-requestBody-name: parameters
+        language:
+          default:
+            name: parameters
+            description: Parameters supplied to update application gateway tags and/or scope.
+        protocol:
+          http:
+            in: body
+            style: json
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+          method: patch
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          uri: '{$host}'
+    responses:
+    - schema: *ref_25
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    - schema: *ref_25
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '201'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-requestBody-index: 0
+    language:
+      default:
+        name: Update
+        description: Updates the specified Managed Network resource tags.
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_71
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_72
+        implementation: Method
+        language:
+          default:
+            name: $top
+            description: May be used to limit the number of results in a page for list queries.
+            serializedName: $top
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        language:
+          default:
+            name: $skiptoken
+            description: >-
+              Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point
+              to use for subsequent calls.
+            serializedName: $skiptoken
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_73
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: ListByResourceGroup
+        description: The ListByResourceGroup ManagedNetwork operation retrieves all the Managed Network resources in a resource group in a paginated format.
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_74
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_72
+        implementation: Method
+        language:
+          default:
+            name: $top
+            description: May be used to limit the number of results in a page for list queries.
+            serializedName: $top
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        language:
+          default:
+            name: $skiptoken
+            description: >-
+              Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point
+              to use for subsequent calls.
+            serializedName: $skiptoken
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/providers/Microsoft.ManagedNetwork/managedNetworks'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_73
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: ListBySubscription
+        description: The ListBySubscription  ManagedNetwork operation retrieves all the Managed Network Resources in the current subscription in a paginated format.
+    protocol: {}
+  language:
+    default:
+      name: ManagedNetworks
+      description: ''
+  protocol: {}
+- $key: ScopeAssignments
+  operations:
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-skip-url-encoding: true
+        language:
+          default:
+            name: scope
+            description: The base resource of the scope assignment.
+            serializedName: scope
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: scopeAssignmentName
+            description: The name of the scope assignment to get.
+            serializedName: scopeAssignmentName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_75
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/{scope}/providers/Microsoft.ManagedNetwork/scopeAssignments/{scopeAssignmentName}'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_23
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    language:
+      default:
+        name: Get
+        description: Get the specified scope assignment.
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-skip-url-encoding: true
+        language:
+          default:
+            name: scope
+            description: The base resource of the scope assignment.
+            serializedName: scope
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: scopeAssignmentName
+            description: The name of the scope assignment to get.
+            serializedName: scopeAssignmentName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_76
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_23
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-requestBody-name: parameters
+        language:
+          default:
+            name: parameters
+            description: Parameters supplied to the specify which Managed Network this scope is being assigned
+        protocol:
+          http:
+            in: body
+            style: json
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/{scope}/providers/Microsoft.ManagedNetwork/scopeAssignments/{scopeAssignmentName}'
+          method: put
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          uri: '{$host}'
+    responses:
+    - schema: *ref_23
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    - schema: *ref_23
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '201'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-requestBody-index: 0
+    language:
+      default:
+        name: CreateOrUpdate
+        description: Creates a scope assignment.
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-skip-url-encoding: true
+        language:
+          default:
+            name: scope
+            description: The base resource of the scope assignment.
+            serializedName: scope
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: scopeAssignmentName
+            description: The name of the scope assignment to get.
+            serializedName: scopeAssignmentName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_77
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/{scope}/providers/Microsoft.ManagedNetwork/scopeAssignments/{scopeAssignmentName}'
+          method: delete
+          uri: '{$host}'
+    responses:
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '200'
+    exceptions:
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - default
+    language:
+      default:
+        name: Delete
+        description: Deletes a scope assignment.
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-skip-url-encoding: true
+        language:
+          default:
+            name: scope
+            description: The base resource of the scope assignment.
+            serializedName: scope
+        protocol:
+          http:
+            in: path
+      - schema: *ref_78
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/{scope}/providers/Microsoft.ManagedNetwork/scopeAssignments'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_79
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: List
+        description: Get the specified scope assignment.
+    protocol: {}
+  language:
+    default:
+      name: ScopeAssignments
+      description: ''
+  protocol: {}
+- $key: ManagedNetworkGroups
+  operations:
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_80
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkGroupName
+            description: The name of the Managed Network Group.
+            serializedName: managedNetworkGroupName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkGroups/{managedNetworkGroupName}'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_20
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    language:
+      default:
+        name: Get
+        description: 'The Get ManagedNetworkGroups operation gets a Managed Network Group specified by the resource group, Managed Network name, and group name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_81
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkGroupName
+            description: The name of the Managed Network Group.
+            serializedName: managedNetworkGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_20
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-requestBody-name: managedNetworkGroup
+        language:
+          default:
+            name: managedNetworkGroup
+            description: Parameters supplied to the create/update a Managed Network Group resource
+        protocol:
+          http:
+            in: body
+            style: json
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkGroups/{managedNetworkGroupName}'
+          method: put
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          uri: '{$host}'
+    responses:
+    - schema: *ref_20
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    - schema: *ref_20
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '201'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-requestBody-index: 0
+    language:
+      default:
+        name: CreateOrUpdate
+        description: The Put ManagedNetworkGroups operation creates or updates a Managed Network Group resource
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_82
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkGroupName
+            description: The name of the Managed Network Group.
+            serializedName: managedNetworkGroupName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkGroups/{managedNetworkGroupName}'
+          method: delete
+          uri: '{$host}'
+    responses:
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '200'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '202'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '204'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+    language:
+      default:
+        name: Delete
+        description: 'The Delete ManagedNetworkGroups operation deletes a Managed Network Group specified by the resource group, Managed Network name, and group name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_83
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_72
+        implementation: Method
+        language:
+          default:
+            name: $top
+            description: May be used to limit the number of results in a page for list queries.
+            serializedName: $top
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        language:
+          default:
+            name: $skiptoken
+            description: >-
+              Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point
+              to use for subsequent calls.
+            serializedName: $skiptoken
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkGroups'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_84
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: ListByManagedNetwork
+        description: The ListByManagedNetwork ManagedNetworkGroup operation retrieves all the Managed Network Groups in a specified Managed Networks in a paginated format.
+    protocol: {}
+  language:
+    default:
+      name: ManagedNetworkGroups
+      description: ''
+  protocol: {}
+- $key: ManagedNetworkPeeringPolicies
+  operations:
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_85
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkPeeringPolicyName
+            description: The name of the Managed Network Peering Policy.
+            serializedName: managedNetworkPeeringPolicyName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkPeeringPolicies/{managedNetworkPeeringPolicyName}'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_22
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    language:
+      default:
+        name: Get
+        description: 'The Get ManagedNetworkPeeringPolicies operation gets a Managed Network Peering Policy resource, specified by the  resource group, Managed Network name, and peering policy name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_86
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkPeeringPolicyName
+            description: The name of the Managed Network Peering Policy.
+            serializedName: managedNetworkPeeringPolicyName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_22
+        implementation: Method
+        required: true
+        extensions:
+          x-ms-requestBody-name: managedNetworkPolicy
+        language:
+          default:
+            name: managedNetworkPolicy
+            description: Parameters supplied to create/update a Managed Network Peering Policy
+        protocol:
+          http:
+            in: body
+            style: json
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkPeeringPolicies/{managedNetworkPeeringPolicyName}'
+          method: put
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          uri: '{$host}'
+    responses:
+    - schema: *ref_22
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    - schema: *ref_22
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '201'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+      x-ms-requestBody-index: 0
+    language:
+      default:
+        name: CreateOrUpdate
+        description: The Put ManagedNetworkPeeringPolicies operation creates/updates a new Managed Network Peering Policy
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_87
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkPeeringPolicyName
+            description: The name of the Managed Network Peering Policy.
+            serializedName: managedNetworkPeeringPolicyName
+        protocol:
+          http:
+            in: path
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkPeeringPolicies/{managedNetworkPeeringPolicyName}'
+          method: delete
+          uri: '{$host}'
+    responses:
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '200'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '202'
+    -
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          statusCodes:
+          - '204'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-long-running-operation: true
+      x-ms-long-running-operation-options:
+        final-state-via: azure-async-operation
+    language:
+      default:
+        name: Delete
+        description: 'The Delete ManagedNetworkPeeringPolicies operation deletes a Managed Network Peering Policy, specified by the  resource group, Managed Network name, and peering policy name'
+    protocol: {}
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_88
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: subscriptionId
+            description: Gets subscription credentials which uniquely identify Microsoft Azure subscription. The subscription ID forms part of the URI for every service call.
+            serializedName: subscriptionId
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: resourceGroupName
+            description: The name of the resource group.
+            serializedName: resourceGroupName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_6
+        implementation: Method
+        required: true
+        language:
+          default:
+            name: managedNetworkName
+            description: The name of the Managed Network.
+            serializedName: managedNetworkName
+        protocol:
+          http:
+            in: path
+      - schema: *ref_72
+        implementation: Method
+        language:
+          default:
+            name: $top
+            description: May be used to limit the number of results in a page for list queries.
+            serializedName: $top
+        protocol:
+          http:
+            in: query
+      - schema: *ref_6
+        implementation: Method
+        language:
+          default:
+            name: $skiptoken
+            description: >-
+              Skiptoken is only used if a previous operation returned a partial result. If a previous response contains a nextLink element, the value of the nextLink element will include a skiptoken parameter that specifies a starting point
+              to use for subsequent calls.
+            serializedName: $skiptoken
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}/managedNetworkPeeringPolicies'
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_89
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: ListByManagedNetwork
+        description: 'The ListByManagedNetwork PeeringPolicies operation retrieves all the Managed Network Peering Policies in a specified Managed Network, in a paginated format.'
+    protocol: {}
+  language:
+    default:
+      name: ManagedNetworkPeeringPolicies
+      description: ''
+  protocol: {}
+- $key: Operations
+  operations:
+  - apiVersions:
+    -
+      version: 2019-06-01-preview
+    request:
+      parameters:
+      - *ref_66
+      - schema: *ref_90
+        implementation: Client
+        required: true
+        language:
+          default:
+            name: ApiVersion
+            description: Api Version
+            serializedName: api-version
+        protocol:
+          http:
+            in: query
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          path: /providers/Microsoft.ManagedNetwork/operations
+          method: get
+          uri: '{$host}'
+    responses:
+    - schema: *ref_91
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - '200'
+    exceptions:
+    - schema: *ref_65
+      language:
+        default:
+          name: ''
+          description: ''
+      protocol:
+        http:
+          knownMediaType: json
+          mediaTypes:
+          - application/json
+          statusCodes:
+          - default
+    extensions:
+      x-ms-pageable:
+        nextLinkName: nextLink
+    language:
+      default:
+        name: List
+        description: Lists all of the available MNC operations.
+    protocol: {}
+  language:
+    default:
+      name: Operations
+      description: ''
+  protocol: {}
+language:
+  default:
+    name: ''
+    description: ''
+protocol:
+  http: {}
