@@ -4,7 +4,7 @@
 
 Model v1 i supported in both **autorest** and **autorest-beta**
 
->NOTE 1: There are some differences in **autorest-beta** that may cause **modeller1** to crash in case of some RPs.
+>NOTE 1: There are some differences in **autorest-beta** that may cause **modeler1** to crash in case of some RPs.
 
 >NOTE 2: **autorest-beta** strips examples from input file.
 
@@ -171,3 +171,14 @@ Operations are separated into list of operation groups under **/operationGroups*
         protocol: {}
 
 ### Parameters Definition
+
+....
+
+
+## Powershell Directives and Code Model Version Considerations
+
+https://github.com/Azure/autorest/blob/master/docs/powershell/directives.md
+
+In general:
+- **autorest.powershell** directives' syntax doesn't depend on model version
+- internal implementation will be different for v3 and v4
