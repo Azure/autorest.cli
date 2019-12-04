@@ -16,6 +16,10 @@ Repository:
 
 https://github.com/Azure/autorest.remodeler
 
+## Model v1/v3/v4 Examples
+
+https://github.com/Azure/autorest.cli/tree/master/doc/codemodel-examples
+
 ### How to Use in Pipeline
 
 Add following section to use model v3:
