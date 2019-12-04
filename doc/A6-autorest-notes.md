@@ -98,3 +98,76 @@ to:
     input: openapi-document/multi-api/identity
 
 Second one can be produced only by **autorest-beta**
+
+## CodeModel v3 and v4 comparison
+
+### Top Level
+
+**code-model-v3**
+
+- schemas
+- info
+- security
+- servers
+- tags
+- http
+- commands
+- extensions
+- details
+
+**code-model-v4**
+
+- schemas
+- globalParameters
+- info
+- operationGroups
+- language
+- protocols
+
+### Operation Groups
+
+The structure of operation is quite different for v3 and v4 so the code handling it has to be very different.
+
+
+**code-model-v3**
+
+All operations are grouped together in a single dictionary **/http/operations**
+
+    operations:
+      'http-operation:0':
+        operationId: ManagedNetworks_Get
+        path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+        method: get
+        description: 'The Get ManagedNetworks operation gets a Managed Network Resource, specified by the resource group and Managed Network name'
+        baseUrl: 'https://management.azure.com/'
+        deprecated: false
+        parameters: ...
+
+**code-model-v4**
+
+Operations are separated into list of operation groups under **/operationGroups**:
+
+
+    operationGroups:
+    - $key: ManagedNetworks
+      operations:
+    
+      - apiVersions:
+        - version: 2019-06-01-preview
+        request:
+          parameters: ...
+          language: ...
+          protocol:
+            http:
+              path: '/subscriptions/{subscriptionId}/resourceGroups/{resourceGroupName}/providers/Microsoft.ManagedNetwork/managedNetworks/{managedNetworkName}'
+              method: get
+              uri: '{$host}'
+        responses:
+          ...
+        language:
+          default:
+            name: Get
+            description: 'The Get ManagedNetworks operation gets a Managed Network Resource, specified by the resource group and Managed Network name'
+        protocol: {}
+
+### Parameters Definition
