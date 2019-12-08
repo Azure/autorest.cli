@@ -11,12 +11,7 @@
         ],
         "target": "es2016"
     },
-    "exclude": [
-      "dist",
-      "resources",
-      "node_modules",
-      "**/*.d.ts",
-      "**/rxjs/**/*.ts",
-      "**/uri-js/**/*.ts"
+    "include": [
+        "src"
     ]
 }
