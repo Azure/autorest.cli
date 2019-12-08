@@ -3,7 +3,10 @@
   "version": "0.1.10",
   "description": "Autorest Azure CLI extension",
   "main": "dist/index.js",
-  "scripts": {
+  "engines": {
+    "node": "10.15.0"
+    },
+    "scripts": {
     "start": "node dist/index.js",
     "debug": "node --max_old_space_size=4096 --inspect-brk ./dist/index.js",
     "eslint-fix": "eslint  . --fix --ext .ts",
