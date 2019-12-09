@@ -1,6 +1,6 @@
 {
   "name": "@autorest/cli",
-  "version": "0.1.11",
+  "version": "0.1.10",
   "description": "Autorest Azure CLI extension",
   "main": "dist/index.js",
   "engines": {
@@ -32,7 +32,8 @@
   "author": "Microsoft Corporation",
   "license": "MIT",
   "devDependencies": {
-    "@types/node": "10.17.0"
+    "@types/node": "10.17.0",
+    "eslint": "~5.4.0"
   },
   "dependencies": {
     "@azure-tools/autorest-extension-base": "~3.1.0",
