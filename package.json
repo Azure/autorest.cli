@@ -39,5 +39,8 @@
   "dependencies": {
     "@azure-tools/autorest-extension-base": "~3.1.0",
     "node-yaml": "^3.2.0"
-  }
+  },
+  "files": [
+    "dist"
+  ]
 }
