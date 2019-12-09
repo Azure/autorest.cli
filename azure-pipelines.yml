@@ -28,7 +28,8 @@ steps:
     npx @microsoft/rush sync-versions
     npx @microsoft/rush update 
 
-    tsc --version
+    # this is  just to solve temporary problem witn node-yaml / yarn installer
+    npm install -g node-yaml
 
     # compile the code
     npx @microsoft/rush rebuild 
