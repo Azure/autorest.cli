@@ -29,7 +29,7 @@ steps:
     npx @microsoft/rush update 
 
     # this is  just to solve temporary problem witn node-yaml / yarn installer
-    npm install -g node-yaml
+    npm install node-yaml
 
     # compile the code
     npx @microsoft/rush rebuild 
