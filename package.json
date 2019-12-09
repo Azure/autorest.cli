@@ -35,6 +35,7 @@
     "@types/node": "10.17.0"
   },
   "dependencies": {
-    "@azure-tools/autorest-extension-base": "~3.1.0"
+    "@azure-tools/autorest-extension-base": "~3.1.0",
+    "node-yaml": "^3.2.0"
   }
 }
