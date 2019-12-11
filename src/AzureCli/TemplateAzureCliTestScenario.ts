@@ -35,31 +35,34 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     output.push("");
 
     // walk through test config
-    for (var ci = 0; ci < config.length; ci++)
+    if (config)
     {
-        // find example by name
-        let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
-
-        if (exampleCmd != null && exampleCmd.length > 0)
+        for (var ci = 0; ci < config.length; ci++)
         {
-            let prefix: string = "        self.cmd(";
+            // find example by name
+            let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
 
-            for (let idx = 0; idx < exampleCmd.length; idx++)
+            if (exampleCmd != null && exampleCmd.length > 0)
             {
-                let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
-                let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
+                let prefix: string = "        self.cmd(";
 
-                output.push(prefix + exampleCmd[idx] + postfix);
+                for (let idx = 0; idx < exampleCmd.length; idx++)
+                {
+                    let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
+                    let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
+
+                    output.push(prefix + exampleCmd[idx] + postfix);
+                }
+                output.push("                 checks=[])");
+                output.push("");
             }
-            output.push("                 checks=[])");
-            output.push("");
-        }
-        else
-        {
-            output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
+            else
+            {
+                output.push("        # EXAMPLE NOT FOUND: " + config[ci].name);
+            }
         }
     }
-
+    
     return output;
 }
 

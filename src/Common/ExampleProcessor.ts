@@ -101,12 +101,15 @@ export class ExampleProcessor
                         this.ExamplesTotal++;
 
                         // check if example is in test scenario
-                        for (let item of this._testScenario)
+                        if (this._testScenario)
                         {
-                            if (item['name'] == example)
+                            for (let item of this._testScenario)
                             {
-                                this.ExamplesTested++;
-                                break;
+                                if (item['name'] == example)
+                                {
+                                    this.ExamplesTested++;
+                                    break;
+                                }
                             }
                         }
                     }

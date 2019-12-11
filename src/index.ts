@@ -111,12 +111,7 @@ extension.Add("cli", async autoRestApi => {
         let generateReport = await autoRestApi.GetValue("report");
 
         // Handle generation type parameter
-        if (await autoRestApi.GetValue("cli-module"))
-        {
-            Info("GENERATION: --cli-module");
-            artifactType = (await autoRestApi.GetValue("extension")) ? ArtifactType.ArtifactTypeAzureCliExtension : ArtifactType.ArtifactTypeAzureCliModule;
-        }
-        else if (await autoRestApi.GetValue("ansible"))
+        if (await autoRestApi.GetValue("ansible"))
         {
             Info("GENERATION: --ansible");
             if (await  autoRestApi.GetValue("rest"))
@@ -169,8 +164,8 @@ extension.Add("cli", async autoRestApi => {
         }
         else
         {
-            Error("Output type not selected.");
-            return;
+            Info("GENERATION: --cli (extension)");
+            artifactType = (await autoRestApi.GetValue("extension")) ? ArtifactType.ArtifactTypeAzureCliExtension : ArtifactType.ArtifactTypeAzureCliModule;
         }
 
         if (await autoRestApi.GetValue("intermediate"))

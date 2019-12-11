@@ -484,7 +484,7 @@ export class CodeModelCli
         if (name == "create")
         {
             method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_CREATE);
-            names.push(method.Name);
+            if (method) names.push(method.Name);
         }
         else if (name == "update")
         {
@@ -495,33 +495,33 @@ export class CodeModelCli
             {
                 method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_UPDATE);
             }
-            names.push(method.Name);
+            if (method) names.push(method.Name);
         }
         else if (name == "show")
         {
             method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_GET);
-            names.push(method.Name);
+            if (method) names.push(method.Name);
         }
         else if (name == "list")
         {
             var m = this.Map.Modules[this._selectedModule];
             for (let method of m.Methods)
             {
-                if (method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
+                if (method && method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
                     names.push(method.Name);
             }
         }
         else if (name == "delete")
         {
             method = this.GetMethodByKind(ModuleMethodKind.MODULE_METHOD_DELETE);
-            names.push(method.Name);
+            if (method) names.push(method.Name);
         }
         
         if (names.length == 0)
         {
             // name is just pythonized swagger method name
             method = this.GetMethod(ToCamelCase(name));
-            names.push(method.Name);
+            if (method) names.push(method.Name);
         }
 
         return names;
