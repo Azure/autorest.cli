@@ -28,7 +28,7 @@ If you want to use the container:
 
 Following command will generate default Azure CLI extension considering all ther prerequisites are in place
 
-    autorest --cli --use-extension="{'@autorest/cli':'latest'}" --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
+    autorest --cli --use-extension="{'@autorest/cli':'latest'}" --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
 
 > NOTE: When next version is available, instead of **--cli** option **--az** option will be used to generate Azure CLI command modules.
 
