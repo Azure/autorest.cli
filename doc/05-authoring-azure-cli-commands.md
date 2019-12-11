@@ -10,32 +10,32 @@
 
 ### Prepare Your Environment
 
-The best way of using **autorest.cli** is Docker container.
+If you don't have installed AutoRest tools yet, the best way to start is using Docker container.
 
-You need to clone following directories locally. I have added Python SDK here as well, it's not necessary, but may be useful.
+You will need to clone following directories locally.
 
     git clone https://github.com/Azure/azure-rest-api-specs
     git clone https://github.com/Azure/azure-cli-extensions.git
     git clone https://github.com/Azure/azure-sdk-for-python.git
-    git clone https://github.com/Azure/autorest.cli.git
 
 For simplicity let's assume they are cloned under **c:\dev** directory on Windows machine.
 
-The easiest way to use **autorest.cli** is the container:
+If you want to use the container:
 
     docker run -it --rm -v c:\dev:/_ mcr.microsoft.com/azure-cli/tools
-
->NOTE: In final solution it won't be necessary to clone Autorest CLI repository
 
 ### Generate Extension
 
 Following command will generate default Azure CLI extension considering all ther prerequisites are in place
 
-    autorest --cli --use=/_/autorest.cli --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
+    autorest --cli --use-extension="{'@autorest/cli':'latest'}" --cli-module --extension --output-folder=/_/azure-cli-extensions /_/azure-rest-api-specs/specification/frontdoor/resource-manager/readme.md
+
+> NOTE: When next version is available, instead of **--cli** option **--az** option will be used to generate Azure CLI command modules.
+
 
 ### Add Local Copy of Python SDK
 
-> NOTE: This step will be replaced by appropriate AutoRest command and performed automatically by CI in the future.
+> NOTE: Appropriate SDK will be generated automatically in the future while generating extension.
 
 In your extension folder create a subfolder called **vendored_sdks** and copy appropriate subfolder from Python SDK.
 
@@ -57,7 +57,7 @@ For instance using **healthcareapis** as an example, your folder structure shoul
 
 ## Running The Extension
 
-To install the extesnion run:
+To install the extension run:
 
     azdev extension add <your-extension-name>
 
