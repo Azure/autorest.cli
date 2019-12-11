@@ -32,6 +32,8 @@ Following command will generate default Azure CLI extension considering all ther
 
 > NOTE: When next version is available, instead of **--cli** option **--az** option will be used to generate Azure CLI command modules.
 
+> NOTE: Adding option **--use-extension="{'@autorest/cli':'latest'}"** will be not necessary in the future.
+
 
 ### Add Local Copy of Python SDK
 
