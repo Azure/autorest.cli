@@ -8,6 +8,40 @@ import { Example } from "../Common/Example";
 import { GeneratePythonIntegrationTest } from "./TemplatePythonIntegrationTest"
 import { GenerateSwaggerIntegrationTest } from "./TemplateSwaggerIntegrationTest"
 
+export function GenerateDefaultTestScenario(
+    examples: Example[],
+    warningCb: LogCallback)
+{
+    warningCb("");
+    warningCb("NO TEST SCENARIO PROVIDED - DEFAULT WILL BE USED");
+    warningCb("ADD FOLLOWING SECTION TO readme.cli.md FILE TO MODIFY IT");
+    warningCb("--------------------------------------------------------");
+    warningCb("  test-scenario:");
+
+    let testScenario = [];
+
+    let sorted: Example[] = examples.sort((e1,e2) =>
+        {
+            let n1 = MethodToOrder(e1.Method);
+            let n2 = MethodToOrder(e2.Method);
+            if (n1 == n2)
+            {
+                if (e1.Method == "put") return (e1.Url.length > e2.Url.length) ? 1 : -1;
+                else  return (e1.Url.length > e2.Url.length) ? -1 : 1;
+            }                
+            return (n1 > n2) ? 1 : -1;
+        })
+
+    for (var i = 0; i < sorted.length; i++)
+    {
+        var example: Example = examples[i];
+        warningCb("    - name: " + example.Id);
+        testScenario.push({ name: example.Id })
+    }
+    warningCb("--------------------------------------------------------");
+    return testScenario;
+}
+
 export function GenerateIntegrationTest(artifactType: ArtifactType,
                                         testScenario: any,
                                         examples: Example[],
@@ -24,35 +58,6 @@ export function GenerateIntegrationTest(artifactType: ArtifactType,
 {
     let code: string[] = [];
     let path: string = "";
-
-    // if test config is not specified
-    if (!testScenario)
-    {
-        logCb("");
-        logCb("NO TEST SCENARIO PROVIDED - TRY TO ADD FOLLOWING SECTION TO readme.cli.md FILE");
-        logCb("------------------------------------------------------------------------------");
-        logCb("  test-scenario:");
-
-        let sorted: Example[] = examples.sort((e1,e2) =>
-            {
-                let n1 = MethodToOrder(e1.Method);
-                let n2 = MethodToOrder(e2.Method);
-                if (n1 == n2)
-                {
-                    if (e1.Method == "put") return (e1.Url.length > e2.Url.length) ? 1 : -1;
-                    else  return (e1.Url.length > e2.Url.length) ? -1 : 1;
-                }                
-                return (n1 > n2) ? 1 : -1;
-            })
-
-        for (var i = 0; i < sorted.length; i++)
-        {
-            var example: Example = examples[i];
-            logCb("    - name: " + example.Id);
-        }
-        logCb("------------------------------------------------------------------------------");
-        return;
-    }
 
     logCb("");
     logCb("TEST SCENARIO COVERAGE");

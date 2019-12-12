@@ -9,7 +9,7 @@ import { ExampleProcessor } from "./Common/ExampleProcessor";
 import { Example } from "./Common/Example";
 
 // Generators
-import { GenerateIntegrationTest } from "./IntegrationTest/Generator";
+import { GenerateIntegrationTest, GenerateDefaultTestScenario } from "./IntegrationTest/Generator";
 
 import { GenerateAnsible } from "./Ansible/Generator";
 import { GenerateAzureCli } from "./AzureCli/Generator";
@@ -60,6 +60,14 @@ extension.Add("cli", async autoRestApi => {
     {
         autoRestApi.Message({
             Channel: Channel.Error,
+            Text: s
+        });
+    }
+
+    function Warning(s: string)
+    {
+        autoRestApi.Message({
+            Channel: Channel.Warning,
             Text: s
         });
     }
@@ -192,6 +200,17 @@ extension.Add("cli", async autoRestApi => {
 
             //-------------------------------------------------------------------------------------------------------------------------
             //
+            // GENERATE DEFAULT TEST SCENARIO IF DOESN'T EXIST
+            //
+            //-------------------------------------------------------------------------------------------------------------------------
+            if (!testScenario)
+            {
+                testScenario = GenerateDefaultTestScenario(examples, Warning);
+                exampleProcessor = new ExampleProcessor(swagger, testScenario);
+            }
+
+            //-------------------------------------------------------------------------------------------------------------------------
+            //
             // GENERATE RAW MAP
             //
             //-------------------------------------------------------------------------------------------------------------------------
@@ -239,6 +258,7 @@ extension.Add("cli", async autoRestApi => {
             // UPDATE TEST DESCRIPTIONS USING TEST SETUP
             //
             //-------------------------------------------------------------------------------------------------------------------------
+
             if (testScenario)
             {
                 testScenario.forEach(element => {
