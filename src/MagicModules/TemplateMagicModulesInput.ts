@@ -55,6 +55,7 @@ export function GenerateMagicModulesInput(model: CodeModel, log: LogCallback) : 
                 operationName = "update";
                 break;
             case "Delete":
+            case "Remove":
                 operationName = "delete";
                 break;
             default:
@@ -151,13 +152,22 @@ function appendMethod(output: string[], model: CodeModel, method: ModuleMethod, 
     }
 }
 
+// These paths should be ignored. 
+// '/name' always has a conflict with the 'name' parameter in request path
+// '/type' returns the type of the current resource, which is useless for the client-end user
+// '/provisioningState' and '/properties/provisioningState' is tracked by the SDK, should be useless for ansible and terraform
+const pathsThatShouldBeIgnored = new Set([
+    '/name',
+    '/type',
+    '/provisioningState',
+    '/properties/provisioningState'
+])
+
 function appendUxOptions(output: string[], options: ModuleOption[], prefix: string, appendReadOnly: boolean = false) {
 
     // ??? what's the diffenece between parameters and properties
-    for (var i = 0; i < options.length; i++)
+    for (let option of options)
     {
-        var option = options[i];
-
         // if option was marked as hidden, don't include it
         if (option.Hidden)
             continue;
@@ -177,6 +187,11 @@ function appendUxOptions(output: string[], options: ModuleOption[], prefix: stri
         // warning needs to be generated
         if (option.Type == "dict" && (option.SubOptions == null || option.SubOptions.length == 0))
         {
+            continue;
+        }
+
+        // if the path of this option is in the ignore list, we should skip it
+        if (pathsThatShouldBeIgnored.has(option.PathSwagger)) {
             continue;
         }
 
@@ -660,7 +675,7 @@ function appendOption(output: string[], option: ModuleOption, isGo: boolean, isP
 
     if (option.Type == "dict")
     {
-        for (var so of option.SubOptions)
+        for (let so of option.SubOptions)
         {
             if (isGo && isPython && so.PathGo != so.PathPython)
             {
