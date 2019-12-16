@@ -173,7 +173,7 @@ extension.Add("cli", async autoRestApi => {
         else
         {
             Info("GENERATION: --cli (extension)");
-            artifactType = (await autoRestApi.GetValue("extension")) ? ArtifactType.ArtifactTypeAzureCliExtension : ArtifactType.ArtifactTypeAzureCliModule;
+            artifactType = ArtifactType.ArtifactTypeAzureCliExtension;
         }
 
         if (await autoRestApi.GetValue("intermediate"))
