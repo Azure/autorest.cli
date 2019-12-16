@@ -133,7 +133,8 @@ export class MapFlattener
                     suboption.DispositionRest = dispositionRest;
                     suboption.DispositionSdk = dispositionSdk;
 
-                    if (path != "/")
+                    //if (path != "/")
+                    if (option.NameAnsible != "parameters" && option.NameAnsible != "properties")
                     {
                         suboption.NameAnsible = option.NameAnsible + "_" + suboption.NameAnsible;
                         suboption.NameTerraform = option.NameTerraform + suboption.NameAnsible;

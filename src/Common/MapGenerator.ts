@@ -741,6 +741,12 @@ export class MapGenerator
                         option.PathPython = pathPython + ((attrName != "properties") ?  ("/" + attrName) : "");
                         option.PathGo = option.PathSwagger;
 
+                        // [ZIM] this is a temporary hack for demo
+                        if (option.Documentation == "Resource name")
+                        {
+                            option.IncludeInArgSpec = false;
+                        }
+
                         option.SubOptions = this.GetModelOptions(type, level + 1, subSampleValue, option.PathSwagger, option.PathPython, includeReadOnly, includeReadWrite, isResponse, isInfo);
                         options.push(option);
                     }
