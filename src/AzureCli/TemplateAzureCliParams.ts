@@ -10,29 +10,10 @@ import { EscapeString, ToCamelCase, Capitalize } from "../Common/Helpers";
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
     let output: string[] = [];
     let hasActions: boolean = false;
+    let hasBoolean: boolean = false;
+    let hasEnum: boolean = false;
     let actions: string[] = [];
-
-    output.push("# --------------------------------------------------------------------------------------------");
-    output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
-    output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
-    output.push("# --------------------------------------------------------------------------------------------");
-    output.push("# pylint: disable=line-too-long");
-    output.push("# pylint: disable=too-many-lines");
-    output.push("# pylint: disable=too-many-statements");   
-    output.push("");
-    //output.push("from knack.arguments import CLIArgumentType");
-    output.push("from azure.cli.core.commands.parameters import (");
-    output.push("    tags_type,");
-    //output.push("    get_resource_name_completion_list,");
-    //output.push("    quotes,");
-    //output.push("    get_three_state_flag,");
-    output.push("    get_enum_type,");
-    output.push("    resource_group_name_type,");
-    output.push("    get_location_type");
-    output.push(")");
-    //output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
-    
-    
+        
     var output_args: string[] = [];
 
     output_args.push("");
@@ -76,10 +57,12 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
                     if (element.Type == "boolean")
                     {
+                        hasBoolean = true;
                         argument += ", arg_type=get_three_state_flag()";
                     }
                     else if ((element.EnumValues.length > 0) && !element.IsList)
                     {
+                        hasEnum = true;
                         argument += ", arg_type=get_enum_type([";
 
                         element.EnumValues.forEach(element => {
@@ -129,6 +112,26 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             }
         }
     } while (model.NextModule());
+
+    output.push("# --------------------------------------------------------------------------------------------");
+    output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");
+    output.push("# Licensed under the MIT License. See License.txt in the project root for license information.");
+    output.push("# --------------------------------------------------------------------------------------------");
+    output.push("# pylint: disable=line-too-long");
+    output.push("# pylint: disable=too-many-lines");
+    output.push("# pylint: disable=too-many-statements");   
+    output.push("");
+    //output.push("from knack.arguments import CLIArgumentType");
+    output.push("from azure.cli.core.commands.parameters import (");
+    output.push("    tags_type,");
+    //output.push("    get_resource_name_completion_list,");
+    //output.push("    quotes,");
+    if (hasBoolean) output.push("    get_three_state_flag,");
+    if (hasEnum) output.push("    get_enum_type,");
+    output.push("    resource_group_name_type,");
+    output.push("    get_location_type");
+    output.push(")");
+    //output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
 
     if (hasActions)
     {

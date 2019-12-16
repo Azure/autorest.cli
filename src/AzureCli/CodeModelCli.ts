@@ -181,6 +181,16 @@ export class CodeModelCli
             partIdx++;
         }
 
+        for (let regex in this._cmdOverrides)
+        {
+            let regexp = new RegExp(regex);
+
+            if (command.match(regexp))
+            {
+                command = this._cmdOverrides[regex].replace("*", this.Map.CliName);
+            }
+        }
+
         return command;
     }
 
