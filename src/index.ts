@@ -356,7 +356,7 @@ extension.Add("cli", async autoRestApi => {
                 // AZURE CLI COMMAND MODULE
                 //
                 //-------------------------------------------------------------------------------------------------------------------------
-                if (artifactType == ArtifactType.ArtifactTypeAzureCliModule || artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
+                if (artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
                 {
                     GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
                 }
