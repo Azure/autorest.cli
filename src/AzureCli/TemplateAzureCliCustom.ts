@@ -30,10 +30,26 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     output.push("# pylint: disable=too-many-lines");
     output.push("# pylint: disable=too-many-locals");
     output.push("# pylint: disable=unused-argument");
-    //output.push("");
     //output.push("from knack.util import CLIError");
-    //output.push("import json");
-    
+
+    let required: any = {};
+    let body: string[] = GenerateBody(model, required);
+
+    if (required['json'])
+    {
+        output.push("import json");
+    }
+
+    output = output.concat(body);
+    output.push("");
+
+    return output;
+}
+
+
+function GenerateBody(model: CodeModelCli, required: any) : string[] {
+    var output: string[] = [];
+
     do
     {
         let methods: string[] = model.GetCliCommandMethods();
@@ -169,6 +185,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
                         else
                         {
                             access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name)
+                            required['json'] = true;
                         }
                         
                         if (isUpdate)
@@ -227,8 +244,6 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
             output = output.concat(output_method_call);
         }
     } while (model.NextModule());
-
-    output.push("");
 
     return output;
 }
