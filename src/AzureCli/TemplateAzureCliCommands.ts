@@ -30,10 +30,10 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         let methods: string[] = model.GetCliCommandMethods();
         if (methods.length > 0)
         {
-
-
             output.push("");
-            output.push("    from ._client_factory import cf_" + model.ModuleOperationName);
+
+            let cf_name: string = "cf_" + ((model.ModuleOperationName != "") ? model.ModuleOperationName :  model.GetCliCommandModuleNameUnderscored());
+            output.push("    from ._client_factory import " + cf_name);
             output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + " = CliCommandType(");
             
             if (true)
@@ -45,8 +45,10 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 // enable this if using package
                 output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
             }
-            output.push("        client_factory=cf_" + model.ModuleOperationName + ")");
-            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=cf_" + model.ModuleOperationName + ") as g:");
+            
+            output.push("        client_factory=" + cf_name + ")");
+
+            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=" + cf_name + ") as g:");
             for (let method of methods)
             {
                 // create, delete, list, show, update

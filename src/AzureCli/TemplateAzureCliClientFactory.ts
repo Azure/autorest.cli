@@ -23,14 +23,13 @@ export function GenerateAzureCliClientFactory(model: CodeModelCli) : string[] {
 
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
-
-        output.push("");
-        output.push("");
-        output.push("def cf_" + model.ModuleOperationName + "(cli_ctx, *_):");
-        output.push("    return cf_" + model.GetCliCommandModuleNameUnderscored() + "(cli_ctx)." + model.ModuleOperationName);
+        if (model.ModuleOperationName != "")
+        {
+            output.push("");
+            output.push("");
+            output.push("def cf_" + model.ModuleOperationName + "(cli_ctx, *_):");
+            output.push("    return cf_" + model.GetCliCommandModuleNameUnderscored() + "(cli_ctx)." + model.ModuleOperationName);
+        }
     } while (model.NextModule());
 
     output.push("");
