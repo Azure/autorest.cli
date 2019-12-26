@@ -167,16 +167,9 @@ export class CodeModelCli
                 continue;
             }
 
-            if (command != "")
-            {
-                command += " ";
-                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
-            }
-            else
-            {
-                // override first part with CLI Name, for instance "service" -> "apimgmt"
-                command += this.Map.CliName;
-            }
+            if (command == "") command = this.Map.CliName
+            command += " ";
+            command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
 
             partIdx++;
         }
