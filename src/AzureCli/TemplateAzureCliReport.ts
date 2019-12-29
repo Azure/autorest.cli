@@ -39,23 +39,29 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             mo.push("|------|----|-----------|----------|--------------|");
 
 
-            let params: CommandParameter[] = model.GetSelectedCommandParameters();
- 
+            model.GetFirstParameter();
+
             // first parameters that are required
-            params.forEach(element => {
-                if (element.Type != "placeholder" && element.Required)
+            do
+            {
+                if (model.Parameter_Type != "placeholder" && model.Parameter_IsRequired)
                 {
-                    mo.push("|**--" + element.Name + "**|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
+                    mo.push("|**--" + model.Parameter_Name + "**|" + model.Parameter_Type + "|" + model.Parameter_Description + "|" + model.Parameter_PathSdk + "|" + model.Parameter_PathSwagger + "|");
                 }
-            });
+            }
+            while (model.GetNextParameter());
+
+            model.GetFirstParameter();
 
             // following by required parameters
-            params.forEach(element => {
-                if (element.Type != "placeholder" && !element.Required)
+            do {
+                if (model.Parameter_Type != "placeholder" && !model.Parameter_IsRequired)
                 {
-                    mo.push("|--" + element.Name + "|" + element.Type + "|" + element.Help + "|" + element.PathSdk + "|" + element.PathSwagger + "|");
+                    mo.push("|--" + model.Parameter_Name + "**|" + model.Parameter_Type + "|" + model.Parameter_Description + "|" + model.Parameter_PathSdk + "|" + model.Parameter_PathSwagger + "|");
                 }
-            });
+            }
+            while (model.GetNextParameter());
+
 
             let examples: CommandExample[] = model.GetMethodExamples();
             examples.forEach(example => {

@@ -36,16 +36,17 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             output_args.push("");
             output_args.push("    with self.argument_context('" + model.GetCliCommand(null) + " " + method + "') as c:");
 
-            if (model.GetSelectedCommandParameters().length == 0)
+            if (!model.GetFirstParameter())
             {
                 output_args.push("        pass");
             }
             else
             {
-                let params: CommandParameter[] = model.GetSelectedCommandParameters();
+                do
+                {
+                    //let parameterName: string = element.Name.split("-").join("_");
+                    let parameterName = model.Parameter_NameUnderscored;
 
-                params.forEach(element => {
-                    let parameterName: string = element.Name.split("-").join("_");
                     let argument = "        c.argument('" + parameterName + "'";
 
                     // this is to handle names like "format", "type", etc
@@ -55,17 +56,17 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         argument += ", options_list=['--" + parameterName + "']";
                     }
 
-                    if (element.Type == "boolean")
+                    if (model.Parameter_Type == "boolean")
                     {
                         hasBoolean = true;
                         argument += ", arg_type=get_three_state_flag()";
                     }
-                    else if ((element.EnumValues.length > 0) && !element.IsList)
+                    else if ((model.Parameter_EnumValues.length > 0) && !model.Parameter_IsList)
                     {
                         hasEnum = true;
                         argument += ", arg_type=get_enum_type([";
 
-                        element.EnumValues.forEach(element => {
+                        model.Parameter_EnumValues.forEach(element => {
                             if (!argument.endsWith("[")) argument += ", ";
                             argument += "'" + element + "'";
                         });
@@ -86,14 +87,14 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                     }
                     else
                     {
-                        argument += ", id_part=None, help='" + EscapeString(element.Help) + "'"; 
+                        argument += ", id_part=None, help='" + EscapeString(model.Parameter_Description) + "'"; 
                     }
 
-                    if (element.IsList)
+                    if (model.Parameter_IsList)
                     {
-                        if (element.Type == "dict")
+                        if (model.Parameter_Type == "dict")
                         {
-                            let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(element.Name));
+                            let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(model.Parameter_Name));
                             argument += ", action=" + actionName;
                             hasActions = true;
 
@@ -108,7 +109,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                     argument += ")";
 
                     output_args.push(argument);
-                });
+                } while (model.GetNextParameter());
             }
         }
     } while (model.NextModule());

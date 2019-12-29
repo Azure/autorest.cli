@@ -28,10 +28,10 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     output.push("");
     output.push("    @ResourceGroupPreparer(name_prefix='cli_test_" + model.GetCliCommandModuleNameUnderscored() + "')");
     output.push("    def test_" + model.GetCliCommandModuleNameUnderscored() + "(self, resource_group):");
-    output.push("");
-    output.push("        self.kwargs.update({");
-    output.push("            'name': 'test1'");
-    output.push("        })");
+    //output.push("");
+    //output.push("        self.kwargs.update({");
+    //output.push("            'name': 'test1'");
+    //output.push("        })");
     output.push("");
 
     // walk through test config

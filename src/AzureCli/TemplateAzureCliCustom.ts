@@ -84,43 +84,48 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             //    output.push(call + "cmd, client, body");
             //}
 
-            let params: CommandParameter[] = model.GetSelectedCommandParameters();
- 
-            // first parameters that are required
-            for (let element of params)
+            if (model.GetFirstParameter())
             {
-                let required = element.Required;
-
-                if (element.Type == "placeholder")
-                    continue;
-
-                if (isUpdate && element.PathSwagger.startsWith("/"))
-                    required = false;
-
-                if (required)
+                do
                 {
-                    let name = PythonParameterName(element.Name);
-                    output[output.length - 1] += ",";  
-                    output.push(indent + PythonParameterName(element.Name));
-                }
+                    let required: boolean = model.Parameter_IsRequired;
+
+                    // XXX - handle this in model
+                    //if (element.Type == "placeholder")
+                    //    continue;
+
+                    // XXX - handle this in model
+                    //if (isUpdate && element.PathSwagger.startsWith("/"))
+                    //    required = false;
+
+                    if (required)
+                    {
+                        let name = model.Parameter_NamePython; // PythonParameterName(element.Name);
+                        output[output.length - 1] += ",";  
+                        output.push(indent + name);
+                    }
+                } while (model.GetNextParameter());
             }
 
-            // following by required parameters
-            for (let element of params)
+            if (model.GetFirstParameter())
             {
-                let required = element.Required;
-
-                if (element.Type == "placeholder")
-                    continue;
-
-                if (isUpdate && element.PathSwagger.startsWith("/"))
-                    required = false;
-
-                if (!required)
+                do
                 {
-                    output[output.length - 1] += ",";  
-                    output.push(indent + PythonParameterName(element.Name) + "=None");
+                    let required = model.Parameter_IsRequired;
+
+                    if (model.Parameter_Type == "placeholder")
+                        continue;
+
+                    if (isUpdate && model.Parameter_PathSwagger.startsWith("/"))
+                        required = false;
+
+                    if (!required)
+                    {
+                        output[output.length - 1] += ",";  
+                        output.push(indent + model.Parameter_NamePython + "=None");
+                    }
                 }
+                while (model.GetNextParameter());
             }
 
             output[output.length - 1] += "):";  
@@ -147,55 +152,61 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                         output_body.push("    body = {}");
                     }
                 }
-                params.forEach(element => {
-                    let access = "    body"
-                    if (element.PathSdk.startsWith("/") && element.Type != "placeholder")
+
+                if (model.GetFirstParameter())
+                {
+                    do
                     {
-                        let parts = element.PathSdk.split("/");
-                        let last: string = parts.pop();
-                        parts.forEach(part => {
-                            if (part != "" && part != "*")
-                            {
-                                access += ".setdefault('" + part + "', {})";
-                            }
-                        });
-
-                        access += "['" + last + "'] = ";
-
-                        if (element.IsList)
+                        let access = "    body"
+                        if (model.Parameter_PathSdk.startsWith("/") && model.Parameter_Type != "placeholder")
                         {
-                            if (element.Type != "dict")
+                            let parts = model.Parameter_PathSdk.split("/");
+                            let last: string = parts.pop();
+                            parts.forEach(part => {
+                                if (part != "" && part != "*")
+                                {
+                                    access += ".setdefault('" + part + "', {})";
+                                }
+                            });
+
+                            access += "['" + last + "'] = ";
+
+                            if (model.Parameter_IsList)
                             {
-                                // a comma separated list
-                                access += "None if " + PythonParameterName(element.Name) + " is None else " + PythonParameterName(element.Name) + ".split(',')";
+                                if (model.Parameter_Type != "dict")
+                                {
+                                    // a comma separated list
+                                    access += "None if " + model.Parameter_NamePython + " is None else " + model.Parameter_NamePython + ".split(',')";
+                                }
+                                else
+                                {
+                                    // already preprocessed by actions
+                                    access += model.Parameter_NamePython
+                                }
+                            }
+                            else if (model.Parameter_Type != "dict")
+                            {
+                                access += model.Parameter_NamePython + "  # " + model.Parameter_Type; // # JSON.stringify(element);
                             }
                             else
                             {
-                                // already preprocessed by actions
-                                access += PythonParameterName(element.Name)
+                                access += "json.loads(" + model.Parameter_NamePython + ") if isinstance(" +model.Parameter_NamePython + ", str) else " + model.Parameter_NamePython
+                                required['json'] = true;
+                            }
+                            
+                            if (isUpdate)
+                            {
+                                output_body.push("    if " + model.Parameter_NamePython + " is not None:");
+                                output_body.push("    " + access);
+                            }
+                            else
+                            {
+                                output_body.push(access);
                             }
                         }
-                        else if (element.Type != "dict")
-                        {
-                            access += PythonParameterName(element.Name) + "  # " + element.Type; // # JSON.stringify(element);
-                        }
-                        else
-                        {
-                            access += "json.loads(" + PythonParameterName(element.Name) + ") if isinstance(" + PythonParameterName(element.Name) + ", str) else " + PythonParameterName(element.Name)
-                            required['json'] = true;
-                        }
-                        
-                        if (isUpdate)
-                        {
-                            output_body.push("    if " + PythonParameterName(element.Name) + " is not None:");
-                            output_body.push("    " + access);
-                        }
-                        else
-                        {
-                            output_body.push(access);
-                        }
                     }
-                });
+                    while (model.GetNextParameter());
+                }
             }
 
             let output_method_call: string[] = [];

@@ -29,7 +29,26 @@ export interface CodeModelCli
     // ctx
     GetMethodExamples(): CommandExample[];
     GetSelectedCommandMethods(): CommandMethod[];
-    GetSelectedCommandParameters(): CommandParameter[];
+
+
+    //GetSelectedCommandParameters(): CommandParameter[];
+
+    GetFirstParameter(): boolean;
+    GetNextParameter(): boolean;
+    HasSubParameters(): boolean;
+    EnterSubParameters(): boolean;
+    ExitSubParameters(): boolean;
+
+    Parameter_Name: string;
+    Parameter_NameUnderscored: string;
+    Parameter_NamePython: string;
+    Parameter_IsRequired: boolean;
+    Parameter_Description: string;
+    Parameter_Type: string;
+    Parameter_IsList: boolean;
+    Parameter_PathSdk: string;
+    Parameter_PathSwagger: string;
+    Parameter_EnumValues: string[];
 
     GetExampleItems(example: CommandExample, isTest: boolean): string[];
     GetCliCommandMethods(): string[];
@@ -171,9 +190,94 @@ export class CodeModelCliImpl implements CodeModelCli
         return this._ctx.Methods;
     }
 
-    public GetSelectedCommandParameters(): CommandParameter[]
+    //public GetSelectedCommandParameters(): CommandParameter[]
+    //{
+    //    return this._ctx.Parameters;
+    //}
+
+    public GetFirstParameter(): boolean
     {
-        return this._ctx.Parameters;
+        if (!this._ctx.Parameters)
+            return false;
+
+        if (this._ctx.Parameters.length == 0)
+            return false
+
+        this._parameterIdx = 0;
+        return true;
+    }
+
+    public GetNextParameter(): boolean
+    {
+        this._parameterIdx++;
+        if (this._parameterIdx == this._ctx.Parameters.length)
+            return false;
+        return true;
+    }
+
+    public HasSubParameters(): boolean
+    {
+        return false;
+    }
+
+    public EnterSubParameters(): boolean
+    {
+        return false;
+    }
+
+    public ExitSubParameters(): boolean
+    {
+        return false;
+    }
+
+    public get Parameter_Name(): string
+    {
+        return this._ctx.Parameters[this._parameterIdx].Name;
+    }
+
+    public get Parameter_NameUnderscored(): string
+    {
+        return this.Parameter_Name.split("-").join("_");
+    }
+
+    public get Parameter_NamePython(): string
+    {
+        return this.PythonParameterName(this.Parameter_Name);
+    }
+
+    public get Parameter_IsRequired(): boolean
+    {
+        return this._ctx.Parameters[this._parameterIdx].Required;
+    }
+
+    public get Parameter_Description(): string
+    {
+        return this._ctx.Parameters[this._parameterIdx].Help;
+    }
+
+    public get Parameter_PathSdk(): string
+    {
+        return this._ctx.Parameters[this._parameterIdx].PathSdk;
+    }
+
+    public get Parameter_PathSwagger(): string
+    {
+        return this._ctx.Parameters[this._parameterIdx].PathSwagger;
+    }
+
+    public get Parameter_Type(): string
+    {
+        return this._ctx.Parameters[this._parameterIdx].Type;
+    }
+
+    public get Parameter_IsList(): boolean
+    {
+        return this._ctx.Parameters[this._parameterIdx].IsList;
+    }
+
+    public get Parameter_EnumValues(): string[]
+    {
+        return this._ctx.Parameters[this._parameterIdx].EnumValues;
     }
 
     //-------------------------------------------------------------------
@@ -950,6 +1054,17 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.Namespace;
     }
 
+    private PythonParameterName(name: string): string
+    {
+        let newName = name.split("-").join("_");
+        if (newName == "type" || newName == "format")
+        {
+            newName = "_" + newName;
+        }
+    
+        return newName;
+    }
+    
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     // MODULE MAP
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -959,4 +1074,5 @@ export class CodeModelCliImpl implements CodeModelCli
     private _cmdOverrides: any;
     private _selectedModule: number = 0;
     private _ctx: CommandContext = null;
+    private _parameterIdx = 0;
 }
