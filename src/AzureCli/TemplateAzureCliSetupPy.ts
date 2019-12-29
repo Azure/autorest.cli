@@ -57,7 +57,7 @@ export function GenerateAzureCliSetupPy(model: CodeModelCli) : string[] {
     output.push("setup(");
     output.push("    name='" + model.GetCliCommandModuleNameUnderscored() + "',");
     output.push("    version=VERSION,");
-    output.push("    description='Microsoft Azure Command-Line Tools " + model.ServiceNameX + " Extension',");
+    output.push("    description='Microsoft Azure Command-Line Tools " + model.GetServiceNameX() + " Extension',");
     output.push("   # TODO: Update author and email, if applicable");
     output.push("    author='Microsoft Corporation',");
     output.push("    author_email='azpycli@microsoft.com',");

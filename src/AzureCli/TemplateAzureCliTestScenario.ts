@@ -24,7 +24,7 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     output.push("TEST_DIR = os.path.abspath(os.path.join(os.path.abspath(__file__), '..'))");
     output.push("");
     output.push("");
-    output.push("class " + model.ServiceNameX + "ScenarioTest(ScenarioTest):");
+    output.push("class " + model.GetServiceNameX() + "ScenarioTest(ScenarioTest):");
     output.push("");
     output.push("    @ResourceGroupPreparer(name_prefix='cli_test_" + model.GetCliCommandModuleNameUnderscored() + "')");
     output.push("    def test_" + model.GetCliCommandModuleNameUnderscored() + "(self, resource_group):");

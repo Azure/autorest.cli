@@ -24,7 +24,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     do
     {
         // if disabled
-        if (model.GetCliCommand() == "-")
+        if (model.GetCliCommand(null) == "-")
             continue;
 
         let methods: string[] = model.GetCliCommandMethods();
@@ -32,23 +32,23 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         {
             output.push("");
 
-            let cf_name: string = "cf_" + ((model.ModuleOperationName != "") ? model.ModuleOperationName :  model.GetCliCommandModuleNameUnderscored());
+            let cf_name: string = "cf_" + ((model.GetModuleOperationName() != "") ? model.GetModuleOperationName() :  model.GetCliCommandModuleNameUnderscored());
             output.push("    from ._client_factory import " + cf_name);
-            output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + " = CliCommandType(");
+            output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.GetModuleOperationName() + " = CliCommandType(");
             
             if (true)
             {
-                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleNameUnderscored() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleNameUnderscored() + ".vendored_sdks." + model.GetPythonOperationsName() + ".operations._" + model.GetModuleOperationName() + "_operations#" + model.GetModuleOperationNameUpper() + "Operations" + ".{}',");
             }
             else
             {
                 // enable this if using package
-                output.push("        operations_tmpl='" + model.PythonNamespace + ".operations." + model.ModuleOperationName + "_operations#" + model.ModuleOperationNameUpper + "Operations" + ".{}',");
+                output.push("        operations_tmpl='" + model.GetPythonNamespace() + ".operations." + model.GetModuleOperationName() + "_operations#" + model.GetModuleOperationNameUpper() + "Operations" + ".{}',");
             }
             
             output.push("        client_factory=" + cf_name + ")");
 
-            output.push("    with self.command_group('" + model.GetCliCommand() + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.ModuleOperationName + ", client_factory=" + cf_name + ") as g:");
+            output.push("    with self.command_group('" + model.GetCliCommand(null) + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
             for (let method of methods)
             {
                 // create, delete, list, show, update

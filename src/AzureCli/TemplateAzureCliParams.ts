@@ -23,7 +23,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     do
     {
-        let options: ModuleOption[] = model.ModuleOptions;
+        let options: ModuleOption[] = model.GetModuleOptions();
         let methods: string[] = model.GetCliCommandMethods();
         for (let mi = 0; mi < methods.length; mi++)
         {
@@ -34,7 +34,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 continue;
 
             output_args.push("");
-            output_args.push("    with self.argument_context('" + model.GetCliCommand() + " " + method + "') as c:");
+            output_args.push("    with self.argument_context('" + model.GetCliCommand(null) + " " + method + "') as c:");
 
             if (ctx.Parameters.length == 0)
             {

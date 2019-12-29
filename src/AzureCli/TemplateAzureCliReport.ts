@@ -16,12 +16,8 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
     
     do
     {
-        // this is a hack, as everything can be produced from main module now
-        if (model.ModuleName.endsWith("_info"))
-            continue;
-
         var mo: string[] = [];
-        mo.push("## " + model.GetCliCommand());
+        mo.push("## " + model.GetCliCommand(null));
         mo.push("");
 
         let methods: string[] = model.GetCliCommandMethods();
@@ -34,9 +30,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             if (ctx == null)
                 continue;
 
-            mo.push("### " + model.GetCliCommand() + " " + method);
+            mo.push("### " + model.GetCliCommand(null) + " " + method);
             mo.push("");
-            mo.push(method + " a " + model.GetCliCommand() +  ".");
+            mo.push(method + " a " + model.GetCliCommand(null) +  ".");
             mo.push("");
 
             mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
@@ -71,7 +67,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                     mo.push("");
                     mo.push("```");
 
-                    let next: string = model.GetCliCommand() + " " + method + " ";
+                    let next: string = model.GetCliCommand(null) + " " + method + " ";
                     for (let k in example.Parameters)
                     {
                         let v: string = example.Parameters[k];
@@ -89,7 +85,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             });            
         }
 
-        cmds[model.GetCliCommand()] = mo;
+        cmds[model.GetCliCommand(null)] = mo;
     } while (model.NextModule());;
 
     // build sorted output

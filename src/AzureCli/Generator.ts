@@ -6,7 +6,7 @@
 import { ArtifactType, FileCallback, LogCallback } from "../index"
 import { MapModuleGroup } from "../Common/ModuleMap";
 
-import { CodeModelCli } from "./CodeModelCli"
+import { CodeModelCliImpl } from "./CodeModelCli"
 import { GenerateAzureCliCommands } from "./TemplateAzureCliCommands"
 import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"
@@ -45,7 +45,7 @@ export function GenerateAzureCli(artifactType: ArtifactType,
         path = "src/azure-cli/azure/cli/command_modules/" + cliName + "/";
     }
 
-    let modelCli = new CodeModelCli(map, cliCommandOverrides, logCb);
+    let modelCli = new CodeModelCliImpl(map, cliCommandOverrides, logCb);
 
     fileCb(path + "_help.py", GenerateAzureCliHelp(modelCli));
     modelCli.Reset();

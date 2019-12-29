@@ -250,7 +250,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: number): string
 {
     let methodCall: string = "";
-    //methodCall += "client." + model.ModuleOperationName +"." + ctx.Methods[methodIdx].Name +  "(";
+    //methodCall += "client." + mode.GetModuleOperationName() +"." + ctx.Methods[methodIdx].Name +  "(";
     methodCall += "client." + ctx.Methods[methodIdx].Name +  "(";
 
     let bodyParameterName = ctx.Methods[methodIdx].BodyParameterName;

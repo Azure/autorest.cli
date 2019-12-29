@@ -13,6 +13,29 @@ import { LogCallback } from "../index";
 import { stringify } from "querystring";
 import { on } from "cluster";
 
+export interface CodeModelCli
+{
+    Reset(): void;
+    NextExtension(): boolean;
+    NextModule(): boolean;
+    GetExampleItems(example: CommandExample, isTest: boolean): string[];
+    GetCliCommandContext(name: string): CommandContext;
+    GetCliCommandMethods(): string[];
+    GetCliCommandModuleName(): string;
+    GetCliCommandModuleNameUnderscored(): string;
+    GetCliCommand(methodName: string): string;
+    GetCliCommandUnderscored(): string;
+    GetServiceNameX(): string;
+    GetModuleOptions(): ModuleOption[];
+    GetPythonOperationsName(): string;
+    GetPythonMgmtClient(): string;
+    GetCliCommandDescriptionName(methodName: string): string;
+    GetModuleOperationName(): string;
+    GetModuleOperationNameUpper(): string;
+    GetPythonNamespace(): string;
+    GetMgmtClientName(): string;
+}
+
 export class CommandParameter
 {
     public Name: string;
@@ -52,7 +75,7 @@ export class CommandContext
     public Examples: CommandExample[];
 }
 
-export class CodeModelCli
+export class CodeModelCliImpl implements CodeModelCli
 {
     public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
     {
@@ -66,6 +89,13 @@ export class CodeModelCli
     {
         this._selectedModule = 0;
     }
+
+    public NextExtension(): boolean
+    {
+        // no implementation in PoC
+        return false;
+    }
+
     public NextModule(): boolean
     {
         if (this._selectedModule < this.Map.Modules.length - 1)
@@ -88,7 +118,7 @@ export class CodeModelCli
         return this.Map.CliName.replace("-", "_");
     }
 
-    public GetCliCommand(methodName: string = null): string
+    public GetCliCommand(methodName: string): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -114,14 +144,14 @@ export class CodeModelCli
 
     public GetCliCommandDescriptionName(methodName: string = null): string
     {
-        return ToDescriptiveName(this.GetCliCommand());
+        return ToDescriptiveName(this.GetCliCommand(null));
     }
 
     //-------------------------------------------------------------------
     // This function creates command name from operation URL.
     // It will also use overrides if available.
     //-------------------------------------------------------------------
-    public GetCliCommandFromUrl(url: string): string
+    private GetCliCommandFromUrl(url: string): string
     {
         // use URL of any method to create CLI command path
         let command = "";
@@ -189,7 +219,7 @@ export class CodeModelCli
 
     public GetCliCommandUnderscored()
     {
-        let command: string = this.GetCliCommand();
+        let command: string = this.GetCliCommand(null);
 
         return command.split(" ").join("_").split("-").join("_");
     }
@@ -305,7 +335,7 @@ export class CodeModelCli
         if (name == "create" || name == "update")
         {
             // now add all the options that are not parameters
-            let options: ModuleOption[] = this.ModuleOptions;
+            let options: ModuleOption[] = this.GetModuleOptions();
 
             options.forEach(o => {
                 // empty dictionaries are placeholders
@@ -354,7 +384,7 @@ export class CodeModelCli
     {
         let parameters: string[] = [];
 
-        parameters.push("az " + this.GetCliCommand() + " " + example.Method)
+        parameters.push("az " + this.GetCliCommand(null) + " " + example.Method)
 
         for (let k in example.Parameters)
         {
@@ -579,7 +609,7 @@ export class CodeModelCli
     {
         let parameters: CommandParameter[] = [];
            
-        let options: ModuleOption[] = this.ModuleOptions;
+        let options: ModuleOption[] = this.GetModuleOptions();
         for (let oi = 0; oi < options.length; oi++)
         {
             let o: ModuleOption = options[oi];
@@ -665,24 +695,24 @@ export class CodeModelCli
         return this.Map.Modules[this._selectedModule];
     }
 
-    public get PythonNamespace(): string
+    public GetPythonNamespace(): string
     {
         return this.Map.Namespace.toLowerCase();
     }
 
-    public get PythonOperationsName(): string
+    public GetPythonOperationsName(): string
     {
         return this.Map.Namespace.toLowerCase().split('.').pop();
     }
 
-    public get PythonMgmtClient(): string
+    public GetPythonMgmtClient(): string
     {
         if (this.Map.MgmtClientName.endsWith("Client"))
             return this.Map.MgmtClientName;
         return this.Map.MgmtClientName + "Client";
     }
 
-    public get ModuleOptions(): ModuleOption[]
+    public GetModuleOptions(): ModuleOption[]
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
@@ -795,7 +825,7 @@ export class CodeModelCli
 
             // this._log("   ---- CHECKING: " + optionName);
             let foundOption = null;
-            for (let option of this.ModuleOptions)
+            for (let option of this.GetModuleOptions())
             {
                 if (option.NameSwagger == optionName && option.Kind != ModuleOptionKind.MODULE_OPTION_BODY)
                 {
@@ -815,7 +845,7 @@ export class CodeModelCli
                     foundOption.TypeNameGo = hiddenParamatersOption.TypeNameGo;
 
                     // XXX - and because this stupid option has no suboptions
-                    for (let option of this.ModuleOptions)
+                    for (let option of this.GetModuleOptions())
                     {
                         if (option.DispositionSdk.startsWith("/"))
                         {
@@ -845,12 +875,12 @@ export class CodeModelCli
         return "AzureRM" + m.ModuleOperationNameUpper + (m.ModuleName.endsWith("_info") ? "Info": "");
     }
 
-    public get ModuleOperationNameUpper(): string
+    public GetModuleOperationNameUpper(): string
     {
         return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
     }
 
-    public get ModuleOperationName(): string
+    public GetModuleOperationName(): string
     {
         return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
@@ -875,12 +905,12 @@ export class CodeModelCli
         return this.Map.Modules[this._selectedModule].Methods[0].Url;
     }
 
-    public get MgmtClientName(): string
+    public GetMgmtClientName(): string
     {
         return this.Map.MgmtClientName;
     }
 
-    public get ServiceNameX(): string
+    public GetServiceNameX(): string
     {
         return this.Map.MgmtClientName.split("ManagementClient").join("");
     }

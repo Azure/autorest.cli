@@ -24,13 +24,13 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
     do
     {
         // if disabled
-        if (model.GetCliCommand() == "-")
+        if (model.GetCliCommand(null) == "-")
             continue;
 
         output.push("");
-        output.push("helps['" + model.GetCliCommand() + "'] = \"\"\"");
+        output.push("helps['" + model.GetCliCommand(null) + "'] = \"\"\"");
         output.push("    type: group");
-        output.push("    short-summary: Commands to manage " +  model.GetCliCommandDescriptionName() + ".");
+        output.push("    short-summary: Commands to manage " +  model.GetCliCommandDescriptionName("") + ".");
         output.push("\"\"\"");
 
         let methods: string[] = model.GetCliCommandMethods();
@@ -44,7 +44,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                 continue;
 
             output.push("");
-            output.push("helps['" + model.GetCliCommand() + " " + method + "'] = \"\"\"");
+            output.push("helps['" + model.GetCliCommand(null) + " " + method + "'] = \"\"\"");
             output.push("    type: command");
 
             // there will be just one method for create, update, delete, show, etc.
@@ -69,7 +69,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                     let parameters: string[] = [];
 
                     parameters.push("az");
-                    parameters = parameters.concat(model.GetCliCommand().split(" "));
+                    parameters = parameters.concat(model.GetCliCommand(null).split(" "));
                     parameters.push(method);
 
                     for (let k in example.Parameters)
