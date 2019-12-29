@@ -38,7 +38,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
-            let ctx = model.GetCliCommandContext(method);
+            let ctx = model.SelectMethod(method);
 
             if (ctx == null)
                 continue;
@@ -50,11 +50,11 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
             // there will be just one method for create, update, delete, show, etc.
             // there may be a few list methods, so let's just take description from the first one.
             // as we can't use all of them
-            output.push("    short-summary: " + ctx.Methods[0].Documentation);
+            output.push("    short-summary: " + model.GetSelectedCommandMethods()[0].Documentation);
 
             let examplesStarted: boolean = false;
 
-            let examples: CommandExample[] = ctx.Examples;
+            let examples: CommandExample[] = model.GetMethodExamples();
 
             examples.forEach(example => {
                 if ((example.Method == method) || (ToSnakeCase(example.MethodName) == method))

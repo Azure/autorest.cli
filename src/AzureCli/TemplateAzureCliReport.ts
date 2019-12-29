@@ -26,7 +26,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             // create, delete, list, show, update
             let method: string = methods[mi];
             // options
-            let ctx = model.GetCliCommandContext(method);
+            let ctx = model.SelectMethod(method);
             if (ctx == null)
                 continue;
 
@@ -39,7 +39,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             mo.push("|------|----|-----------|----------|--------------|");
 
 
-                let params: CommandParameter[] = ctx.Parameters;
+            let params: CommandParameter[] = model.GetSelectedCommandParameters();
  
             // first parameters that are required
             params.forEach(element => {
@@ -57,7 +57,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                 }
             });
 
-            let examples: CommandExample[] = ctx.Examples;
+            let examples: CommandExample[] = model.GetMethodExamples();
             examples.forEach(example => {
 
                 if (method == example.Method)

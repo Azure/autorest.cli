@@ -78,14 +78,14 @@ function findExampleByName(model: CodeModelCli, name: string, output: string[]):
             // create, delete, list, show, update
             let method: string = methods[mi];
 
-            let ctx = model.GetCliCommandContext(method);
+            let ctx = model.SelectMethod(method);
             if (ctx == null)
             {
                 continue;
             }
 
-            ctx.Methods.forEach(element => {
-                let examples: CommandExample[] = ctx.Examples;
+            model.GetSelectedCommandMethods().forEach(element => {
+                let examples: CommandExample[] = model.GetMethodExamples();
                 examples.forEach(example => {
                     if (example.Id == name)
                     {

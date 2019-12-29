@@ -29,20 +29,20 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
         {
             let method: string = methods[mi];
 
-            let ctx = model.GetCliCommandContext(method);
+            let ctx = model.SelectMethod(method);
             if (ctx == null)
                 continue;
 
             output_args.push("");
             output_args.push("    with self.argument_context('" + model.GetCliCommand(null) + " " + method + "') as c:");
 
-            if (ctx.Parameters.length == 0)
+            if (model.GetSelectedCommandParameters().length == 0)
             {
                 output_args.push("        pass");
             }
             else
             {
-                let params: CommandParameter[] = ctx.Parameters;
+                let params: CommandParameter[] = model.GetSelectedCommandParameters();
 
                 params.forEach(element => {
                     let parameterName: string = element.Name.split("-").join("_");

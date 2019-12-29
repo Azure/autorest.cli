@@ -18,12 +18,19 @@ export interface CodeModelCli
     Reset(): void;
     NextExtension(): boolean;
     NextModule(): boolean;
+    SelectMethod(name: string): boolean;
+
+    // ctx
+    GetMethodExamples(): CommandExample[];
+    GetSelectedCommandMethods(): CommandMethod[];
+    GetSelectedCommandParameters(): CommandParameter[];
+
     GetExampleItems(example: CommandExample, isTest: boolean): string[];
-    GetCliCommandContext(name: string): CommandContext;
     GetCliCommandMethods(): string[];
     GetCliCommandModuleName(): string;
     GetCliCommandModuleNameUnderscored(): string;
     GetCliCommand(methodName: string): string;
+    GetCliCommandX(): string;
     GetCliCommandUnderscored(): string;
     GetServiceNameX(): string;
     GetModuleOptions(): ModuleOption[];
@@ -118,6 +125,11 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.CliName.replace("-", "_");
     }
 
+    public GetCliCommandX(): string
+    {
+        return this._ctx.Command;
+    }
+    
     public GetCliCommand(methodName: string): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -145,6 +157,21 @@ export class CodeModelCliImpl implements CodeModelCli
     public GetCliCommandDescriptionName(methodName: string = null): string
     {
         return ToDescriptiveName(this.GetCliCommand(null));
+    }
+
+    public GetMethodExamples(): CommandExample[]
+    {
+        return this._ctx.Examples;
+    }
+
+    public GetSelectedCommandMethods(): CommandMethod[]
+    {
+        return this._ctx.Methods;
+    }
+
+    public GetSelectedCommandParameters(): CommandParameter[]
+    {
+        return this._ctx.Parameters;
     }
 
     //-------------------------------------------------------------------
@@ -267,7 +294,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return Array.from(methods.values());
     }
 
-    public GetCliCommandContext(name: string): CommandContext
+    public SelectMethod(name: string): boolean
     {
         let url: string = this.ModuleUrl;
         let command = this.GetCliCommandFromUrl(url);
@@ -377,7 +404,8 @@ export class CodeModelCliImpl implements CodeModelCli
         let examples: CommandExample[] = this.GetExamples(ctx);
         ctx.Examples = examples;
 
-        return ctx;
+        this._ctx = ctx;
+        return true;
     }
 
     public GetExampleItems(example: CommandExample, isTest: boolean): string[]
@@ -933,4 +961,5 @@ export class CodeModelCliImpl implements CodeModelCli
     public _log: LogCallback;
     private _cmdOverrides: any;
     private _selectedModule: number = 0;
+    private _ctx: CommandContext = null;
 }

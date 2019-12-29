@@ -61,9 +61,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             //if (methodName == "show")
             //    continue;
 
-            let ctx = model.GetCliCommandContext(methodName);
-
-            if (ctx == null)
+            if (!model.SelectMethod(methodName))
                 continue;
 
             output.push("");
@@ -73,7 +71,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             // method
             //
             let updatedMethodName = (methodName != "show") ? methodName : "get";
-            let call = "def " + updatedMethodName + "_" + ctx.Command.split(" ").join("_").split("-").join("_") + "(";
+            let call = "def " + updatedMethodName + "_" + model.GetCliCommandX().split(" ").join("_").split("-").join("_") + "(";
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
 
@@ -86,7 +84,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             //    output.push(call + "cmd, client, body");
             //}
 
-            let params: CommandParameter[] = ctx.Parameters;
+            let params: CommandParameter[] = model.GetSelectedCommandParameters();
  
             // first parameters that are required
             for (let element of params)
@@ -141,8 +139,8 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                 {
                     if (methods.indexOf("show") >= 0)
                     {
-                        let getCtx: CommandContext = model.GetCliCommandContext("show");
-                        output_body.push("    body = " + GetMethodCall(model, getCtx, 0) + ".as_dict()");
+                        model.SelectMethod("show");
+                        output_body.push("    body = " + GetMethodCall(model, 0) + ".as_dict()");
                     }
                     else
                     {
@@ -202,21 +200,21 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 
             let output_method_call: string[] = [];
             let hasBody = false;
-            for (let methodIdx = 0; methodIdx < ctx.Methods.length; methodIdx++)
+            for (let methodIdx = 0; methodIdx < model.GetSelectedCommandMethods().length; methodIdx++)
             {
                 let prefix = "    ";
-                if (ctx.Methods.length > 1)
+                if (model.GetSelectedCommandMethods().length > 1)
                 {
                     let ifStatement = prefix;
                     prefix += "    ";
 
-                    if (methodIdx < ctx.Methods.length - 1)
+                    if (methodIdx < model.GetSelectedCommandMethods().length - 1)
                     {
                         ifStatement += (methodIdx == 0) ? "if" : "elif";
-                        for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+                        for (let paramIdx = 0; paramIdx < model.GetSelectedCommandMethods()[methodIdx].Parameters.length; paramIdx++)
                         {
                             ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + PythonParameterName(ctx.Methods[methodIdx].Parameters[paramIdx].Name) + " is not None"
+                            ifStatement += " " + PythonParameterName(model.GetSelectedCommandMethods()[methodIdx].Parameters[paramIdx].Name) + " is not None"
                         }
                         ifStatement += ":";
                         output_method_call.push(ifStatement);
@@ -230,8 +228,8 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                 // call client & return value
                 // XXX - this is still a hack
 
-                let methodCall = prefix + "return " + GetMethodCall(model, ctx, methodIdx);
-                if (ctx.Methods[methodIdx].BodyParameterName != null) hasBody = true;
+                let methodCall = prefix + "return " + GetMethodCall(model, methodIdx);
+                if (model.GetSelectedCommandMethods()[methodIdx].BodyParameterName != null) hasBody = true;
                 output_method_call.push(methodCall); 
             };
             
@@ -247,17 +245,17 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
     return output;
 }
 
-function GetMethodCall(model: CodeModelCli, ctx: CommandContext, methodIdx: number): string
+function GetMethodCall(model: CodeModelCli, methodIdx: number): string
 {
     let methodCall: string = "";
     //methodCall += "client." + mode.GetModuleOperationName() +"." + ctx.Methods[methodIdx].Name +  "(";
-    methodCall += "client." + ctx.Methods[methodIdx].Name +  "(";
+    methodCall += "client." + model.GetSelectedCommandMethods()[methodIdx].Name +  "(";
 
-    let bodyParameterName = ctx.Methods[methodIdx].BodyParameterName;
+    let bodyParameterName = model.GetSelectedCommandMethods()[methodIdx].BodyParameterName;
 
-    for (let paramIdx = 0; paramIdx < ctx.Methods[methodIdx].Parameters.length; paramIdx++)
+    for (let paramIdx = 0; paramIdx < model.GetSelectedCommandMethods()[methodIdx].Parameters.length; paramIdx++)
     {
-        let p = ctx.Methods[methodIdx].Parameters[paramIdx];
+        let p = model.GetSelectedCommandMethods()[methodIdx].Parameters[paramIdx];
         let optionName = PythonParameterName(p.Name);
         let parameterName = p.PathSdk.split("/").pop();
         
