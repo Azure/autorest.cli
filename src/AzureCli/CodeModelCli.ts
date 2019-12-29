@@ -20,6 +20,12 @@ export interface CodeModelCli
     NextModule(): boolean;
     SelectMethod(name: string): boolean;
 
+    GetCliCommandModuleName(): string;
+    GetCliCommandModuleNameUnderscored(): string;
+    GetCliCommand(methodName: string): string;
+    GetCliCommandX(): string;
+    GetCliCommandUnderscored(): string;
+
     // ctx
     GetMethodExamples(): CommandExample[];
     GetSelectedCommandMethods(): CommandMethod[];
@@ -27,20 +33,16 @@ export interface CodeModelCli
 
     GetExampleItems(example: CommandExample, isTest: boolean): string[];
     GetCliCommandMethods(): string[];
-    GetCliCommandModuleName(): string;
-    GetCliCommandModuleNameUnderscored(): string;
-    GetCliCommand(methodName: string): string;
-    GetCliCommandX(): string;
-    GetCliCommandUnderscored(): string;
     GetServiceNameX(): string;
     GetModuleOptions(): ModuleOption[];
-    GetPythonOperationsName(): string;
-    GetPythonMgmtClient(): string;
     GetCliCommandDescriptionName(methodName: string): string;
     GetModuleOperationName(): string;
     GetModuleOperationNameUpper(): string;
     GetPythonNamespace(): string;
-    GetMgmtClientName(): string;
+
+    // Python
+    PythonMgmtClient: string;
+    PythonOperationsName: string;
 }
 
 export class CommandParameter
@@ -129,7 +131,7 @@ export class CodeModelCliImpl implements CodeModelCli
     {
         return this._ctx.Command;
     }
-    
+
     public GetCliCommand(methodName: string): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
@@ -728,12 +730,12 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.Namespace.toLowerCase();
     }
 
-    public GetPythonOperationsName(): string
+    public get PythonOperationsName(): string
     {
         return this.Map.Namespace.toLowerCase().split('.').pop();
     }
 
-    public GetPythonMgmtClient(): string
+    public get PythonMgmtClient(): string
     {
         if (this.Map.MgmtClientName.endsWith("Client"))
             return this.Map.MgmtClientName;
@@ -931,11 +933,6 @@ export class CodeModelCliImpl implements CodeModelCli
     public get ModuleUrl(): string
     {
         return this.Map.Modules[this._selectedModule].Methods[0].Url;
-    }
-
-    public GetMgmtClientName(): string
-    {
-        return this.Map.MgmtClientName;
     }
 
     public GetServiceNameX(): string
