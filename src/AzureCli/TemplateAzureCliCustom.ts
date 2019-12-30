@@ -7,17 +7,6 @@ import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
 import { Indent, ToSnakeCase, ToCamelCase } from "../Common/Helpers";
 import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
 
-function PythonParameterName(name: string): string
-{
-    let newName = name.split("-").join("_");
-    if (newName == "type" || newName == "format")
-    {
-        newName = "_" + newName;
-    }
-
-    return newName;
-}
-
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
 
@@ -97,6 +86,9 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                     // XXX - handle this in model
                     //if (isUpdate && element.PathSwagger.startsWith("/"))
                     //    required = false;
+
+                    if (isUpdate && model.Parameter_PathSwagger.startsWith("/"))
+                        required = false;
 
                     if (required)
                     {
