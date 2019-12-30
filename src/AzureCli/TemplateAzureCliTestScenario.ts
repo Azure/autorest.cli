@@ -41,9 +41,9 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
             let exampleId: string = config[ci].name;
             let disabled: string = config[ci].disabled ? "#" : "";
             // find example by name
-            let exampleCmd: string[] = model.getExampleById(config[ci].name);
 
-            if (exampleCmd != null && exampleCmd.length > 0)
+            let exampleCmd: string[] = model.FindExampleById(config[ci].name);
+            if (exampleCmd && exampleCmd.length > 0)
             {
                 for (let idx = 0; idx < exampleCmd.length; idx++)
                 {

@@ -63,20 +63,19 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             while (model.SelectNextOption());
 
 
-            let examples: CommandExample[] = model.GetMethodExamples();
-            examples.forEach(example => {
-
-                if (method == example.Method)
+            if (model.SelectFirstExample())
+            {
+                do
                 {
                     mo.push("");
-                    mo.push ("**Example: " + example.Title + "**");
+                    mo.push ("**Example: " + model.Example_Title + "**");
                     mo.push("");
                     mo.push("```");
 
                     let next: string = model.GetCliCommand(null) + " " + method + " ";
-                    for (let k in example.Parameters)
+                    for (let k in model.Example_Params)
                     {
-                        let v: string = example.Parameters[k];
+                        let v: string = model.Example_Params[k];
                         if (/\s/.test(v))
                         {
                             v = "\"" + v.replace("\"", "\\\"") + "\"";
@@ -87,8 +86,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                         next = "        ";
                     }
                     mo.push("```");
-                }
-            });            
+                } while (model.SelectNextExample());
+            }
+                        
         }
 
         cmds[model.GetCliCommand(null)] = mo;

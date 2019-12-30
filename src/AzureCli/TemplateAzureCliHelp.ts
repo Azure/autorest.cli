@@ -54,10 +54,10 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
 
             let examplesStarted: boolean = false;
 
-            let examples: CommandExample[] = model.GetMethodExamples();
+            if (model.SelectFirstExample())
+            {
 
-            examples.forEach(example => {
-                if ((example.Method == method) || (ToSnakeCase(example.MethodName) == method))
+                do
                 {
                     if (!examplesStarted)
                     {
@@ -72,14 +72,14 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                     parameters = parameters.concat(model.GetCliCommand(null).split(" "));
                     parameters.push(method);
 
-                    for (let k in example.Parameters)
+                    for (let k in model.Example_Params)
                     {
-                        let slp = JSON.stringify(example.Parameters[k]).split(/[\r\n]+/).join("");
+                        let slp = JSON.stringify(model.Example_Params[k]).split(/[\r\n]+/).join("");
                         //parameters += " " + k + " " + slp;
                         parameters.push(k);
                         parameters.push(slp);
                     }
-                    output.push("      - name: " + example.Title);
+                    output.push("      - name: " + model.Example_Title);
                     output.push("        text: |-");
                     let line = "";
                     parameters.forEach(element => {
@@ -125,7 +125,8 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
                         output.push("               " + line);
                     }
                 }
-            });        
+                while (model.SelectNextExample()); 
+            }      
 
             output.push("\"\"\"");
         }

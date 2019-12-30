@@ -26,7 +26,7 @@ export interface CodeModelCli
     Command_Help: string;
 
     // ctx
-    GetMethodExamples(): CommandExample[];
+    //GetMethodExamples(): CommandExample[];
 
     SelectFirstOption(): boolean;
     SelectNextOption(): boolean;
@@ -71,5 +71,10 @@ export interface CodeModelCli
     PythonMgmtClient: string;
     PythonOperationsName: string;
 
-    getExampleById(id: string): string[];
+    SelectFirstExample(): boolean;
+    SelectNextExample(): boolean;
+    FindExampleById(id: string): string[];
+    Example_Body: string[];
+    Example_Title: string;
+    Example_Params: any;
 }

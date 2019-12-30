@@ -150,9 +150,105 @@ export class CodeModelCliImpl implements CodeModelCli
         return ToDescriptiveName(this.GetCliCommand(null));
     }
 
-    public GetMethodExamples(): CommandExample[]
+    private GetMethodExamples(): CommandExample[]
     {
         return this._ctx.Examples;
+    }
+
+    public SelectFirstExample(): boolean
+    {
+        if (this._ctx.Examples.length > 0)
+        {
+            this._selectedExample = 0;
+            return this.SelectMethodMatchingExample();
+        }
+        else
+        {
+            this._selectedExample = -1;
+            return false;
+        }
+    }
+
+    public SelectNextExample(): boolean
+    {
+        if (this._ctx.Examples.length > this._selectedExample + 1)
+        {
+            this._selectedExample++;
+            return this.SelectMethodMatchingExample();
+        }
+        else
+        {
+            this._selectedExample = -1;
+            return false;
+        }
+    }
+
+    private SelectMethodMatchingExample(): boolean
+    {
+        while ((this._ctx.Examples[this._selectedExample].Method != this._selectedMethodName) && (ToSnakeCase(this._ctx.Examples[this._selectedExample].MethodName) != this._selectedMethodName))
+        {
+            this._selectedExample++;
+            if (this._selectedExample == this._ctx.Examples.length)
+            {
+                this._selectedExample = -1;
+                return false;
+            }
+        }
+        return true;
+    }
+
+    public get Example_Body(): string[]
+    {
+        return this.FindExampleById(this._ctx.Examples[this._selectedExample].Id);
+    }
+
+    public get Example_Params(): any
+    {
+        return this._ctx.Examples[this._selectedExample].Parameters;
+    }
+
+    public FindExampleById(id: string): string[]
+    {
+        let cmd: string[] = [];
+        this.SelectFirstExtension();
+        do
+        {
+            let methods: string[] = this.GetCliCommandMethods();
+            for (let mi = 0; mi < methods.length; mi++)
+            {
+                // create, delete, list, show, update
+                let method: string = methods[mi];
+    
+                let ctx = this.SelectMethod(method);
+                if (ctx == null)
+                {
+                    continue;
+                }
+    
+                this.GetSelectedCommandMethods().forEach(element => {
+                    let examples: CommandExample[] = this.GetMethodExamples();
+                    examples.forEach(example => {
+                        if (example.Id == id)
+                        {
+                            cmd = this.GetExampleItems(example, true);
+                        }
+                    });        
+                });
+    
+                if (cmd.length > 0)
+                    break;
+            }
+    
+            if (cmd.length > 0)
+                break;
+        } while (this.SelectNextCmdGroup());
+    
+        return cmd;
+    }
+
+    public get Example_Title(): string
+    {
+        return this._ctx.Examples[this._selectedExample].Title;
     }
 
     private GetSelectedCommandMethods(): CommandMethod[]
@@ -632,6 +728,7 @@ export class CodeModelCliImpl implements CodeModelCli
         ctx.Examples = examples;
 
         this._ctx = ctx;
+        this._selectedMethodName = name;
         return true;
     }
 
@@ -1186,47 +1283,7 @@ export class CodeModelCliImpl implements CodeModelCli
     
         return newName;
     }
-    
-
-    public getExampleById(id: string): string[]
-    {
-        let cmd: string[] = [];
-        this.SelectFirstExtension();
-        do
-        {
-            let methods: string[] = this.GetCliCommandMethods();
-            for (let mi = 0; mi < methods.length; mi++)
-            {
-                // create, delete, list, show, update
-                let method: string = methods[mi];
-    
-                let ctx = this.SelectMethod(method);
-                if (ctx == null)
-                {
-                    continue;
-                }
-    
-                this.GetSelectedCommandMethods().forEach(element => {
-                    let examples: CommandExample[] = this.GetMethodExamples();
-                    examples.forEach(example => {
-                        if (example.Id == id)
-                        {
-                            cmd = this.GetExampleItems(example, true);
-                        }
-                    });        
-                });
-    
-                if (cmd.length > 0)
-                    break;
-            }
-    
-            if (cmd.length > 0)
-                break;
-        } while (this.SelectNextCmdGroup());
-    
-        return cmd;
-    }
-    
+        
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     // MODULE MAP
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1239,4 +1296,6 @@ export class CodeModelCliImpl implements CodeModelCli
     private _parameterIdx = 0;
     private _selectedMethod = 0;
     private _selectedMethodParameter = 0;
+    private _selectedExample = -1;
+    private _selectedMethodName = "";
 }
