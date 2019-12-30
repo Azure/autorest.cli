@@ -145,7 +145,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                     if (methods.indexOf("show") >= 0)
                     {
                         model.SelectMethod("show");
-                        output_body.push("    body = " + GetMethodCall(model, 0) + ".as_dict()");
+                        output_body.push("    body = " + GetMethodCall(model) + ".as_dict()");
                     }
                     else
                     {
@@ -211,39 +211,50 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 
             let output_method_call: string[] = [];
             let hasBody = false;
-            for (let methodIdx = 0; methodIdx < model.GetSelectedCommandMethods().length; methodIdx++)
+
+            if (model.SelectFirstMethod())
             {
-                let prefix = "    ";
-                if (model.GetSelectedCommandMethods().length > 1)
+                let needIfStatement = !model.Method_IsLast;
+                
+                do
                 {
-                    let ifStatement = prefix;
-                    prefix += "    ";
-
-                    if (methodIdx < model.GetSelectedCommandMethods().length - 1)
+                    let prefix = "    ";
+                    if (needIfStatement)
                     {
-                        ifStatement += (methodIdx == 0) ? "if" : "elif";
-                        for (let paramIdx = 0; paramIdx < model.GetSelectedCommandMethods()[methodIdx].Parameters.length; paramIdx++)
+                        let ifStatement = prefix;
+                        prefix += "    ";
+
+                        if (!model.Method_IsLast)
                         {
-                            ifStatement += (paramIdx == 0) ? "" : " and";
-                            ifStatement += " " + PythonParameterName(model.GetSelectedCommandMethods()[methodIdx].Parameters[paramIdx].Name) + " is not None"
+                            ifStatement += ((model.Method_IsFirst) ? "if" : "elif");
+                            
+                            if (model.SelectFirstMethodParameter())
+                            {
+                                do
+                                {
+                                    ifStatement += ((ifStatement.endsWith("if")) ? "" : " and");
+                                    ifStatement += " " + model.MethodParamerer_MapsTo + " is not None"
+                                }
+                                while (model.SelectNextMethodParameter());
+                                ifStatement += ":";
+                                output_method_call.push(ifStatement);
+                            }
                         }
-                        ifStatement += ":";
-                        output_method_call.push(ifStatement);
+                        else
+                        {
+                            ifStatement == "";
+                            prefix = "    ";
+                        }
                     }
-                    else
-                    {
-                        ifStatement == "";
-                        prefix = "    ";
-                    }
-                }
-                // call client & return value
-                // XXX - this is still a hack
+                    // call client & return value
+                    // XXX - this is still a hack
 
-                let methodCall = prefix + "return " + GetMethodCall(model, methodIdx);
-                if (model.GetSelectedCommandMethods()[methodIdx].BodyParameterName != null) hasBody = true;
-                output_method_call.push(methodCall); 
-            };
-            
+                    let methodCall = prefix + "return " + GetMethodCall(model);
+                    if (model.Method_BodyParameterName != null) hasBody = true;
+                    output_method_call.push(methodCall); 
+                }
+                while (model.SelectNextMethod());
+            }            
             if (hasBody)
             {
                 output = output.concat(output_body);
@@ -256,29 +267,32 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
     return output;
 }
 
-function GetMethodCall(model: CodeModelCli, methodIdx: number): string
+function GetMethodCall(model: CodeModelCli): string
 {
     let methodCall: string = "";
     //methodCall += "client." + mode.GetModuleOperationName() +"." + ctx.Methods[methodIdx].Name +  "(";
-    methodCall += "client." + model.GetSelectedCommandMethods()[methodIdx].Name +  "(";
+    methodCall += "client." + model.Method_Name +  "(";
 
-    let bodyParameterName = model.GetSelectedCommandMethods()[methodIdx].BodyParameterName;
+    let bodyParameterName = model.Method_BodyParameterName;
 
-    for (let paramIdx = 0; paramIdx < model.GetSelectedCommandMethods()[methodIdx].Parameters.length; paramIdx++)
+    if (model.SelectFirstMethodParameter())
     {
-        let p = model.GetSelectedCommandMethods()[methodIdx].Parameters[paramIdx];
-        let optionName = PythonParameterName(p.Name);
-        let parameterName = p.PathSdk.split("/").pop();
-        
-        if (methodCall.endsWith("("))
+        do
         {
-            // XXX - split and pop is a hack
-            methodCall += parameterName + "=" + optionName;
+            let optionName = model.MethodParamerer_MapsTo;
+            let parameterName = model.MethodParameter_Name; // p.PathSdk.split("/").pop();
+            
+            if (methodCall.endsWith("("))
+            {
+                // XXX - split and pop is a hack
+                methodCall += parameterName + "=" + optionName;
+            }
+            else
+            {
+                methodCall += ", " + parameterName + "=" + optionName;
+            }
         }
-        else
-        {
-            methodCall += ", " + parameterName + "=" + optionName;
-        }
+        while (model.SelectNextMethodParameter());
     }
 
     if (bodyParameterName != null)

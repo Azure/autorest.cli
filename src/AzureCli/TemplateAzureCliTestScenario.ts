@@ -39,8 +39,10 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     {
         for (var ci = 0; ci < config.length; ci++)
         {
+            let exampleId: string = config[ci].name;
+            let disabledPrefix: string = config[ci].disabled ? "#" : "";
             // find example by name
-            let exampleCmd: string[] = findExampleByName(model, config[ci].name, output);
+            let exampleCmd: string[] = model.getExampleById(config[ci].name);
 
             if (exampleCmd != null && exampleCmd.length > 0)
             {
@@ -51,9 +53,9 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
                     let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
                     let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
 
-                    output.push(prefix + exampleCmd[idx] + postfix);
+                    output.push(disabledPrefix + prefix + exampleCmd[idx] + postfix);
                 }
-                output.push("                 checks=[])");
+                output.push(disabledPrefix + "                 checks=[])");
                 output.push("");
             }
             else
@@ -66,41 +68,3 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
     return output;
 }
 
-function findExampleByName(model: CodeModelCli, name: string, output: string[]): string[]
-{
-    let cmd: string[] = [];
-    model.Reset();
-    do
-    {
-        let methods: string[] = model.GetCliCommandMethods();
-        for (let mi = 0; mi < methods.length; mi++)
-        {
-            // create, delete, list, show, update
-            let method: string = methods[mi];
-
-            let ctx = model.SelectMethod(method);
-            if (ctx == null)
-            {
-                continue;
-            }
-
-            model.GetSelectedCommandMethods().forEach(element => {
-                let examples: CommandExample[] = model.GetMethodExamples();
-                examples.forEach(example => {
-                    if (example.Id == name)
-                    {
-                        cmd = model.GetExampleItems(example, true);
-                    }
-                });        
-            });
-
-            if (cmd.length > 0)
-                break;
-        }
-
-        if (cmd.length > 0)
-            break;
-    } while (model.NextModule());
-
-    return cmd;
-}

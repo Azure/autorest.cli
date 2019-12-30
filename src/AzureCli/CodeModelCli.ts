@@ -26,12 +26,10 @@ export interface CodeModelCli
     GetCliCommandX(): string;
     GetCliCommandUnderscored(): string;
 
+    Command_Help: string;
+
     // ctx
     GetMethodExamples(): CommandExample[];
-    GetSelectedCommandMethods(): CommandMethod[];
-
-
-    //GetSelectedCommandParameters(): CommandParameter[];
 
     GetFirstParameter(): boolean;
     GetNextParameter(): boolean;
@@ -50,6 +48,20 @@ export interface CodeModelCli
     Parameter_PathSwagger: string;
     Parameter_EnumValues: string[];
 
+    SelectFirstMethod(): boolean;
+    SelectNextMethod(): boolean;
+
+    Method_IsFirst: boolean;
+    Method_IsLast: boolean;
+    Method_Name: string;
+    Method_BodyParameterName: string;
+
+    SelectFirstMethodParameter(): boolean;
+    SelectNextMethodParameter(): boolean;
+
+    MethodParameter_Name: string;
+    MethodParamerer_MapsTo: string;
+
     GetExampleItems(example: CommandExample, isTest: boolean): string[];
     GetCliCommandMethods(): string[];
     GetServiceNameX(): string;
@@ -62,6 +74,8 @@ export interface CodeModelCli
     // Python
     PythonMgmtClient: string;
     PythonOperationsName: string;
+
+    getExampleById(id: string): string[];
 }
 
 export class CommandParameter
@@ -185,7 +199,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return this._ctx.Examples;
     }
 
-    public GetSelectedCommandMethods(): CommandMethod[]
+    private GetSelectedCommandMethods(): CommandMethod[]
     {
         return this._ctx.Methods;
     }
@@ -280,6 +294,88 @@ export class CodeModelCliImpl implements CodeModelCli
         return this._ctx.Parameters[this._parameterIdx].EnumValues;
     }
 
+    public SelectFirstMethod(): boolean
+    {
+        let methods: CommandMethod[] = this.GetSelectedCommandMethods();
+
+        if (methods.length < 1)
+            return false;
+
+        this._selectedMethod = 0;
+        return true;
+    }
+
+    public SelectNextMethod(): boolean
+    {
+        let methods: CommandMethod[] = this.GetSelectedCommandMethods();
+
+        if (methods.length > this._selectedMethod + 1)
+        {
+            this._selectedMethod++;
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public get Method_IsFirst(): boolean
+    {
+        return (this._selectedMethod ==  0);
+    }
+
+    public get Method_IsLast(): boolean
+    {
+        return (this._selectedMethod + 1 ==  this.GetSelectedCommandMethods().length);
+    }
+
+    public get Method_Name(): string
+    {
+       return this.GetSelectedCommandMethods()[this._selectedMethod].Name;
+    }
+
+    public get Method_BodyParameterName(): string
+    {
+       return this.GetSelectedCommandMethods()[this._selectedMethod].BodyParameterName;
+    }
+
+    public SelectFirstMethodParameter(): boolean
+    {
+        if (this.GetSelectedCommandMethods()[this._selectedMethod].Parameters.length > 0)
+        {
+            this._selectedMethodParameter = 0;
+            return true
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public SelectNextMethodParameter(): boolean
+    {
+        if (this.GetSelectedCommandMethods()[this._selectedMethod].Parameters.length > this._selectedMethodParameter + 1)
+        {
+            this._selectedMethodParameter++;
+            return true
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public get MethodParameter_Name(): string
+    {
+        return this.GetSelectedCommandMethods()[this._selectedMethod].Parameters[this._selectedMethodParameter].PathSdk.split("/").pop();
+    }
+
+    public get MethodParamerer_MapsTo(): string
+    {
+        return this.PythonParameterName(this.GetSelectedCommandMethods()[this._selectedMethod].Parameters[this._selectedMethodParameter].Name);
+    }
+
     //-------------------------------------------------------------------
     // This function creates command name from operation URL.
     // It will also use overrides if available.
@@ -355,6 +451,11 @@ export class CodeModelCliImpl implements CodeModelCli
         let command: string = this.GetCliCommand(null);
 
         return command.split(" ").join("_").split("-").join("_");
+    }
+
+    public get Command_Help(): string
+    {
+        return this.GetSelectedCommandMethods()[0].Documentation;
     }
 
     //-------------------------------------------------------------------
@@ -1065,6 +1166,46 @@ export class CodeModelCliImpl implements CodeModelCli
         return newName;
     }
     
+
+    public getExampleById(id: string): string[]
+    {
+        let cmd: string[] = [];
+        this.Reset();
+        do
+        {
+            let methods: string[] = this.GetCliCommandMethods();
+            for (let mi = 0; mi < methods.length; mi++)
+            {
+                // create, delete, list, show, update
+                let method: string = methods[mi];
+    
+                let ctx = this.SelectMethod(method);
+                if (ctx == null)
+                {
+                    continue;
+                }
+    
+                this.GetSelectedCommandMethods().forEach(element => {
+                    let examples: CommandExample[] = this.GetMethodExamples();
+                    examples.forEach(example => {
+                        if (example.Id == id)
+                        {
+                            cmd = this.GetExampleItems(example, true);
+                        }
+                    });        
+                });
+    
+                if (cmd.length > 0)
+                    break;
+            }
+    
+            if (cmd.length > 0)
+                break;
+        } while (this.NextModule());
+    
+        return cmd;
+    }
+    
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     // MODULE MAP
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
@@ -1075,4 +1216,6 @@ export class CodeModelCliImpl implements CodeModelCli
     private _selectedModule: number = 0;
     private _ctx: CommandContext = null;
     private _parameterIdx = 0;
+    private _selectedMethod = 0;
+    private _selectedMethodParameter = 0;
 }
