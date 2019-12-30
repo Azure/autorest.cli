@@ -261,7 +261,20 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Parameter_IsRequired(): boolean
     {
-        return this._ctx.Parameters[this._parameterIdx].Required;
+        let isRequired: boolean = this._ctx.Parameters[this._parameterIdx].Required;
+        let methods: CommandMethod[] = this.GetSelectedCommandMethods();
+
+        if (isRequired && (methods.length > 1))
+        {
+            isRequired = false;
+            // check if parameter is required by last method
+            let lastMethod = methods[methods.length - 1];
+            lastMethod.Parameters.forEach(element => {
+                if (element.Name == this.Parameter_Name) isRequired = true;                
+            });
+        }
+
+        return isRequired;
     }
 
     public get Parameter_Description(): string
