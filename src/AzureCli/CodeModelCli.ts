@@ -16,8 +16,11 @@ import { on } from "cluster";
 export interface CodeModelCli
 {
     Reset(): void;
+
     NextExtension(): boolean;
+
     NextModule(): boolean;
+
     SelectMethod(name: string): boolean;
 
     GetCliCommandModuleName(): string;
@@ -62,10 +65,9 @@ export interface CodeModelCli
     MethodParameter_Name: string;
     MethodParamerer_MapsTo: string;
 
-    GetExampleItems(example: CommandExample, isTest: boolean): string[];
     GetCliCommandMethods(): string[];
     GetServiceNameX(): string;
-    GetModuleOptions(): ModuleOption[];
+    //GetModuleOptions(): ModuleOption[];
     GetCliCommandDescriptionName(methodName: string): string;
     GetModuleOperationName(): string;
     GetModuleOperationNameUpper(): string;
