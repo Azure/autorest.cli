@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandParameter, CommandExample } from "./CodeModelCli"
-import { ModuleMethod } from "../Common/ModuleMap";
+import { CodeModelCli } from "./CodeModelCli"
+import { CommandExample } from "./CodeModelCliImpl"
 
 export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
     var output: string[] = [];
@@ -39,28 +39,28 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             mo.push("|------|----|-----------|----------|--------------|");
 
 
-            model.GetFirstParameter();
+            model.SelectFirstOption();
 
             // first parameters that are required
             do
             {
-                if (model.Parameter_Type != "placeholder" && model.Parameter_IsRequired)
+                if (model.Option_Type != "placeholder" && model.Option_IsRequired)
                 {
-                    mo.push("|**--" + model.Parameter_Name + "**|" + model.Parameter_Type + "|" + model.Parameter_Description + "|" + model.Parameter_PathSdk + "|" + model.Parameter_PathSwagger + "|");
+                    mo.push("|**--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
                 }
             }
-            while (model.GetNextParameter());
+            while (model.SelectNextOption());
 
-            model.GetFirstParameter();
+            model.SelectFirstOption();
 
             // following by required parameters
             do {
-                if (model.Parameter_Type != "placeholder" && !model.Parameter_IsRequired)
+                if (model.Option_Type != "placeholder" && !model.Option_IsRequired)
                 {
-                    mo.push("|--" + model.Parameter_Name + "**|" + model.Parameter_Type + "|" + model.Parameter_Description + "|" + model.Parameter_PathSdk + "|" + model.Parameter_PathSwagger + "|");
+                    mo.push("|--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
                 }
             }
-            while (model.GetNextParameter());
+            while (model.SelectNextOption());
 
 
             let examples: CommandExample[] = model.GetMethodExamples();

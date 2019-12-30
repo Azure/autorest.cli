@@ -3,9 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandParameter } from "./CodeModelCli"
-import { Indent, ToSnakeCase } from "../Common/Helpers";
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
+import { CodeModelCli } from "./CodeModelCli"
 
 export function GenerateAzureCliSetupPy(model: CodeModelCli) : string[] {
     var output: string[] = [];

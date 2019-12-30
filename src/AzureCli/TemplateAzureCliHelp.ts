@@ -3,8 +3,8 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandExample } from "./CodeModelCli"
-import { ModuleMethod } from "../Common/ModuleMap";
+import { CodeModelCli } from "./CodeModelCli"
+import { CommandExample } from "./CodeModelCliImpl"
 import { ToSnakeCase } from "../Common/Helpers"
 
 export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {

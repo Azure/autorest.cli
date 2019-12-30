@@ -6,7 +6,7 @@
 import { ArtifactType, FileCallback, LogCallback } from "../index"
 import { MapModuleGroup } from "../Common/ModuleMap";
 
-import { CodeModelCliImpl } from "./CodeModelCli"
+import { CodeModelCliImpl } from "./CodeModelCliImpl"
 import { GenerateAzureCliCommands } from "./TemplateAzureCliCommands"
 import { GenerateAzureCliCustom } from "./TemplateAzureCliCustom"
 import { GenerateAzureCliHelp } from "./TemplateAzureCliHelp"

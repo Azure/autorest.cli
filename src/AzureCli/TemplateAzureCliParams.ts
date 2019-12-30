@@ -3,8 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandParameter } from "./CodeModelCli"
-import { ModuleOption } from "../Common/ModuleMap";
+import { CodeModelCli } from "./CodeModelCli"
 import { EscapeString, ToCamelCase, Capitalize } from "../Common/Helpers";
 
 export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
@@ -35,7 +34,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
             output_args.push("");
             output_args.push("    with self.argument_context('" + model.GetCliCommand(null) + " " + method + "') as c:");
 
-            if (!model.GetFirstParameter())
+            if (!model.SelectFirstOption())
             {
                 output_args.push("        pass");
             }
@@ -44,7 +43,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 do
                 {
                     //let parameterName: string = element.Name.split("-").join("_");
-                    let parameterName = model.Parameter_NameUnderscored;
+                    let parameterName = model.Option_NameUnderscored;
 
                     let argument = "        c.argument('" + parameterName + "'";
 
@@ -55,17 +54,17 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                         argument += ", options_list=['--" + parameterName + "']";
                     }
 
-                    if (model.Parameter_Type == "boolean")
+                    if (model.Option_Type == "boolean")
                     {
                         hasBoolean = true;
                         argument += ", arg_type=get_three_state_flag()";
                     }
-                    else if ((model.Parameter_EnumValues.length > 0) && !model.Parameter_IsList)
+                    else if ((model.Option_EnumValues.length > 0) && !model.Option_IsList)
                     {
                         hasEnum = true;
                         argument += ", arg_type=get_enum_type([";
 
-                        model.Parameter_EnumValues.forEach(element => {
+                        model.Option_EnumValues.forEach(element => {
                             if (!argument.endsWith("[")) argument += ", ";
                             argument += "'" + element + "'";
                         });
@@ -86,14 +85,14 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                     }
                     else
                     {
-                        argument += ", id_part=None, help='" + EscapeString(model.Parameter_Description) + "'"; 
+                        argument += ", id_part=None, help='" + EscapeString(model.Option_Description) + "'"; 
                     }
 
-                    if (model.Parameter_IsList)
+                    if (model.Option_IsList)
                     {
-                        if (model.Parameter_Type == "dict")
+                        if (model.Option_Type == "dict")
                         {
-                            let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(model.Parameter_Name));
+                            let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(model.Option_Name));
                             argument += ", action=" + actionName;
                             hasActions = true;
 
@@ -108,7 +107,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                     argument += ")";
 
                     output_args.push(argument);
-                } while (model.GetNextParameter());
+                } while (model.SelectNextOption());
             }
         }
     } while (model.SelectNextCmdGroup());

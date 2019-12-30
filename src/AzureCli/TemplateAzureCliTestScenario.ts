@@ -3,8 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandExample } from "./CodeModelCli"
-import { ModuleMethod } from "../Common/ModuleMap";
+import { CodeModelCli } from "./CodeModelCli"
 
 export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) : string[] {
     var output: string[] = [];
@@ -40,22 +39,20 @@ export function GenerateAzureCliTestScenario(model: CodeModelCli, config: any) :
         for (var ci = 0; ci < config.length; ci++)
         {
             let exampleId: string = config[ci].name;
-            let disabledPrefix: string = config[ci].disabled ? "#" : "";
+            let disabled: string = config[ci].disabled ? "#" : "";
             // find example by name
             let exampleCmd: string[] = model.getExampleById(config[ci].name);
 
             if (exampleCmd != null && exampleCmd.length > 0)
             {
-                let prefix: string = "        self.cmd(";
-
                 for (let idx = 0; idx < exampleCmd.length; idx++)
                 {
-                    let prefix: string = (idx == 0) ? "        self.cmd('" : "                 '";
+                    let prefix: string = "        " + disabled + ((idx == 0) ? "self.cmd('" : "         '");
                     let postfix: string = (idx < exampleCmd.length - 1) ? " '" : "',"; 
 
-                    output.push(disabledPrefix + prefix + exampleCmd[idx] + postfix);
+                    output.push(prefix + exampleCmd[idx] + postfix);
                 }
-                output.push(disabledPrefix + "                 checks=[])");
+                output.push("        " + disabled + "         checks=[])");
                 output.push("");
             }
             else

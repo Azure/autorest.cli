@@ -3,9 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli, CommandParameter, CommandContext } from "./CodeModelCli"
-import { Indent, ToSnakeCase, ToCamelCase } from "../Common/Helpers";
-import { MapModuleGroup, ModuleOption, ModuleMethod, Module } from "../Common/ModuleMap"
+import { CodeModelCli } from "./CodeModelCli"
 
 export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
     var output: string[] = [];
@@ -73,11 +71,11 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             //    output.push(call + "cmd, client, body");
             //}
 
-            if (model.GetFirstParameter())
+            if (model.SelectFirstOption())
             {
                 do
                 {
-                    let required: boolean = model.Parameter_IsRequired;
+                    let required: boolean = model.Option_IsRequired;
 
                     // XXX - handle this in model
                     //if (element.Type == "placeholder")
@@ -87,37 +85,37 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                     //if (isUpdate && element.PathSwagger.startsWith("/"))
                     //    required = false;
 
-                    if (isUpdate && model.Parameter_PathSwagger.startsWith("/"))
+                    if (isUpdate && model.Option_PathSwagger.startsWith("/"))
                         required = false;
 
                     if (required)
                     {
-                        let name = model.Parameter_NamePython; // PythonParameterName(element.Name);
+                        let name = model.Option_NamePython; // PythonParameterName(element.Name);
                         output[output.length - 1] += ",";  
                         output.push(indent + name);
                     }
-                } while (model.GetNextParameter());
+                } while (model.SelectNextOption());
             }
 
-            if (model.GetFirstParameter())
+            if (model.SelectFirstOption())
             {
                 do
                 {
-                    let required = model.Parameter_IsRequired;
+                    let required = model.Option_IsRequired;
 
-                    if (model.Parameter_Type == "placeholder")
+                    if (model.Option_Type == "placeholder")
                         continue;
 
-                    if (isUpdate && model.Parameter_PathSwagger.startsWith("/"))
+                    if (isUpdate && model.Option_PathSwagger.startsWith("/"))
                         required = false;
 
                     if (!required)
                     {
                         output[output.length - 1] += ",";  
-                        output.push(indent + model.Parameter_NamePython + "=None");
+                        output.push(indent + model.Option_NamePython + "=None");
                     }
                 }
-                while (model.GetNextParameter());
+                while (model.SelectNextOption());
             }
 
             output[output.length - 1] += "):";  
@@ -148,14 +146,14 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                         }
                     }
 
-                    if (model.GetFirstParameter())
+                    if (model.SelectFirstOption())
                     {
                         do
                         {
                             let access = "    body"
-                            if (model.Parameter_PathSdk.startsWith("/") && model.Parameter_Type != "placeholder")
+                            if (model.Option_PathSdk.startsWith("/") && model.Option_Type != "placeholder")
                             {
-                                let parts = model.Parameter_PathSdk.split("/");
+                                let parts = model.Option_PathSdk.split("/");
                                 let last: string = parts.pop();
                                 parts.forEach(part => {
                                     if (part != "" && part != "*")
@@ -166,32 +164,32 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 
                                 access += "['" + last + "'] = ";
 
-                                if (model.Parameter_IsList)
+                                if (model.Option_IsList)
                                 {
-                                    if (model.Parameter_Type != "dict")
+                                    if (model.Option_Type != "dict")
                                     {
                                         // a comma separated list
-                                        access += "None if " + model.Parameter_NamePython + " is None else " + model.Parameter_NamePython + ".split(',')";
+                                        access += "None if " + model.Option_NamePython + " is None else " + model.Option_NamePython + ".split(',')";
                                     }
                                     else
                                     {
                                         // already preprocessed by actions
-                                        access += model.Parameter_NamePython
+                                        access += model.Option_NamePython
                                     }
                                 }
-                                else if (model.Parameter_Type != "dict")
+                                else if (model.Option_Type != "dict")
                                 {
-                                    access += model.Parameter_NamePython + "  # " + model.Parameter_Type; // # JSON.stringify(element);
+                                    access += model.Option_NamePython + "  # " + model.Option_Type; // # JSON.stringify(element);
                                 }
                                 else
                                 {
-                                    access += "json.loads(" + model.Parameter_NamePython + ") if isinstance(" +model.Parameter_NamePython + ", str) else " + model.Parameter_NamePython
+                                    access += "json.loads(" + model.Option_NamePython + ") if isinstance(" +model.Option_NamePython + ", str) else " + model.Option_NamePython
                                     required['json'] = true;
                                 }
                                 
                                 if (isUpdate)
                                 {
-                                    output_body.push("    if " + model.Parameter_NamePython + " is not None:");
+                                    output_body.push("    if " + model.Option_NamePython + " is not None:");
                                     output_body.push("    " + access);
                                 }
                                 else
@@ -200,7 +198,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                                 }
                             }
                         }
-                        while (model.GetNextParameter());
+                        while (model.SelectNextOption());
                     }
                 }
             }
