@@ -579,6 +579,12 @@ export class MapGenerator
                                 // XXX - just fixing it
                                 element.DispositionSdk = "/"; //suboption.NameAlt;
                                 element.DispositionRest = "/";
+
+                                if (m.httpMethod == "post")
+                                {
+                                    element.ActionOnly = true;
+                                }
+
                                 options[element.NameAnsible] = element;
                             });
                         }

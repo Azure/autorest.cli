@@ -104,6 +104,7 @@ export class ModuleOption
     public Hidden: boolean = false;
     public IncludeInResponse: boolean = false;
     public format: string = null;
+    public ActionOnly: boolean = false;
 }
 
 export class ModuleOptionPlaceholder extends ModuleOption
