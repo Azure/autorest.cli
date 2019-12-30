@@ -252,7 +252,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             output = output.concat(output_body);
             output = output.concat(output_method_call);
         }
-    } while (model.NextModule());
+    } while (model.SelectNextModule());
 
     return output;
 }

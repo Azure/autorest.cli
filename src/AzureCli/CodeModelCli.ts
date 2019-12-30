@@ -15,11 +15,11 @@ import { on } from "cluster";
 
 export interface CodeModelCli
 {
-    Reset(): void;
+    SelectFirstExtension(): boolean;
+    SelectNextExtension(): boolean;
 
-    NextExtension(): boolean;
-
-    NextModule(): boolean;
+    SelectFirstModule(): boolean;
+    SelectNextModule(): boolean;
 
     SelectMethod(name: string): boolean;
 
@@ -136,27 +136,44 @@ export class CodeModelCliImpl implements CodeModelCli
         this._cmdOverrides = cliCommandOverrides;
     }
 
-    public Reset()
+    public SelectFirstExtension(): boolean
     {
         this._selectedModule = 0;
+        return true;
     }
 
-    public NextExtension(): boolean
+    public SelectNextExtension(): boolean
     {
         // no implementation in PoC
         return false;
     }
 
-    public NextModule(): boolean
+    public SelectFirstModule(): boolean
+    {
+        if (this.Map.Modules.length > 0)
+        {
+            this._selectedModule = 0;
+            return true;
+        }
+        else
+        {
+            this._selectedModule = -1;
+            return false;
+        }
+    }
+
+    public SelectNextModule(): boolean
     {
         if (this._selectedModule < this.Map.Modules.length - 1)
         {
             this._selectedModule++;
-
             return true;
         }
-
-        return false;
+        else
+        {
+            this._selectedModule = -1;
+            return false;
+        }
     }
 
     public GetCliCommandModuleName()
@@ -1244,7 +1261,7 @@ export class CodeModelCliImpl implements CodeModelCli
     public getExampleById(id: string): string[]
     {
         let cmd: string[] = [];
-        this.Reset();
+        this.SelectFirstExtension();
         do
         {
             let methods: string[] = this.GetCliCommandMethods();
@@ -1275,7 +1292,7 @@ export class CodeModelCliImpl implements CodeModelCli
     
             if (cmd.length > 0)
                 break;
-        } while (this.NextModule());
+        } while (this.SelectNextModule());
     
         return cmd;
     }

@@ -92,7 +92,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         }
 
         cmds[model.GetCliCommand(null)] = mo;
-    } while (model.NextModule());;
+    } while (model.SelectNextModule());;
 
     // build sorted output
     var keys = Object.keys(cmds);

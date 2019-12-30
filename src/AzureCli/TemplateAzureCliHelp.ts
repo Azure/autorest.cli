@@ -129,7 +129,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
 
             output.push("\"\"\"");
         }
-    } while (model.NextModule());;
+    } while (model.SelectNextModule());;
 
     output.push("");
 

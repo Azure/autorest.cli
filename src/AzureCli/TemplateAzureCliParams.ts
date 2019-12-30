@@ -111,7 +111,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 } while (model.GetNextParameter());
             }
         }
-    } while (model.NextModule());
+    } while (model.SelectNextModule());
 
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");

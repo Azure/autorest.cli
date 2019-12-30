@@ -72,7 +72,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 }
             }
         }
-    } while (model.NextModule());
+    } while (model.SelectNextModule());
 
     output.push("");
 
