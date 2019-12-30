@@ -30,7 +30,7 @@ export function GenerateAzureCliClientFactory(model: CodeModelCli) : string[] {
             output.push("def cf_" + model.GetModuleOperationName() + "(cli_ctx, *_):");
             output.push("    return cf_" + model.GetCliCommandModuleNameUnderscored() + "(cli_ctx)." + model.GetModuleOperationName());
         }
-    } while (model.SelectNextModule());
+    } while (model.SelectNextCmdGroup());
 
     output.push("");
 

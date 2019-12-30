@@ -18,8 +18,8 @@ export interface CodeModelCli
     SelectFirstExtension(): boolean;
     SelectNextExtension(): boolean;
 
-    SelectFirstModule(): boolean;
-    SelectNextModule(): boolean;
+    SelectFirstCmdGroup(): boolean;
+    SelectNextCmdGroup(): boolean;
 
     SelectMethod(name: string): boolean;
 
@@ -148,7 +148,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return false;
     }
 
-    public SelectFirstModule(): boolean
+    public SelectFirstCmdGroup(): boolean
     {
         if (this.Map.Modules.length > 0)
         {
@@ -162,7 +162,7 @@ export class CodeModelCliImpl implements CodeModelCli
         }
     }
 
-    public SelectNextModule(): boolean
+    public SelectNextCmdGroup(): boolean
     {
         if (this._selectedModule < this.Map.Modules.length - 1)
         {
@@ -1292,7 +1292,7 @@ export class CodeModelCliImpl implements CodeModelCli
     
             if (cmd.length > 0)
                 break;
-        } while (this.SelectNextModule());
+        } while (this.SelectNextCmdGroup());
     
         return cmd;
     }
