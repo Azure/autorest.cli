@@ -22,12 +22,12 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     do
     {
-        let methods: string[] = model.GetCliCommandMethods();
+        let methods: string[] = model.CommandGroup_Methods;
         for (let mi = 0; mi < methods.length; mi++)
         {
             let method: string = methods[mi];
 
-            let ctx = model.SelectMethod(method);
+            let ctx = model.SelectCommand(method);
             if (ctx == null)
                 continue;
 
@@ -110,7 +110,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 } while (model.SelectNextOption());
             }
         }
-    } while (model.SelectNextCmdGroup());
+    } while (model.SelectNextCommandGroup());
 
     output.push("# --------------------------------------------------------------------------------------------");
     output.push("# Copyright (c) Microsoft Corporation. All rights reserved.");

@@ -8,13 +8,19 @@ export interface CodeModelCli
     SelectFirstExtension(): boolean;
     SelectNextExtension(): boolean;
 
-    SelectFirstCmdGroup(): boolean;
-    SelectNextCmdGroup(): boolean;
-
-    SelectMethod(name: string): boolean;
-
     Extension_Name: string;
     Extension_NameUnderscored: string;
+    Extension_NameClass: string;
+
+    SelectFirstCommandGroup(): boolean;
+    SelectNextCommandGroup(): boolean;
+
+    CommandGroup_Help: string;
+    CommandGroup_Methods: string[];
+
+    SelectFirstCommand(): boolean;
+    SelectNextCommand(): boolean;
+    SelectCommand(name: string): boolean;
 
     Command_Name: string;
     Command_NameUnderscored: string;
@@ -53,10 +59,7 @@ export interface CodeModelCli
     MethodParameter_Name: string;
     MethodParamerer_MapsTo: string;
 
-    GetCliCommandMethods(): string[];
-    GetServiceNameX(): string;
-    //GetModuleOptions(): ModuleOption[];
-    GetCliCommandDescriptionName(methodName: string): string;
+
     GetModuleOperationName(): string;
     GetModuleOperationNameUpper(): string;
     GetPythonNamespace(): string;

@@ -20,13 +20,13 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         mo.push("## " + model.Command_Name);
         mo.push("");
 
-        let methods: string[] = model.GetCliCommandMethods();
+        let methods: string[] = model.CommandGroup_Methods;
         for (let mi = 0; mi < methods.length; mi++)
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
             // options
-            let ctx = model.SelectMethod(method);
+            let ctx = model.SelectCommand(method);
             if (ctx == null)
                 continue;
 
@@ -92,7 +92,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         }
 
         cmds[model.Command_Name] = mo;
-    } while (model.SelectNextCmdGroup());;
+    } while (model.SelectNextCommandGroup());;
 
     // build sorted output
     var keys = Object.keys(cmds);

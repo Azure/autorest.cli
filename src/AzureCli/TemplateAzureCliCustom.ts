@@ -39,7 +39,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 
     do
     {
-        let methods: string[] = model.GetCliCommandMethods();
+        let methods: string[] = model.CommandGroup_Methods;
         for (let methodName of methods)
         {
             // create, delete, list, show, update
@@ -48,7 +48,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             //if (methodName == "show")
             //    continue;
 
-            if (!model.SelectMethod(methodName))
+            if (!model.SelectCommand(methodName))
                 continue;
 
             output.push("");
@@ -137,7 +137,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
                     {
                         if (methods.indexOf("show") >= 0)
                         {
-                            model.SelectMethod("show");
+                            model.SelectCommand("show");
                             output_body.push("    body = " + GetMethodCall(model) + ".as_dict()");
                         }
                         else
@@ -250,7 +250,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             output = output.concat(output_body);
             output = output.concat(output_method_call);
         }
-    } while (model.SelectNextCmdGroup());
+    } while (model.SelectNextCommandGroup());
 
     return output;
 }

@@ -78,7 +78,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return false;
     }
 
-    public SelectFirstCmdGroup(): boolean
+    public SelectFirstCommandGroup(): boolean
     {
         if (this.Map.Modules.length > 0)
         {
@@ -92,7 +92,7 @@ export class CodeModelCliImpl implements CodeModelCli
         }
     }
 
-    public SelectNextCmdGroup(): boolean
+    public SelectNextCommandGroup(): boolean
     {
         if (this._selectedModule < this.Map.Modules.length - 1)
         {
@@ -159,9 +159,9 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.GetCliCommandFromUrl(url);
     }
 
-    public GetCliCommandDescriptionName(methodName: string = null): string
+    public get CommandGroup_Help(): string
     {
-        return ToDescriptiveName(this.GetCliCommand(null));
+        return "Commands to manage " + ToDescriptiveName(this.GetCliCommand(null)) + ".";
     }
 
     private GetMethodExamples(): CommandExample[]
@@ -227,13 +227,13 @@ export class CodeModelCliImpl implements CodeModelCli
         this.SelectFirstExtension();
         do
         {
-            let methods: string[] = this.GetCliCommandMethods();
+            let methods: string[] = this.CommandGroup_Methods;
             for (let mi = 0; mi < methods.length; mi++)
             {
                 // create, delete, list, show, update
                 let method: string = methods[mi];
     
-                let ctx = this.SelectMethod(method);
+                let ctx = this.SelectCommand(method);
                 if (ctx == null)
                 {
                     continue;
@@ -255,7 +255,7 @@ export class CodeModelCliImpl implements CodeModelCli
     
             if (cmd.length > 0)
                 break;
-        } while (this.SelectNextCmdGroup());
+        } while (this.SelectNextCommandGroup());
     
         return cmd;
     }
@@ -582,7 +582,7 @@ export class CodeModelCliImpl implements CodeModelCli
     //-------------------------------------------------------------------
     // This function creates list if CLI methods from REST API methods.
     //-------------------------------------------------------------------
-    public GetCliCommandMethods(): string[]
+    public get CommandGroup_Methods(): string[]
     {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
         let methods: Set<string> = new Set();
@@ -622,7 +622,17 @@ export class CodeModelCliImpl implements CodeModelCli
         return Array.from(methods.values());
     }
 
-    public SelectMethod(name: string): boolean
+    public SelectFirstCommand(): boolean
+    {
+        return false;
+    }
+
+    public SelectNextCommand(): boolean
+    {
+        return false;
+    }
+
+    public SelectCommand(name: string): boolean
     {
         let url: string = this.ModuleUrl;
         let command = this.GetCliCommandFromUrl(url);
@@ -1265,7 +1275,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.Modules[this._selectedModule].Methods[0].Url;
     }
 
-    public GetServiceNameX(): string
+    public get Extension_NameClass(): string
     {
         return this.Map.MgmtClientName.split("ManagementClient").join("");
     }

@@ -30,15 +30,15 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
         output.push("");
         output.push("helps['" + model.Command_Name + "'] = \"\"\"");
         output.push("    type: group");
-        output.push("    short-summary: Commands to manage " +  model.GetCliCommandDescriptionName("") + ".");
+        output.push("    short-summary: " +  model.CommandGroup_Help);
         output.push("\"\"\"");
 
-        let methods: string[] = model.GetCliCommandMethods();
+        let methods: string[] = model.CommandGroup_Methods;
         for (let mi = 0; mi < methods.length; mi++)
         {
             // create, delete, list, show, update
             let method: string = methods[mi];
-            let ctx = model.SelectMethod(method);
+            let ctx = model.SelectCommand(method);
 
             if (ctx == null)
                 continue;
@@ -130,7 +130,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
 
             output.push("\"\"\"");
         }
-    } while (model.SelectNextCmdGroup());;
+    } while (model.SelectNextCommandGroup());;
 
     output.push("");
 

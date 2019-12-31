@@ -18,7 +18,7 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("from azext_" + model.Extension_NameUnderscored + "._help import helps  # pylint: disable=unused-import");
     output.push("");
     output.push("");
-    output.push("class " + model.GetServiceNameX() + "CommandsLoader(AzCommandsLoader):");
+    output.push("class " + model.Extension_NameClass + "CommandsLoader(AzCommandsLoader):");
     output.push("");
     output.push("    def __init__(self, cli_ctx=None):");
     output.push("        from azure.cli.core.commands import CliCommandType");
@@ -26,7 +26,7 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        " + model.Extension_NameUnderscored + "_custom = CliCommandType(");
     output.push("            operations_tmpl='azext_" + model.Extension_NameUnderscored + ".custom#{}',");
     output.push("            client_factory=cf_" + model.Extension_NameUnderscored + ")");
-    let pfx = "        super(" + model.GetServiceNameX() + "CommandsLoader, self).__init__(";
+    let pfx = "        super(" + model.Extension_NameClass + "CommandsLoader, self).__init__(";
     output.push(pfx + "cli_ctx=cli_ctx,");
     output.push(" ".repeat(pfx.length) + "custom_command_type=" + model.Extension_NameUnderscored + "_custom)");
     output.push("");
@@ -40,7 +40,7 @@ export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
     output.push("        load_arguments(self, command)");
     output.push("");
     output.push("");
-    output.push("COMMAND_LOADER_CLS = " + model.GetServiceNameX() + "CommandsLoader");
+    output.push("COMMAND_LOADER_CLS = " + model.Extension_NameClass + "CommandsLoader");
     output.push("");
  
     return output;
