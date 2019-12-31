@@ -24,7 +24,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
     do
     {
         // if disabled
-        if (model.GetCliCommand(null) == "-")
+        if (model.Command_Name == "-")
             continue;
 
         let methods: string[] = model.GetCliCommandMethods();
@@ -48,27 +48,27 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             
             output.push("        client_factory=" + cf_name + ")");
 
-            output.push("    with self.command_group('" + model.GetCliCommand(null) + "', " + model.Extension_NameUnderscored + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
+            output.push("    with self.command_group('" + model.Command_Name + "', " + model.Extension_NameUnderscored + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
             for (let method of methods)
             {
                 // create, delete, list, show, update
 
                 if (method == 'delete')
                 {
-                    output.push("        g.custom_command('delete', 'delete_" +  model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('delete', 'delete_" +  model.Command_NameUnderscored + "')");
                 }
                 else if (method == 'show')
                 {
                     // [TODO] get -> show
-                    output.push("        g.custom_command('show', 'get_" +  model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('show', 'get_" +  model.Command_NameUnderscored + "')");
                 }
                 else if (method == 'update')
                 {
-                    output.push("        g.custom_command('update', 'update_" + model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('update', 'update_" + model.Command_NameUnderscored + "')");
                 }
                 else
                 {
-                    output.push("        g.custom_command('" + method + "', '" + method + "_" + model.GetCliCommandUnderscored() + "')");
+                    output.push("        g.custom_command('" + method + "', '" + method + "_" + model.Command_NameUnderscored + "')");
                 }
             }
         }

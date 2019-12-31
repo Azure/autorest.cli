@@ -58,7 +58,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
             // method
             //
             let updatedMethodName = (methodName != "show") ? methodName : "get";
-            let call = "def " + updatedMethodName + "_" + model.GetCliCommandX().split(" ").join("_").split("-").join("_") + "(";
+            let call = "def " + updatedMethodName + "_" + model.Command_NameUnderscored + "(";
             let indent = " ".repeat(call.length);
             let isUpdate = (methodName == "update");
 

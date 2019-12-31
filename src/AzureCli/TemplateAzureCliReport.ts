@@ -17,7 +17,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
     do
     {
         var mo: string[] = [];
-        mo.push("## " + model.GetCliCommand(null));
+        mo.push("## " + model.Command_Name);
         mo.push("");
 
         let methods: string[] = model.GetCliCommandMethods();
@@ -30,9 +30,9 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
             if (ctx == null)
                 continue;
 
-            mo.push("### " + model.GetCliCommand(null) + " " + method);
+            mo.push("### " + model.Command_Name + " " + method);
             mo.push("");
-            mo.push(method + " a " + model.GetCliCommand(null) +  ".");
+            mo.push(method + " a " + model.Command_Name +  ".");
             mo.push("");
 
             mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
@@ -72,7 +72,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                     mo.push("");
                     mo.push("```");
 
-                    let next: string = model.GetCliCommand(null) + " " + method + " ";
+                    let next: string = model.Command_Name + " " + method + " ";
                     for (let k in model.Example_Params)
                     {
                         let v: string = model.Example_Params[k];
@@ -91,7 +91,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
                         
         }
 
-        cmds[model.GetCliCommand(null)] = mo;
+        cmds[model.Command_Name] = mo;
     } while (model.SelectNextCmdGroup());;
 
     // build sorted output

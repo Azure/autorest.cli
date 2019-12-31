@@ -15,9 +15,9 @@ export interface CodeModelCli
 
     Extension_Name: string;
     Extension_NameUnderscored: string;
-    GetCliCommand(methodName: string): string;
-    GetCliCommandX(): string;
-    GetCliCommandUnderscored(): string;
+    //GetCliCommand(methodName: string): string;
+    Command_Name: string;
+    Command_NameUnderscored: string;
 
     Command_Help: string;
 

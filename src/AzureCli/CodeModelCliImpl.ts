@@ -116,9 +116,23 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.CliName.replace("-", "_");
     }
 
-    public GetCliCommandX(): string
+    public get Command_NameUnderscored()
     {
-        return this._ctx.Command;
+        let command: string = this.GetCliCommand(null);
+
+        return command.split(" ").join("_").split("-").join("_");
+    }
+
+    public get Command_Name(): string
+    {
+        //if (this._ctx)
+        //{
+        //    return this._ctx.Command;
+        //}
+        //else
+        //{
+            return this.GetCliCommand(null);
+        //}
     }
 
     public GetCliCommand(methodName: string): string
@@ -558,13 +572,6 @@ export class CodeModelCliImpl implements CodeModelCli
         }
 
         return command;
-    }
-
-    public GetCliCommandUnderscored()
-    {
-        let command: string = this.GetCliCommand(null);
-
-        return command.split(" ").join("_").split("-").join("_");
     }
 
     public get Command_Help(): string

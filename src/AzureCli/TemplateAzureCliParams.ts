@@ -32,7 +32,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
                 continue;
 
             output_args.push("");
-            output_args.push("    with self.argument_context('" + model.GetCliCommand(null) + " " + method + "') as c:");
+            output_args.push("    with self.argument_context('" + model.Command_Name + " " + method + "') as c:");
 
             if (!model.SelectFirstOption())
             {
