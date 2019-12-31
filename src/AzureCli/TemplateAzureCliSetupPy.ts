@@ -53,7 +53,7 @@ export function GenerateAzureCliSetupPy(model: CodeModelCli) : string[] {
     output.push("    HISTORY = f.read()");
     output.push("");
     output.push("setup(");
-    output.push("    name='" + model.GetCliCommandModuleNameUnderscored() + "',");
+    output.push("    name='" + model.Extension_NameUnderscored + "',");
     output.push("    version=VERSION,");
     output.push("    description='Microsoft Azure Command-Line Tools " + model.GetServiceNameX() + " Extension',");
     output.push("   # TODO: Update author and email, if applicable");
@@ -66,7 +66,7 @@ export function GenerateAzureCliSetupPy(model: CodeModelCli) : string[] {
     output.push("    classifiers=CLASSIFIERS,");
     output.push("    packages=find_packages(),");
     output.push("    install_requires=DEPENDENCIES,");
-    output.push("    package_data={'azext_" + model.GetCliCommandModuleNameUnderscored() + "': ['azext_metadata.json']},");
+    output.push("    package_data={'azext_" + model.Extension_NameUnderscored + "': ['azext_metadata.json']},");
     output.push(")");
 
     return output;

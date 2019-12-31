@@ -32,13 +32,13 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         {
             output.push("");
 
-            let cf_name: string = "cf_" + ((model.GetModuleOperationName() != "") ? model.GetModuleOperationName() :  model.GetCliCommandModuleNameUnderscored());
+            let cf_name: string = "cf_" + ((model.GetModuleOperationName() != "") ? model.GetModuleOperationName() :  model.Extension_NameUnderscored);
             output.push("    from ._client_factory import " + cf_name);
-            output.push("    " + model.GetCliCommandModuleNameUnderscored() + "_" + model.GetModuleOperationName() + " = CliCommandType(");
+            output.push("    " + model.Extension_NameUnderscored + "_" + model.GetModuleOperationName() + " = CliCommandType(");
             
             if (true)
             {
-                output.push("        operations_tmpl='azext_" + model.GetCliCommandModuleNameUnderscored() + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.GetModuleOperationName() + "_operations#" + model.GetModuleOperationNameUpper() + "Operations" + ".{}',");
+                output.push("        operations_tmpl='azext_" + model.Extension_NameUnderscored + ".vendored_sdks." + model.PythonOperationsName + ".operations._" + model.GetModuleOperationName() + "_operations#" + model.GetModuleOperationNameUpper() + "Operations" + ".{}',");
             }
             else
             {
@@ -48,7 +48,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
             
             output.push("        client_factory=" + cf_name + ")");
 
-            output.push("    with self.command_group('" + model.GetCliCommand(null) + "', " + model.GetCliCommandModuleNameUnderscored() + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
+            output.push("    with self.command_group('" + model.GetCliCommand(null) + "', " + model.Extension_NameUnderscored + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
             for (let method of methods)
             {
                 // create, delete, list, show, update

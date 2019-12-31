@@ -3,10 +3,6 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { on } from "cluster";
-
-import { CommandExample } from "./CodeModelCliImpl";
-
 export interface CodeModelCli
 {
     SelectFirstExtension(): boolean;
@@ -17,8 +13,8 @@ export interface CodeModelCli
 
     SelectMethod(name: string): boolean;
 
-    GetCliCommandModuleName(): string;
-    GetCliCommandModuleNameUnderscored(): string;
+    Extension_Name: string;
+    Extension_NameUnderscored: string;
     GetCliCommand(methodName: string): string;
     GetCliCommandX(): string;
     GetCliCommandUnderscored(): string;

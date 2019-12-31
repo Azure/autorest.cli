@@ -134,7 +134,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     if (hasActions)
     {
-        output.push("from azext_" + model.GetCliCommandModuleNameUnderscored() + ".action import (")
+        output.push("from azext_" + model.Extension_NameUnderscored + ".action import (")
 
         for (let idx: number = 0; idx < actions.length; idx++)
         {

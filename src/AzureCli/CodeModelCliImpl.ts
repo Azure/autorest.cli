@@ -106,12 +106,12 @@ export class CodeModelCliImpl implements CodeModelCli
         }
     }
 
-    public GetCliCommandModuleName()
+    public get Extension_Name()
     {
         return this.Map.CliName;
     }
 
-    public GetCliCommandModuleNameUnderscored()
+    public get Extension_NameUnderscored()
     {
         return this.Map.CliName.replace("-", "_");
     }
