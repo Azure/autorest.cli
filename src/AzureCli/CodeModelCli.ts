@@ -15,14 +15,12 @@ export interface CodeModelCli
 
     Extension_Name: string;
     Extension_NameUnderscored: string;
-    //GetCliCommand(methodName: string): string;
+
     Command_Name: string;
     Command_NameUnderscored: string;
 
     Command_Help: string;
 
-    // ctx
-    //GetMethodExamples(): CommandExample[];
 
     SelectFirstOption(): boolean;
     SelectNextOption(): boolean;
