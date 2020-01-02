@@ -113,14 +113,13 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Extension_NameUnderscored()
     {
-        return this.Map.CliName.replace("-", "_");
+        return this.Map.CliName.replace(/-/g, '_');
     }
 
     public get CommandGroup_NameUnderscored()
     {
         let command: string = this.GetCliCommand(null);
-
-        return command.split(" ").join("_").split("-").join("_");
+        return command.replace(/[- ]/g, '_');
     }
 
     public get CommandGroup_Name(): string
@@ -138,8 +137,7 @@ export class CodeModelCliImpl implements CodeModelCli
     public get Command_NameUnderscored()
     {
         let command: string = this.GetCliCommand(null);
-
-        return command.split(" ").join("_").split("-").join("_");
+        return command.replace(/[- ]/g, '_');
     }
 
     public get Command_Name(): string
@@ -253,10 +251,9 @@ export class CodeModelCliImpl implements CodeModelCli
                 let method: string = methods[mi];
     
                 let ctx = this.SelectCommand(method);
+
                 if (ctx == null)
-                {
                     continue;
-                }
     
                 this.GetSelectedCommandMethods().forEach(element => {
                     let examples: CommandExample[] = this.GetMethodExamples();
@@ -634,7 +631,7 @@ export class CodeModelCliImpl implements CodeModelCli
             else
             {
                 // these are all custom methods
-                methods.add(ToSnakeCase(name));
+                methods.add(ToSnakeCase(name).replace(/_/g, '-'));
             }
         }
 
@@ -864,7 +861,7 @@ export class CodeModelCliImpl implements CodeModelCli
             }
             else
             {
-                example.Method = ToSnakeCase(moduleExample.MethodName);
+                example.Method = ToSnakeCase(moduleExample.MethodName).replace(/_/g, '-');
             }
 
             //this._log("########################## PROCESSING MODULE EXAMPLE " + moduleExample.Id);

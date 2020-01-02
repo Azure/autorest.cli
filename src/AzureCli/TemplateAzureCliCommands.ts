@@ -68,7 +68,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
                 }
                 else
                 {
-                    output.push("        g.custom_command('" + method + "', '" + method + "_" + model.Command_NameUnderscored + "')");
+                    output.push("        g.custom_command('" + method + "', '" + method.replace(/-/g, '_') + "_" + model.Command_NameUnderscored + "')");
                 }
             }
         }
