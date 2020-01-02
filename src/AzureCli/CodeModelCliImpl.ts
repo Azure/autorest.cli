@@ -49,7 +49,6 @@ export class MethodParameter
 
 export class CommandContext
 {
-    public Command: string;
     public Url: string;
     public Parameters: CommandParameter[];
     public Methods: CommandMethod[];
@@ -472,12 +471,15 @@ export class CodeModelCliImpl implements CodeModelCli
 
         this._ctx.Parameters.forEach(element => {
             // XXX - this is not quite correct
-            if (element.PathSdk.startsWith('/') && element.Type != "placeholder" && !element.ActionOnly)
+            if (element.PathSdk.startsWith('/') && element.Type != "placeholder")
             {
-                let p: MethodParameter = new MethodParameter();
-                p.Name = element.PathSdk.split("/").pop();
-                p.MapsTo = this.PythonParameterName(element.Name); 
-                this._methodParameterMap.push(p);
+                if (!(element.ActionOnly && (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")))
+                {
+                    let p: MethodParameter = new MethodParameter();
+                    p.Name = element.PathSdk.split("/").pop();
+                    p.MapsTo = this.PythonParameterName(element.Name); 
+                    this._methodParameterMap.push(p);
+                }
             }
         });
     }
@@ -674,7 +676,6 @@ export class CodeModelCliImpl implements CodeModelCli
         ctx.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
 
-        ctx.Command = command;
         ctx.Url = url;
 
         // enumerate all swagger method names
