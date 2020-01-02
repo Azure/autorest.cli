@@ -124,14 +124,7 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get CommandGroup_Name(): string
     {
-        //if (this._ctx)
-        //{
-        //    return this._ctx.Command;
-        //}
-        //else
-        //{
-            return this.GetCliCommand(null);
-        //}
+        return this.GetCliCommand(null);
     }
 
     public get Command_NameUnderscored()
@@ -140,16 +133,22 @@ export class CodeModelCliImpl implements CodeModelCli
         return command.replace(/[- ]/g, '_');
     }
 
+    public get Command_FunctionName()
+    {
+        let command: string = this.CommandGroup_Commands[this._selectedCommand] + " " + this.GetCliCommand(null);
+        command = command.replace(/[- ]/g, '_');
+        if (command.startsWith("show_")) command = command.replace('show_', "get_");
+        return command;
+    }
+
     public get Command_Name(): string
     {
-        //if (this._ctx)
-        //{
-        //    return this._ctx.Command;
-        //}
-        //else
-        //{
-            return this.GetCliCommand(null);
-        //}
+        return this.GetCliCommand(null) + " " + this.Command_MethodName;
+    }
+
+    public get Command_MethodName(): string
+    {
+        return this.CommandGroup_Commands[this._selectedCommand];
     }
 
     public GetCliCommand(methodName: string): string
@@ -640,12 +639,26 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public SelectFirstCommand(): boolean
     {
-        return false;
+        if (this.CommandGroup_Commands.length > 0)
+        {
+            this._selectedCommand = 0;
+            this.SelectCommand(this.CommandGroup_Commands[0]);
+            return true;
+        }
     }
 
     public SelectNextCommand(): boolean
     {
-        return false;
+        if (this._selectedCommand + 1 < this.CommandGroup_Commands.length)
+        {
+            this._selectedCommand++;
+            this.SelectCommand(this.CommandGroup_Commands[this._selectedCommand]);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public SelectCommand(name: string): boolean
@@ -1325,6 +1338,7 @@ export class CodeModelCliImpl implements CodeModelCli
     public _log: LogCallback;
     private _cmdOverrides: any;
     private _selectedModule: number = 0;
+    private _selectedCommand: number = 0;
     private _ctx: CommandContext = null;
     private _parameterIdx = 0;
     private _selectedMethod = 0;

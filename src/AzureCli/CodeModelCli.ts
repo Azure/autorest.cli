@@ -22,10 +22,11 @@ export interface CodeModelCli
 
     SelectFirstCommand(): boolean;
     SelectNextCommand(): boolean;
-    SelectCommand(name: string): boolean;
 
     Command_Name: string;
     Command_NameUnderscored: string;
+    Command_MethodName: string;
+    Command_FunctionName: string;
 
     Command_Help: string;
 

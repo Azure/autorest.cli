@@ -20,75 +20,71 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         mo.push("## " + model.Command_Name);
         mo.push("");
 
-        let methods: string[] = model.CommandGroup_Commands;
-        for (let mi = 0; mi < methods.length; mi++)
+        if (model.SelectFirstCommand())
         {
-            // create, delete, list, show, update
-            let method: string = methods[mi];
-            // options
-            let ctx = model.SelectCommand(method);
-            if (ctx == null)
-                continue;
-
-            mo.push("### " + model.Command_Name + " " + method);
-            mo.push("");
-            mo.push(method + " a " + model.Command_Name +  ".");
-            mo.push("");
-
-            mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
-            mo.push("|------|----|-----------|----------|--------------|");
-
-
-            model.SelectFirstOption();
-
-            // first parameters that are required
             do
             {
-                if (model.Option_Type != "placeholder" && model.Option_IsRequired)
-                {
-                    mo.push("|**--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
-                }
-            }
-            while (model.SelectNextOption());
+                mo.push("### " + model.Command_Name);
+                mo.push("");
+                mo.push(model.Command_MethodName + " a " + model.CommandGroup_Name +  ".");
+                mo.push("");
 
-            model.SelectFirstOption();
-
-            // following by required parameters
-            do {
-                if (model.Option_Type != "placeholder" && !model.Option_IsRequired)
-                {
-                    mo.push("|--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
-                }
-            }
-            while (model.SelectNextOption());
+                mo.push("|Option|Type|Description|Path (SDK)|Path (swagger)|");
+                mo.push("|------|----|-----------|----------|--------------|");
 
 
-            if (model.SelectFirstExample())
-            {
+                model.SelectFirstOption();
+
+                // first parameters that are required
                 do
                 {
-                    mo.push("");
-                    mo.push ("**Example: " + model.Example_Title + "**");
-                    mo.push("");
-                    mo.push("```");
-
-                    let next: string = model.Command_Name + " " + method + " ";
-                    for (let k in model.Example_Params)
+                    if (model.Option_Type != "placeholder" && model.Option_IsRequired)
                     {
-                        let v: string = model.Example_Params[k];
-                        if (/\s/.test(v))
-                        {
-                            v = "\"" + v.replace("\"", "\\\"") + "\"";
-                        }
-
-                        next += k + " " + v;
-                        mo.push(next);
-                        next = "        ";
+                        mo.push("|**--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
                     }
-                    mo.push("```");
-                } while (model.SelectNextExample());
+                }
+                while (model.SelectNextOption());
+
+                model.SelectFirstOption();
+
+                // following by required parameters
+                do {
+                    if (model.Option_Type != "placeholder" && !model.Option_IsRequired)
+                    {
+                        mo.push("|--" + model.Option_Name + "**|" + model.Option_Type + "|" + model.Option_Description + "|" + model.Option_PathSdk + "|" + model.Option_PathSwagger + "|");
+                    }
+                }
+                while (model.SelectNextOption());
+
+
+                if (model.SelectFirstExample())
+                {
+                    do
+                    {
+                        mo.push("");
+                        mo.push ("**Example: " + model.Example_Title + "**");
+                        mo.push("");
+                        mo.push("```");
+
+                        let next: string = model.Command_Name + " " + model.Command_MethodName + " ";
+                        for (let k in model.Example_Params)
+                        {
+                            let v: string = model.Example_Params[k];
+                            if (/\s/.test(v))
+                            {
+                                v = "\"" + v.replace("\"", "\\\"") + "\"";
+                            }
+
+                            next += k + " " + v;
+                            mo.push(next);
+                            next = "        ";
+                        }
+                        mo.push("```");
+                    } while (model.SelectNextExample());
+                }
+                            
             }
-                        
+            while (model.SelectNextCommand());
         }
 
         cmds[model.Command_Name] = mo;
