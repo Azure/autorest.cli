@@ -107,21 +107,9 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.CliName.replace(/-/g, '_');
     }
 
-    public get CommandGroup_NameUnderscored()
-    {
-        let command: string = this.GetCliCommand(null);
-        return command.replace(/[- ]/g, '_');
-    }
-
     public get CommandGroup_Name(): string
     {
         return this.GetCliCommand(null);
-    }
-
-    public get Command_NameUnderscored()
-    {
-        let command: string = this.GetCliCommand(null);
-        return command.replace(/[- ]/g, '_');
     }
 
     public get Command_FunctionName()
@@ -142,7 +130,7 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.CommandGroup_Commands[this._selectedCommand];
     }
 
-    public GetCliCommand(methodName: string): string
+    private GetCliCommand(methodName: string): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
         let command = "";
@@ -666,8 +654,6 @@ export class CodeModelCliImpl implements CodeModelCli
         this.Methods = [];
         this.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
-
-        this.Url = url;
 
         // enumerate all swagger method names
         methods.forEach(mm => {
@@ -1332,7 +1318,6 @@ export class CodeModelCliImpl implements CodeModelCli
     private _selectedCommand: number = 0;
 
     // command ctx
-    private Url: string;
     private Parameters: CommandParameter[];
     private Methods: CommandMethod[];
     private Examples: CommandExample[];

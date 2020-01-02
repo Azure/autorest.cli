@@ -16,15 +16,12 @@ export interface CodeModelCli
     SelectNextCommandGroup(): boolean;
 
     CommandGroup_Name: string;
-    CommandGroup_NameUnderscored: string;
     CommandGroup_Help: string;
-    CommandGroup_Commands: string[];
 
     SelectFirstCommand(): boolean;
     SelectNextCommand(): boolean;
 
     Command_Name: string;
-    Command_NameUnderscored: string;
     Command_MethodName: string;
     Command_FunctionName: string;
 
