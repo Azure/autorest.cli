@@ -20,7 +20,7 @@ export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
         mo.push("## " + model.Command_Name);
         mo.push("");
 
-        let methods: string[] = model.CommandGroup_Methods;
+        let methods: string[] = model.CommandGroup_Commands;
         for (let mi = 0; mi < methods.length; mi++)
         {
             // create, delete, list, show, update

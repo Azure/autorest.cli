@@ -39,7 +39,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
 
     do
     {
-        let methods: string[] = model.CommandGroup_Methods;
+        let methods: string[] = model.CommandGroup_Commands;
         for (let methodName of methods)
         {
             // create, delete, list, show, update

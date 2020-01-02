@@ -27,7 +27,7 @@ export function GenerateAzureCliCommands(model: CodeModelCli) : string[] {
         if (model.Command_Name == "-")
             continue;
 
-        let methods: string[] = model.CommandGroup_Methods;
+        let methods: string[] = model.CommandGroup_Commands;
         if (methods.length > 0)
         {
             output.push("");

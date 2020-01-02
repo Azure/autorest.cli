@@ -33,7 +33,7 @@ export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
         output.push("    short-summary: " +  model.CommandGroup_Help);
         output.push("\"\"\"");
 
-        let methods: string[] = model.CommandGroup_Methods;
+        let methods: string[] = model.CommandGroup_Commands;
         for (let mi = 0; mi < methods.length; mi++)
         {
             // create, delete, list, show, update

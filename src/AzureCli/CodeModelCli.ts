@@ -15,8 +15,10 @@ export interface CodeModelCli
     SelectFirstCommandGroup(): boolean;
     SelectNextCommandGroup(): boolean;
 
+    CommandGroup_Name: string;
+    CommandGroup_NameUnderscored: string;
     CommandGroup_Help: string;
-    CommandGroup_Methods: string[];
+    CommandGroup_Commands: string[];
 
     SelectFirstCommand(): boolean;
     SelectNextCommand(): boolean;
@@ -26,7 +28,6 @@ export interface CodeModelCli
     Command_NameUnderscored: string;
 
     Command_Help: string;
-
 
     SelectFirstOption(): boolean;
     SelectNextOption(): boolean;

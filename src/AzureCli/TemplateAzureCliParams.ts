@@ -22,7 +22,7 @@ export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
 
     do
     {
-        let methods: string[] = model.CommandGroup_Methods;
+        let methods: string[] = model.CommandGroup_Commands;
         for (let mi = 0; mi < methods.length; mi++)
         {
             let method: string = methods[mi];

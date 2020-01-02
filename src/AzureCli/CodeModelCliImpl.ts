@@ -116,6 +116,25 @@ export class CodeModelCliImpl implements CodeModelCli
         return this.Map.CliName.replace("-", "_");
     }
 
+    public get CommandGroup_NameUnderscored()
+    {
+        let command: string = this.GetCliCommand(null);
+
+        return command.split(" ").join("_").split("-").join("_");
+    }
+
+    public get CommandGroup_Name(): string
+    {
+        //if (this._ctx)
+        //{
+        //    return this._ctx.Command;
+        //}
+        //else
+        //{
+            return this.GetCliCommand(null);
+        //}
+    }
+
     public get Command_NameUnderscored()
     {
         let command: string = this.GetCliCommand(null);
@@ -227,7 +246,7 @@ export class CodeModelCliImpl implements CodeModelCli
         this.SelectFirstExtension();
         do
         {
-            let methods: string[] = this.CommandGroup_Methods;
+            let methods: string[] = this.CommandGroup_Commands;
             for (let mi = 0; mi < methods.length; mi++)
             {
                 // create, delete, list, show, update
@@ -582,7 +601,7 @@ export class CodeModelCliImpl implements CodeModelCli
     //-------------------------------------------------------------------
     // This function creates list if CLI methods from REST API methods.
     //-------------------------------------------------------------------
-    public get CommandGroup_Methods(): string[]
+    public get CommandGroup_Commands(): string[]
     {
         let restMethods = this.Map.Modules[this._selectedModule].Methods;
         let methods: Set<string> = new Set();
