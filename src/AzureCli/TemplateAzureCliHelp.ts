@@ -3,11 +3,11 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli } from "./CodeModelCli"
-import { CommandExample } from "./CodeModelCliImpl"
+import { CodeModelAz } from "./CodeModelAz"
+import { CommandExample } from "./CodeModelAzImpl"
 import { ToSnakeCase } from "../Common/Helpers"
 
-export function GenerateAzureCliHelp(model: CodeModelCli) : string[] {
+export function GenerateAzureCliHelp(model: CodeModelAz) : string[] {
     var output: string[] = [];
 
     output.push("# coding=utf-8");

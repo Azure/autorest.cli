@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli } from "./CodeModelCli"
+import { CodeModelAz } from "./CodeModelAz"
 
-export function GenerateAzureCliInit(model: CodeModelCli) : string[] {
+export function GenerateAzureCliInit(model: CodeModelAz) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");

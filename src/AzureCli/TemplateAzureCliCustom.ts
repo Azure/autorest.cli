@@ -3,9 +3,9 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli } from "./CodeModelCli"
+import { CodeModelAz } from "./CodeModelAz"
 
-export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
+export function GenerateAzureCliCustom(model: CodeModelAz) : string[] {
     var output: string[] = [];
 
     output.push("# --------------------------------------------------------------------------------------------");
@@ -34,7 +34,7 @@ export function GenerateAzureCliCustom(model: CodeModelCli) : string[] {
 }
 
 
-function GenerateBody(model: CodeModelCli, required: any) : string[] {
+function GenerateBody(model: CodeModelAz, required: any) : string[] {
     var output: string[] = [];
 
     do
@@ -256,7 +256,7 @@ function GenerateBody(model: CodeModelCli, required: any) : string[] {
     return output;
 }
 
-function GetMethodCall(model: CodeModelCli): string
+function GetMethodCall(model: CodeModelAz): string
 {
     let methodCall: string = "";
     //methodCall += "client." + mode.GetModuleOperationName() +"." + ctx.Methods[methodIdx].Name +  "(";

@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli } from "./CodeModelCli"
-import { CommandExample } from "./CodeModelCliImpl"
+import { CodeModelAz } from "./CodeModelAz"
+import { CommandExample } from "./CodeModelAzImpl"
 
-export function GenerateAzureCliReport(model: CodeModelCli) : string[] {
+export function GenerateAzureCliReport(model: CodeModelAz) : string[] {
     var output: string[] = [];
 
     output.push("# Azure CLI Module Creation Report");

@@ -3,10 +3,10 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
-import { CodeModelCli } from "./CodeModelCli"
+import { CodeModelAz } from "./CodeModelAz"
 import { EscapeString, ToCamelCase, Capitalize } from "../Common/Helpers";
 
-export function GenerateAzureCliParams(model: CodeModelCli) : string[] {
+export function GenerateAzureCliParams(model: CodeModelAz) : string[] {
     let output: string[] = [];
     let hasActions: boolean = false;
     let hasBoolean: boolean = false;

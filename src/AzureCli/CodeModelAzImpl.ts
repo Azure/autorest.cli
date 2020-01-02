@@ -8,7 +8,7 @@ import { Example } from "../Common/Example";
 import { ExamplePostProcessor, ExampleType } from "../Common/ExamplePostProcessor";
 import { Uncapitalize, PluralToSingular, ToSnakeCase, ToDescriptiveName, ToCamelCase } from "../Common/Helpers"
 import { LogCallback } from "../index";
-import { CodeModelCli } from "./CodeModelCli";
+import { CodeModelAz } from "./CodeModelAz";
 
 export class CommandParameter
 {
@@ -47,7 +47,7 @@ export class MethodParameter
     public MapsTo: string;
 }
 
-export class CodeModelCliImpl implements CodeModelCli
+export class CodeModelCliImpl implements CodeModelAz
 {
     public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
     {
