@@ -47,14 +47,6 @@ export class MethodParameter
     public MapsTo: string;
 }
 
-export class CommandContext
-{
-    public Url: string;
-    public Parameters: CommandParameter[];
-    public Methods: CommandMethod[];
-    public Examples: CommandExample[];
-}
-
 export class CodeModelCliImpl implements CodeModelCli
 {
     public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
@@ -181,12 +173,12 @@ export class CodeModelCliImpl implements CodeModelCli
 
     private GetMethodExamples(): CommandExample[]
     {
-        return this._ctx.Examples;
+        return this.Examples;
     }
 
     public SelectFirstExample(): boolean
     {
-        if (this._ctx.Examples.length > 0)
+        if (this.Examples.length > 0)
         {
             this._selectedExample = 0;
             return this.SelectMethodMatchingExample();
@@ -200,7 +192,7 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public SelectNextExample(): boolean
     {
-        if (this._ctx.Examples.length > this._selectedExample + 1)
+        if (this.Examples.length > this._selectedExample + 1)
         {
             this._selectedExample++;
             return this.SelectMethodMatchingExample();
@@ -214,10 +206,10 @@ export class CodeModelCliImpl implements CodeModelCli
 
     private SelectMethodMatchingExample(): boolean
     {
-        while ((this._ctx.Examples[this._selectedExample].Method != this._selectedMethodName) && (ToSnakeCase(this._ctx.Examples[this._selectedExample].MethodName) != this._selectedMethodName))
+        while ((this.Examples[this._selectedExample].Method != this._selectedMethodName) && (ToSnakeCase(this.Examples[this._selectedExample].MethodName) != this._selectedMethodName))
         {
             this._selectedExample++;
-            if (this._selectedExample == this._ctx.Examples.length)
+            if (this._selectedExample == this.Examples.length)
             {
                 this._selectedExample = -1;
                 return false;
@@ -228,12 +220,12 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Example_Body(): string[]
     {
-        return this.FindExampleById(this._ctx.Examples[this._selectedExample].Id);
+        return this.FindExampleById(this.Examples[this._selectedExample].Id);
     }
 
     public get Example_Params(): any
     {
-        return this._ctx.Examples[this._selectedExample].Parameters;
+        return this.Examples[this._selectedExample].Parameters;
     }
 
     public FindExampleById(id: string): string[]
@@ -276,12 +268,12 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Example_Title(): string
     {
-        return this._ctx.Examples[this._selectedExample].Title;
+        return this.Examples[this._selectedExample].Title;
     }
 
     private GetSelectedCommandMethods(): CommandMethod[]
     {
-        return this._ctx.Methods;
+        return this.Methods;
     }
 
     //public GetSelectedCommandParameters(): CommandParameter[]
@@ -291,10 +283,10 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public SelectFirstOption(): boolean
     {
-        if (!this._ctx.Parameters)
+        if (!this.Parameters)
             return false;
 
-        if (this._ctx.Parameters.length == 0)
+        if (this.Parameters.length == 0)
             return false
 
         this._parameterIdx = 0;
@@ -304,10 +296,10 @@ export class CodeModelCliImpl implements CodeModelCli
     public SelectNextOption(): boolean
     {
         this._parameterIdx++;
-        if (this._parameterIdx == this._ctx.Parameters.length)
+        if (this._parameterIdx == this.Parameters.length)
             return false;
 
-        if (this._ctx.Parameters[this._parameterIdx].ActionOnly)
+        if (this.Parameters[this._parameterIdx].ActionOnly)
         {
             if (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")
                 return this.SelectNextOption();
@@ -333,7 +325,7 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Option_Name(): string
     {
-        return this._ctx.Parameters[this._parameterIdx].Name;
+        return this.Parameters[this._parameterIdx].Name;
     }
 
     public get Option_NameUnderscored(): string
@@ -348,7 +340,7 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Option_IsRequired(): boolean
     {
-        let isRequired: boolean = this._ctx.Parameters[this._parameterIdx].Required;
+        let isRequired: boolean = this.Parameters[this._parameterIdx].Required;
         let methods: CommandMethod[] = this.GetSelectedCommandMethods();
 
         if (isRequired && (methods.length > 1))
@@ -366,38 +358,38 @@ export class CodeModelCliImpl implements CodeModelCli
 
     public get Option_Description(): string
     {
-        return this._ctx.Parameters[this._parameterIdx].Help;
+        return this.Parameters[this._parameterIdx].Help;
     }
 
     public get Option_PathSdk(): string
     {
-        return this._ctx.Parameters[this._parameterIdx].PathSdk;
+        return this.Parameters[this._parameterIdx].PathSdk;
     }
 
     public get Option_PathSwagger(): string
     {
-        return this._ctx.Parameters[this._parameterIdx].PathSwagger;
+        return this.Parameters[this._parameterIdx].PathSwagger;
     }
 
     public get Option_Type(): string
     {
-        return this._ctx.Parameters[this._parameterIdx].Type;
+        return this.Parameters[this._parameterIdx].Type;
     }
 
     public get Option_IsList(): boolean
     {
-        return this._ctx.Parameters[this._parameterIdx].IsList;
+        return this.Parameters[this._parameterIdx].IsList;
     }
 
     public get Option_EnumValues(): string[]
     {
-        return this._ctx.Parameters[this._parameterIdx].EnumValues;
+        return this.Parameters[this._parameterIdx].EnumValues;
     }
 
     private CountBodyParameters(): number
     {
         let count: number = 0;
-        this._ctx.Parameters.forEach(element => {
+        this.Parameters.forEach(element => {
             // XXX - this is not quite correct
             if (element.PathSdk.startsWith('/') && element.Type != "placeholder" && !element.ActionOnly) count++;
         });
@@ -469,7 +461,7 @@ export class CodeModelCliImpl implements CodeModelCli
             this._methodParameterMap.push(p);
         });
 
-        this._ctx.Parameters.forEach(element => {
+        this.Parameters.forEach(element => {
             // XXX - this is not quite correct
             if (element.PathSdk.startsWith('/') && element.Type != "placeholder")
             {
@@ -671,12 +663,11 @@ export class CodeModelCliImpl implements CodeModelCli
         // don't try to create contetx if command was disabled
         if (command == "-") return null;
 
-        let ctx = new CommandContext();
-        ctx.Methods = [];
-        ctx.Parameters = [];
+        this.Methods = [];
+        this.Parameters = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
 
-        ctx.Url = url;
+        this.Url = url;
 
         // enumerate all swagger method names
         methods.forEach(mm => {
@@ -690,7 +681,7 @@ export class CodeModelCliImpl implements CodeModelCli
                 // this._log(" ... option: " + o.NameAnsible);
 
                 // first find if parameter was already added
-                ctx.Parameters.forEach(p => {
+                this.Parameters.forEach(p => {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
@@ -715,17 +706,17 @@ export class CodeModelCliImpl implements CodeModelCli
                         this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                         parameter.IsList = o.IsList;
                         parameter.ActionOnly = o.ActionOnly;
-                        ctx.Parameters.push(parameter);
+                        this.Parameters.push(parameter);
                     }
                     method.Parameters.push(parameter);        
                 }
             });
 
-            ctx.Methods.push(method);
+            this.Methods.push(method);
         });
 
         // sort methods by number of parameters
-        ctx.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
+        this.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
 
         // this should be probably done when there's body
         if (name == "create" || name == "update")
@@ -742,7 +733,7 @@ export class CodeModelCliImpl implements CodeModelCli
                         let parameter: CommandParameter = null;
 
                         // make sure it's not duplicated
-                        ctx.Parameters.forEach(p => {
+                        this.Parameters.forEach(p => {
                             if (p.Name == o.NameAnsible.split("_").join("-"))
                                 parameter = p;
                         });
@@ -759,7 +750,7 @@ export class CodeModelCliImpl implements CodeModelCli
                             parameter.PathSdk = o.DispositionSdk;
                             parameter.PathSwagger = o.DispositionRest;
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
-                            ctx.Parameters.push(parameter);
+                            this.Parameters.push(parameter);
                             parameter.IsList = o.IsList;
                             parameter.ActionOnly = o.ActionOnly;
 
@@ -771,10 +762,9 @@ export class CodeModelCliImpl implements CodeModelCli
         }
 
         // get method examples
-        let examples: CommandExample[] = this.GetExamples(ctx);
-        ctx.Examples = examples;
+        let examples: CommandExample[] = this.GetExamples();
+        this.Examples = examples;
 
-        this._ctx = ctx;
         this._selectedMethodName = name;
         return true;
     }
@@ -838,7 +828,7 @@ export class CodeModelCliImpl implements CodeModelCli
         }
     }
 
-    private GetExamples(ctx: CommandContext): CommandExample[]
+    private GetExamples(): CommandExample[]
     {
         //this._log("########################## GETTING MODULE EXAMPLES");
 
@@ -888,7 +878,7 @@ export class CodeModelCliImpl implements CodeModelCli
 
             let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);
 
-            ctx.Parameters.forEach(element => {
+            this.Parameters.forEach(element => {
                 let v = exampleDict[element.PathSwagger];
                 if (v != undefined)
                 {
@@ -1340,7 +1330,13 @@ export class CodeModelCliImpl implements CodeModelCli
     private _cmdOverrides: any;
     private _selectedModule: number = 0;
     private _selectedCommand: number = 0;
-    private _ctx: CommandContext = null;
+
+    // command ctx
+    private Url: string;
+    private Parameters: CommandParameter[];
+    private Methods: CommandMethod[];
+    private Examples: CommandExample[];
+
     private _parameterIdx = 0;
     private _selectedMethod = 0;
     private _selectedMethodParameter = 0;
