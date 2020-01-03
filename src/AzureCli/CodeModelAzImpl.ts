@@ -261,7 +261,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetSelectedCommandMethods(): CommandMethod[]
     {
-        return this.Methods;
+        return this._selectedCommandMethods;
     }
 
     //public GetSelectedCommandParameters(): CommandParameter[]
@@ -271,26 +271,37 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public SelectFirstOption(): boolean
     {
-        if (!this.Parameters)
+        this._parameterIdx = -1;
+        if (!this._selectedCommandOptions)
             return false;
 
-        if (this.Parameters.length == 0)
-            return false
-
-        this._parameterIdx = 0;
-        return true;
+        return this.SelectNextOption();
     }
 
     public SelectNextOption(): boolean
     {
-        this._parameterIdx++;
-        if (this._parameterIdx == this.Parameters.length)
-            return false;
-
-        if (this.Parameters[this._parameterIdx].ActionOnly)
+        if (this._parameterIdx >= (this._selectedCommandOptions.length - 1))
         {
-            if (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")
+            this._parameterIdx = -1;
+            return false;
+        }
+        
+        this._parameterIdx++;
+
+        if (this.Command_MethodName == "create" || this.Command_MethodName == "update" || this.Command_MethodName == "create_or_update")
+        {
+            if (this._selectedCommandOptions[this._parameterIdx].ActionOnly)
+            {
                 return this.SelectNextOption();
+            }
+        }
+        else
+        {
+            // XXX - this is still not quite correct
+            if (this._selectedCommandOptions[this._parameterIdx].PathSdk.startsWith("/") && !this._selectedCommandOptions[this._parameterIdx].ActionOnly)
+            {
+                return this.SelectNextOption();
+            }
         }
 
         return true;
@@ -313,7 +324,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get Option_Name(): string
     {
-        return this.Parameters[this._parameterIdx].Name;
+        return this._selectedCommandOptions[this._parameterIdx].Name;
     }
 
     public get Option_NameUnderscored(): string
@@ -328,7 +339,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get Option_IsRequired(): boolean
     {
-        let isRequired: boolean = this.Parameters[this._parameterIdx].Required;
+        let isRequired: boolean = this._selectedCommandOptions[this._parameterIdx].Required;
         let methods: CommandMethod[] = this.GetSelectedCommandMethods();
 
         if (isRequired && (methods.length > 1))
@@ -346,38 +357,38 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get Option_Description(): string
     {
-        return this.Parameters[this._parameterIdx].Help;
+        return this._selectedCommandOptions[this._parameterIdx].Help;
     }
 
     public get Option_PathSdk(): string
     {
-        return this.Parameters[this._parameterIdx].PathSdk;
+        return this._selectedCommandOptions[this._parameterIdx].PathSdk;
     }
 
     public get Option_PathSwagger(): string
     {
-        return this.Parameters[this._parameterIdx].PathSwagger;
+        return this._selectedCommandOptions[this._parameterIdx].PathSwagger;
     }
 
     public get Option_Type(): string
     {
-        return this.Parameters[this._parameterIdx].Type;
+        return this._selectedCommandOptions[this._parameterIdx].Type;
     }
 
     public get Option_IsList(): boolean
     {
-        return this.Parameters[this._parameterIdx].IsList;
+        return this._selectedCommandOptions[this._parameterIdx].IsList;
     }
 
     public get Option_EnumValues(): string[]
     {
-        return this.Parameters[this._parameterIdx].EnumValues;
+        return this._selectedCommandOptions[this._parameterIdx].EnumValues;
     }
 
     private CountBodyParameters(): number
     {
         let count: number = 0;
-        this.Parameters.forEach(element => {
+        this._selectedCommandOptions.forEach(element => {
             // XXX - this is not quite correct
             if (element.PathSdk.startsWith('/') && element.Type != "placeholder" && !element.ActionOnly) count++;
         });
@@ -447,16 +458,32 @@ export class CodeModelCliImpl implements CodeModelAz
             this._methodParameterMap.push(p);
         });
 
-        this.Parameters.forEach(element => {
+        //this._log("CREATE METHOD PARAMETERS FOR: " + this.Method_Name)
+
+        this._selectedCommandOptions.forEach(element => {
+            //this._log("CHECKING: " + element.PathSdk);
             // XXX - this is not quite correct
             if (element.PathSdk.startsWith('/') && element.Type != "placeholder")
             {
-                if (!(element.ActionOnly && (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")))
+                if (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")
                 {
-                    let p: MethodParameter = new MethodParameter();
-                    p.Name = element.PathSdk.split("/").pop();
-                    p.MapsTo = this.PythonParameterName(element.Name); 
-                    this._methodParameterMap.push(p);
+                    if (!element.ActionOnly)
+                    {
+                        let p: MethodParameter = new MethodParameter();
+                        p.Name = element.PathSdk.split("/").pop();
+                        p.MapsTo = this.PythonParameterName(element.Name); 
+                        this._methodParameterMap.push(p);
+                    }
+                }
+                else
+                {
+                    if (element.ActionOnly)
+                    {
+                        let p: MethodParameter = new MethodParameter();
+                        p.Name = element.PathSdk.split("/").pop();
+                        p.MapsTo = this.PythonParameterName(element.Name); 
+                        this._methodParameterMap.push(p);
+                    }
                 }
             }
         });
@@ -649,23 +676,28 @@ export class CodeModelCliImpl implements CodeModelAz
         // don't try to create contetx if command was disabled
         if (command == "-") return null;
 
-        this.Methods = [];
-        this.Parameters = [];
+        this._selectedCommandMethods = [];
+        this._selectedCommandOptions = [];
         let methods: string[] = this.GetSwaggerMethodNames(name);
-
+        let hasBody: boolean = false;
         // enumerate all swagger method names
         methods.forEach(mm => {
             let options = this.GetMethodOptions(mm, false);
+
+            //this._log(" ------ METHOD OPTIONS: " + mm)
+
             let method: CommandMethod = new CommandMethod();
             method.Name = ToSnakeCase(mm);
             method.Documentation = this.GetMethodDocumentation(mm);
             method.Parameters = [];
             options.forEach(o => {
+                //this._log(" -------------------- " + o.NameAnsible);
+
                 let parameter: CommandParameter = null;
                 // this._log(" ... option: " + o.NameAnsible);
 
                 // first find if parameter was already added
-                this.Parameters.forEach(p => {
+                this._selectedCommandOptions.forEach(p => {
                     if (p.Name == o.NameAnsible.split("_").join("-"))
                         parameter = p;
                 });
@@ -673,11 +705,13 @@ export class CodeModelCliImpl implements CodeModelAz
                 if (o.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
                 {
                     method.BodyParameterName = o.NameAnsible;
+                    hasBody = true;
                 }
                 else
                 {
                     if (parameter == null)
                     {
+                        //this._log(" ---------------------- BODY PARAMETER WAS NULL: " + o.NameAnsible);
                         parameter = new CommandParameter();
                         parameter.Name = o.NameAnsible.split("_").join("-");
                         parameter.Help = o.Documentation;
@@ -690,20 +724,20 @@ export class CodeModelCliImpl implements CodeModelAz
                         this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
                         parameter.IsList = o.IsList;
                         parameter.ActionOnly = o.ActionOnly;
-                        this.Parameters.push(parameter);
+                        this._selectedCommandOptions.push(parameter);
                     }
                     method.Parameters.push(parameter);        
                 }
             });
 
-            this.Methods.push(method);
+            this._selectedCommandMethods.push(method);
         });
 
         // sort methods by number of parameters
-        this.Methods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
+        this._selectedCommandMethods.sort((m1, m2) => (m1.Parameters.length > m2.Parameters.length) ? -1 : 1);
 
         // this should be probably done when there's body
-        if (name == "create" || name == "update")
+        if (hasBody)
         {
             // now add all the options that are not parameters
             let options: ModuleOption[] = this.GetModuleOptions();
@@ -717,7 +751,7 @@ export class CodeModelCliImpl implements CodeModelAz
                         let parameter: CommandParameter = null;
 
                         // make sure it's not duplicated
-                        this.Parameters.forEach(p => {
+                        this._selectedCommandOptions.forEach(p => {
                             if (p.Name == o.NameAnsible.split("_").join("-"))
                                 parameter = p;
                         });
@@ -734,7 +768,7 @@ export class CodeModelCliImpl implements CodeModelAz
                             parameter.PathSdk = o.DispositionSdk;
                             parameter.PathSwagger = o.DispositionRest;
                             this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
-                            this.Parameters.push(parameter);
+                            this._selectedCommandOptions.push(parameter);
                             parameter.IsList = o.IsList;
                             parameter.ActionOnly = o.ActionOnly;
 
@@ -862,7 +896,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
             let exampleDict = pp.GetAzureCliOptionDictionary(moduleExample);
 
-            this.Parameters.forEach(element => {
+            this._selectedCommandOptions.forEach(element => {
                 let v = exampleDict[element.PathSwagger];
                 if (v != undefined)
                 {
@@ -933,106 +967,6 @@ export class CodeModelCliImpl implements CodeModelAz
         return names;
     }
 
-    // this is for list methods
-    public GetAggregatedCommandParameters(method: string): CommandParameter[]
-    {
-        let parameters: CommandParameter[] = [];
-        let methods: string[] = this.GetSwaggerMethodNames(method);
-
-        this._log("--------- GETTING AGGREGATED COMMAND PARAMS");
-        this._log(JSON.stringify(methods));
-        methods.forEach(m => {
-            let options = this.GetMethodOptions(m, false);
-            this._log(" NUMBER OF OPTIONS IN " + m + ": " + options.length);
-
-            options.forEach(o => {
-                let parameter: CommandParameter = null;
-                // check if already in parameters
-                parameters.forEach(p => {
-                    if (p.Name == o.NameAnsible.split("_").join("-"))
-                    {
-                        parameter = p;
-                    }
-                });
-
-                if (parameter == null)
-                {
-                    this._log(" PARAMETER IS NULL - ATTACHING");
-                    parameter = new CommandParameter();
-                    parameter.Name = o.NameAnsible.split("_").join("-");
-                    parameter.Help = o.Documentation;
-                    parameter.Required = (o.IdPortion != null && o.IdPortion != "");
-                    parameter.Type = "default";
-                    parameter.EnumValues = [];
-                    o.EnumValues.forEach(element => { parameter.EnumValues.push(element.Key )});
-                    parameter.PathSdk = o.DispositionSdk;
-                    parameter.PathSwagger = o.DispositionRest;
-                    parameter.ActionOnly = o.ActionOnly;
-
-                    this.FixPath(parameter, o.NamePythonSdk, o.NameSwagger);
-                    parameter.IsList = o.IsList;
-                    parameters.push(parameter);        
-                }
-            });
-        });
-
-        return parameters;
-    }
-
-    public GetCommandParameters(method: string): CommandParameter[]
-    {
-        let parameters: CommandParameter[] = [];
-           
-        let options: ModuleOption[] = this.GetModuleOptions();
-        for (let oi = 0; oi < options.length; oi++)
-        {
-            let o: ModuleOption = options[oi];
-
-            if (o.IdPortion == null || o.IdPortion == "")
-            {
-                if (method != "create" && method != "update")
-                    continue;
-
-                // XXX - hack -- resolve
-                if (o.NameAnsible == "name")
-                    continue;
-            }
-
-            // when method is "list", we will skip "name" parameter
-            if (method == "list")
-            {
-                if (o.NameAnsible == "name")
-                    continue;
-            }
-
-            // XXX - this shouldn't be here, i don't understand why options are repeated
-            let found: boolean = false;
-            parameters.forEach(element => {
-                if (element.Name == o.NameAnsible.split("_").join("-"))
-                {
-                    found = true;
-                }
-            });
-
-            if (found) continue;
-
-            let param: CommandParameter = new CommandParameter();
-            param.Name = o.NameAnsible.split("_").join("-");
-            param.Help = o.Documentation;
-            param.Required = (o.IdPortion != null && o.IdPortion != "");
-            param.Type = "default";
-            param.EnumValues = [];
-            param.PathSdk = o.DispositionSdk;
-            param.PathSwagger = o.DispositionRest;
-
-            this.FixPath(param, o.NamePythonSdk, o.NameSwagger);
-            param.IsList = o.IsList;
-            parameters.push(param);
-        }
-
-        return parameters;
-    }
-
     private FixPath(parameter: CommandParameter, nameSdk: string, nameSwagger :string): void
     {
         if (!parameter.PathSdk) parameter.PathSdk = "";
@@ -1088,10 +1022,12 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetModuleOptions(): ModuleOption[]
     {
+//        this._log("GET MODULE OPTIONS: " + this._selectedCommandGroup)
         let m = this.Map.Modules[this._selectedCommandGroup];
         let options: ModuleOption[] = [];
         for (let option of m.Options)
         {
+//            this._log("CHECKING: " + option.Kind);
             if (!(option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
             {
                 options.push(option);
@@ -1193,11 +1129,12 @@ export class CodeModelCliImpl implements CodeModelAz
         let methodOptionNames: string[] = (required? this.GetMethodRequiredOptionNames(methodName) : this.GetMethodOptionNames(methodName));
         let moduleOptions: ModuleOption[] = [];
 
+        //this._log("GETTING METHOD OPTIONS: " + methodName + " -- " + this._selectedCommandGroup);
+
         for (let optionName of methodOptionNames)
         {
             //this._log("OPTION NAME: " + optionName);
 
-            // this._log("   ---- CHECKING: " + optionName);
             let foundOption = null;
             for (let option of this.GetModuleOptions())
             {
@@ -1207,6 +1144,8 @@ export class CodeModelCliImpl implements CodeModelAz
                     break;
                 }
             }
+
+            //this._log("   ---- CHECKING: " + optionName + " -- " + (foundOption != null));
 
             if (foundOption == null)
             {
@@ -1221,6 +1160,7 @@ export class CodeModelCliImpl implements CodeModelAz
                     // XXX - and because this stupid option has no suboptions
                     for (let option of this.GetModuleOptions())
                     {
+                        //this._log("ADDING SUBOPTION: " + option.NameAnsible);
                         if (option.DispositionSdk.startsWith("/"))
                         {
                             foundOption.SubOptions.push(option);
@@ -1278,6 +1218,11 @@ export class CodeModelCliImpl implements CodeModelAz
     
         return newName;
     }
+
+    public Log(text: string)
+    {
+        this._log(text);
+    }
         
     //-----------------------------------------------------------------------------------------------------------------------------------------------------------
     // MODULE MAP
@@ -1290,8 +1235,8 @@ export class CodeModelCliImpl implements CodeModelAz
     private _selectedCommand: number = 0;
 
     // command ctx
-    private Parameters: CommandParameter[];
-    private Methods: CommandMethod[];
+    private _selectedCommandOptions: CommandParameter[];
+    private _selectedCommandMethods: CommandMethod[];
     private Examples: CommandExample[];
 
     private _parameterIdx = 0;

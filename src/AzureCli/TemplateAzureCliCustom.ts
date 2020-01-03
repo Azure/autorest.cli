@@ -59,14 +59,7 @@ function GenerateBody(model: CodeModelAz, required: any) : string[] {
                 let indent = " ".repeat(call.length);
                 let isUpdate = updatedMethodName.startsWith("update_");
 
-                //if (!isUpdate)
-                //{
-                    output.push(call + "cmd, client");
-                //}
-                //else
-                //{
-                //    output.push(call + "cmd, client, body");
-                //}
+                output.push(call + "cmd, client");
 
                 if (model.SelectFirstOption())
                 {
