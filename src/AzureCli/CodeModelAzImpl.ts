@@ -52,14 +52,14 @@ export class CodeModelCliImpl implements CodeModelAz
     public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
     {
         this.Map = map;
-        this._selectedModule = 0;
+        this._selectedCommandGroup = 0;
         this._log = cb;
         this._cmdOverrides = cliCommandOverrides;
     }
 
     public SelectFirstExtension(): boolean
     {
-        this._selectedModule = 0;
+        this._selectedCommandGroup = 0;
         return true;
     }
 
@@ -73,26 +73,26 @@ export class CodeModelCliImpl implements CodeModelAz
     {
         if (this.Map.Modules.length > 0)
         {
-            this._selectedModule = 0;
+            this._selectedCommandGroup = 0;
             return true;
         }
         else
         {
-            this._selectedModule = -1;
+            this._selectedCommandGroup = -1;
             return false;
         }
     }
 
     public SelectNextCommandGroup(): boolean
     {
-        if (this._selectedModule < this.Map.Modules.length - 1)
+        if (this._selectedCommandGroup < this.Map.Modules.length - 1)
         {
-            this._selectedModule++;
+            this._selectedCommandGroup++;
             return true;
         }
         else
         {
-            this._selectedModule = -1;
+            this._selectedCommandGroup = -1;
             return false;
         }
     }
@@ -132,14 +132,14 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetCliCommand(methodName: string): string
     {
-        let options : ModuleOption[] = this.Map.Modules[this._selectedModule].Options;
+        let options : ModuleOption[] = this.Map.Modules[this._selectedCommandGroup].Options;
         let command = "";
 
         // XXX - fix this for all the commands
         let url = "";
         if (methodName != null)
         {
-            this.Map.Modules[this._selectedModule].Methods.forEach(m => {
+            this.Map.Modules[this._selectedCommandGroup].Methods.forEach(m => {
                 if (m.Name.toLowerCase() == methodName.toLowerCase())
                 {
                     url = m.Url;
@@ -148,7 +148,7 @@ export class CodeModelCliImpl implements CodeModelAz
         }
         else
         {
-            url = this.Map.Modules[this._selectedModule].Methods[0].Url;
+            url = this.Map.Modules[this._selectedCommandGroup].Methods[0].Url;
         }
 
         return this.GetCliCommandFromUrl(url);
@@ -435,8 +435,6 @@ export class CodeModelCliImpl implements CodeModelAz
     }
 
 
-    private _methodParameterMap: MethodParameter[] = null;
-
     private CreateMethodParameters()
     {
         this._methodParameterMap = [];
@@ -581,7 +579,7 @@ export class CodeModelCliImpl implements CodeModelAz
     //-------------------------------------------------------------------
     public get CommandGroup_Commands(): string[]
     {
-        let restMethods = this.Map.Modules[this._selectedModule].Methods;
+        let restMethods = this.Map.Modules[this._selectedCommandGroup].Methods;
         let methods: Set<string> = new Set();
 
         for (let i = 0; i < restMethods.length; i++)
@@ -912,7 +910,7 @@ export class CodeModelCliImpl implements CodeModelAz
         }
         else if (name == "list")
         {
-            var m = this.Map.Modules[this._selectedModule];
+            var m = this.Map.Modules[this._selectedCommandGroup];
             for (let method of m.Methods)
             {
                 if (method && method.Kind == ModuleMethodKind.MODULE_METHOD_LIST)
@@ -1063,12 +1061,12 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get ModuleName(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleName;
+        return this.Map.Modules[this._selectedCommandGroup].ModuleName;
     }
 
     public get Module(): Module
     {
-        return this.Map.Modules[this._selectedModule];
+        return this.Map.Modules[this._selectedCommandGroup];
     }
 
     public GetPythonNamespace(): string
@@ -1090,7 +1088,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetModuleOptions(): ModuleOption[]
     {
-        let m = this.Map.Modules[this._selectedModule];
+        let m = this.Map.Modules[this._selectedCommandGroup];
         let options: ModuleOption[] = [];
         for (let option of m.Options)
         {
@@ -1105,7 +1103,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private get ModuleParametersOption(): ModuleOption
     {
-        let m = this.Map.Modules[this._selectedModule];
+        let m = this.Map.Modules[this._selectedCommandGroup];
         let options: ModuleOption[] = [];
         for (let option of m.Options)
         {
@@ -1120,12 +1118,12 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private get ModuleExamples(): Example[]
     {
-        return this.Map.Modules[this._selectedModule].Examples;
+        return this.Map.Modules[this._selectedCommandGroup].Examples;
     }
 
     private GetMethod(methodName: string): ModuleMethod
     {
-        var m = this.Map.Modules[this._selectedModule];
+        var m = this.Map.Modules[this._selectedCommandGroup];
 
         for (let method of m.Methods)
         {
@@ -1140,7 +1138,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetMethodByKind(kind: ModuleMethodKind): ModuleMethod
     {
-        var m = this.Map.Modules[this._selectedModule];
+        var m = this.Map.Modules[this._selectedCommandGroup];
 
         for (let method of m.Methods)
         {
@@ -1153,7 +1151,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetMethodOptionNames(methodName: string): string[]
     {
-        var m = this.Map.Modules[this._selectedModule];
+        var m = this.Map.Modules[this._selectedCommandGroup];
 
         for (let method of m.Methods)
         {
@@ -1166,7 +1164,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetMethodDocumentation(methodName: string): string
     {
-        var m = this.Map.Modules[this._selectedModule];
+        var m = this.Map.Modules[this._selectedCommandGroup];
 
         for (let method of m.Methods)
         {
@@ -1179,7 +1177,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetMethodRequiredOptionNames(methodName: string): string[]
     {
-        var m = this.Map.Modules[this._selectedModule];
+        var m = this.Map.Modules[this._selectedCommandGroup];
 
         for (let method of m.Methods)
         {
@@ -1242,17 +1240,17 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public GetModuleOperationNameUpper(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
+        return this.Map.Modules[this._selectedCommandGroup].ModuleOperationNameUpper;
     }
 
     public GetModuleOperationName(): string
     {
-        return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
+        return this.Map.Modules[this._selectedCommandGroup].ModuleOperationName.replace("-", "_");
     }
 
     private get CommandGroupUrl(): string
     {
-        return this.Map.Modules[this._selectedModule].Methods[0].Url;
+        return this.Map.Modules[this._selectedCommandGroup].Methods[0].Url;
     }
 
     public get Extension_NameClass(): string
@@ -1288,7 +1286,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public _log: LogCallback;
     private _cmdOverrides: any;
-    private _selectedModule: number = 0;
+    private _selectedCommandGroup: number = 0;
     private _selectedCommand: number = 0;
 
     // command ctx
@@ -1298,6 +1296,8 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private _parameterIdx = 0;
     private _selectedMethod = 0;
+
+    private _methodParameterMap: MethodParameter[] = null;
     private _selectedMethodParameter = 0;
     private _selectedExample = -1;
     private _selectedMethodName = "";
