@@ -645,7 +645,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public SelectCommand(name: string): boolean
     {
-        let url: string = this.ModuleUrl;
+        let url: string = this.CommandGroupUrl;
         let command = this.GetCliCommandFromUrl(url);
 
         // don't try to create contetx if command was disabled
@@ -1088,7 +1088,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return this.Map.MgmtClientName + "Client";
     }
 
-    public GetModuleOptions(): ModuleOption[]
+    private GetModuleOptions(): ModuleOption[]
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
@@ -1103,7 +1103,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return options;
     }
 
-    public get ModuleParametersOption(): ModuleOption
+    private get ModuleParametersOption(): ModuleOption
     {
         let m = this.Map.Modules[this._selectedModule];
         let options: ModuleOption[] = [];
@@ -1118,12 +1118,12 @@ export class CodeModelCliImpl implements CodeModelAz
         return null;
     }
 
-    public get ModuleExamples(): Example[]
+    private get ModuleExamples(): Example[]
     {
         return this.Map.Modules[this._selectedModule].Examples;
     }
 
-    public GetMethod(methodName: string): ModuleMethod
+    private GetMethod(methodName: string): ModuleMethod
     {
         var m = this.Map.Modules[this._selectedModule];
 
@@ -1138,7 +1138,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return null;
     }
 
-    public GetMethodByKind(kind: ModuleMethodKind): ModuleMethod
+    private GetMethodByKind(kind: ModuleMethodKind): ModuleMethod
     {
         var m = this.Map.Modules[this._selectedModule];
 
@@ -1151,7 +1151,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return null;
     }
 
-    public GetMethodOptionNames(methodName: string): string[]
+    private GetMethodOptionNames(methodName: string): string[]
     {
         var m = this.Map.Modules[this._selectedModule];
 
@@ -1164,7 +1164,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return null;
     }
 
-    public GetMethodDocumentation(methodName: string): string
+    private GetMethodDocumentation(methodName: string): string
     {
         var m = this.Map.Modules[this._selectedModule];
 
@@ -1177,7 +1177,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return "";
     }
 
-    public GetMethodRequiredOptionNames(methodName: string): string[]
+    private GetMethodRequiredOptionNames(methodName: string): string[]
     {
         var m = this.Map.Modules[this._selectedModule];
 
@@ -1190,7 +1190,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return null;
     }
 
-    public GetMethodOptions(methodName: string, required: boolean): ModuleOption[]
+    private GetMethodOptions(methodName: string, required: boolean): ModuleOption[]
     {
         let methodOptionNames: string[] = (required? this.GetMethodRequiredOptionNames(methodName) : this.GetMethodOptionNames(methodName));
         let moduleOptions: ModuleOption[] = [];
@@ -1240,17 +1240,6 @@ export class CodeModelCliImpl implements CodeModelAz
         return moduleOptions;
     }
 
-    public get ModuleMethods(): ModuleMethod[]
-    {
-        return this.Map.Modules[this._selectedModule].Methods;
-    }
-
-    public get ModuleClassName(): string
-    {
-        let m: Module = this.Map.Modules[this._selectedModule];
-        return "AzureRM" + m.ModuleOperationNameUpper + (m.ModuleName.endsWith("_info") ? "Info": "");
-    }
-
     public GetModuleOperationNameUpper(): string
     {
         return this.Map.Modules[this._selectedModule].ModuleOperationNameUpper;
@@ -1261,22 +1250,7 @@ export class CodeModelCliImpl implements CodeModelAz
         return this.Map.Modules[this._selectedModule].ModuleOperationName.replace("-", "_");
     }
 
-    public get ObjectName(): string
-    {
-        return this.Map.Modules[this._selectedModule].ObjectName;
-    }
-
-    public get ObjectNamePythonized(): string
-    {
-        return this.Map.Modules[this._selectedModule].ObjectName.toLowerCase().split(' ').join('');
-    }
-
-    public get ModuleApiVersion(): string
-    {
-        return this.Map.Modules[this._selectedModule].ApiVersion;
-    }
-
-    public get ModuleUrl(): string
+    private get CommandGroupUrl(): string
     {
         return this.Map.Modules[this._selectedModule].Methods[0].Url;
     }
