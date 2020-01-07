@@ -54,7 +54,14 @@ export function GenerateAzureCliCommands(model: CodeModelAz) : string[] {
                 output.push("    with self.command_group('" + model.CommandGroup_Name + "', " + model.Extension_NameUnderscored + "_" + model.GetModuleOperationName() + ", client_factory=" + cf_name + ") as g:");
                 do
                 {
-                    output.push("        g.custom_command('" + model.Command_MethodName + "', '" + model.Command_FunctionName + "')");
+                    if (model.Command_MethodName != "show")
+                    {
+                        output.push("        g.custom_command('" + model.Command_MethodName + "', '" + model.Command_FunctionName + "')");
+                    }
+                    else
+                    {
+                        output.push("        g.custom_show_command('" + model.Command_MethodName + "', '" + model.Command_FunctionName + "')");
+                    }
                 }
                 while (model.SelectNextCommand());
             }
