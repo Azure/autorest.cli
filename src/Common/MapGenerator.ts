@@ -114,7 +114,7 @@ export class MapGenerator
 
         for (let m of allMethods)
         {
-            this.AddMethod(module.Methods, m, this.ClassifyMethod(m));
+            this.AddMethod(module.Methods, m, this.ClassifyMethod(m), module.CommandGroup);
         }
 
         module.Methods = module.Methods.sort((m1,m2) => {
@@ -232,10 +232,11 @@ export class MapGenerator
         return kind;
     }
 
-    private AddMethod(methods: ModuleMethod[], rawMethod: any, kind: ModuleMethodKind)
+    private AddMethod(methods: ModuleMethod[], rawMethod: any, kind: ModuleMethodKind, commandGroup: string)
     {
         var method = new ModuleMethod();
         method.Name = rawMethod.name.raw;
+        method.Command = commandGroup + " " + ToSnakeCase(method.Name).replace(/_/g, "-");
         method.Options = this.GetMethodOptionNames(rawMethod.name.raw, false);
         method.RequiredOptions = this.GetMethodOptionNames(rawMethod.name.raw);
         method.Url = NormalizeResourceId(rawMethod.url);
@@ -1028,6 +1029,20 @@ export class MapGenerator
         let urlParts: string[] = url.split('/');
         let partIdx = 0;
 
+        // first check if we have overrides
+        //if (this._cmdOverrides)
+        //{
+        //    for (let regex in this._cmdOverrides)
+        //    {
+        //        let regexp = new RegExp(regex);
+
+        //        if (url.toLowerCase().match(regexp))
+        //        {
+        //            return this._cmdOverrides[regex];
+        //        }
+        //    }
+        //}
+
         while (partIdx < urlParts.length)
         {
             let part: string = urlParts[partIdx];
@@ -1053,19 +1068,22 @@ export class MapGenerator
                 continue;
             }
 
-            if (command != "")
-            {
-                command += " ";
-                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
-            }
-            else
-            {
-                // don't override first part with CLI Name, for instance "service" -> "apimgmt"
-                command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
-            }
+            if (command == "") command = this._map.CliName;
+            command += " ";
+            command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
 
             partIdx++;
         }
+
+        //for (let regex in this._cmdOverrides)
+        //{
+        //    let regexp = new RegExp(regex);
+
+        //    if (command.match(regexp))
+        //    {
+        //        command = this._cmdOverrides[regex].replace("*", this.Map.CliName);
+        //    }
+        //}
 
         return command;
     }

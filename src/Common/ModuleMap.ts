@@ -146,6 +146,7 @@ export class ModuleOptionBody extends ModuleOption
 export class ModuleMethod
 {
     public Name: string = null;
+    public Command: string = null;
     public Options: string[] = null;
     public RequiredOptions: string[] = null;
     public Url: string = "";

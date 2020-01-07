@@ -35,6 +35,19 @@ export class MapFlattener
                 }
             }
 
+            for (let method of module.Methods)
+            {
+                for (let regex in this._cmdOverride)
+                {
+                    let regexp = new RegExp(regex);
+    
+                    if (method.Command.match(regexp))
+                    {
+                        method.Command = this._cmdOverride[regex].replace("*", module.CommandGroup);
+                    }
+                }
+            }
+
             // process top level options, right now it will rename xxx_name -> name
             this.ProcessTopLevelOptions(module.Options);
 

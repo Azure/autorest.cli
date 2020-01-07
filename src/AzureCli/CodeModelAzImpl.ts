@@ -132,12 +132,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetCliCommand(): string
     {
-        let options : ModuleOption[] = this.Map.Modules[this._selectedCommandGroup].Options;
-        let command = "";
-
-        let url = this.Map.Modules[this._selectedCommandGroup].Methods[0].Url;
-
-        return this.GetCliCommandFromUrl(url);
+        return this.Map.Modules[this._selectedCommandGroup].CommandGroup;
     }
 
     public get CommandGroup_Help(): string
@@ -512,76 +507,6 @@ export class CodeModelCliImpl implements CodeModelAz
         return this._methodParameterMap[this._selectedMethodParameter].MapsTo;
     }
 
-    //-------------------------------------------------------------------
-    // This function creates command name from operation URL.
-    // It will also use overrides if available.
-    //-------------------------------------------------------------------
-    private GetCliCommandFromUrl(url: string): string
-    {
-        // use URL of any method to create CLI command path
-        let command = "";
-        let urlParts: string[] = url.split('/');
-        let partIdx = 0;
-
-        // first check if we have overrides
-        if (this._cmdOverrides)
-        {
-            for (let regex in this._cmdOverrides)
-            {
-                let regexp = new RegExp(regex);
-
-                if (url.toLowerCase().match(regexp))
-                {
-                    return this._cmdOverrides[regex];
-                }
-            }
-        }
-
-        while (partIdx < urlParts.length)
-        {
-            let part: string = urlParts[partIdx];
-            
-            if (command == "")
-            {
-                if (part == "subscriptions" || urlParts[partIdx] == "resourceGroups")
-                {
-                    partIdx += 2;
-                    continue;
-                }
-            }
-            
-            if (urlParts[partIdx] == "providers")
-            {
-                partIdx += 2;
-                continue;
-            }
-
-            if (part == "" || part.startsWith("{"))
-            {
-                partIdx++;
-                continue;
-            }
-
-            if (command == "") command = this.Map.CliName
-            command += " ";
-            command += PluralToSingular(ToSnakeCase(part).split("_").join("-"));
-
-            partIdx++;
-        }
-
-        for (let regex in this._cmdOverrides)
-        {
-            let regexp = new RegExp(regex);
-
-            if (command.match(regexp))
-            {
-                command = this._cmdOverrides[regex].replace("*", this.Map.CliName);
-            }
-        }
-
-        return command;
-    }
-
     public get Command_Help(): string
     {
         return this.GetSelectedCommandMethods()[0].Documentation;
@@ -597,6 +522,10 @@ export class CodeModelCliImpl implements CodeModelAz
 
         for (let i = 0; i < restMethods.length; i++)
         {
+            // skip disabled method
+            if (restMethods[i].Command == "-")
+                continue;
+
             let kind: ModuleMethodKind = restMethods[i].Kind;
             let name: string = restMethods[i].Name;
             if (kind == ModuleMethodKind.MODULE_METHOD_CREATE)
@@ -656,8 +585,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public SelectCommand(name: string): boolean
     {
-        let url: string = this.CommandGroupUrl;
-        let command = this.GetCliCommandFromUrl(url);
+        let command = this.GetCliCommand();
 
         // don't try to create contetx if command was disabled
         if (command == "-") return null;
