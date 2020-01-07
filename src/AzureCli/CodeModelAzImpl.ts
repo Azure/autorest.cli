@@ -109,12 +109,12 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get CommandGroup_Name(): string
     {
-        return this.GetCliCommand(null);
+        return this.GetCliCommand();
     }
 
     public get Command_FunctionName()
     {
-        let command: string = this.CommandGroup_Commands[this._selectedCommand] + " " + this.GetCliCommand(null);
+        let command: string = this.CommandGroup_Commands[this._selectedCommand] + " " + this.GetCliCommand();
         command = command.replace(/[- ]/g, '_');
         if (command.startsWith("show_")) command = command.replace('show_', "get_");
         return command;
@@ -122,7 +122,7 @@ export class CodeModelCliImpl implements CodeModelAz
 
     public get Command_Name(): string
     {
-        return this.GetCliCommand(null) + " " + this.Command_MethodName;
+        return this.GetCliCommand() + " " + this.Command_MethodName;
     }
 
     public get Command_MethodName(): string
@@ -130,33 +130,19 @@ export class CodeModelCliImpl implements CodeModelAz
         return this.CommandGroup_Commands[this._selectedCommand];
     }
 
-    private GetCliCommand(methodName: string): string
+    private GetCliCommand(): string
     {
         let options : ModuleOption[] = this.Map.Modules[this._selectedCommandGroup].Options;
         let command = "";
 
-        // XXX - fix this for all the commands
-        let url = "";
-        if (methodName != null)
-        {
-            this.Map.Modules[this._selectedCommandGroup].Methods.forEach(m => {
-                if (m.Name.toLowerCase() == methodName.toLowerCase())
-                {
-                    url = m.Url;
-                }
-            });
-        }
-        else
-        {
-            url = this.Map.Modules[this._selectedCommandGroup].Methods[0].Url;
-        }
+        let url = this.Map.Modules[this._selectedCommandGroup].Methods[0].Url;
 
         return this.GetCliCommandFromUrl(url);
     }
 
     public get CommandGroup_Help(): string
     {
-        return "Commands to manage " + ToDescriptiveName(this.GetCliCommand(null)) + ".";
+        return "Commands to manage " + ToDescriptiveName(this.GetCliCommand()) + ".";
     }
 
     private GetMethodExamples(): CommandExample[]
@@ -791,7 +777,7 @@ export class CodeModelCliImpl implements CodeModelAz
     {
         let parameters: string[] = [];
 
-        parameters.push("az " + this.GetCliCommand(null) + " " + example.Method)
+        parameters.push("az " + this.GetCliCommand() + " " + example.Method)
 
         for (let k in example.Parameters)
         {
