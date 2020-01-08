@@ -164,7 +164,7 @@ function GenerateBody(model: CodeModelAz, required: any) : string[] {
                                             if (model.Option_Type != "dict")
                                             {
                                                 // a comma separated list
-                                                access += "None if " + model.Option_NamePython + " is None else " + model.Option_NamePython + ".split(',')";
+                                                access += "None if " + model.Option_NamePython + " is None else " + model.Option_NamePython;
                                             }
                                             else
                                             {
