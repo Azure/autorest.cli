@@ -102,7 +102,7 @@ export class MapGenerator
     {
         var module = new Module();
         var allMethods: any[] =  this.GetModuleOperation().methods;
-        module.CommandGroup = this.GetCliCommandFromUrl(allMethods[0].url);
+        module.CommandGroup = this._map.CliName + ((this.ModuleOperationName != "") ? (" " + PluralToSingular(this.ModuleOperationName).replace(/_/g, "-")) : ""); //this.GetCliCommandFromUrl(allMethods[0].url);
         module.ModuleName = this.ModuleName;
         module.ApiVersion =  this._swagger.apiVersion;
         module.Provider = this.GetProviderFromUrl(allMethods[0].url);
