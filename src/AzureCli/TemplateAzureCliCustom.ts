@@ -111,93 +111,93 @@ function GenerateBody(model: CodeModelAz, required: any) : string[] {
                 output[output.length - 1] += "):";  
 
                 let output_body: string[] = []
-
-                if (model.Method_BodyParameterName != null)
-                {
-                    // create body transformation for methods that support it
-                    let methodName: string = model.Command_MethodName;
-
-                    if (methodName != "show" && methodName != "list" && methodName != "delete")
-                    {
-                        // body transformation
-                        if (!isUpdate)
-                        {
-                            output_body.push("    body = {}");
-                        }
-                        else
-                        {
-                            // XXX-FIX-GET
-                            //if (methods.indexOf("show") >= 0)
-                            //{
-                            //    model.SelectCommand("show");
-                            //    output_body.push("    body = " + GetMethodCall(model) + ".as_dict()");
-                            //}
-                            //else
-                            //{
-                                output_body.push("    body = {}");
-                            //}
-                        }
-
-                        if (model.SelectFirstOption())
-                        {
-                            do
-                            {
-                                let access = "    body"
-                                if (model.Option_PathSdk.startsWith("/") && model.Option_Type != "placeholder")
-                                {
-                                    let parts = model.Option_PathSdk.split("/");
-                                    let last: string = parts.pop();
-                                    parts.forEach(part => {
-                                        if (part != "" && part != "*")
-                                        {
-                                            access += ".setdefault('" + part + "', {})";
-                                        }
-                                    });
-
-                                    access += "['" + last + "'] = ";
-
-                                    if (model.Option_IsList)
-                                    {
-                                        if (model.Option_Type != "dict")
-                                        {
-                                            // a comma separated list
-                                            access += "None if " + model.Option_NamePython + " is None else " + model.Option_NamePython + ".split(',')";
-                                        }
-                                        else
-                                        {
-                                            // already preprocessed by actions
-                                            access += model.Option_NamePython
-                                        }
-                                    }
-                                    else if (model.Option_Type != "dict")
-                                    {
-                                        access += model.Option_NamePython + "  # " + model.Option_Type; // # JSON.stringify(element);
-                                    }
-                                    else
-                                    {
-                                        access += "json.loads(" + model.Option_NamePython + ") if isinstance(" +model.Option_NamePython + ", str) else " + model.Option_NamePython
-                                        required['json'] = true;
-                                    }
-                                    
-                                    if (isUpdate)
-                                    {
-                                        output_body.push("    if " + model.Option_NamePython + " is not None:");
-                                        output_body.push("    " + access);
-                                    }
-                                    else
-                                    {
-                                        output_body.push(access);
-                                    }
-                                }
-                            }
-                            while (model.SelectNextOption());
-                        }
-                    }
-                }
                 let output_method_call: string[] = [];
 
                 if (model.SelectFirstMethod())
                 {
+                    if (model.Method_BodyParameterName != null)
+                    {
+                        // create body transformation for methods that support it
+                        let methodName: string = model.Command_MethodName;
+
+                        if (methodName != "show" && methodName != "list" && methodName != "delete")
+                        {
+                            // body transformation
+                            if (!isUpdate)
+                            {
+                                output_body.push("    body = {}");
+                            }
+                            else
+                            {
+                                // XXX-FIX-GET
+                                //if (methods.indexOf("show") >= 0)
+                                //{
+                                //    model.SelectCommand("show");
+                                //    output_body.push("    body = " + GetMethodCall(model) + ".as_dict()");
+                                //}
+                                //else
+                                //{
+                                    output_body.push("    body = {}");
+                                //}
+                            }
+
+                            if (model.SelectFirstOption())
+                            {
+                                do
+                                {
+                                    let access = "    body"
+                                    if (model.Option_PathSdk.startsWith("/") && model.Option_Type != "placeholder")
+                                    {
+                                        let parts = model.Option_PathSdk.split("/");
+                                        let last: string = parts.pop();
+                                        parts.forEach(part => {
+                                            if (part != "" && part != "*")
+                                            {
+                                                access += ".setdefault('" + part + "', {})";
+                                            }
+                                        });
+
+                                        access += "['" + last + "'] = ";
+
+                                        if (model.Option_IsList)
+                                        {
+                                            if (model.Option_Type != "dict")
+                                            {
+                                                // a comma separated list
+                                                access += "None if " + model.Option_NamePython + " is None else " + model.Option_NamePython + ".split(',')";
+                                            }
+                                            else
+                                            {
+                                                // already preprocessed by actions
+                                                access += model.Option_NamePython
+                                            }
+                                        }
+                                        else if (model.Option_Type != "dict")
+                                        {
+                                            access += model.Option_NamePython + "  # " + model.Option_Type; // # JSON.stringify(element);
+                                        }
+                                        else
+                                        {
+                                            access += "json.loads(" + model.Option_NamePython + ") if isinstance(" +model.Option_NamePython + ", str) else " + model.Option_NamePython
+                                            required['json'] = true;
+                                        }
+                                        
+                                        if (isUpdate)
+                                        {
+                                            output_body.push("    if " + model.Option_NamePython + " is not None:");
+                                            output_body.push("    " + access);
+                                        }
+                                        else
+                                        {
+                                            output_body.push(access);
+                                        }
+                                    }
+                                }
+                                while (model.SelectNextOption());
+                            }
+                        }
+                    }
+
                     let needIfStatement = !model.Method_IsLast;
                     
                     do

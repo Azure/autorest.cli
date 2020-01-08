@@ -439,6 +439,7 @@ export class CodeModelCliImpl implements CodeModelAz
             this._methodParameterMap.push(p);
         });
 
+        let hasBody: boolean = (this.Method_BodyParameterName != null); 
         //this._log("CREATE METHOD PARAMETERS FOR: " + this.Method_Name)
 
         this._selectedCommandOptions.forEach(element => {
@@ -446,24 +447,27 @@ export class CodeModelCliImpl implements CodeModelAz
             // XXX - this is not quite correct
             if (element.PathSdk.startsWith('/') && element.Type != "placeholder")
             {
-                if (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")
+                if (!hasBody)
                 {
-                    if (!element.ActionOnly)
+                    if (this.Method_Name == "create" || this.Method_Name == "update" || this.Method_Name == "create_or_update")
                     {
-                        let p: MethodParameter = new MethodParameter();
-                        p.Name = element.PathSdk.split("/").pop();
-                        p.MapsTo = this.PythonParameterName(element.Name); 
-                        this._methodParameterMap.push(p);
+                        if (!element.ActionOnly)
+                        {
+                            let p: MethodParameter = new MethodParameter();
+                            p.Name = element.PathSdk.split("/").pop();
+                            p.MapsTo = this.PythonParameterName(element.Name); 
+                            this._methodParameterMap.push(p);
+                        }
                     }
-                }
-                else
-                {
-                    if (element.ActionOnly)
+                    else
                     {
-                        let p: MethodParameter = new MethodParameter();
-                        p.Name = element.PathSdk.split("/").pop();
-                        p.MapsTo = this.PythonParameterName(element.Name); 
-                        this._methodParameterMap.push(p);
+                        if (element.ActionOnly)
+                        {
+                            let p: MethodParameter = new MethodParameter();
+                            p.Name = element.PathSdk.split("/").pop();
+                            p.MapsTo = this.PythonParameterName(element.Name); 
+                            this._methodParameterMap.push(p);
+                        }
                     }
                 }
             }
