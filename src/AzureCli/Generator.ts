@@ -20,7 +20,6 @@ import { GenerateAzureCliSetupPy } from "./TemplateAzureCliSetupPy"
 import { CodeModelAz } from "./CodeModelAz";
 
 export function GenerateAll(model: CodeModelAz,
-    testScenario: any,
     generateReport: any): any
 {
     let files: any = {};
@@ -40,7 +39,7 @@ export function GenerateAll(model: CodeModelAz,
             model.SelectFirstExtension();
             files[path + "_client_factory.py"] = GenerateAzureCliClientFactory(model);
             model.SelectFirstExtension();
-            files[path + "tests/latest/test_" + model.Extension_Name + "_scenario.py"] = GenerateAzureCliTestScenario(model, testScenario);   
+            files[path + "tests/latest/test_" + model.Extension_Name + "_scenario.py"] = GenerateAzureCliTestScenario(model);   
             model.SelectFirstExtension();
             files[path + "__init__.py"] = GenerateAzureCliInit(model);
             model.SelectFirstExtension();

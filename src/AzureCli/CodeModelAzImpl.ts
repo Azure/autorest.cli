@@ -49,12 +49,13 @@ export class MethodParameter
 
 export class CodeModelCliImpl implements CodeModelAz
 {
-    public constructor(map: MapModuleGroup, cliCommandOverrides: any, cb: LogCallback)
+    public constructor(map: MapModuleGroup, cliCommandOverrides: any, testScenario: any, cb: LogCallback)
     {
         this.Map = map;
         this._selectedCommandGroup = 0;
         this._log = cb;
         this._cmdOverrides = cliCommandOverrides;
+        this._testScenario = testScenario;
     }
 
     public SelectFirstExtension(): boolean
@@ -105,6 +106,11 @@ export class CodeModelCliImpl implements CodeModelAz
     public get Extension_NameUnderscored()
     {
         return this.Map.CliName.replace(/-/g, '_');
+    }
+
+    public get Extension_TestScenario()
+    {
+        return this._testScenario;
     }
 
     public get CommandGroup_Name(): string
@@ -1164,4 +1170,6 @@ export class CodeModelCliImpl implements CodeModelAz
     private _selectedMethodParameter = 0;
     private _selectedExample = -1;
     private _selectedMethodName = "";
+
+    private _testScenario: any;
 }

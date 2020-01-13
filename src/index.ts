@@ -359,9 +359,9 @@ extension.Add("cli", async autoRestApi => {
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
                 {
-                    let modelCli = new CodeModelCliImpl(map, cliCommandOverrides, Info);
+                    let modelCli = new CodeModelCliImpl(map, cliCommandOverrides, testScenario, Info);
 
-                    let files: any = GenerateAll(modelCli, testScenario, generateReport);
+                    let files: any = GenerateAll(modelCli, generateReport);
 
                     for (let f in files) {
                         autoRestApi.WriteFile(f, files[f].join('\r\n'));
