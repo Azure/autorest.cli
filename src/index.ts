@@ -12,12 +12,13 @@ import { Example } from "./Common/Example";
 import { GenerateIntegrationTest, GenerateDefaultTestScenario } from "./IntegrationTest/Generator";
 
 import { GenerateAnsible } from "./Ansible/Generator";
-import { GenerateAzureCli } from "./AzureCli/Generator";
+import { GenerateAll } from "./AzureCli/Generator";
 import { GenerateMagicModules } from "./MagicModules/Generator";
 import { GenerateExamples } from "./Examples/Generator";
 
 import { Adjustments } from "./Common/Adjustments"; 
 import { MapModuleGroup } from "./Common/ModuleMap";
+import { CodeModelCliImpl } from "./AzureCli/CodeModelAzImpl";
 
 export type LogCallback = (message: string) => void;
 export type FileCallback = (path: string, rows: string[]) => void;
@@ -358,7 +359,13 @@ extension.Add("cli", async autoRestApi => {
                 //-------------------------------------------------------------------------------------------------------------------------
                 if (artifactType == ArtifactType.ArtifactTypeAzureCliExtension)
                 {
-                    GenerateAzureCli(artifactType, map, cliCommandOverrides, testScenario, generateReport, cliName, WriteFile, Info);
+                    let modelCli = new CodeModelCliImpl(map, cliCommandOverrides, Info);
+
+                    let files: any = GenerateAll(modelCli, testScenario, generateReport, cliName);
+
+                    for (let f in files) {
+                        autoRestApi.WriteFile(f, files[f].join('\r\n'));
+                    }
                 }
                 
                 //-------------------------------------------------------------------------------------------------------------------------
