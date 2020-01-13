@@ -21,12 +21,13 @@ import { CodeModelAz } from "./CodeModelAz";
 
 export function GenerateAll(modelCli: CodeModelAz,
     testScenario: any,
-    generateReport: any,
-    cliName: any): any
+    generateReport: any): any
 {
+    modelCli.SelectFirstExtension();
+
     let files: any = {};
-    let pathTop = "src/" + cliName + "/";
-    let path = "src/" + cliName + "/azext_" + cliName.replace("-", "_") + "/";
+    let pathTop = "src/" + modelCli.Extension_Name + "/";
+    let path = "src/" + modelCli.Extension_Name + "/azext_" + modelCli.Extension_Name.replace("-", "_") + "/";
 
     files[path + "_help.py"] = GenerateAzureCliHelp(modelCli);
     modelCli.SelectFirstExtension();
@@ -38,7 +39,7 @@ export function GenerateAll(modelCli: CodeModelAz,
     modelCli.SelectFirstExtension();
     files[path + "_client_factory.py"] = GenerateAzureCliClientFactory(modelCli);
     modelCli.SelectFirstExtension();
-    files[path + "tests/latest/test_" + cliName + "_scenario.py"] = GenerateAzureCliTestScenario(modelCli, testScenario);   
+    files[path + "tests/latest/test_" + modelCli.Extension_Name + "_scenario.py"] = GenerateAzureCliTestScenario(modelCli, testScenario);   
     modelCli.SelectFirstExtension();
     files[path + "__init__.py"] = GenerateAzureCliInit(modelCli);
     modelCli.SelectFirstExtension();

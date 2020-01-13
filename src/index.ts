@@ -361,7 +361,7 @@ extension.Add("cli", async autoRestApi => {
                 {
                     let modelCli = new CodeModelCliImpl(map, cliCommandOverrides, Info);
 
-                    let files: any = GenerateAll(modelCli, testScenario, generateReport, cliName);
+                    let files: any = GenerateAll(modelCli, testScenario, generateReport);
 
                     for (let f in files) {
                         autoRestApi.WriteFile(f, files[f].join('\r\n'));
