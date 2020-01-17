@@ -1133,7 +1133,9 @@ export class CodeModelCliImpl implements CodeModelAz
         {
             newName = "_" + newName;
         }
-    
+        if(newName == "resource_group") {
+            newName = "resource_group_name";
+        }
         return newName;
     }
 
