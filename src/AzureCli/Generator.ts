@@ -13,6 +13,7 @@ import { GenerateAzureCliReport } from "./TemplateAzureCliReport"
 import { GenerateAzureCliInit } from "./TemplateAzureCliInit"
 import { GenerateAzureCliAzextMetadata } from "./TemplateAzureCliAzextMetadata"
 import { GenerateAzureCliValidators } from "./TemplateAzureCliValidators"
+import { GenerateAzureCliActions } from "./TemplateAzureCliActions"
 import { GenerateAzureCliHistory } from "./TemplateAzureCliHistory"
 import { GenerateAzureCliReadme } from "./TemplateAzureCliReadme"
 import { GenerateAzureCliSetupCfg } from "./TemplateAzureCliSetupCfg"
@@ -46,6 +47,7 @@ export function GenerateAll(model: CodeModelAz,
             files[path + "azext_metadata.json"] = GenerateAzureCliAzextMetadata(model);
             model.SelectFirstExtension();
             files[path + "_validators.py"] = GenerateAzureCliValidators(model);
+            files[path + "actions.py"] = GenerateAzureCliActions(model);
 
             files[pathTop + "HISTORY.rst"] = GenerateAzureCliHistory(model);
             files[pathTop + "README.rst"] = GenerateAzureCliReadme(model);
