@@ -13,17 +13,19 @@ import { GenerateAzureCliReport } from "./TemplateAzureCliReport"
 import { GenerateAzureCliInit } from "./TemplateAzureCliInit"
 import { GenerateAzureCliAzextMetadata } from "./TemplateAzureCliAzextMetadata"
 import { GenerateAzureCliValidators } from "./TemplateAzureCliValidators"
-import { GenerateAzureCliActions } from "./TemplateAzureCliActions"
 import { GenerateAzureCliHistory } from "./TemplateAzureCliHistory"
 import { GenerateAzureCliReadme } from "./TemplateAzureCliReadme"
 import { GenerateAzureCliSetupCfg } from "./TemplateAzureCliSetupCfg"
 import { GenerateAzureCliSetupPy } from "./TemplateAzureCliSetupPy"
 import { CodeModelAz } from "./CodeModelAz";
+import { Session, startSession, Host, Channel } from '@azure-tools/autorest-extension-base';
 
-export function GenerateAll(model: CodeModelAz,
-    generateReport: any): any
-{
+export async function GenerateAll(model: CodeModelAz,
+    generateReport: any) {
     let files: any = {};
+
+    await model.init();
+
 
     if (model.SelectFirstExtension())
     {
@@ -31,23 +33,15 @@ export function GenerateAll(model: CodeModelAz,
         {
             let pathTop = "src/" + model.Extension_Name + "/";
             let path = "src/" + model.Extension_Name + "/azext_" + model.Extension_Name.replace("-", "_") + "/";
-
             files[path + "_help.py"] = GenerateAzureCliHelp(model);
             files[path + "_params.py"] = GenerateAzureCliParams(model);
             files[path + "commands.py"] = GenerateAzureCliCommands(model);
-            model.SelectFirstExtension();
             files[path + "custom.py"] = GenerateAzureCliCustom(model);
-            model.SelectFirstExtension();
             files[path + "_client_factory.py"] = GenerateAzureCliClientFactory(model);
-            model.SelectFirstExtension();
             files[path + "tests/latest/test_" + model.Extension_Name + "_scenario.py"] = GenerateAzureCliTestScenario(model);   
-            model.SelectFirstExtension();
             files[path + "__init__.py"] = GenerateAzureCliInit(model);
-            model.SelectFirstExtension();
             files[path + "azext_metadata.json"] = GenerateAzureCliAzextMetadata(model);
-            model.SelectFirstExtension();
             files[path + "_validators.py"] = GenerateAzureCliValidators(model);
-            files[path + "actions.py"] = GenerateAzureCliActions(model);
 
             files[pathTop + "HISTORY.rst"] = GenerateAzureCliHistory(model);
             files[pathTop + "README.rst"] = GenerateAzureCliReadme(model);
@@ -56,7 +50,6 @@ export function GenerateAll(model: CodeModelAz,
 
             if (generateReport)
             {
-                model.SelectFirstExtension();
                 files[pathTop + "report.md"] = GenerateAzureCliReport(model);
             }
         }

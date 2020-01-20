@@ -58,6 +58,8 @@ export class CodeModelCliImpl implements CodeModelAz
         this._testScenario = testScenario;
     }
 
+    public init(): any { return null; }
+
     public SelectFirstExtension(): boolean
     {
         this._selectedCommandGroup = 0;
