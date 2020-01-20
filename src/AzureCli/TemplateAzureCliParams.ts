@@ -10,6 +10,9 @@ export function GenerateAzureCliParams(model: CodeModelAz) : string[] {
     let output: string[] = [];
     let hasActions: boolean = false;
     let hasBoolean: boolean = false;
+    let hasTags: boolean = false;
+    let hasResourceGroup: boolean = false;
+    let hasLocationType: boolean = false;
     let hasEnum: boolean = false;
     let actions: string[] = [];
         
@@ -78,14 +81,17 @@ export function GenerateAzureCliParams(model: CodeModelAz) : string[] {
 
                             if (parameterName == "resource_group")
                             {
+                                hasResourceGroup = true;
                                 argument += ", resource_group_name_type";
                             }
                             else if (parameterName == "tags")
                             {
+                                hasTags = true;
                                 argument += ", tags_type";
                             }
                             else if (parameterName == "location")
                             {
+                                hasLocationType = true;
                                 argument += ", arg_type=get_location_type(self.cli_ctx)";
                             }
                             else
@@ -128,16 +134,18 @@ export function GenerateAzureCliParams(model: CodeModelAz) : string[] {
     output.push("# pylint: disable=too-many-statements");   
     output.push("");
     //output.push("from knack.arguments import CLIArgumentType");
-    output.push("from azure.cli.core.commands.parameters import (");
-    output.push("    tags_type,");
-    //output.push("    get_resource_name_completion_list,");
-    //output.push("    quotes,");
-    if (hasBoolean) output.push("    get_three_state_flag,");
-    if (hasEnum) output.push("    get_enum_type,");
-    output.push("    resource_group_name_type,");
-    output.push("    get_location_type");
-    output.push(")");
-    //output.push("from azure.cli.core.commands.validators import get_default_location_from_resource_group");
+
+    if (hasTags || hasBoolean || hasEnum || hasResourceGroup || hasLocationType)
+    {
+        output.push("from azure.cli.core.commands.parameters import (");
+        if (hasTags) output.push("    tags_type,");
+        if (hasBoolean) output.push("    get_three_state_flag,");
+        if (hasEnum) output.push("    get_enum_type,");
+        if (hasResourceGroup) output.push("    resource_group_name_type,");
+        if (hasLocationType )output.push("    get_location_type,");
+        output[output.length - 1] = output[output.length - 1].split(",")[0];
+        output.push(")");
+    }
 
     if (hasActions)
     {
