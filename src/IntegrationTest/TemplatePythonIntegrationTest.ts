@@ -99,8 +99,19 @@ export function GeneratePythonIntegrationTest(model: Example[],
             }
         }
 
+        // format params like: xxx, xxx, xxx
+        let clientParams = _UrlToParameters(example.Url);
+        if (clientParams && hasBody)
+        {
+            clientParams += ', BODY';
+        }
+        else if (hasBody)
+        {
+            clientParams = 'BODY';
+        }
+
         output.push("        result = self.mgmt_client." + ToSnakeCase(example.OperationName) + "." + ToSnakeCase(example.MethodName) +
-                                         "(" + _UrlToParameters(example.Url) + (hasBody ? ", BODY" : "") + ")");
+                                         "(" + clientParams + ")");
         if (example.LongRunning)
         {
             output.push("        result = result.result()");
@@ -112,6 +123,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
     output.push("#------------------------------------------------------------------------------");
     output.push("if __name__ == '__main__':");
     output.push("    unittest.main()");
+    output.push("");  // python pep8: need a blank line in the end.
 
     return output;
 }
@@ -181,12 +193,11 @@ function GetExampleBodyJson(body: any): string[]
 function _UrlToParameters(sourceUrl: string): string
 {
     var parts: string[] = sourceUrl.split("/");
-    var params = "";
+    var params = [];
 
     for (var i: number = 0; i < parts.length; i++)
     {
         var part: string = parts[i];
-        var last: boolean = (i == parts.length - 1);
 
         if (part.startsWith("{{"))
         {
@@ -196,16 +207,15 @@ function _UrlToParameters(sourceUrl: string): string
 
             if (varName == "RESOURCE_GROUP")
             {
-                params += "resource_group.name" + (last ? "" : ", ");
+                params.push('resource_group.name');
             }
             else
             {
-                // close and reopen quotes, add add variable name in between
-                params += varName + (last ? "" : ", ");
+                params.push(varName);
             }
         }
     }
-    return params;
+    return params.join(', ');
 }
 
 function _PythonizeBody(body: any): any
