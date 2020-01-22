@@ -9,7 +9,7 @@ jobs:
     pool:
       vmImage: 'vs2017-win2016'
     steps:
-      - task: TSLint@1
+      - task: ms-codeanalysis.vss-microsoft-security-code-analysis.build-task-tslint.TSLint@1
         inputs:
           RuleLibrary: 'tslint'
           Ruleset: 'tsrecommended'
