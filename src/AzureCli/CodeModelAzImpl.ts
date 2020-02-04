@@ -77,6 +77,7 @@ export class CodeModelCliImpl implements CodeModelAz
         if (this.Map.Modules.length > 0)
         {
             this._selectedCommandGroup = 0;
+            this.SelectFirstCommand;
             return true;
         }
         else
@@ -91,6 +92,7 @@ export class CodeModelCliImpl implements CodeModelAz
         if (this._selectedCommandGroup < this.Map.Modules.length - 1)
         {
             this._selectedCommandGroup++;
+            this.SelectFirstCommand;
             return true;
         }
         else
@@ -276,7 +278,6 @@ export class CodeModelCliImpl implements CodeModelAz
         }
         
         this._parameterIdx++;
-
         if (this.Command_MethodName == "create" || this.Command_MethodName == "update" || this.Command_MethodName == "create_or_update")
         {
             if (this._selectedCommandOptions[this._parameterIdx].ActionOnly)
@@ -286,7 +287,6 @@ export class CodeModelCliImpl implements CodeModelAz
         }
         else
         {
-            // XXX - this is still not quite correct
             if (this._selectedCommandOptions[this._parameterIdx].PathSdk.startsWith("/") && !this._selectedCommandOptions[this._parameterIdx].ActionOnly)
             {
                 return this.SelectNextOption();
@@ -393,6 +393,7 @@ export class CodeModelCliImpl implements CodeModelAz
             return false;
 
         this._selectedMethod = 0;
+        this.SelectFirstMethodParameter;
         return true;
     }
 
@@ -403,6 +404,7 @@ export class CodeModelCliImpl implements CodeModelAz
         if (methods.length > this._selectedMethod + 1)
         {
             this._selectedMethod++;
+            this.SelectFirstMethodParameter;
             return true;
         }
         else
@@ -577,6 +579,7 @@ export class CodeModelCliImpl implements CodeModelAz
         {
             this._selectedCommand = 0;
             this.SelectCommand(this.CommandGroup_Commands[0]);
+            this.SelectFirstOption;
             return true;
         }
     }
@@ -587,6 +590,7 @@ export class CodeModelCliImpl implements CodeModelAz
         {
             this._selectedCommand++;
             this.SelectCommand(this.CommandGroup_Commands[this._selectedCommand]);
+            this.SelectFirstOption;
             return true;
         }
         else
@@ -617,29 +621,26 @@ export class CodeModelCliImpl implements CodeModelAz
             method.Documentation = this.GetMethodDocumentation(mm);
             method.Parameters = [];
             options.forEach(o => {
-                //this._log(" -------------------- " + o.NameAnsible);
 
                 let parameter: CommandParameter = null;
-                // this._log(" ... option: " + o.NameAnsible);
 
                 // first find if parameter was already added
                 this._selectedCommandOptions.forEach(p => {
-                    if (p.Name == o.NameAnsible.split("_").join("-"))
+                    if (p.Name == o.NamePythonSdk.split("_").join("-"))
                         parameter = p;
                 });
 
                 if (o.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER)
                 {
-                    method.BodyParameterName = o.NameAnsible;
+                    method.BodyParameterName = o.NamePythonSdk;
                     hasBody = true;
                 }
                 else
                 {
                     if (parameter == null)
                     {
-                        //this._log(" ---------------------- BODY PARAMETER WAS NULL: " + o.NameAnsible);
                         parameter = new CommandParameter();
-                        parameter.Name = o.NameAnsible.split("_").join("-");
+                        parameter.Name = o.NamePythonSdk.split("_").join("-");
                         parameter.Help = o.Documentation;
                         parameter.Required = (o.IdPortion != null && o.IdPortion != "");
                         parameter.Type = (o.Type == "dict") ? "placeholder" : this.GetCliTypeFromOption(o);
@@ -678,14 +679,14 @@ export class CodeModelCliImpl implements CodeModelAz
 
                         // make sure it's not duplicated
                         this._selectedCommandOptions.forEach(p => {
-                            if (p.Name == o.NameAnsible.split("_").join("-"))
+                            if (p.Name == o.NamePythonSdk.split("_").join("-"))
                                 parameter = p;
                         });
         
                         if (parameter == null)
                         {
                             parameter = new CommandParameter();
-                            parameter.Name = o.NameAnsible.split("_").join("-");
+                            parameter.Name = o.NamePythonSdk.split("_").join("-");
                             parameter.Help = o.Documentation;
                             parameter.Required = o.Required;
                             parameter.Type = this.GetCliTypeFromOption(o);
@@ -948,12 +949,12 @@ export class CodeModelCliImpl implements CodeModelAz
 
     private GetModuleOptions(): ModuleOption[]
     {
-//        this._log("GET MODULE OPTIONS: " + this._selectedCommandGroup)
+        //this._log("GET MODULE OPTIONS: " + this._selectedCommandGroup)
         let m = this.Map.Modules[this._selectedCommandGroup];
         let options: ModuleOption[] = [];
         for (let option of m.Options)
         {
-//            this._log("CHECKING: " + option.Kind);
+            //this._log("CHECKING: " + option.Kind);
             if (!(option.Kind == ModuleOptionKind.MODULE_OPTION_PLACEHOLDER))
             {
                 options.push(option);
@@ -1056,7 +1057,7 @@ export class CodeModelCliImpl implements CodeModelAz
         let moduleOptions: ModuleOption[] = [];
 
         //this._log("GETTING METHOD OPTIONS: " + methodName + " -- " + this._selectedCommandGroup);
-
+        //this._log(JSON.stringify(methodOptionNames));
         for (let optionName of methodOptionNames)
         {
             //this._log("OPTION NAME: " + optionName);
@@ -1086,7 +1087,6 @@ export class CodeModelCliImpl implements CodeModelAz
                     // XXX - and because this stupid option has no suboptions
                     for (let option of this.GetModuleOptions())
                     {
-                        //this._log("ADDING SUBOPTION: " + option.NameAnsible);
                         if (option.DispositionSdk.startsWith("/"))
                         {
                             foundOption.SubOptions.push(option);
@@ -1100,7 +1100,7 @@ export class CodeModelCliImpl implements CodeModelAz
                 moduleOptions.push(foundOption);
             }
         }
-
+        
         return moduleOptions;
     }
 
