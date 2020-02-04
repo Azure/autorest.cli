@@ -85,7 +85,7 @@ export class Example
             {
                 var bodyObject: any = props[pp];
 
-                if (typeof bodyObject == 'object')
+                if (typeof bodyObject == 'object' && !(bodyObject instanceof Array) && !(bodyObject instanceof Date))
                 {
                     bodyName = pp;
                     break;
