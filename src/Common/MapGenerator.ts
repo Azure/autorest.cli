@@ -519,18 +519,18 @@ export class MapGenerator
                         if (type != "dict")
                         {
                             if (p.location == "header") {
-                                options[p.name.raw] = new ModuleOptionHeader(p.name.raw, type, p.isRequired);
+                                options[m.name.raw + p.name.raw] = new ModuleOptionHeader(p.name.raw, type, p.isRequired);
                             }
                             else
                             {
-                                options[p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
+                                options[m.name.raw + p.name.raw] = new ModuleOptionPath(p.name.raw, type, p.isRequired);
                             }
                             
-                            options[p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
+                            options[m.name.raw + p.name.raw].Documentation = this.ProcessDocumentation(p.documentation.raw);
 
-                            options[p.name.raw].IsList = this.Type_IsList(p.modelType);
-                            options[p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
-                            options[p.name.raw].format = this.Type_number_format(p.modelType);
+                            options[m.name.raw + p.name.raw].IsList = this.Type_IsList(p.modelType);
+                            options[m.name.raw + p.name.raw].NoLog = (p.name.raw.indexOf("password") >= 0);
+                            options[m.name.raw + p.name.raw].format = this.Type_number_format(p.modelType);
             
                             if (p.location == "path")
                             {
@@ -538,7 +538,7 @@ export class MapGenerator
 
                                 if (splittedId.length == 2)
                                 {
-                                    options[p.name.raw].IdPortion = splittedId[0].split('/').pop();
+                                    options[m.name.raw + p.name.raw].IdPortion = splittedId[0].split('/').pop();
                                 }
                                 else
                                 {
@@ -551,7 +551,7 @@ export class MapGenerator
                                 }
                             }
                             
-                            if (p.IsRequired) options[p.Name].RequiredCount++;
+                            if (p.IsRequired) options[m.name.raw + p.Name].RequiredCount++;
                         }
                         else    
                         {
@@ -571,7 +571,7 @@ export class MapGenerator
     
                             this._log("---------- " + p.documentation.raw)
 
-                            options[p.name.raw] = bodyPlaceholder;
+                            options[m.name.raw + p.name.raw] = bodyPlaceholder;
                             this._log("---------- NUMBER OF SUBOPTIONS " + suboptions.length);
 
                             // these suboptions should all go to the body
@@ -586,7 +586,7 @@ export class MapGenerator
                                     element.ActionOnly = true;
                                 }
 
-                                options[element.NameAnsible] = element;
+                                options[m.name.raw + element.NameAnsible] = element;
                             });
                         }
                     }
