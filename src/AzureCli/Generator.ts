@@ -19,6 +19,7 @@ import { GenerateAzureCliSetupCfg } from "./TemplateAzureCliSetupCfg"
 import { GenerateAzureCliSetupPy } from "./TemplateAzureCliSetupPy"
 import { CodeModelAz } from "./CodeModelAz";
 import { Session, startSession, Host, Channel } from '@azure-tools/autorest-extension-base';
+import { GenerateAzureCliActions } from "./TemplateAzureCliActions"
 
 export async function GenerateAll(model: CodeModelAz,
     generateReport: any) {
@@ -42,6 +43,7 @@ export async function GenerateAll(model: CodeModelAz,
             files[path + "__init__.py"] = GenerateAzureCliInit(model);
             files[path + "azext_metadata.json"] = GenerateAzureCliAzextMetadata(model);
             files[path + "_validators.py"] = GenerateAzureCliValidators(model);
+            files[path + "actions.py"] = GenerateAzureCliActions(model);  
 
             files[pathTop + "HISTORY.rst"] = GenerateAzureCliHistory(model);
             files[pathTop + "README.rst"] = GenerateAzureCliReadme(model);

@@ -103,7 +103,7 @@ export function GenerateAzureCliParams(model: CodeModelAz) : string[] {
                             {
                                 if (model.Option_Type == "dict")
                                 {
-                                    let actionName: string = "PeeringAdd" + Capitalize(ToCamelCase(model.Option_Name));
+                                    let actionName: string = "Add" + Capitalize(ToCamelCase(model.Option_Name));
                                     argument += ", action=" + actionName;
                                     hasActions = true;
 
