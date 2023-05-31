@@ -226,7 +226,7 @@ export class CodeModel
 
     public HasDelete(): boolean
     {
-        return this.GetMethod("Delete") != null;
+        return this.GetMethod("Delete") != null || this.GetMethod("Remove") != null;
     }
 
     public GetMethodOptionNames(methodName: string): string[]
