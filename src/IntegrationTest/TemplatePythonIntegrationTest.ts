@@ -78,7 +78,7 @@ export function GeneratePythonIntegrationTest(model: Example[],
         if (example == null)
             continue;
 
-        let hasBody: boolean = (example.Method == "put" || example.Method == "post" || example.Method == "patch");
+        let hasBody: boolean = example.ExampleHasBody();
 
         output.push("");
         output.push("        # " + example.Id + "[" + example.Method + "]");
